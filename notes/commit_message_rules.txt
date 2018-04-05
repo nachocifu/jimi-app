@@ -1,0 +1,7 @@
+[QUE ES] [MODULO, por ejemplo webapp] 'breve mensaje'.
+
+[QUE ES]: BUGFIX, SETUP, NOTES, FEATURE, ... 
+
+mensaje en INGLES
+
+frases terminen en punto.
