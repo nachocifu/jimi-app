@@ -26,6 +26,17 @@
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
     </dependency>
+    <dependency>
+      <groupId>edu.itba.paw.jimi</groupId>
+      <artifactId>interfaces</artifactId>
+      <version>${parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.itba.paw.jimi</groupId>
+      <artifactId>services</artifactId>
+      <version>${parent.version}</version>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
   <build>
     <finalName>webapp</finalName>
