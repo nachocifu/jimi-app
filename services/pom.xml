@@ -33,5 +33,11 @@
       <version>4.2.5.RELEASE</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>edu.itba.paw.jimi</groupId>
+      <artifactId>persistence</artifactId>
+      <version>${parent.version}</version>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
 </project>

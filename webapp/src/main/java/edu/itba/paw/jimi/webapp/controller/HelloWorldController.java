@@ -1,5 +1,6 @@
-package edu.itba.paw.jimi;
+package edu.itba.paw.jimi.webapp.controller;
 
+import edu.itba.paw.jimi.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

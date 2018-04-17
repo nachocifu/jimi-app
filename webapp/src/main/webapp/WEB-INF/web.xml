@@ -30,7 +30,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            edu.itba.paw.jimi.config.WebConfig
+            edu.itba.paw.jimi.webapp.config.WebConfig
         </param-value>
     </context-param>
     <listener>

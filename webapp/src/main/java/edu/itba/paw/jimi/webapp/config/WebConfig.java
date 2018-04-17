@@ -1,4 +1,4 @@
-package edu.itba.paw.jimi.config;
+package edu.itba.paw.jimi.webapp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,10 +12,9 @@ import org.springframework.web.servlet.view.JstlView;
  * Created by ioninielavitzky on 28/03/2018.
  */
 @EnableWebMvc
-@ComponentScan({ "edu.itba.paw.jimi" })
+@ComponentScan({ "edu.itba.paw.jimi.webapp.controller", "edu.itba.paw.jimi.services", "edu.itba.paw.jimi.persistence" })
 @Configuration
 public class WebConfig {
-
 
     @Bean
     public ViewResolver viewResolver() {
@@ -25,6 +24,5 @@ public class WebConfig {
         viewResolver.setSuffix(".jsp");
         return viewResolver;
     }
-
 
 }
