@@ -12,7 +12,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    public User findById(User user) {
+    public User findById(long id) {
         return null;
     }
+
+    public User create(final String username) {
+        return userDao.create(username);
+    }
+
 }
