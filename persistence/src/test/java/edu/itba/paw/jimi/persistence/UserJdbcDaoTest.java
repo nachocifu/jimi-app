@@ -50,6 +50,7 @@ public class UserJdbcDaoTest {
     }
 
     @Test
+    // TODO
     public void testFindById() {  //consultar como testear
         Object user = userDao.findById(1);
     }
