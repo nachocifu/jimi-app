@@ -6,11 +6,13 @@ public class Dish {
     private long id;
     private String name;
     private float price;
+    private int stock;
 
-    public Dish(String name, float price, long id) {
+    public Dish(String name, float price, long id, int stock) {
         this.name = name;
         this.price = price;
         this.id = id;
+        this.stock = stock;
     }
 
     @Override
@@ -50,5 +52,13 @@ public class Dish {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 }

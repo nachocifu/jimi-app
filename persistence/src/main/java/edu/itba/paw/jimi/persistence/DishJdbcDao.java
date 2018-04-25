@@ -25,7 +25,7 @@ public class DishJdbcDao implements DishDao {
 
     private final static RowMapper<Dish> ROW_MAPPER = new RowMapper<Dish>() {
         public Dish mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Dish(rs.getString("name"), rs.getFloat("price"), rs.getInt("dishid"));
+            return new Dish(rs.getString("name"), rs.getFloat("price"), rs.getInt("dishid"), rs.getInt("stock"));
         }
     };
 
@@ -46,11 +46,12 @@ public class DishJdbcDao implements DishDao {
         return list.get(0);
     }
 
-    public Dish create(String name, float price) {
+    public Dish create(String name, float price, int stock) {
         final Map<String, Object> args = new HashMap<String, Object>();
         args.put("name", name);
         args.put("price", price);
+        args.put("stock", stock);
         final Number userId = jdbcInsert.executeAndReturnKey(args);
-        return new Dish(name, price, userId.longValue());
+        return new Dish(name, price, userId.longValue(), stock);
     }
 }

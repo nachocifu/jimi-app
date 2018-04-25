@@ -49,7 +49,7 @@ public class DishJdbcDaoTest {
 
     @Test
     public void testCreate() {
-        final Dish dish = dishDao.create(NAME, PRICE);
+        final Dish dish = dishDao.create(NAME, PRICE, 1);
         assertNotNull(dish);
         assertEquals(NAME, dish.getName());
         assertEquals(PRICE, dish.getPrice());
@@ -58,7 +58,7 @@ public class DishJdbcDaoTest {
 
     @Test
     public void testCreateWithPi() {
-        final Dish dish = dishDao.create(PI_NAME, REAL_PRICE);
+        final Dish dish = dishDao.create(PI_NAME, REAL_PRICE, 1);
         assertNotNull(dish);
         assertEquals(PI_NAME, dish.getName());
         assertEquals(REAL_PRICE, dish.getPrice());
@@ -68,10 +68,12 @@ public class DishJdbcDaoTest {
 
     @Test
     public void testFindById() {
-        final Dish dish = dishDao.create(NAME, PRICE);
+        final Dish dish = dishDao.create(NAME, PRICE, 1);
         Dish dbDish = dishDao.findById(dish.getId());
         assertNotNull(dbDish);
         assertEquals(NAME, dbDish.getName());
         assertEquals(PRICE, dbDish.getPrice());
     }
+
+    //TODO: Cuando esté hecho 'update', testear (y también hacer test de services)
 }
