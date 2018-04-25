@@ -13,7 +13,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     public User findById(long id) {
-        return null;
+        return userDao.findById(id);
     }
 
     public User create(final String username) {
