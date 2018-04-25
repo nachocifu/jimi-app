@@ -6,6 +6,8 @@ import edu.itba.paw.jimi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -13,11 +15,16 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     public User findById(long id) {
-        return null;
+
+        return userDao.findById(id);
     }
 
-    public User create(final String username) {
-        return userDao.create(username);
+    public Collection<User> findAll() {
+        return userDao.findAll();
+    }
+
+    public User create(final String username, String password) {
+        return userDao.create(username, password);
     }
 
 }
