@@ -13,7 +13,8 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
-public class HelloWorldController {
+// TODO rename to UserController
+public class UserController {
 
     @Autowired
     private UserService us;
@@ -28,7 +29,7 @@ public class HelloWorldController {
     @RequestMapping("")
     public ModelAndView list() {
         final ModelAndView mav = new ModelAndView("users/list");
-        //por ahora devolvemos todo, el dia de manana se busca con queryparams
+        // TODO , el dia de manana se busca con queryparams
         mav.addObject("users", us.findAll());
         return mav;
     }
