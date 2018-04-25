@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class UserJdbcDao implements UserDao {
 
     private final static RowMapper<User> ROW_MAPPER = new RowMapper<User>() {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(rs.getString("username"), rs.getInt("userid"));
+            return new User(rs.getString("username"), rs.getInt("userid"), rs.getString("password"));
         }
     };
 
@@ -46,11 +47,16 @@ public class UserJdbcDao implements UserDao {
         return list.get(0);
     }
 
-    public User create(final String username) {
+    public Collection<User> findAll() {
+        return jdbcTemplate.query("SELECT * FROM users", ROW_MAPPER);
+    }
+
+    public User create(final String username, final String password) {
         final Map<String, Object> args = new HashMap<String, Object>();
         args.put("username", username); // la key es el nombre de la columna
+        args.put("password", password); // la key es el nombre de la columna
         final Number userId = jdbcInsert.executeAndReturnKey(args);
-        return new User(username, userId.longValue());
+        return new User(username, userId.longValue(), password); //este assert me parece que esta mal
     }
 
 }
