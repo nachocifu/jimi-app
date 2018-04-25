@@ -1,6 +1,6 @@
 [QUE ES] [MODULO, por ejemplo webapp] 'breve mensaje'.
 
-[QUE ES]: BUGFIX, SETUP, NOTES, FEATURE, ... 
+[QUE ES]: BUGFIX, SETUP, NOTES, FEATURE, TESTS, ... 
 
 mensaje en INGLES
 
