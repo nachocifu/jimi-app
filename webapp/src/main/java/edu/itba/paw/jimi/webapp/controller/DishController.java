@@ -22,8 +22,17 @@ public class DishController {
     public ModelAndView GET(@PathVariable("dishid") long dishid) {
         final ModelAndView mav = new ModelAndView("dishes/dish_info");
         final Dish dish = dishService.findById(dishid);
+
+        if(dish == null) {
+            final ModelAndView mavError = new ModelAndView("simple_error");
+            mavError.addObject("error_message", "No dish found. :(");
+
+            return mavError;
+        }
+
         mav.addObject("name", dish.getName());
         mav.addObject("price", dish.getPrice());
+        mav.addObject("stock", dish.getStock());
         return mav;
     }
 

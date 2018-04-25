@@ -17,6 +17,6 @@ public class DishServiceImpl implements DishService{
     }
 
     public Dish create(String name, float price) {
-        return dishDao.create(name, price);
+        return dishDao.create(name, price, 0);
     }
 }

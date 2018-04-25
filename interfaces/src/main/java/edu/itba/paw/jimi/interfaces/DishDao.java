@@ -9,7 +9,8 @@ public interface DishDao {
      * Create a new dish.
      * @param name the dish's name.
      * @param price the dish's price.
+     * @param stock the dish's current stock quantity.
      * @return The created dish.
      */
-    Dish create(String name, float price);
+    Dish create(String name, float price, int stock);
 }
