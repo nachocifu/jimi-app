@@ -14,21 +14,25 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.annotation.Resource;
+
 import static org.junit.Assert.assertEquals;
 
-@ActiveProfiles("test")
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DishServiceTestConfig.class)
-@ComponentScan({ "edu.itba.paw.jimi.services", "edu.itba.paw.jimi.persistence"})
 public class DishServiceTest{
 
-    @Autowired
+
     @InjectMocks
+    @Autowired
     private DishService dishService;
 
     @Autowired
@@ -42,6 +46,9 @@ public class DishServiceTest{
 
     @Test
     public void test() {
+
+        System.out.println(dishDao.getClass());
+        System.out.println(dishService.getClass());
 
         Mockito.when(dishDao.findById(1)).thenReturn(new Dish("Papa", 25F, 1, 1));
 

@@ -1,11 +1,11 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.DishDao;
+import edu.itba.paw.jimi.interfaces.UserDao;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.*;
 
 @ComponentScan("edu.itba.paw.jimi.services")
-@Profile("test")
 @Configuration
 public class DishServiceTestConfig {
 
@@ -14,5 +14,11 @@ public class DishServiceTestConfig {
     public DishDao dishDao() {
         return Mockito.mock(DishDao.class);
     }
+    @Bean
+    @Primary
+    public UserDao userDao() {
+        return Mockito.mock(UserDao.class);
+    }
+
 
 }
