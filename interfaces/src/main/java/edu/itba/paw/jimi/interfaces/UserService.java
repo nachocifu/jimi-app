@@ -9,6 +9,11 @@ public interface UserService {
 
     User findById(long id);
 
+    /**
+     * Returns all the users.
+     *
+     * @return all the users.
+     */
     Collection<User> findAll();
 
     /**

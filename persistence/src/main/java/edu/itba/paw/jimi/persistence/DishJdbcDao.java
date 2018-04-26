@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class DishJdbcDao implements DishDao {
     private JdbcTemplate jdbcTemplate;
 
     private SimpleJdbcInsert jdbcInsert;
+
 
     private final static RowMapper<Dish> ROW_MAPPER = new RowMapper<Dish>() {
         public Dish mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -53,5 +55,14 @@ public class DishJdbcDao implements DishDao {
         args.put("stock", stock);
         final Number userId = jdbcInsert.executeAndReturnKey(args);
         return new Dish(name, price, userId.longValue(), stock);
+    }
+
+    public int update(Dish dish) {
+        return jdbcTemplate.update("UPDATE dishes SET (name, price, stock) = (?, ?, ?) WHERE dishid = ?", dish.getName(), dish.getPrice(), dish.getStock(),dish.getId());
+
+    }
+
+    public Collection<Dish> findAll() {
+        return jdbcTemplate.query("SELECT * FROM dishes", ROW_MAPPER);
     }
 }

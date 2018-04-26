@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Set;
 
 @Controller
-@RequestMapping("/dish")
+@RequestMapping("/dishes")
 public class DishController {
 
     @Autowired
@@ -48,6 +50,26 @@ public class DishController {
 
         final Dish d = dishService.create(form.getName(), form.getPrice());
 
-        return new ModelAndView("redirect:/dish/" + d.getId());
+        return new ModelAndView("redirect:/dishes");
     }
+
+    @RequestMapping("")
+    public ModelAndView list() {
+        final ModelAndView mav = new ModelAndView("dishes/dishes");
+
+        Collection<Dish> dishes = dishService.findAll();
+
+        mav.addObject("dishes", dishes);
+        return mav;
+    }
+
+    @RequestMapping("/modifystock")
+    public ModelAndView modifystock(@RequestParam(value = "amount", defaultValue = "0") final int amount,
+                                    @RequestParam(value = "dishid") final long dishid) {
+        Dish dbDish = dishService.findById(dishid);
+        dishService.modifyStock(dbDish, amount);
+
+        return list();
+    }
+
 }

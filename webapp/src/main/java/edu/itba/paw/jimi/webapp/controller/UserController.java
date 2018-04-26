@@ -13,7 +13,6 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
-// TODO rename to UserController
 public class UserController {
 
     @Autowired

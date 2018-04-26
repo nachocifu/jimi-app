@@ -6,7 +6,7 @@
 <head>
     <title>Create Dish</title>
 <body>
-<c:url value="/dish/create" var="postPath"/>
+<c:url value="/dishes/create" var="postPath"/>
 <form:form modelAttribute="dishCreateForm" action="${postPath}" method="post">
     <div>
         <form:label path="name">Name: </form:label>
