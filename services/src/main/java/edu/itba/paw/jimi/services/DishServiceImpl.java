@@ -30,21 +30,12 @@ public class DishServiceImpl implements DishService{
             return 0;
         }
 
-        dish.setStock(stock); //Set the stock to the new correct value.
+        dish.setStock(stock);
         dishDao.update(dish);
         return dish.getStock();
     }
 
-    private int testn = 0;
     public Collection<Dish> findAll() {
-        if (testn == 0) {
-            testn++;
-            return dishDao.findAll();
-        }else if (testn == 1){
-            testn++;
-            return new LinkedList<Dish>();
-        }else{
-            return null;
-        }
+        return dishDao.findAll();
     }
 }

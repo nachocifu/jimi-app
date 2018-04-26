@@ -12,24 +12,30 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.annotation.Resource;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DishServiceTestConfig.class)
 public class DishServiceTest{
 
+
+    private static final String NAME = "Papa";
+    private static final float PRICE = 10.50F;
+    private static final int DEFAULT_STOCK = 0;
+    private static final int TEST_STOCK = 150;
+    private static final int TEST_NEGATIVE_STOCK = -1;
+    private static final float e = 0.00001f;
 
     @InjectMocks
     @Autowired
@@ -45,19 +51,105 @@ public class DishServiceTest{
     }
 
     @Test
-    public void test() {
+    public void findByIdTest() {
 
-        System.out.println(dishDao.getClass());
-        System.out.println(dishService.getClass());
-
-        Mockito.when(dishDao.findById(1)).thenReturn(new Dish("Papa", 25F, 1, 1));
-
+        Mockito.when(dishDao.findById(1)).thenReturn(new Dish(NAME, PRICE, 1, DEFAULT_STOCK));
 
         Dish testDish = dishService.findById(1);
-        Assert.assertEquals("Papa", testDish.getName());
-        Assert.assertEquals(25F, testDish.getPrice(), 0.0001F);
+        Assert.assertEquals(NAME, testDish.getName());
+        Assert.assertEquals(PRICE, testDish.getPrice(), e);
         Assert.assertEquals(1, testDish.getId());
-        Assert.assertEquals(1, testDish.getStock());
+        Assert.assertEquals(DEFAULT_STOCK, testDish.getStock());
     }
 
+    @Test
+    public void findByIdNullTest() {
+
+        Mockito.when(dishDao.findById(1)).thenReturn(null);
+
+        Dish testDish = dishService.findById(1);
+        assertNull(testDish);
+
+    }
+
+    @Test
+    public void createTest() {
+        Mockito.when(dishDao.create(NAME, PRICE, 0)).thenReturn(new Dish(NAME, PRICE, 1, 0));
+
+        Dish testDish = dishService.create(NAME, PRICE);
+        Assert.assertEquals(testDish.getName(), NAME);
+        Assert.assertEquals(testDish.getPrice(), PRICE, e);
+        Assert.assertEquals(testDish.getStock(), 0);
+    }
+
+    @Test
+    public void setStockTest() {
+        Mockito.when(dishDao.findById(0)).thenReturn(new Dish(NAME, PRICE, 1, 0));
+
+        Dish testDish = dishService.findById(0);
+
+        Mockito.when(dishDao.update(testDish)).thenReturn(1);
+
+        int retValue = dishService.setStock(testDish, TEST_STOCK);
+
+        Assert.assertEquals(retValue, TEST_STOCK);
+        Assert.assertEquals(testDish.getStock(), TEST_STOCK);
+    }
+
+    @Test
+    public void setStockNegativeTest() {
+        Mockito.when(dishDao.findById(0)).thenReturn(new Dish(NAME, PRICE, 1, 0));
+
+        Dish testDish = dishService.findById(0);
+
+        Mockito.when(dishDao.update(testDish)).thenReturn(1);
+
+        int retValue = dishService.setStock(testDish, TEST_NEGATIVE_STOCK);
+
+        Assert.assertEquals(retValue, 0);
+        Assert.assertEquals(testDish.getStock(), 0);
+    }
+
+    @Test
+    public void setStockUpdateDuplicateTest() {
+        Mockito.when(dishDao.findById(0)).thenReturn(new Dish(NAME, PRICE, 1, 0));
+
+        Dish testDish = dishService.findById(0);
+
+        Mockito.when(dishDao.update(testDish)).thenReturn(2);
+
+        int retValue = dishService.setStock(testDish, TEST_STOCK);
+
+        Assert.assertEquals(retValue, TEST_STOCK);
+        Assert.assertEquals(testDish.getStock(), TEST_STOCK);
+    }
+    @Test
+    public void findAllTest() {
+        Collection<Dish> dishes = new LinkedList<Dish>();
+        dishes.add(new Dish(NAME, PRICE, 0, 10));
+        dishes.add(new Dish(NAME, PRICE, 1, 10));
+        dishes.add(new Dish(NAME, PRICE, 2, 10));
+        dishes.add(new Dish(NAME, PRICE, 3, 10));
+        Mockito.when(dishDao.findAll()).thenReturn(dishes);
+
+        Collection<Dish> dbDishes = dishService.findAll();
+
+        assertNotNull(dbDishes);
+
+        // Pass all dishes to hashset and compare sizes to check if find all contains duplicates.
+        Set<Dish> nonRepetingDishes = new HashSet<Dish>();
+        nonRepetingDishes.addAll(dishes);
+
+        assertEquals(dbDishes.size(), nonRepetingDishes.size());
+    }
+
+    @Test
+    public void findAllNullTest() {
+
+        Mockito.when(dishDao.findAll()).thenReturn(null);
+
+        Collection<Dish> dbDishes = dishService.findAll();
+
+        assertNull(dbDishes);
+    }
 }

@@ -75,5 +75,7 @@ public class DishJdbcDaoTest {
         assertEquals(PRICE, dbDish.getPrice());
     }
 
+    //TODO: findall tests. que no devuelva repetidos y que cuando no hay que devuelva null, etc. Parecido a dishServiceTest
+
     //TODO: Cuando esté hecho 'update', testear (y también hacer test de services)
 }
