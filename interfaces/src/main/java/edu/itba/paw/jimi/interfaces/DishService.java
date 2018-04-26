@@ -1,7 +1,6 @@
 package edu.itba.paw.jimi.interfaces;
 
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.User;
 
 import java.util.Collection;
 
