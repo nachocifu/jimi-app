@@ -17,12 +17,12 @@ public interface DishService {
     Dish create(String name, float price);
 
     /**
-     * Modifies the value of stock of the dish.
+     * Sets the value of stock of the dish.
      * @param dish The dish to be updated.
      * @param stock The new number of stock.
      * @return The new value of stock.
      */
-    int modifyStock(Dish dish, int stock);
+    int setStock(Dish dish, int stock);
 
 
     /**

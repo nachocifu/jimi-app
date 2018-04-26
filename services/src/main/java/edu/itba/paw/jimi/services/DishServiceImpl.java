@@ -22,7 +22,12 @@ public class DishServiceImpl implements DishService{
         return dishDao.create(name, price, 0);
     }
 
-    public int modifyStock(Dish dish, int stock) {
+    public int setStock(Dish dish, int stock) {
+
+        if(stock < 0) {
+            return 0;
+        }
+
         dish.setStock(stock); //Set the stock to the new correct value.
         dishDao.update(dish);
         return dish.getStock();

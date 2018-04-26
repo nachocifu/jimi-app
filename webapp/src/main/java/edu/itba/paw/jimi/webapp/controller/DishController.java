@@ -11,7 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.Set;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Controller
 @RequestMapping("/dishes")
@@ -57,17 +59,23 @@ public class DishController {
     public ModelAndView list() {
         final ModelAndView mav = new ModelAndView("dishes/dishes");
 
-        Collection<Dish> dishes = dishService.findAll();
+        List<Dish> dishes = (List<Dish>) dishService.findAll();
+
+        Collections.sort(dishes, new Comparator<Dish>() {
+            public int compare(Dish o1, Dish o2) {
+                return (int)(o1.getId() - o2.getId());
+            }
+        });
 
         mav.addObject("dishes", dishes);
         return mav;
     }
 
-    @RequestMapping("/modifystock")
-    public ModelAndView modifystock(@RequestParam(value = "amount", defaultValue = "0") final int amount,
-                                    @RequestParam(value = "dishid") final long dishid) {
+    @RequestMapping("/setstock")
+    public ModelAndView setstock(@RequestParam(value = "stock", defaultValue = "0") final int stock,
+                                 @RequestParam(value = "dishid") final long dishid) {
         Dish dbDish = dishService.findById(dishid);
-        dishService.modifyStock(dbDish, amount);
+        dishService.setStock(dbDish, stock);
 
         return list();
     }

@@ -15,17 +15,17 @@
             <td><c:out value="${dish.price}"/></td>
             <td><c:out value="${dish.stock}"/></td>
             <td>
-                <form action="/dishes/modifystock">
+                <form action="/dishes/setstock">
                     <input type="submit" value="+" />
                     <input type="hidden" value="${dish.id}" name="dishid">
-                    <input type="hidden" value="${dish.stock+1}" name="amount">
+                    <input type="hidden" value="${dish.stock+1}" name="stock">
                 </form>
             </td>
             <td>
-                <form action="/dishes/modifystock">
+                <form action="/dishes/setstock">
                     <input type="submit" value="-" />
                     <input type="hidden" value="${dish.id}" name="dishid">
-                    <input type="hidden" value="${dish.stock-1}" name="amount">
+                    <input type="hidden" value="${dish.stock-1}" name="stock">
                 </form>
             </td>
         </tr>
