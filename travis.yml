@@ -2,3 +2,10 @@ language: java
 sudo: false
 
 script: "mvn test"
+
+notifications:
+  email:
+    - icifuent@itba.edu.ar
+    - mcapparelli@itba.edu.ar
+    - jnielavitzky@itba.edu.ar
+    - jalonso@itba.edu.ar
