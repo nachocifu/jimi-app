@@ -3,10 +3,12 @@ package edu.itba.paw.jimi.services;
 import edu.itba.paw.jimi.interfaces.DishDao;
 import edu.itba.paw.jimi.interfaces.DishService;
 import edu.itba.paw.jimi.models.Dish;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 @Service
 public class DishServiceImpl implements DishService{
@@ -28,7 +30,7 @@ public class DishServiceImpl implements DishService{
             return 0;
         }
 
-        dish.setStock(stock); //Set the stock to the new correct value.
+        dish.setStock(stock);
         dishDao.update(dish);
         return dish.getStock();
     }

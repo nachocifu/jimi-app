@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 
 @ComponentScan({ "edu.itba.paw.jimi.persistence" })
 @Configuration
-public class TestConfig {
+public class  TestConfig {
 
     @Bean
     public DataSource dataSource() {
