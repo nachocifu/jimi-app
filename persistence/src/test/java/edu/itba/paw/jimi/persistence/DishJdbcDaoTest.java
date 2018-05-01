@@ -21,6 +21,7 @@ import java.util.Set;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertNotEquals;
 import static org.postgresql.shaded.com.ongres.scram.common.ScramAttributes.USERNAME;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -111,5 +112,22 @@ public class DishJdbcDaoTest {
         assertEquals(dishes.size(), 0);
     }
 
-    //TODO: Cuando esté hecho 'update', testear (y también hacer test de services)
+
+    @Test
+    public void testUpdate() {
+
+        final Dish dish = dishDao.create(NAME, PRICE, 1);
+        dish.setName(NAME + " Virgen");
+        dishDao.update(dish);
+
+
+        final Dish dish2 = dishDao.findById(dish.getId());
+        assertEquals(dish.getId(), dish2.getId());
+        assertEquals(dish.getStock(), dish2.getStock());
+        assertEquals(dish.getPrice(), dish2.getPrice());
+
+        assertEquals(dish.getName(), dish2.getName());
+
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
+    }
 }
