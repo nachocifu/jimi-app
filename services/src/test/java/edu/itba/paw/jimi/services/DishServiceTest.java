@@ -152,4 +152,6 @@ public class DishServiceTest{
 
         assertNull(dbDishes);
     }
+
+    //TODO: Otro test que dishDao.findAll() devuelva mas de un dish 2 veces y que el service tiene que saber quitar los repetidos.
 }

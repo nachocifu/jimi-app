@@ -15,8 +15,12 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
 
+import java.util.List;
+import java.util.Set;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static org.postgresql.shaded.com.ongres.scram.common.ScramAttributes.USERNAME;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -75,7 +79,37 @@ public class DishJdbcDaoTest {
         assertEquals(PRICE, dbDish.getPrice());
     }
 
-    //TODO: findall tests. que no devuelva repetidos y que cuando no hay que devuelva null, etc. Parecido a dishServiceTest
+    @Test
+    public void testFindAll() {
+        final Dish dish1 = dishDao.create(NAME + " Colorada", PRICE * 2, 3);
+        final Dish dish2 = dishDao.create(NAME + " Virgen", PRICE, 4);
+        final Dish dish3 = dishDao.create(NAME + " Organica", PRICE * 0.5f, 1);
+
+        List<Dish> dishes = (List<Dish>) dishDao.findAll();
+        assertEquals(3, dishes.size());
+
+        assertEquals(dish1.getName(), NAME + " Colorada");
+        assertEquals(dish2.getName(), NAME + " Virgen");
+        assertEquals(dish3.getName(), NAME + " Organica");
+
+        assertEquals(dish1.getPrice(), PRICE * 2);
+        assertEquals(dish2.getPrice(), PRICE);
+        assertEquals(dish3.getPrice(), PRICE * 0.5f);
+
+        assertEquals(dish1.getStock(), 3);
+        assertEquals(dish2.getStock(), 4);
+        assertEquals(dish3.getStock(), 1);
+
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
+    }
+
+
+    @Test
+    public void testFindAllNull() {
+        List<Dish> dishes = (List<Dish>) dishDao.findAll();
+        assertNotNull(dishes);
+        assertEquals(dishes.size(), 0);
+    }
 
     //TODO: Cuando esté hecho 'update', testear (y también hacer test de services)
 }
