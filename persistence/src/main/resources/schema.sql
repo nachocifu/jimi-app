@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS "tables"
 
 CREATE TABLE IF NOT EXISTS "orders"
 (
-  orderid INTEGER PRIMARY KEY NOT NULL,
+  orderid SERIAL PRIMARY KEY NOT NULL,
   name   varchar(100)
 );
 
