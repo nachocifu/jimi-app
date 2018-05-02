@@ -1,19 +1,29 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: nacho
-  Date: 4/25/18
-  Time: 4:27 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <html>
 <head>
-    <title>List Tables</title>
+    <title>Tables</title>
 </head>
 <body>
-Hola!
-Existen ${tables.size()} mesas en sistema.
-Te los mostraria pero ni idea como iterar
-<h1>¯\_(ツ)_/¯</h1>
+<table border="1">
+    <tr>
+        <td>Name</td>
+        <td>Diners</td>
+        <td>Status</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <c:forEach items="${tables}" var="table">
+        <tr>
+            <td><c:out value="${table.getName()}"/></td>
+            <td><c:out value="${table.getDiners()}"/></td>
+            <td><c:out value="${table.getStatus()}"/></td>
+        </tr>
+    </c:forEach>
+</table>
+
+<form action="/tables/register">
+    <input type="submit" value="Add table!" />
+</form>
+
 </body>
 </html>
