@@ -16,6 +16,8 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
 
+import java.util.Iterator;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
@@ -38,6 +40,14 @@ public class OrderJdbcDaoTest {
     private static final String DISH_NAME = "Cambuchá";
     private static final Float DISH_PRICE = 5.25F;
     private static final int DISH_STOCK = 5;
+
+    private static final String DISH_NAME2 = "Hamburguesa";
+    private static final Float DISH_PRICE2 = 92.6F;
+    private static final int DISH_STOCK2 = 19;
+
+    private static final String DISH_NAME3 = "Milanesa";
+    private static final Float DISH_PRICE3 = 0.6F;
+    private static final int DISH_STOCK3 = 1;
 
 
     @Before
@@ -70,7 +80,7 @@ public class OrderJdbcDaoTest {
     }
 
     @Test
-    public void testFindById() {
+    public void testFindByIdOneDish() {
         final Order order = orderDao.create();
         final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
         order.addDish(dish);
@@ -91,6 +101,99 @@ public class OrderJdbcDaoTest {
         assertEquals(dish.getPrice(), dbDish.getPrice());
         assertEquals(dish.getStock(), dbDish.getStock());
         assertEquals(dish.getId(), dbDish.getId());
+
+        cleanDB();
+    }
+
+    @Test
+    public void testFindByIdOneDishThrice() {
+        final Order order = orderDao.create();
+        final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+        order.addDish(dish);
+        order.addDish(dish);
+        order.addDish(dish);
+
+        orderDao.update(order);
+
+        Order dbOrder = orderDao.findById(order.getId());
+        assertNotNull(dbOrder);
+
+        assertNotNull(dbOrder.getDishes().get(dish));
+
+
+        int amount = dbOrder.getDishes().get(dish);
+        assertEquals(3, amount);
+
+        Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
+        assertEquals(dish.getName(), dbDish.getName());
+        assertEquals(dish.getPrice(), dbDish.getPrice());
+        assertEquals(dish.getStock(), dbDish.getStock());
+        assertEquals(dish.getId(), dbDish.getId());
+
+        cleanDB();
+    }
+
+    @Test
+    public void testFindByIdSeveralDishes() {
+        final Order order = orderDao.create();
+
+        final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+        order.addDish(dish);
+        order.addDish(dish);
+        order.addDish(dish);
+
+        final Dish dish2 = dishDao.create(DISH_NAME2, DISH_PRICE2, DISH_STOCK2);
+        order.addDish(dish2);
+        order.addDish(dish2);
+        order.addDish(dish2);
+        order.addDish(dish2);
+        order.addDish(dish2);
+
+        final Dish dish3 = dishDao.create(DISH_NAME3, DISH_PRICE3, DISH_STOCK3);
+        order.addDish(dish3);
+
+
+        orderDao.update(order);
+
+        Order dbOrder = orderDao.findById(order.getId());
+        assertNotNull(dbOrder);
+
+        assertNotNull(dbOrder.getDishes().get(dish));
+        assertNotNull(dbOrder.getDishes().get(dish2));
+        assertNotNull(dbOrder.getDishes().get(dish3));
+
+
+        int amount = dbOrder.getDishes().get(dish);
+        assertEquals(3, amount);
+
+        int amount2 = dbOrder.getDishes().get(dish2);
+        assertEquals(5, amount2);
+
+        int amount3 = dbOrder.getDishes().get(dish3);
+        assertEquals(1, amount3);
+
+
+        for (Dish dbDish : dbOrder.getDishes().keySet()) {
+            if (dbDish.getId() == dish.getId()) {
+                assertEquals(dish.getName(), dbDish.getName());
+                assertEquals(dish.getPrice(), dbDish.getPrice());
+                assertEquals(dish.getStock(), dbDish.getStock());
+                assertEquals(dish.getId(), dbDish.getId());
+            } else if (dbDish.getId() == dish2.getId()) {
+                assertEquals(dish2.getName(), dbDish.getName());
+                assertEquals(dish2.getPrice(), dbDish.getPrice());
+                assertEquals(dish2.getStock(), dbDish.getStock());
+                assertEquals(dish2.getId(), dbDish.getId());
+            } else if (dbDish.getId() == dish3.getId()) {
+                assertEquals(dish3.getName(), dbDish.getName());
+                assertEquals(dish3.getPrice(), dbDish.getPrice());
+                assertEquals(dish3.getStock(), dbDish.getStock());
+                assertEquals(dish3.getId(), dbDish.getId());
+            } else {
+                assertEquals(0, 1);
+            }
+
+        }
 
         cleanDB();
     }

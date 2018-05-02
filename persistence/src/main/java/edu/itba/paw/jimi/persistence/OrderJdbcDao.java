@@ -43,12 +43,12 @@ public class OrderJdbcDao implements OrderDao {
 
 				// Add the stuff.
 				if (rs.getString("name") != null && !rs.getString("name").equals("")) // It is a left outer join, so empty orders can get retrieved but we need to check.
-					order.addDish(new Dish(
+					order.setDish(new Dish(
 							rs.getString("name"),
 							rs.getFloat("price"),
 							rs.getInt("dishid"),
 							rs.getInt("stock"))
-					);
+					, rs.getInt("quantity"));
 
 
 				// The id is the same, so we can overwrite if already in the map.
@@ -71,7 +71,7 @@ public class OrderJdbcDao implements OrderDao {
 	
 	
 	public Order findById(long id) {
-		final Collection<Order> list = jdbcTemplate.query("SELECT * FROM (SELECT orders.orderid, dishid, quantity FROM orders LEFT OUTER JOIN orders_items ON (orders.orderid = orders_items.orderid)) as o NATURAL JOIN dishes WHERE o.orderid = ?", ROW_MAPPER, id);
+		final Collection<Order> list = jdbcTemplate.query("SELECT * FROM (SELECT orders.orderid, dishid, quantity FROM orders LEFT OUTER JOIN orders_items ON (orders.orderid = orders_items.orderid)) as o LEFT OUTER JOIN dishes ON (o.dishid = dishes.dishid) WHERE o.orderid = ?", ROW_MAPPER, id);
 		if (list.isEmpty()) {
 			return null;
 		}

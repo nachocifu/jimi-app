@@ -31,6 +31,19 @@ public class Order {
         }
     }
 
+    /**
+     * This method sets the dish and amount overwriting the amount.
+     * @param dish the dish to add.
+     * @param amount the amount the dish is set to.
+     * @return the resulting quantity of this dish in this order.
+     */
+    public Integer setDish(Dish dish, int amount){
+        return this.dishes.put(dish, amount);
+    }
+
+
+    //TODO: Remove dish.
+
     @Override
     public String toString() {
         StringBuilder toPrint = new StringBuilder();
