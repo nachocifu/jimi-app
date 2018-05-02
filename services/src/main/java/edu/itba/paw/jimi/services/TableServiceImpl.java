@@ -32,12 +32,22 @@ public class TableServiceImpl implements TableService {
     public Collection<Table> findAll() {
         return tableDao.findAll();
     }
-    //TODO: Diners no iria en Order? Porque table es algo fijo, y order es lo que viene y va...
+
     public int setDiners(Table table, int diners) {
-        if (diners <= 0){
+        Table t = tableDao.findById(table.getId());
+        if (diners >= 0){
+            t.setDiners(diners);
             table.setDiners(diners);
-            tableDao.update(table);
+            tableDao.update(t);
+            return diners;
         }
         return 0;
+    }
+
+    public void changeStatus(Table table, TableStatus status) {
+        Table t = tableDao.findById(table.getId());
+        table.setStatus(status);
+        t.setStatus(status);
+        tableDao.update(t);
     }
 }

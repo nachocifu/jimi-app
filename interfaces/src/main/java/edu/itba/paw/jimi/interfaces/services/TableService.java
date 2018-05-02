@@ -1,7 +1,5 @@
 package edu.itba.paw.jimi.interfaces.services;
 
-import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
 
@@ -11,6 +9,11 @@ public interface TableService {
 	
 	Table findById(long id);
 
+	/**
+	 * Creates a new table with a order.
+	 * @param name
+	 * @return
+	 */
 	Table create(String name);
 	
 	/**
@@ -20,5 +23,27 @@ public interface TableService {
 	 */
 	Collection<Table> findAll();
 
+	/**
+	 * Sets the amount of dinners.
+	 * @param table The table to modify.
+	 * @param diners The positive amount of diners.
+	 * @return The amount of diners saved.
+	 */
 	int setDiners(Table table, int diners);
+
+
+	/**
+	 * Sets the status of the table.
+	 * @param table The table to modify.
+	 * @param status The new status of the table.
+	 */
+	void changeStatus(Table table, TableStatus status);
+
+	//TODO: Implementar.
+//	/**
+//	 * Closes the order and changes the status.
+//	 * A new order object is created with no dishes.
+//	 * @param table
+//	 */
+//	Order closeOrder(Table table);
 }
