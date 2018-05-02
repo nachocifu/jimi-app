@@ -90,7 +90,7 @@ public class OrderJdbcDao implements OrderDao {
 		return new Order(orderId.longValue());
 	}
 	
-	public Boolean update(Order order) {
+	public void update(Order order) {
 
 		// If the map shows 0 in amount for a dish then we need to remove it from the DB.
 		for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
@@ -100,7 +100,6 @@ public class OrderJdbcDao implements OrderDao {
 				orderItemJdbcDao.delete(order, entry.getKey());
 		}
 
-		return true;
 	}
 	
 }

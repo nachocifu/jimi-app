@@ -20,8 +20,7 @@ public interface OrderDao {
     /**
      * Updates the order.
      * @param order The order to be updated.
-     * @return Boolean for success or failure.
      */
-    Boolean update(Order order);
+    void update(Order order);
     
 }
