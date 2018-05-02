@@ -3,11 +3,11 @@ package edu.itba.paw.jimi.persistence;
 import edu.itba.paw.jimi.interfaces.DishDao;
 import edu.itba.paw.jimi.interfaces.OrderDao;
 import edu.itba.paw.jimi.interfaces.TableDao;
+import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +19,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
+import java.util.Collection;
+import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -41,6 +43,7 @@ public class TableJdbcDaoTest {
     private static final String DISH_NAME = "Cambuchá";
     private static final Float DISH_PRICE = 5.25F;
     private static final int DISH_STOCK = 5;
+    private static final int NUMBER_OF_TABLES = 10;
 
     @Autowired
     private DataSource ds;
@@ -179,6 +182,38 @@ public class TableJdbcDaoTest {
         assertEquals(dbTableUpdated.getDiners(), 5);
 
         cleanDB();
+    }
+
+    @Test
+    public void testFindAll() {
+
+        for (int i = 0; i < NUMBER_OF_TABLES; i++) {
+            final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+            final Order order = orderDao.create();
+            order.setDish(dish, 1);
+            orderDao.update(order);
+            tableDao.create(TABLE_NAME, TableStatus.Free, order, 1);
+        }
+
+        assertEquals(NUMBER_OF_TABLES, JdbcTestUtils.countRowsInTable(jdbcTemplate, TABLE_TABLE_NAME));
+        Collection<Table> tables = tableDao.findAll();
+
+        for (Table table : tables) {
+            assertEquals(TABLE_NAME, table.getName());
+            assertEquals(TableStatus.Free.getId(), table.getStatus().getId());
+            assertEquals(1, table.getDiners());
+            assertEquals(DISH_NAME, table.getOrder().getDishes().keySet().iterator().next().getName());
+            assertEquals(DISH_PRICE, table.getOrder().getDishes().keySet().iterator().next().getPrice());
+            assertEquals(DISH_STOCK, table.getOrder().getDishes().keySet().iterator().next().getStock());
+        }
+        cleanDB();
+    }
+
+    @Test
+    public void testFindAllNoTables() {
+        Collection<Table> tables = tableDao.findAll();
+        assertNotNull(tables);
+        assertEquals(0, tables.size());
     }
 
 }
