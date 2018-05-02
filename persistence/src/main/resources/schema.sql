@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS "tables"
 
 CREATE TABLE IF NOT EXISTS "orders"
 (
-  orderid INTEGER PRIMARY KEY NOT NULL
+  orderid INTEGER PRIMARY KEY NOT NULL,
+  name   varchar(100)
 );
 
 CREATE TABLE IF NOT EXISTS orders_items

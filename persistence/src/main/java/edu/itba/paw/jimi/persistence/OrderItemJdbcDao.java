@@ -16,6 +16,11 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * See OrderItemDao interface for context and uses of this implementation.
+ */
+
 @Repository
 public class OrderItemJdbcDao implements OrderItemDao {
 	
@@ -41,24 +46,19 @@ public class OrderItemJdbcDao implements OrderItemDao {
 	public OrderItemJdbcDao(final DataSource ds) {
 		jdbcTemplate = new JdbcTemplate(ds);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-				.withTableName("order_items")
-				.usingGeneratedKeyColumns("orderid", "dishid");
+				.withTableName("orders_items");
 	}
 	
 	public void createOrUpdate(Order order, Dish dish, int quantity) {
-		
-		if (orderItemExists(order, dish)) {
+
+		if (orderItemExists(order, dish))
 			update(order, dish, quantity);
-		} else {
+		 else
 			create(order, dish, quantity);
-		}
 	}
 	
 	private Boolean orderItemExists(Order order, Dish dish) {
-		final Integer count = jdbcTemplate.query("SELECT * FROM orders_items WHERE orderid = ? AND dishid = ?",
-				SCALAR_MAPPER,
-				order.getId(),
-				dish.getId());
+		final Integer count = jdbcTemplate.query("SELECT * FROM orders_items WHERE orderid = ? AND dishid = ?", SCALAR_MAPPER, order.getId(), dish.getId());
 		
 		return count > 0;
 	}

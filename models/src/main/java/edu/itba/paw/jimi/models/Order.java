@@ -14,6 +14,7 @@ public class Order {
 	
 	public Order(long id) {
 		this.id = id;
+        this.dishes = new HashMap<Dish, Integer>();
 	}
 	
 	/**
@@ -23,7 +24,7 @@ public class Order {
      */
     public Integer addDish(Dish dish){
         if (!this.dishes.containsKey(dish))
-            return this.dishes.put(dish, 0);
+            return this.dishes.put(dish, 1);
         else{
             Integer previousCount = this.dishes.get(dish);
             return this.dishes.put(dish, previousCount + 1);
@@ -46,4 +47,19 @@ public class Order {
 	public Map<Dish, Integer> getDishes() {
 		return dishes;
 	}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        return id == order.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }
