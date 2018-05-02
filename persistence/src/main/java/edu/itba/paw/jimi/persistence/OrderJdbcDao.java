@@ -88,7 +88,10 @@ public class OrderJdbcDao implements OrderDao {
 	public Boolean update(Order order) {
 		
 		for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
-			orderItemJdbcDao.createOrUpdate(order, entry.getKey(), entry.getValue());
+			if (entry.getValue() != 0)
+				orderItemJdbcDao.createOrUpdate(order, entry.getKey(), entry.getValue());
+			else
+				orderItemJdbcDao.delete(order, entry.getKey());
 		}
 
 		return true;

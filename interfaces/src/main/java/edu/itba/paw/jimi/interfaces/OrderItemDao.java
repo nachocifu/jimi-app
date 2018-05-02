@@ -17,4 +17,6 @@ public interface OrderItemDao {
 	 * @param quantity The quantity to add/update.
 	 */
 	void createOrUpdate(Order order, Dish dish, int quantity);
+
+	void delete(Order order, Dish dish);
 }

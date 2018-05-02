@@ -16,10 +16,9 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
 
-import java.util.Iterator;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -155,6 +154,7 @@ public class OrderJdbcDaoTest {
 
         orderDao.update(order);
 
+
         Order dbOrder = orderDao.findById(order.getId());
         assertNotNull(dbOrder);
 
@@ -194,6 +194,89 @@ public class OrderJdbcDaoTest {
             }
 
         }
+
+        cleanDB();
+    }
+    @Test
+    public void testFindByIdAddAndRemove() {
+        final Order order = orderDao.create();
+        final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+        order.addDish(dish);
+
+
+        orderDao.update(order);
+
+        Order dbOrder = orderDao.findById(order.getId());
+        assertNotNull(dbOrder);
+
+        assertNotNull(dbOrder.getDishes().get(dish));
+
+
+        int amount = dbOrder.getDishes().get(dish);
+        assertEquals(1, amount);
+
+        Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
+        assertEquals(dish.getName(), dbDish.getName());
+        assertEquals(dish.getPrice(), dbDish.getPrice());
+        assertEquals(dish.getStock(), dbDish.getStock());
+        assertEquals(dish.getId(), dbDish.getId());
+
+        order.removeOneDish(dish);
+
+        orderDao.update(order);
+
+
+        dbOrder = orderDao.findById(order.getId());
+        assertNotNull(dbOrder);
+
+        assertNull(dbOrder.getDishes().get(dish));
+
+        cleanDB();
+    }
+    @Test
+    public void testFindByIdAddAndRemoveButNoDelete() {
+        final Order order = orderDao.create();
+        final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+        order.addDish(dish);
+        order.addDish(dish);
+
+
+        orderDao.update(order);
+
+        Order dbOrder = orderDao.findById(order.getId());
+        assertNotNull(dbOrder);
+
+        assertNotNull(dbOrder.getDishes().get(dish));
+
+
+        int amount = dbOrder.getDishes().get(dish);
+        assertEquals(2, amount);
+
+        Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
+        assertEquals(dish.getName(), dbDish.getName());
+        assertEquals(dish.getPrice(), dbDish.getPrice());
+        assertEquals(dish.getStock(), dbDish.getStock());
+        assertEquals(dish.getId(), dbDish.getId());
+
+        order.removeOneDish(dish);
+
+        orderDao.update(order);
+
+
+        dbOrder = orderDao.findById(order.getId());
+        assertNotNull(dbOrder);
+
+        assertNotNull(dbOrder.getDishes().get(dish));
+
+
+        amount = dbOrder.getDishes().get(dish);
+        assertEquals(1, amount);
+
+        dbDish = dbOrder.getDishes().keySet().iterator().next();
+        assertEquals(dish.getName(), dbDish.getName());
+        assertEquals(dish.getPrice(), dbDish.getPrice());
+        assertEquals(dish.getStock(), dbDish.getStock());
+        assertEquals(dish.getId(), dbDish.getId());
 
         cleanDB();
     }

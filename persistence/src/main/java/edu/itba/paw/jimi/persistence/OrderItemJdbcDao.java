@@ -56,7 +56,11 @@ public class OrderItemJdbcDao implements OrderItemDao {
 		 else
 			create(order, dish, quantity);
 	}
-	
+
+	public void delete(Order order, Dish dish) {
+		jdbcTemplate.update("DELETE FROM orders_items WHERE orderid = ? AND dishid = ?", order.getId(), dish.getId());
+	}
+
 	private Boolean orderItemExists(Order order, Dish dish) {
 		final Integer count = jdbcTemplate.query("SELECT * FROM orders_items WHERE orderid = ? AND dishid = ?", SCALAR_MAPPER, order.getId(), dish.getId());
 		
