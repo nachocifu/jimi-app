@@ -1,6 +1,6 @@
 package edu.itba.paw.jimi.persistence;
 
-import edu.itba.paw.jimi.interfaces.TableDao;
+import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;

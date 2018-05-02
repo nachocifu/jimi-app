@@ -1,7 +1,7 @@
 package edu.itba.paw.jimi.services;
 
-import edu.itba.paw.jimi.interfaces.DishDao;
-import edu.itba.paw.jimi.interfaces.UserDao;
+import edu.itba.paw.jimi.interfaces.daos.DishDao;
+import edu.itba.paw.jimi.interfaces.daos.UserDao;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.*;
 

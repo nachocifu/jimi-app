@@ -1,7 +1,7 @@
 package edu.itba.paw.jimi.webapp.controller;
 
 import edu.itba.paw.jimi.form.DishForm;
-import edu.itba.paw.jimi.interfaces.DishService;
+import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

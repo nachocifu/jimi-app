@@ -1,6 +1,6 @@
 package edu.itba.paw.jimi.persistence;
 
-import edu.itba.paw.jimi.interfaces.UserDao;
+import edu.itba.paw.jimi.interfaces.daos.UserDao;
 import edu.itba.paw.jimi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

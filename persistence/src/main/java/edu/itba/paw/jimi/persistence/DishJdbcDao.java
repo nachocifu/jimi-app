@@ -1,8 +1,7 @@
 package edu.itba.paw.jimi.persistence;
 
-import edu.itba.paw.jimi.interfaces.DishDao;
+import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

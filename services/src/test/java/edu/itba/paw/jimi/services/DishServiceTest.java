@@ -1,8 +1,8 @@
 package edu.itba.paw.jimi.services;
 
 
-import edu.itba.paw.jimi.interfaces.DishDao;
-import edu.itba.paw.jimi.interfaces.DishService;
+import edu.itba.paw.jimi.interfaces.daos.DishDao;
+import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
 import org.junit.Assert;
 import org.junit.Before;
@@ -153,5 +153,25 @@ public class DishServiceTest{
         assertNull(dbDishes);
     }
 
-    //TODO: Otro test que dishDao.findAll() devuelva mas de un dish 2 veces y que el service tiene que saber quitar los repetidos.
+    @Test
+    public void findAllTestRepeated() {
+        Collection<Dish> dishes = new LinkedList<Dish>();
+        dishes.add(new Dish(NAME, PRICE, 0, 10));
+        dishes.add(new Dish(NAME, PRICE, 0, 10)); // Duplicated, should return 1 less.
+        dishes.add(new Dish(NAME, PRICE, 2, 10));
+        dishes.add(new Dish(NAME, PRICE, 3, 10));
+        Mockito.when(dishDao.findAll()).thenReturn(dishes);
+
+        Collection<Dish> dbDishes = dishService.findAll();
+
+        assertNotNull(dbDishes);
+
+        // Pass all dishes to hashset and compare sizes to check if find all contains duplicates.
+        Set<Dish> nonRepetingDishes = new HashSet<Dish>();
+        nonRepetingDishes.addAll(dishes);
+
+        assertEquals(dbDishes.size() - 1, nonRepetingDishes.size());
+    }
+
+
 }

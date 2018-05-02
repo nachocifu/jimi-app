@@ -1,6 +1,6 @@
 package edu.itba.paw.jimi.persistence;
 
-import edu.itba.paw.jimi.interfaces.OrderItemDao;
+import edu.itba.paw.jimi.interfaces.daos.OrderItemDao;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import org.springframework.beans.factory.annotation.Autowired;

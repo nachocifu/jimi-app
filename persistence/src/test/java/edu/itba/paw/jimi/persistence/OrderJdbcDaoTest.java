@@ -1,7 +1,7 @@
 package edu.itba.paw.jimi.persistence;
 
-import edu.itba.paw.jimi.interfaces.DishDao;
-import edu.itba.paw.jimi.interfaces.OrderDao;
+import edu.itba.paw.jimi.interfaces.daos.DishDao;
+import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import org.junit.Before;

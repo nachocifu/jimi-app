@@ -1,4 +1,4 @@
-package edu.itba.paw.jimi.interfaces;
+package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Dish;
 

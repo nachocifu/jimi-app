@@ -1,4 +1,4 @@
-package edu.itba.paw.jimi.interfaces;
+package edu.itba.paw.jimi.interfaces.daos;
 
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;

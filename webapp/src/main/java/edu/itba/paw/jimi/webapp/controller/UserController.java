@@ -1,7 +1,7 @@
 package edu.itba.paw.jimi.webapp.controller;
 
 import edu.itba.paw.jimi.form.UserForm;
-import edu.itba.paw.jimi.interfaces.UserService;
+import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
