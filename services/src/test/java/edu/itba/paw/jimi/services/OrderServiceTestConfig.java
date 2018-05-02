@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
+import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,5 +16,10 @@ public class OrderServiceTestConfig {
     @Primary
     public OrderDao orderDao() {
         return Mockito.mock(OrderDao.class);
+    }
+    @Bean
+    @Primary
+    public TableDao tableDao() {
+        return Mockito.mock(TableDao.class);
     }
 }
