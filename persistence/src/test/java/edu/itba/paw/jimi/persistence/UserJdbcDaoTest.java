@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.persistence;
 
 
 import edu.itba.paw.jimi.models.User;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +11,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
-import static junit.framework.Assert.*;
+
 import javax.sql.DataSource;
 import java.util.Collection;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,6 +34,8 @@ public class UserJdbcDaoTest {
     private UserJdbcDao userDao;
 
     private JdbcTemplate jdbcTemplate;
+
+    //TODO: Testear mejor!
 
     @Before
     public void setUp() {

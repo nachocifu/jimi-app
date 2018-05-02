@@ -23,6 +23,8 @@ public class UserJdbcDao implements UserDao {
 
     private SimpleJdbcInsert jdbcInsert;
 
+    //TODO: Documentar!
+
     private final static RowMapper<User> ROW_MAPPER = new RowMapper<User>() {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new User(rs.getString("username"), rs.getInt("userid"), rs.getString("password"));

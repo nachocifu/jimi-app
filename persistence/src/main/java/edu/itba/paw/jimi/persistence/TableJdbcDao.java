@@ -37,14 +37,17 @@ public class TableJdbcDao implements TableDao {
 			Map<Long, Table> tables = new HashMap<Long, Table>();
 
 			while (rs.next()) {
+				// Get the order from the orderDao.
 				Order order = orderJdbcDao.findById(rs.getLong("orderid"));
 
+				// Create the table with the correct values.
 				Table table = new Table(rs.getString("name"),
 										rs.getLong("tableid"),
 										TableStatus.getTableStatus(rs.getInt("statusid")),
 										order,
 										rs.getInt("diners"));
 
+				// Save it.
 				tables.put(table.getId(), table);
 			}
 
@@ -66,6 +69,7 @@ public class TableJdbcDao implements TableDao {
 
 	public Table create(String name, TableStatus ts, Order order, int diners) throws TableWithNullOrderException{
 
+		// In case the order is null or empty, throw exception.
 		if (order == null || orderJdbcDao.findById(order.getId()) == null)
 			throw new TableWithNullOrderException();
 

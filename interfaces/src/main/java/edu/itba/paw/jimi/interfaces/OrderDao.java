@@ -3,7 +3,12 @@ package edu.itba.paw.jimi.interfaces;
 import edu.itba.paw.jimi.models.Order;
 
 public interface OrderDao {
-    
+
+    /**
+     * Returns the Order with the passed id.
+     * @param id the id to look for.
+     * @return The dish with the passed id.
+     */
     Order findById(long id);
     
     /**
@@ -15,7 +20,7 @@ public interface OrderDao {
     /**
      * Updates the order.
      * @param order The order to be updated.
-     * @return Booleand for success or failure.
+     * @return Boolean for success or failure.
      */
     Boolean update(Order order);
     

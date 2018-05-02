@@ -8,7 +8,13 @@ import edu.itba.paw.jimi.models.TableStatus;
 import java.util.Collection;
 
 public interface TableDao {
-	
+
+
+	/**
+	 * Returns a table with the passed id.
+	 * @param id the id to look for.
+	 * @return the table with said id.
+	 */
 	Table findById(long id);
 	
 	/**
