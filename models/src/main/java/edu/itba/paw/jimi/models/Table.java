@@ -18,13 +18,15 @@ public class Table {
 	}
 	
 	/**
-	 * See implementation of Order.addDish(Dish dish);
+	 * See implementation of Order.setDish(Dish dish, int n);
 	 *
-	 * @param dish The dish to be added.
+	 * @param dish The dish to be set.
 	 * @return The resulting quantity of this dish in this order.
 	 */
-	public Integer addDish(Dish dish) {
-		return order.addDish(dish);
+
+	//TODO: Me parece que hay que sacar esto. Se puede hacer table.getOrder.setDish();
+	public Integer setDish(Dish dish, int n) {
+		return order.setDish(dish, n);
 	}
 	
 	@Override
@@ -36,7 +38,23 @@ public class Table {
 				", order=" + order +
 				'}';
 	}
-	
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setDiners(int diners) {
+		this.diners = diners;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setStatus(TableStatus status) {
+		this.status = status;
+	}
+
 	public int getDiners() {
 		return diners;
 	}

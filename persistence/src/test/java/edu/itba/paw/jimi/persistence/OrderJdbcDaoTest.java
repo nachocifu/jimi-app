@@ -82,7 +82,7 @@ public class OrderJdbcDaoTest {
     public void testFindByIdOneDish() {
         final Order order = orderDao.create();
         final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-        order.addDish(dish);
+        order.setDish(dish, 1);
 
         orderDao.update(order);
 
@@ -108,9 +108,7 @@ public class OrderJdbcDaoTest {
     public void testFindByIdOneDishThrice() {
         final Order order = orderDao.create();
         final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-        order.addDish(dish);
-        order.addDish(dish);
-        order.addDish(dish);
+        order.setDish(dish, 3);
 
         orderDao.update(order);
 
@@ -137,19 +135,13 @@ public class OrderJdbcDaoTest {
         final Order order = orderDao.create();
 
         final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-        order.addDish(dish);
-        order.addDish(dish);
-        order.addDish(dish);
+        order.setDish(dish, 3);
 
         final Dish dish2 = dishDao.create(DISH_NAME2, DISH_PRICE2, DISH_STOCK2);
-        order.addDish(dish2);
-        order.addDish(dish2);
-        order.addDish(dish2);
-        order.addDish(dish2);
-        order.addDish(dish2);
+        order.setDish(dish2, 5);
 
         final Dish dish3 = dishDao.create(DISH_NAME3, DISH_PRICE3, DISH_STOCK3);
-        order.addDish(dish3);
+        order.setDish(dish3, 1);
 
 
         orderDao.update(order);
@@ -201,7 +193,7 @@ public class OrderJdbcDaoTest {
     public void testFindByIdAddAndRemove() {
         final Order order = orderDao.create();
         final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-        order.addDish(dish);
+        order.setDish(dish, 1);
 
 
         orderDao.update(order);
@@ -221,7 +213,7 @@ public class OrderJdbcDaoTest {
         assertEquals(dish.getStock(), dbDish.getStock());
         assertEquals(dish.getId(), dbDish.getId());
 
-        order.removeOneDish(dish);
+        order.setDish(dish, 0);
 
         orderDao.update(order);
 
@@ -237,8 +229,7 @@ public class OrderJdbcDaoTest {
     public void testFindByIdAddAndRemoveButNoDelete() {
         final Order order = orderDao.create();
         final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-        order.addDish(dish);
-        order.addDish(dish);
+        order.setDish(dish, 2);
 
 
         orderDao.update(order);
@@ -258,7 +249,7 @@ public class OrderJdbcDaoTest {
         assertEquals(dish.getStock(), dbDish.getStock());
         assertEquals(dish.getId(), dbDish.getId());
 
-        order.removeOneDish(dish);
+        order.setDish(dish, 1);
 
         orderDao.update(order);
 

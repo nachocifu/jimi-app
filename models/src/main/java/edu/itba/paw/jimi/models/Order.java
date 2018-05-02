@@ -16,20 +16,6 @@ public class Order {
 		this.id = id;
         this.dishes = new HashMap<Dish, Integer>();
 	}
-	
-	/**
-     * This method adds a a dish to the order and returns the amount of quantity of this dish on this order.
-     * @param dish the dish to add.
-     * @return the resulting quantity of this dish in this order.
-     */
-    public Integer addDish(Dish dish){
-        if (!this.dishes.containsKey(dish))
-            return this.dishes.put(dish, 1);
-        else{
-            Integer previousCount = this.dishes.get(dish);
-            return this.dishes.put(dish, previousCount + 1);
-        }
-    }
 
     /**
      * This method sets the dish and amount overwriting the amount.
@@ -41,26 +27,6 @@ public class Order {
         return this.dishes.put(dish, amount);
     }
 
-
-    /**
-     * This method removes 1 of the dish form the order.
-     * If the dish was at 1 then the dish it is not removed but marked as 0.
-     * If the dish was at n then it is kept and amount decreased by 1.
-     * @param dish the dish to modify.
-     * @return the remaining amount.
-     */
-    public Integer removeOneDish(Dish dish){
-        if (!this.dishes.containsKey(dish))
-            return 0;
-        else{
-            Integer previousCount = this.dishes.get(dish);
-            if (previousCount == 1) {
-                this.dishes.put(dish, 0);
-                return 0;
-            }else
-                return this.dishes.put(dish, previousCount - 1);
-        }
-    }
 
     @Override
     public String toString() {

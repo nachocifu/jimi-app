@@ -17,6 +17,9 @@ import java.util.*;
 
 @Repository
 public class OrderJdbcDao implements OrderDao {
+
+	private static final String ORDER_TABLE_NAME = "orders";
+	private static final String ORDER_ITEM_TABLE_NAME = "orders_items";
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -65,13 +68,14 @@ public class OrderJdbcDao implements OrderDao {
 		orderItemJdbcDao = new OrderItemJdbcDao(ds);
 		jdbcTemplate = new JdbcTemplate(ds);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-				.withTableName("orders")
+				.withTableName(ORDER_TABLE_NAME)
 				.usingGeneratedKeyColumns("orderid");
 	}
 	
 	
 	public Order findById(long id) {
-		final Collection<Order> list = jdbcTemplate.query("SELECT * FROM (SELECT orders.orderid, dishid, quantity FROM orders LEFT OUTER JOIN orders_items ON (orders.orderid = orders_items.orderid)) as o LEFT OUTER JOIN dishes ON (o.dishid = dishes.dishid) WHERE o.orderid = ?", ROW_MAPPER, id);
+		final Collection<Order> list = jdbcTemplate.query(
+				"SELECT * FROM (SELECT orders.orderid, dishid, quantity FROM orders LEFT OUTER JOIN orders_items ON (orders.orderid = orders_items.orderid)) as o LEFT OUTER JOIN dishes ON (o.dishid = dishes.dishid) WHERE o.orderid = ?", ROW_MAPPER, id);
 		if (list.isEmpty()) {
 			return null;
 		}
