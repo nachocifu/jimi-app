@@ -208,6 +208,8 @@ public class TableJdbcDaoTest {
         cleanDB();
     }
 
+    //TODO findall that removes duplicates
+
     @Test
     public void testFindAllNoTables() {
         Collection<Table> tables = tableDao.findAll();

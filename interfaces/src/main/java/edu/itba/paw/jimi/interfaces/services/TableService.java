@@ -1,29 +1,17 @@
 package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Dish;
+import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
+import edu.itba.paw.jimi.models.TableStatus;
 
 import java.util.Collection;
 
 public interface TableService {
 	
 	Table findById(long id);
-	
-	/**
-	 * Adds dish to specified table.
-	 * @param table The table to have the new dish.
-	 * @param dish The dish to be added.
-	 * @return Booleand if success or failure.
-	 */
-	Boolean addDish(Table table, Dish dish);
-	
-	/**
-	 * Removes dish to specified table.
-	 * @param table The table to have the dish removed.
-	 * @param dish The dish to be removed.
-	 * @return Booleand if success or failure.
-	 */
-	Boolean removeDish(Table table, Dish dish);
+
+	Table create(String name);
 	
 	/**
 	 * Returns all the tables.
@@ -31,4 +19,6 @@ public interface TableService {
 	 * @return all the tables.
 	 */
 	Collection<Table> findAll();
+
+	int setDiners(Table table, int diners);
 }
