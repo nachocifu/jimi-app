@@ -14,11 +14,11 @@
     </tr>
     <c:forEach items="${tables}" var="table">
         <tr>
-            <td><c:out value="${table.getName()}"/></td>
-            <td><c:out value="${table.getDiners()}"/></td>
-            <td><c:out value="${table.getStatus()}"/></td>
+            <td><c:out value="${table.name}"/></td>
+            <td><c:out value="${table.diners}"/></td>
+            <td><c:out value="${table.status}"/></td>
             <td>
-                <a href="/tables/${table.getId()}">=</a>
+                <a href="/tables/${table.id}">=</a>
             </td>
         </tr>
     </c:forEach>

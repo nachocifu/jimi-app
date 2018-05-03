@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Table ${table.name} </title>
@@ -33,6 +34,14 @@
 
     </h2>
 </c:if>
+
+<c:url value="/tables/${table.id}/set_diners" var="postPath"/>
+<form:form modelAttribute="tableSetDinersForm" action="${postPath}" method="post">
+    <form:label for="diners" path="diners">Number of diners</form:label>
+    <form:input type="number" id="diners" name="diners" value="${table.diners}" path="diners"/>
+    <form:errors path="diners" cssStyle="color: red;" element="p"/>
+    <input type="submit" value="Set"/>
+</form:form>
 
 <table border="1">
     <tr>

@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.webapp.controller;
 
 import edu.itba.paw.jimi.form.TableAddDishForm;
 import edu.itba.paw.jimi.form.TableForm;
+import edu.itba.paw.jimi.form.TableSetDinersForm;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
@@ -30,7 +31,6 @@ public class TableController {
     private DishService ds;
 
 
-
     @RequestMapping("")
     public ModelAndView list() {
         final ModelAndView mav = new ModelAndView("tables/list");
@@ -40,7 +40,7 @@ public class TableController {
     }
 
     @RequestMapping("/{id}")
-    public ModelAndView index(@PathVariable("id") Integer id) {
+    public ModelAndView index(@PathVariable("id") Integer id, @ModelAttribute("tableSetDinersForm") final TableSetDinersForm form) {
         final ModelAndView mav = new ModelAndView("tables/index");
         Table table = ts.findById(id);
         mav.addObject("table", table);
@@ -51,6 +51,7 @@ public class TableController {
     @RequestMapping(value = "/{tableId}/status", method = {RequestMethod.POST})
     public ModelAndView statusChange(@PathVariable("tableId") Integer id, @RequestParam(value = "status") final Integer statusId) {
 
+        //TODO: Cuando pasa de busy a free hay que llevar a una pantalla de cerrar cuenta y despues limpiar (los datos) de la mesa. Eso deberia ir adentro del servicio. Y el controler deberia elegir a que pagina ir dependiendo de la transision.
         ts.changeStatus(ts.findById(id), TableStatus.getTableStatus(statusId));
 
         return new ModelAndView("redirect:/tables/" + id);
@@ -119,6 +120,18 @@ public class TableController {
         Table table = ts.findById(id);
         Dish dish = ds.findById(dishid);
         os.removeAllDish(table.getOrder(), dish);
+
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
+
+
+    @RequestMapping(value = "/{tableId}/set_diners", method = {RequestMethod.POST})
+    public ModelAndView setDinersPost(@PathVariable("tableId") Integer id, @Valid @ModelAttribute("tableSetDinersForm") final TableSetDinersForm form, final BindingResult errors) {
+
+        if (errors.hasErrors()) { return index(id, form); }
+
+        Table table = ts.findById(id);
+        ts.setDiners(table, form.getDiners());
 
         return new ModelAndView("redirect:/tables/" + table.getId());
     }
