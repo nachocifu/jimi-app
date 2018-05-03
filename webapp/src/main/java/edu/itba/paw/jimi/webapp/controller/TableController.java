@@ -112,4 +112,14 @@ public class TableController {
 
         return new ModelAndView("redirect:/tables/" + table.getId());
     }
+
+    @RequestMapping(value = "/{tableId}/remove_all_dish", method = {RequestMethod.POST})
+    public ModelAndView removeAllDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
+
+        Table table = ts.findById(id);
+        Dish dish = ds.findById(dishid);
+        os.removeAllDish(table.getOrder(), dish);
+
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
 }

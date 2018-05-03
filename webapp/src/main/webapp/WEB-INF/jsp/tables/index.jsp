@@ -42,6 +42,7 @@
         <td>Dish total</td>
         <td></td>
         <td></td>
+        <td></td>
     </tr>
     <c:forEach items="${dishes}" var="dishEntry">
         <tr>
@@ -58,6 +59,12 @@
             <td>
                 <form action="/tables/${table.id}/remove_one_dish" method="post">
                     <input type="submit" value="-" />
+                    <input type="hidden" value="${dishEntry.key.id}" name="dishid">
+                </form>
+            </td>
+            <td>
+                <form action="/tables/${table.id}/remove_all_dish" method="post">
+                    <input type="submit" value="X" style="color: red;"/>
                     <input type="hidden" value="${dishEntry.key.id}" name="dishid">
                 </form>
             </td>

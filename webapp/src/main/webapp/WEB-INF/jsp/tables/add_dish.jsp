@@ -16,7 +16,7 @@
     <input type="submit" value="Add dish!"/>
 </form:form>
 
-<form action="/tables">
+<form action="/tables/${table.id}">
     <input type="submit" value="Cancel"/>
 </form>
 
