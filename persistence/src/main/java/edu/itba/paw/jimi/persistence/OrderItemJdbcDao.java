@@ -68,7 +68,7 @@ public class OrderItemJdbcDao implements OrderItemDao {
 	}
 	
 	private void update(Order order, Dish dish, Integer quantity) {
-		jdbcTemplate.update("UPDATE orders_items SET (quantity) = (?) WHERE orderid = ? AND dishid = ?", quantity, order.getId(), dish.getId());
+		jdbcTemplate.update("UPDATE orders_items SET quantity = ? WHERE orderid = ? AND dishid = ?", quantity, order.getId(), dish.getId());
 		
 	}
 	

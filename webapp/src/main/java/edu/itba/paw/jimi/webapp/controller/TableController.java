@@ -1,7 +1,11 @@
 package edu.itba.paw.jimi.webapp.controller;
 
+import edu.itba.paw.jimi.form.TableAddDishForm;
 import edu.itba.paw.jimi.form.TableForm;
+import edu.itba.paw.jimi.interfaces.services.DishService;
+import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
+import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,13 @@ public class TableController {
     @Autowired
     private TableService ts;
 
+    @Autowired
+    private OrderService os;
+
+    @Autowired
+    private DishService ds;
+
+
 
     @RequestMapping("")
     public ModelAndView list() {
@@ -31,7 +42,9 @@ public class TableController {
     @RequestMapping("/{id}")
     public ModelAndView index(@PathVariable("id") Integer id) {
         final ModelAndView mav = new ModelAndView("tables/index");
-        mav.addObject("table", ts.findById(id));
+        Table table = ts.findById(id);
+        mav.addObject("table", table);
+        mav.addObject("dishes", table.getOrder().getDishes());
         return mav;
     }
 
@@ -58,7 +71,25 @@ public class TableController {
         return new ModelAndView("redirect:/tables/" + tb.getId());
     }
 
+    @RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.GET})
+    public ModelAndView addDish(@PathVariable("tableId") Integer id, @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
 
+        ModelAndView mav = new ModelAndView("tables/add_dish");
+        mav.addObject("table", ts.findById(id));
+        mav.addObject("dishes", ds.findAll());
 
+        return mav;
+    }
 
+    @RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.POST})
+    public ModelAndView addDishPost(@PathVariable("tableId") Integer id, @Valid @ModelAttribute("tableAddDishForm") final TableAddDishForm form, final BindingResult errors) {
+
+        if (errors.hasErrors()) { return addDish(id, form); }
+
+        Table table = ts.findById(id);
+        Dish dish = ds.findById(form.getDishid());
+        os.addDishes(table.getOrder(), dish, form.getAmount());
+
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
 }
