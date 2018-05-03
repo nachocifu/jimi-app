@@ -92,4 +92,24 @@ public class TableController {
 
         return new ModelAndView("redirect:/tables/" + table.getId());
     }
+
+    @RequestMapping(value = "/{tableId}/add_one_dish", method = {RequestMethod.POST})
+    public ModelAndView addOneDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
+
+        Table table = ts.findById(id);
+        Dish dish = ds.findById(dishid);
+        os.addDish(table.getOrder(), dish);
+
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
+
+    @RequestMapping(value = "/{tableId}/remove_one_dish", method = {RequestMethod.POST})
+    public ModelAndView removeOneDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
+
+        Table table = ts.findById(id);
+        Dish dish = ds.findById(dishid);
+        os.removeOneDish(table.getOrder(), dish);
+
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
 }

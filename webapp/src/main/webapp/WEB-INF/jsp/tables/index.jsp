@@ -40,14 +40,27 @@
         <td>Dish price</td>
         <td>Dish amount</td>
         <td>Dish total</td>
+        <td></td>
+        <td></td>
     </tr>
     <c:forEach items="${dishes}" var="dishEntry">
-
         <tr>
             <td><c:out value="${dishEntry.key.name}"/></td>
             <td><c:out value="${dishEntry.key.price}"/></td>
             <td><c:out value="${dishEntry.value}"/></td>
             <td><c:out value="${dishEntry.value * dishEntry.key.price}"/></td>
+            <td>
+                <form action="/tables/${table.id}/add_one_dish" method="post">
+                    <input type="submit" value="+" />
+                    <input type="hidden" value="${dishEntry.key.id}" name="dishid">
+                </form>
+            </td>
+            <td>
+                <form action="/tables/${table.id}/remove_one_dish" method="post">
+                    <input type="submit" value="-" />
+                    <input type="hidden" value="${dishEntry.key.id}" name="dishid">
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>
