@@ -11,6 +11,8 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import javax.sql.DataSource;
@@ -21,7 +23,7 @@ import javax.sql.DataSource;
 @EnableWebMvc
 @ComponentScan({ "edu.itba.paw.jimi.webapp.controller", "edu.itba.paw.jimi.services", "edu.itba.paw.jimi.persistence" })
 @Configuration
-public class WebConfig {
+public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Value("classpath:schema.sql")
     private Resource schemaSql;
@@ -57,6 +59,12 @@ public class WebConfig {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
         dbp.addScript(schemaSql);
         return dbp;
+    }
+
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+                .addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
     }
 
 }
