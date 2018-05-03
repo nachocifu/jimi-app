@@ -7,13 +7,11 @@ import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Table;
+import edu.itba.paw.jimi.models.TableStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -48,6 +46,14 @@ public class TableController {
         mav.addObject("table", table);
         mav.addObject("dishes", table.getOrder().getDishes());
         return mav;
+    }
+
+    @RequestMapping(value = "/{tableId}/status", method = {RequestMethod.POST})
+    public ModelAndView statusChange(@PathVariable("tableId") Integer id, @RequestParam(value = "status") final Integer statusId) {
+
+        ts.changeStatus(ts.findById(id), TableStatus.getTableStatus(statusId));
+
+        return new ModelAndView("redirect:/tables/" + id);
     }
 
     @RequestMapping("/register")
