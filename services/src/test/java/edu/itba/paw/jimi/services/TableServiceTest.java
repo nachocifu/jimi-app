@@ -3,6 +3,8 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
+import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotBusyTableException;
+import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotOpenOrderException;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
@@ -58,14 +60,14 @@ public class TableServiceTest {
         assertEquals(TABLE_NAME, table.getName());
         assertEquals(TableStatus.Free, table.getStatus());
         assertEquals(order.getId(), table.getOrder().getId());
+        assertEquals(OrderStatus.INACTIVE, order.getStatus());
         assertEquals(0, table.getDiners());
     }
 
-
     @Test
     public void setDinersTest(){
-        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
+        Order order = new Order(1, null, null, OrderStatus.OPEN);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order, 0);
 
         // Mockito mocking
         Mockito.when(tableDao.findById(1)).thenReturn(table);
@@ -76,11 +78,35 @@ public class TableServiceTest {
         assertEquals(5, table.getDiners());
     }
 
+    @Test(expected = DinersSetOnNotBusyTableException.class)
+    public void setDinersOnNotBusyTableTest(){
+        Order order = new Order(1, null, null, OrderStatus.OPEN);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
+
+        // Mockito mocking
+        Mockito.when(tableDao.findById(1)).thenReturn(table);
+        // Mockito mocking
+
+        tableService.setDiners(table, 5);
+    }
+
+    @Test(expected = DinersSetOnNotOpenOrderException.class)
+    public void setDinersOnNotOpenOrderTest(){
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order, 0);
+
+        // Mockito mocking
+        Mockito.when(tableDao.findById(1)).thenReturn(table);
+        // Mockito mocking
+
+        tableService.setDiners(table, 5);
+    }
+
 
     @Test
     public void setDinersNegativeTest(){
-        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
+        Order order = new Order(1, null, null, OrderStatus.OPEN);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order, 0);
 
         // Mockito mocking
         Mockito.when(tableDao.findById(1)).thenReturn(table);
