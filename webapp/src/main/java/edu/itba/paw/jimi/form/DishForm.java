@@ -8,8 +8,8 @@ public class DishForm {
 
     @Size(min = 1, max = 100)
 
-    //@Pattern(regexp = "[a-zA-Z0-9.]+[a-zA-Z0-9. ]+")  
-    @Pattern(regexp = "[a-zA-Z ]+")
+    //@Pattern(regexp = "[a-zA-Z0-9.]+[a-zA-Z0-9. ]+")
+    //@Pattern(regexp = "[a-zA-Z ]+")
     private String name;
 
     @Digits(integer = 6, fraction = 2)
