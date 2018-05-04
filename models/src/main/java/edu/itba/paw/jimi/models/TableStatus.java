@@ -22,6 +22,18 @@ public enum TableStatus {
 		}
 		throw new IllegalArgumentException("TableStatus not found.");
 	}
+
+	@Override
+	public String toString() {
+		switch (TableStatus.getTableStatus(id)) {
+			case Busy:
+				return "Busy";
+			case Free:
+				return "Free";
+			case CleaningRequired:
+				return "Cleaning required";
+			default:
+				return "Not found";
+		}
+	}
 }
-
-

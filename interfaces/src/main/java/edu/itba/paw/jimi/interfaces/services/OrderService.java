@@ -2,17 +2,22 @@ package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
+import edu.itba.paw.jimi.models.OrderStatus;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 
-/**
- * This service does not create or fetches Orders form the Dao.
- * This is managed by the Table service because a orders gets created and managed by the table.
- * IMPORTANT!!!
- */
 public interface OrderService {
 
+    /**
+     * This creates a Order.
+     * @param status The OrderStatus.
+     * @param openedAt The timestamp when this order became opened.
+     * @param closedAt The timestamp when this order became closed.
+     * @return
+     */
+    Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt);
 
     /**
      * Adds a dish to the order, if it is already there it increments the amount of said dish.
@@ -48,4 +53,17 @@ public interface OrderService {
      * @return the amount of dishes left of this dish. (should be 0).
      */
     int removeAllDish(Order order, Dish dish);
+
+
+    /**
+     * Sets the timestamp for openedAt and changes the status open.
+     * @param order the order to open.
+     */
+    void open(Order order);
+
+    /**
+     * Sets the timestamp for closedAt and changes the status to closed.
+     * @param order
+     */
+    void close(Order order);
 }

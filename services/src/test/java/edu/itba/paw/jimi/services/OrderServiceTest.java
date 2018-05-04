@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.exceptions.DishAddedToInactiveOrderException;
+import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
@@ -381,6 +382,45 @@ public class OrderServiceTest {
         int retValue = orderService.removeAllDish(order, dish);
 
         Assert.assertEquals(retValue, 0);
+    }
+
+
+    @Test
+    public void openOrderTest(){
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
+
+        orderService.open(order);
+
+        Assert.assertEquals(OrderStatus.OPEN, order.getStatus());
+        Assert.assertNotNull(order.getOpenedAt());
+        Assert.assertNull(order.getClosedAt());
+    }
+
+    @Test
+    public void closeOrderTest(){
+        Order order = new Order(1, OPENEDAT, null, OrderStatus.OPEN);
+
+        orderService.close(order);
+
+        Assert.assertEquals(OrderStatus.CLOSED, order.getStatus());
+        Assert.assertNotNull(order.getOpenedAt());
+        Assert.assertNotNull(order.getClosedAt());
+    }
+
+    @Test(expected = OrderStatusException.class)
+    public void openOrderOnNOTInactiveTest(){
+        Order order = new Order(1, null, null, OrderStatus.CLOSED);
+
+        orderService.open(order);
+
+
+    }
+
+    @Test(expected = OrderStatusException.class)
+    public void closeOrderOnNOTOpenTest(){
+        Order order = new Order(1, OPENEDAT, null, OrderStatus.INACTIVE);
+
+        orderService.close(order);
     }
 
 }

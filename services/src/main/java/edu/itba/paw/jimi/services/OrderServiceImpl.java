@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.exceptions.DishAddedToInactiveOrderException;
+import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
@@ -9,11 +10,18 @@ import edu.itba.paw.jimi.models.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 @Service
 public class OrderServiceImpl implements OrderService{
 
     @Autowired
     private OrderDao orderDao;
+
+    public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt) {
+        return orderDao.create(status, openedAt, closedAt);
+    }
 
     public int addDish(Order order, Dish dish) {
 
@@ -72,5 +80,26 @@ public class OrderServiceImpl implements OrderService{
             return 0;
         else
             return dbOrder.getDishes().get(dish);
+    }
+
+    public void open(Order order) {
+
+        if (!order.getStatus().equals(OrderStatus.INACTIVE))
+            throw new OrderStatusException(OrderStatus.INACTIVE, order.getStatus());
+
+
+        order.setOpenedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+        order.setStatus(OrderStatus.OPEN);
+        orderDao.update(order);
+    }
+
+    public void close(Order order) {
+
+        if (!order.getStatus().equals(OrderStatus.OPEN))
+            throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
+
+        order.setStatus(OrderStatus.CLOSED);
+        order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+        orderDao.update(order);
     }
 }

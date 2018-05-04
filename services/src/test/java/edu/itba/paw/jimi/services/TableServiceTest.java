@@ -1,10 +1,12 @@
 package edu.itba.paw.jimi.services;
 
 
-import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotBusyTableException;
 import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotOpenOrderException;
+import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
+import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
+import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
@@ -38,7 +40,7 @@ public class TableServiceTest {
 
     @Autowired
     @Mock
-    private OrderDao orderDao;
+    private OrderService orderService;
 
     @Before
     public void before(){
@@ -52,7 +54,7 @@ public class TableServiceTest {
         // Mockito mocking
         Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
-        Mockito.when(orderDao.create(OrderStatus.INACTIVE, null, null)).thenReturn(order);
+        Mockito.when(orderService.create(OrderStatus.INACTIVE, null, null)).thenReturn(order);
         Mockito.when(tableDao.create(TABLE_NAME, TableStatus.Free, order, 0)).thenReturn(new Table(TABLE_NAME, 1, TableStatus.Free, order, 0));
         // Mockito mocking
 
@@ -119,7 +121,7 @@ public class TableServiceTest {
 
 
     @Test
-    public void setStatusTest(){
+    public void setStatusFromFreeToBusyTest(){
         Order order = new Order(1, null, null, OrderStatus.INACTIVE);
         Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
 
@@ -132,6 +134,69 @@ public class TableServiceTest {
         assertEquals(TableStatus.Busy, table.getStatus());
     }
 
+    @Test(expected = TableStatusTransitionInvalid.class)
+    public void setStatusFromFreeToNOTBusyTest(){
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
 
+        // Mockito mocking
+        Mockito.when(tableDao.findById(1)).thenReturn(table);
+        // Mockito mocking
 
+        tableService.changeStatus(table, TableStatus.Free);
+
+    }
+
+    @Test
+    public void setStatusFromBusyToCleaningTest(){
+        Order order = new Order(1, null, null, OrderStatus.OPEN);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order, 0);
+
+        // Mockito mocking
+        Mockito.when(tableDao.findById(1)).thenReturn(table);
+        // Mockito mocking
+
+        tableService.changeStatus(table, TableStatus.CleaningRequired);
+
+        assertEquals(TableStatus.CleaningRequired, table.getStatus());
+    }
+
+    @Test(expected = TableStatusTransitionInvalid.class)
+    public void setStatusFromBusyToNOTCleaningTest(){
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order, 0);
+
+        // Mockito mocking
+        Mockito.when(tableDao.findById(1)).thenReturn(table);
+        // Mockito mocking
+
+        tableService.changeStatus(table, TableStatus.Free);
+
+    }
+
+    @Test
+    public void setStatusFromCleaningToFreeTest(){
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.CleaningRequired, order, 0);
+
+        // Mockito mocking
+        Mockito.when(tableDao.findById(1)).thenReturn(table);
+        // Mockito mocking
+
+        tableService.changeStatus(table, TableStatus.Free);
+
+        assertEquals(TableStatus.Free, table.getStatus());
+    }
+
+    @Test(expected = TableStatusTransitionInvalid.class)
+    public void setStatusFromCleaningToNOTFreeTest(){
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.CleaningRequired, order, 0);
+
+        // Mockito mocking
+        Mockito.when(tableDao.findById(1)).thenReturn(table);
+        // Mockito mocking
+
+        tableService.changeStatus(table, TableStatus.Busy);
+    }
 }

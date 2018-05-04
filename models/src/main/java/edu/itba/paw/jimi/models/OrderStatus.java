@@ -22,6 +22,20 @@ public enum OrderStatus {
 		}
 		throw new IllegalArgumentException("OrderStatus not found."); //TODO
 	}
+
+	@Override
+	public String toString() {
+		switch (OrderStatus.getTableStatus(id)){
+			case OPEN:
+				return "Open";
+			case CLOSED:
+				return "Closed";
+			case INACTIVE:
+				return "Inactive";
+			default:
+				return "No status found";
+		}
+	}
 }
 
 
