@@ -50,6 +50,7 @@ public class DishController {
         if (errors.hasErrors()) { return register(form); }
 
         final Dish d = dishService.create(form.getName(), form.getPrice());
+        final int i = dishService.setStock(d, form.getStock());
 
         return new ModelAndView("redirect:/dishes");
     }

@@ -74,14 +74,21 @@
                                         <div class="col-lg-6 p-t-20">
                                             <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
                                                 <form:input class = "mdl-textfield__input" type = "text"
-                                                       pattern = "-?[0-9]*(\.[0-9]+)?" path="price"/>
+                                                       pattern = "[0-9]*(\.[0-9]+)?" path="price"/>
                                                 <label class = "mdl-textfield__label">Price</label>
                                                 <span class = "mdl-textfield__error">Number required!</span>
                                             </div>
                                         </div>
+                                        <div class="col-lg-6 p-t-20">
+                                            <div class = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                                <form:input class = "mdl-textfield__input" type = "text"
+                                                            pattern = "[0-9]+" path="stock"/>
+                                                <label class = "mdl-textfield__label">Amount</label>
+                                                <span class = "mdl-textfield__error">Number required!</span>
+                                            </div>
                                         </div>
                                         <div class="col-lg-12 p-t-20 text-center">
-                                            <button type="button submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Add</button>
+                                            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Add</button>
                                             <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</button>
                                         </div>
                                     </div>
