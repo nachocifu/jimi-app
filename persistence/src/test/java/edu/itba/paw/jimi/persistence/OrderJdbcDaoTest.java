@@ -17,6 +17,9 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
@@ -49,6 +52,9 @@ public class OrderJdbcDaoTest {
     private static final Float DISH_PRICE3 = 0.6F;
     private static final int DISH_STOCK3 = 1;
 
+    private static final Timestamp OPENEDAT = new Timestamp(1525467178);
+    private static final Timestamp CLOSEDAT = new Timestamp(1525467178 + 60*60);
+
 
     @Before
     public void setUp() {
@@ -77,6 +83,17 @@ public class OrderJdbcDaoTest {
         final Order order = orderDao.create(OrderStatus.INACTIVE, null, null);
         Order dbOrder = orderDao.findById(order.getId());
         assertNotNull(dbOrder);
+        cleanDB();
+    }
+
+    @Test
+    public void testFindByIdWithValues() {
+        final Order order = orderDao.create(OrderStatus.OPEN, OPENEDAT, CLOSEDAT);
+        Order dbOrder = orderDao.findById(order.getId());
+        assertNotNull(dbOrder);
+        assertEquals(OrderStatus.OPEN.getId(), dbOrder.getStatus().getId());
+        assertEquals(OPENEDAT, dbOrder.getOpenedAt());
+        assertEquals(CLOSEDAT, dbOrder.getClosedAt());
         cleanDB();
     }
 

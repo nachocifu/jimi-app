@@ -1,9 +1,11 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
+import edu.itba.paw.jimi.interfaces.exceptions.DishAddedToInactiveOrderException;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
+import edu.itba.paw.jimi.models.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,11 @@ public class OrderServiceImpl implements OrderService{
         return addDishes(order, dish, 1);
     }
 
-    public int addDishes(Order order, Dish dish, int amount) {
+    public int addDishes(Order order, Dish dish, int amount){
+
+        if (!order.getStatus().equals(OrderStatus.OPEN))
+            throw new DishAddedToInactiveOrderException();
+
         int previousAmount;
         if (order.getDishes().containsKey(dish))
             previousAmount = order.getDishes().get(dish);
@@ -32,6 +38,10 @@ public class OrderServiceImpl implements OrderService{
     }
 
     public int removeOneDish(Order order, Dish dish) {
+
+        if (!order.getStatus().equals(OrderStatus.OPEN))
+            throw new DishAddedToInactiveOrderException();
+
         int previousAmount;
         if (order.getDishes().containsKey(dish))
             previousAmount = order.getDishes().get(dish);
@@ -51,6 +61,10 @@ public class OrderServiceImpl implements OrderService{
     }
 
     public int removeAllDish(Order order, Dish dish) {
+
+        if (!order.getStatus().equals(OrderStatus.OPEN))
+            throw new DishAddedToInactiveOrderException();
+
         order.setDish(dish, 0);
         orderDao.update(order);
         Order dbOrder = orderDao.findById(order.getId());

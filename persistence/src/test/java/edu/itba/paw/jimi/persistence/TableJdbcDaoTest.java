@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import static junit.framework.Assert.assertEquals;
@@ -40,6 +41,9 @@ public class TableJdbcDaoTest {
     private static final Float DISH_PRICE = 5.25F;
     private static final int DISH_STOCK = 5;
     private static final int NUMBER_OF_TABLES = 10;
+
+    private static final Timestamp OPENEDAT = new Timestamp(1525467178);
+    private static final Timestamp CLOSEDAT = new Timestamp(1525467178 + 60*60);
 
     @Autowired
     private DataSource ds;
@@ -77,7 +81,7 @@ public class TableJdbcDaoTest {
     public void testFindById() {
 
         final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-        final Order order = orderDao.create(OrderStatus.INACTIVE, null, null);
+        final Order order = orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT);
         order.setDish(dish, 2);
         orderDao.update(order);
         final Table table = tableDao.create(TABLE_NAME, TableStatus.Free, order, 2);
@@ -96,7 +100,11 @@ public class TableJdbcDaoTest {
 
         //Assert order.
         Order dbOrder = dbTable.getOrder();
-        assertEquals(dbOrder.getDishes().get(dish).intValue(), 2);
+        assertEquals(2, dbOrder.getDishes().get(dish).intValue());
+        assertEquals(order.getStatus().getId(), dbOrder.getStatus().getId());
+        assertEquals(order.getId(), dbOrder.getId());
+        assertEquals(order.getOpenedAt(), dbOrder.getOpenedAt());
+        assertEquals(order.getClosedAt(), dbOrder.getClosedAt());
 
         //Assert dishes.
         Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
