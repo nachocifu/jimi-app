@@ -64,7 +64,7 @@
                                         <div class="card-head">
                                             <header>Dishes</header>
                                         </div>
-                                        <div class="card-body ">
+                                        <div class="card-body">
                                             <div class="table-responsive">
                                                 <table class="table table-striped custom-table table-hover">
                                                     <thead>
@@ -148,15 +148,3 @@
 </body>
 </html>
 
-
-            <td>
-                <form action="/dishes/setstock">
-                    <input type="hidden" value="${dish.id}" name="dishid">
-                    <input type="hidden" value="${dish.stock-1}" name="stock">
-                </form>
-            </td>
-        </tr>
-
-<form action="/dishes/create">
-    <input type="submit" value="Add dish!" />
-</form>
