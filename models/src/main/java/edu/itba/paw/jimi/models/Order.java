@@ -1,5 +1,6 @@
 package edu.itba.paw.jimi.models;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,15 +8,21 @@ public class Order {
     
     private long id;
     private Map<Dish, Integer> dishes;
+    private Timestamp openedAt;
+    private Timestamp closedAt;
+    private OrderStatus status;
 
     public Order() {
         this.dishes = new HashMap<Dish, Integer>();
     }
-	
-	public Order(long id) {
-		this.id = id;
+
+    public Order(long id, Timestamp openedAt, Timestamp closedAt, OrderStatus status) {
+        this.id = id;
+        this.openedAt = openedAt;
+        this.closedAt = closedAt;
+        this.status = status;
         this.dishes = new HashMap<Dish, Integer>();
-	}
+    }
 
     /**
      * This method sets the dish and amount overwriting the amount.
@@ -58,5 +65,29 @@ public class Order {
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
+    }
+
+    public Timestamp getOpenedAt() {
+        return openedAt;
+    }
+
+    public void setOpenedAt(Timestamp openedAt) {
+        this.openedAt = openedAt;
+    }
+
+    public Timestamp getClosedAt() {
+        return closedAt;
+    }
+
+    public void setClosedAt(Timestamp closedAt) {
+        this.closedAt = closedAt;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }

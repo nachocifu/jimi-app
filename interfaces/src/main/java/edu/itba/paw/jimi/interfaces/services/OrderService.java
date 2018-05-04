@@ -23,6 +23,15 @@ public interface OrderService {
     int addDish(Order order, Dish dish);
 
     /**
+     * Adds n dishes to the order, if it is already there it increments the amount of said dish.
+     * @param order The order in which to operate.
+     * @param dish The dish to add.
+     * @param amount The amount to add.
+     * @return The resulting amount of passed dish.
+     */
+    int addDishes(Order order, Dish dish, int amount);
+
+    /**
      * Removes a dish from the order, only one. If there was 2 of passed dish, 1 will remain.
      * To remove all dishes of the same kind see removeAllDish.
      * @param order The order in which to operate.

@@ -4,10 +4,7 @@ import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
-import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Order;
-import edu.itba.paw.jimi.models.Table;
-import edu.itba.paw.jimi.models.TableStatus;
+import edu.itba.paw.jimi.models.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,7 +67,7 @@ public class TableJdbcDaoTest {
 
     @Test
     public void testCreate() {
-        Order order = orderDao.create();
+        Order order = orderDao.create(OrderStatus.INACTIVE, null, null);
         Table table = tableDao.create(TABLE_NAME, TableStatus.Free, order, 2);
         assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, TABLE_TABLE_NAME));
         cleanDB();
@@ -80,7 +77,7 @@ public class TableJdbcDaoTest {
     public void testFindById() {
 
         final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-        final Order order = orderDao.create();
+        final Order order = orderDao.create(OrderStatus.INACTIVE, null, null);
         order.setDish(dish, 2);
         orderDao.update(order);
         final Table table = tableDao.create(TABLE_NAME, TableStatus.Free, order, 2);
@@ -135,7 +132,7 @@ public class TableJdbcDaoTest {
     public void testUpdate() {
 
         final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-        final Order order = orderDao.create();
+        final Order order = orderDao.create(OrderStatus.INACTIVE, null, null);
         order.setDish(dish, 2);
         orderDao.update(order);
         final Table table = tableDao.create(TABLE_NAME, TableStatus.Free, order, 2);
@@ -188,7 +185,7 @@ public class TableJdbcDaoTest {
 
         for (int i = 0; i < NUMBER_OF_TABLES; i++) {
             final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-            final Order order = orderDao.create();
+            final Order order = orderDao.create(OrderStatus.INACTIVE, null, null);
             order.setDish(dish, 1);
             orderDao.update(order);
             tableDao.create(TABLE_NAME, TableStatus.Free, order, 1);

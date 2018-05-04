@@ -3,13 +3,11 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
-import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
-import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
+import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,9 +48,9 @@ public class TableServiceTest {
     public void createTest() {
 
         // Mockito mocking
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
-        Mockito.when(orderDao.create()).thenReturn(order);
+        Mockito.when(orderDao.create(OrderStatus.INACTIVE, null, null)).thenReturn(order);
         Mockito.when(tableDao.create(TABLE_NAME, TableStatus.Free, order, 0)).thenReturn(new Table(TABLE_NAME, 1, TableStatus.Free, order, 0));
         // Mockito mocking
 
@@ -66,7 +64,7 @@ public class TableServiceTest {
 
     @Test
     public void setDinersTest(){
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
         Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
 
         // Mockito mocking
@@ -81,7 +79,7 @@ public class TableServiceTest {
 
     @Test
     public void setDinersNegativeTest(){
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
         Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
 
         // Mockito mocking
@@ -96,7 +94,7 @@ public class TableServiceTest {
 
     @Test
     public void setStatusTest(){
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
         Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
 
         // Mockito mocking

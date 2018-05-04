@@ -14,13 +14,18 @@ public class OrderServiceImpl implements OrderService{
     private OrderDao orderDao;
 
     public int addDish(Order order, Dish dish) {
+
+        return addDishes(order, dish, 1);
+    }
+
+    public int addDishes(Order order, Dish dish, int amount) {
         int previousAmount;
         if (order.getDishes().containsKey(dish))
             previousAmount = order.getDishes().get(dish);
         else
             previousAmount = 0;
 
-        order.setDish(dish, previousAmount + 1);
+        order.setDish(dish, previousAmount + amount);
         orderDao.update(order);
         Order dbOrder = orderDao.findById(order.getId());
         return dbOrder.getDishes().get(dish);
