@@ -2,6 +2,8 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
+import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotBusyTableException;
+import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotOpenOrderException;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
@@ -36,6 +38,13 @@ public class TableServiceImpl implements TableService {
 
     public int setDiners(Table table, int diners) {
         Table t = tableDao.findById(table.getId());
+
+        if (!t.getStatus().equals(TableStatus.Busy))
+            throw new DinersSetOnNotBusyTableException();
+
+        if (!t.getOrder().getStatus().equals(OrderStatus.OPEN))
+            throw new DinersSetOnNotOpenOrderException();
+
         if (diners >= 0){
             t.setDiners(diners);
             table.setDiners(diners);

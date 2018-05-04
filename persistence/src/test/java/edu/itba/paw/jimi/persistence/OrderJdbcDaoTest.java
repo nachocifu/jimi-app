@@ -79,6 +79,22 @@ public class OrderJdbcDaoTest {
     }
 
     @Test
+    public void testUpdate() {
+        final Order order = orderDao.create(OrderStatus.INACTIVE, null, null);
+        order.setStatus(OrderStatus.OPEN);
+        order.setOpenedAt(OPENEDAT);
+        order.setClosedAt(CLOSEDAT);
+        orderDao.update(order);
+        Order dbOrder = orderDao.findById(order.getId());
+        assertNotNull(dbOrder);
+        assertEquals(OrderStatus.OPEN, dbOrder.getStatus());
+        assertEquals(OPENEDAT, dbOrder.getOpenedAt());
+        assertEquals(CLOSEDAT, dbOrder.getClosedAt());
+
+        cleanDB();
+    }
+
+    @Test
     public void testFindByIdEmpty() {
         final Order order = orderDao.create(OrderStatus.INACTIVE, null, null);
         Order dbOrder = orderDao.findById(order.getId());
