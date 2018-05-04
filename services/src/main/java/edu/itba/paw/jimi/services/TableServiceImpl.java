@@ -4,6 +4,7 @@ import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Order;
+import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class TableServiceImpl implements TableService {
     }
 
     public Table create(String name) {
-        Order order = orderDao.create();
+        Order order = orderDao.create(OrderStatus.INACTIVE, null, null);
         return tableDao.create(name, TableStatus.Free, order, 0);
     }
 
@@ -45,6 +46,7 @@ public class TableServiceImpl implements TableService {
     }
 
     public void changeStatus(Table table, TableStatus status) {
+        // TODO cuando cambia el estado ,,,hacer un switch y validar con el status enum
         Table t = tableDao.findById(table.getId());
         table.setStatus(status);
         t.setStatus(status);

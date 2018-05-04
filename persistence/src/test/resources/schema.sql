@@ -23,7 +23,9 @@ CREATE TABLE IF NOT EXISTS tables
 CREATE TABLE IF NOT EXISTS orders
 (
   orderid INTEGER IDENTITY PRIMARY KEY,
-  name   varchar(100)
+  openedAt TIMESTAMP,
+  closedAt TIMESTAMP,
+  statusid INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS orders_items

@@ -4,6 +4,7 @@ import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
+import edu.itba.paw.jimi.models.OrderStatus;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,10 +49,10 @@ public class OrderServiceTest {
     public void addDishTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder = new Order(1);
+        Order returnOrder = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder.setDish(dish, 1);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder);
@@ -66,10 +67,10 @@ public class OrderServiceTest {
     public void addDishesTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder = new Order(1);
+        Order returnOrder = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder.setDish(dish, 5);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder);
@@ -84,13 +85,13 @@ public class OrderServiceTest {
     public void addDishTwiceTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder1 = new Order(1);
+        Order returnOrder1 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder1.setDish(dish, 1);
 
-        Order returnOrder2 = new Order(1);
+        Order returnOrder2 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder2.setDish(dish, 2);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1, returnOrder2);
@@ -106,16 +107,16 @@ public class OrderServiceTest {
     public void addDishTwiceThenRemoveOnceTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder1 = new Order(1);
+        Order returnOrder1 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder1.setDish(dish, 1);
 
-        Order returnOrder2 = new Order(1);
+        Order returnOrder2 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder2.setDish(dish, 2);
 
-        Order returnOrder3 = new Order(1);
+        Order returnOrder3 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder3.setDish(dish, 1);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1, returnOrder2, returnOrder3);
@@ -132,19 +133,19 @@ public class OrderServiceTest {
     public void addDishTwiceThenRemoveTwiceTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder1 = new Order(1);
+        Order returnOrder1 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder1.setDish(dish, 1);
 
-        Order returnOrder2 = new Order(1);
+        Order returnOrder2 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder2.setDish(dish, 2);
 
-        Order returnOrder3 = new Order(1);
+        Order returnOrder3 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder3.setDish(dish, 1);
 
-        Order returnOrder4 = new Order(1);
+        Order returnOrder4 = new Order(1, null, null, OrderStatus.INACTIVE);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1, returnOrder2, returnOrder3, returnOrder4);
         // Mockito mocking
@@ -161,19 +162,19 @@ public class OrderServiceTest {
     public void addDishTwiceThenRemoveTwiceReturning0Test() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder1 = new Order(1);
+        Order returnOrder1 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder1.setDish(dish, 1);
 
-        Order returnOrder2 = new Order(1);
+        Order returnOrder2 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder2.setDish(dish, 2);
 
-        Order returnOrder3 = new Order(1);
+        Order returnOrder3 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder3.setDish(dish, 1);
 
-        Order returnOrder4 = new Order(1);
+        Order returnOrder4 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder3.setDish(dish, 0);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1, returnOrder2, returnOrder3, returnOrder4);
@@ -191,16 +192,16 @@ public class OrderServiceTest {
     public void addDishTwiceThenRemoveAllTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder1 = new Order(1);
+        Order returnOrder1 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder1.setDish(dish, 1);
 
-        Order returnOrder2 = new Order(1);
+        Order returnOrder2 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder2.setDish(dish, 2);
 
-        Order returnOrder3 = new Order(1);
+        Order returnOrder3 = new Order(1, null, null, OrderStatus.INACTIVE);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1, returnOrder2, returnOrder3);
         // Mockito mocking
@@ -216,16 +217,16 @@ public class OrderServiceTest {
     public void addDishTwiceThenRemoveAllReturning0Test() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder1 = new Order(1);
+        Order returnOrder1 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder1.setDish(dish, 1);
 
-        Order returnOrder2 = new Order(1);
+        Order returnOrder2 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder2.setDish(dish, 2);
 
-        Order returnOrder3 = new Order(1);
+        Order returnOrder3 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder2.setDish(dish, 0);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1, returnOrder2, returnOrder3);
@@ -242,10 +243,10 @@ public class OrderServiceTest {
     public void removeOneDishWithoutAddingTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder1 = new Order(1);
+        Order returnOrder1 = new Order(1, null, null, OrderStatus.INACTIVE);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1);
         // Mockito mocking
@@ -259,10 +260,10 @@ public class OrderServiceTest {
     public void removeOneDishWithoutAddingReturning0Test() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder1 = new Order(1);
+        Order returnOrder1 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder1.setDish(dish, 0);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1);
@@ -278,10 +279,10 @@ public class OrderServiceTest {
     public void removeAllDishWithoutAddingReturning0Test() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder1 = new Order(1);
+        Order returnOrder1 = new Order(1, null, null, OrderStatus.INACTIVE);
         returnOrder1.setDish(dish, 0);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1);
@@ -296,10 +297,10 @@ public class OrderServiceTest {
     public void removeAllDishWithoutAddingTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-        Order order = new Order(1);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
 
         // Mockito mocking
-        Order returnOrder1 = new Order(1);
+        Order returnOrder1 = new Order(1, null, null, OrderStatus.INACTIVE);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1);
         // Mockito mocking

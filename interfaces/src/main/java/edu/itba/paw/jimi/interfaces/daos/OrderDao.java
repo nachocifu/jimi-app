@@ -1,6 +1,9 @@
 package edu.itba.paw.jimi.interfaces.daos;
 
 import edu.itba.paw.jimi.models.Order;
+import edu.itba.paw.jimi.models.OrderStatus;
+
+import java.sql.Timestamp;
 
 public interface OrderDao {
 
@@ -15,7 +18,7 @@ public interface OrderDao {
      * Create an order.
      * @return An order.
      */
-    Order create();
+    Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt);
 
     /**
      * Updates the order.
