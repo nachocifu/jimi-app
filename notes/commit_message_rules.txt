@@ -1,6 +1,6 @@
-[QUE ES] [MODULO, por ejemplo webapp] 'breve mensaje'.
+[QUE ES] [MODULO, por ejemplo webapp] [@alice @bill] 'breve mensaje'.
 
-[QUE ES]: BUGFIX, SETUP, NOTES, FEATURE, TESTS, ... 
+[QUE ES]: BUGFIX, SETUP, NOTES, FEATURE, TESTS, MERGE, COMMENTS ... 
 
 mensaje en INGLES
 
