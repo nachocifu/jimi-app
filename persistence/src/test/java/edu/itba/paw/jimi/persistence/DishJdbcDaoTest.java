@@ -28,106 +28,118 @@ import static org.postgresql.shaded.com.ongres.scram.common.ScramAttributes.USER
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
 public class DishJdbcDaoTest {
-
-    private static final String NAME = "Cambuchá";
-
-    private static final String PI_NAME = "Pie";
-
-    private static final Float PRICE = 5.25F;
-
-    private static final Float REAL_PRICE = (float) Math.PI;
-
-    @Autowired
-    private DataSource ds;
-
-    private DishJdbcDao dishDao;
-
-    private JdbcTemplate jdbcTemplate;
-
-
-    @Before
-    public void setUp() {
-        jdbcTemplate = new JdbcTemplate(ds);
-        dishDao = new DishJdbcDao(ds);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
-    }
-
-    @Test
-    public void testCreate() {
-        final Dish dish = dishDao.create(NAME, PRICE, 1);
-        assertNotNull(dish);
-        assertEquals(NAME, dish.getName());
-        assertEquals(PRICE, dish.getPrice());
-        assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "dishes"));
-    }
-
-    @Test
-    public void testCreateWithPi() {
-        final Dish dish = dishDao.create(PI_NAME, REAL_PRICE, 1);
-        assertNotNull(dish);
-        assertEquals(PI_NAME, dish.getName());
-        assertEquals(REAL_PRICE, dish.getPrice());
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
-    }
-
-
-    @Test
-    public void testFindById() {
-        final Dish dish = dishDao.create(NAME, PRICE, 1);
-        Dish dbDish = dishDao.findById(dish.getId());
-        assertNotNull(dbDish);
-        assertEquals(NAME, dbDish.getName());
-        assertEquals(PRICE, dbDish.getPrice());
-    }
-
-    @Test
-    public void testFindAll() {
-        final Dish dish1 = dishDao.create(NAME + " Colorada", PRICE * 2, 3);
-        final Dish dish2 = dishDao.create(NAME + " Virgen", PRICE, 4);
-        final Dish dish3 = dishDao.create(NAME + " Organica", PRICE * 0.5f, 1);
-
-        List<Dish> dishes = (List<Dish>) dishDao.findAll();
-        assertEquals(3, dishes.size());
-
-        assertEquals(dish1.getName(), NAME + " Colorada");
-        assertEquals(dish2.getName(), NAME + " Virgen");
-        assertEquals(dish3.getName(), NAME + " Organica");
-
-        assertEquals(dish1.getPrice(), PRICE * 2);
-        assertEquals(dish2.getPrice(), PRICE);
-        assertEquals(dish3.getPrice(), PRICE * 0.5f);
-
-        assertEquals(dish1.getStock(), 3);
-        assertEquals(dish2.getStock(), 4);
-        assertEquals(dish3.getStock(), 1);
-
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
-    }
-
-
-    @Test
-    public void testFindAllNull() {
-        List<Dish> dishes = (List<Dish>) dishDao.findAll();
-        assertNotNull(dishes);
-        assertEquals(dishes.size(), 0);
-    }
-
-
-    @Test
-    public void testUpdate() {
-
-        final Dish dish = dishDao.create(NAME, PRICE, 1);
-        dish.setName(NAME + " Virgen");
-        dishDao.update(dish);
-
-
-        final Dish dish2 = dishDao.findById(dish.getId());
-        assertEquals(dish.getId(), dish2.getId());
-        assertEquals(dish.getStock(), dish2.getStock());
-        assertEquals(dish.getPrice(), dish2.getPrice());
-
-        assertEquals(dish.getName(), dish2.getName());
-
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
-    }
+	
+	private static final String NAME = "Cambuchá";
+	
+	private static final String PI_NAME = "Pie";
+	
+	private static final Float PRICE = 5.25F;
+	
+	private static final Float REAL_PRICE = (float) Math.PI;
+	
+	private static final int MAX_STOCK = 1000000;
+	
+	@Autowired
+	private DataSource ds;
+	
+	private DishJdbcDao dishDao;
+	
+	private JdbcTemplate jdbcTemplate;
+	
+	
+	@Before
+	public void setUp() {
+		jdbcTemplate = new JdbcTemplate(ds);
+		dishDao = new DishJdbcDao(ds);
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
+	}
+	
+	@Test
+	public void testCreate() {
+		final Dish dish = dishDao.create(NAME, PRICE, 1);
+		assertNotNull(dish);
+		assertEquals(NAME, dish.getName());
+		assertEquals(PRICE, dish.getPrice());
+		assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "dishes"));
+	}
+	
+	@Test
+	public void testCreateWithPi() {
+		final Dish dish = dishDao.create(PI_NAME, REAL_PRICE, 1);
+		assertNotNull(dish);
+		assertEquals(PI_NAME, dish.getName());
+		assertEquals(REAL_PRICE, dish.getPrice());
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
+	}
+	
+	
+	@Test
+	public void testFindById() {
+		final Dish dish = dishDao.create(NAME, PRICE, 1);
+		Dish dbDish = dishDao.findById(dish.getId());
+		assertNotNull(dbDish);
+		assertEquals(NAME, dbDish.getName());
+		assertEquals(PRICE, dbDish.getPrice());
+	}
+	
+	@Test
+	public void testCreateWithMaxStock() {
+		final Dish dish = dishDao.create(NAME, PRICE, MAX_STOCK);
+		Dish dbDish = dishDao.findById(dish.getId());
+		assertNotNull(dbDish);
+		assertEquals(NAME, dbDish.getName());
+		assertEquals(PRICE, dbDish.getPrice());
+		assertEquals(MAX_STOCK, dbDish.getStock());
+	}
+	
+	@Test
+	public void testFindAll() {
+		final Dish dish1 = dishDao.create(NAME + " Colorada", PRICE * 2, 3);
+		final Dish dish2 = dishDao.create(NAME + " Virgen", PRICE, 4);
+		final Dish dish3 = dishDao.create(NAME + " Organica", PRICE * 0.5f, 1);
+		
+		List<Dish> dishes = (List<Dish>) dishDao.findAll();
+		assertEquals(3, dishes.size());
+		
+		assertEquals(dish1.getName(), NAME + " Colorada");
+		assertEquals(dish2.getName(), NAME + " Virgen");
+		assertEquals(dish3.getName(), NAME + " Organica");
+		
+		assertEquals(dish1.getPrice(), PRICE * 2);
+		assertEquals(dish2.getPrice(), PRICE);
+		assertEquals(dish3.getPrice(), PRICE * 0.5f);
+		
+		assertEquals(dish1.getStock(), 3);
+		assertEquals(dish2.getStock(), 4);
+		assertEquals(dish3.getStock(), 1);
+		
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
+	}
+	
+	
+	@Test
+	public void testFindAllNull() {
+		List<Dish> dishes = (List<Dish>) dishDao.findAll();
+		assertNotNull(dishes);
+		assertEquals(dishes.size(), 0);
+	}
+	
+	
+	@Test
+	public void testUpdate() {
+		
+		final Dish dish = dishDao.create(NAME, PRICE, 1);
+		dish.setName(NAME + " Virgen");
+		dishDao.update(dish);
+		
+		
+		final Dish dish2 = dishDao.findById(dish.getId());
+		assertEquals(dish.getId(), dish2.getId());
+		assertEquals(dish.getStock(), dish2.getStock());
+		assertEquals(dish.getPrice(), dish2.getPrice());
+		
+		assertEquals(dish.getName(), dish2.getName());
+		
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
+	}
 }
