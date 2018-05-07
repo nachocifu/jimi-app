@@ -8,7 +8,7 @@
 </head>
 <body>
 <h2>Register User</h2>
-<c:url value="/users/create" var="postPath"/>
+<c:url value="/create" var="postPath"/>
 <form:form modelAttribute="registerForm" action="${postPath}" method="post">
     <div>
         <form:label path="username">Username: </form:label>
