@@ -19,24 +19,16 @@ public class UserController {
 	
 	@Autowired
 	private UserService us;
-
-//    @RequestMapping("")
-//    public ModelAndView list() {
-//        final ModelAndView mav = new ModelAndView("users/users");
-//        // TODO , el dia de manana se busca con queryparams
-//        mav.addObject("users", us.findAll());
-//        return mav;
-//    }
 	
 	@RequestMapping("/")
-	public ModelAndView index(@ModelAttribute("registerForm") final UserForm form) {
+	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
 		return new ModelAndView("users/register");
 	}
 	
 	
 	@RequestMapping("/user")
 	public ModelAndView index(@RequestParam(value = "userId", required = true) final int id) {
-		final ModelAndView mav = new ModelAndView("users/users");
+		final ModelAndView mav = new ModelAndView("users/index");
 		mav.addObject("user", us.findById(id));
 		return mav;
 	}
@@ -45,12 +37,20 @@ public class UserController {
 	public ModelAndView create(@Valid @ModelAttribute("registerForm") final UserForm form, final BindingResult errors) {
 		
 		if (errors.hasErrors()) {
-			return index(form);
+			return register(form);
 		}
 		
 		final User u = us.create(form.getUsername(), form.getPassword());
 		
 		return new ModelAndView("redirect:/user?userId=" + u.getId());
+	}
+	
+	@RequestMapping("/users")
+	public ModelAndView list() {
+		final ModelAndView mav = new ModelAndView("users/list");
+		// TODO , el dia de manana se busca con queryparams
+		mav.addObject("users", us.findAll());
+		return mav;
 	}
 	
 	

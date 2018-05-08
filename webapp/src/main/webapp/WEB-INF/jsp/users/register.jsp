@@ -4,7 +4,9 @@
 
 <html>
 <head>
-    <title>Register</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Jimi Rest | Register</title>
     <!-- google font -->
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
           type="text/css"/>
@@ -27,22 +29,21 @@
     <link rel="shortcut icon" type="image/x-icon"
           href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
 </head>
-<body class=" page-header-fixed sidemenu-closed-hidelogo page-content-white page-md
-          header-white dark-sidebar-color logo-dark">
+<body class="page-header-fixed page-content-white page-md header-white logo-dark">
 
 <div class="page-wrapper">
     <!-- start header -->
-    <jsp:include page="/WEB-INF/jsp/header_register.jsp"/>
+    <jsp:include page="/WEB-INF/jsp/clean_header.jsp"/>
     <!-- end header -->
 
 
     <!-- start page content -->
-    <div class="page-content-wrapper">
+    <div class="page-content-wrapper fixed">
         <div class="page-content-register-user">
 
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card-box card-box-register-user mx-auto">
+                    <div class="card-box card-box-register-user mx-auto mt-5">
                         <div class="card-head">
                             <header>Register User</header>
                         </div>
@@ -54,9 +55,9 @@
 
                                 <div class="col-lg-15 p-t-20">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-
-                                        <form:label path="username">Username: </form:label>
-                                        <form:input type="text" path="username"/>
+                                        <form:label type="text" path="username"
+                                                    cssClass="mdl-textfield__label">Username</form:label>
+                                        <form:input type="text" path="username" cssClass="mdl-textfield__input"/>
                                         <form:errors path="username" cssClass="formError" element="p"/>
                                     </div>
 
@@ -65,8 +66,9 @@
                                 <div class="col-lg-15 p-t-20">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
 
-                                        <form:label path="password">Password: </form:label>
-                                        <form:input type="password" path="password"/>
+                                        <form:label type="text" path="password"
+                                                    cssClass="mdl-textfield__label">Password</form:label>
+                                        <form:input type="password" path="password" cssClass="mdl-textfield__input"/>
                                         <form:errors path="password" cssClass="formError" element="p"/>
                                     </div>
                                 </div>
@@ -75,8 +77,10 @@
                                 <div class="col-lg-15 p-t-20">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
 
-                                        <form:label path="repeatPassword">Repeat password: </form:label>
-                                        <form:input type="password" path="repeatPassword"/>
+                                        <form:label path="repeatPassword"
+                                                    cssClass="mdl-textfield__label">Repeat password</form:label>
+                                        <form:input type="password" path="repeatPassword"
+                                                    cssClass="mdl-textfield__input"/>
                                         <form:errors path="repeatPassword" cssClass="formError" element="p"/>
                                     </div>
                                 </div>
@@ -94,10 +98,8 @@
                         </form:form>
 
                     </div>
-
                 </div>
             </div>
-
         </div>
         <!-- end page content -->
 
@@ -105,14 +107,17 @@
         <!-- start footer -->
         <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
         <!-- end footer -->
-
     </div>
+</div>
 
 
-    <!-- start js include path -->
-    <script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
-    <script src="<c:url value="/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"/>"></script>
-    <!-- bootstrap -->
-    <script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
+<!-- start js include path -->
+<script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
+<script src="<c:url value="/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"/>"></script>
+<!-- bootstrap -->
+<script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
+<!-- Material -->
+<script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
+<script src="<c:url value="/resources/js/pages/material_select/getmdl-select.js"/>"></script>
 </body>
 </html>

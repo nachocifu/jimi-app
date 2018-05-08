@@ -1,3 +1,9 @@
+.jimi-logo {
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+}
+
 .page-content-register-user {
     min-height: 600px;
     margin-top: 80px;
@@ -16,6 +22,20 @@
     max-width: 30em;
 }
 
-.fixed-button {
+.fixed {
     position: fixed;
+}
+
+.dishes-page-content {
+    padding: 25px 20px 10px;
+}
+
+.dishes-page-container {
+    margin-top: 50px;
+    padding: 0;
+    position: relative;
+}
+
+p {
+    color: rebeccapurple;
 }

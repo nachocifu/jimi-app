@@ -4,10 +4,9 @@
 
 <!DOCTYPE html>
 <head>
-    <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title>Jimi Rest</title>
+    <title>Jimi Rest | Create Dish</title>
     <!-- google font -->
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
           type="text/css"/>
@@ -33,39 +32,20 @@
           href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
 </head>
 
-<body class="page-header-fixed sidemenu-closed-hidelogo page-content-white page-md
-             header-white dark-sidebar-color logo-dark">
+<body class="page-header-fixed page-content-white page-md header-white logo-dark">
 <div class="page-wrapper">
     <!-- start header -->
-    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+    <jsp:include page="/WEB-INF/jsp/clean_header.jsp"/>
     <!-- end header -->
 
     <!-- start page container -->
-    <div class="page-container">
-        <!-- start sidebar menu -->
-        <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
-        <!-- end sidebar menu -->
+    <div class="dishes-page-container">
 
         <!-- start page content -->
-        <div class="page-content-wrapper">
-            <div class="page-content">
-                <div class="page-bar">
-                    <div class="page-title-breadcrumb">
-                        <div class=" pull-left">
-                            <div class="page-title">Add Dish</div>
-                        </div>
-                        <ol class="breadcrumb page-breadcrumb pull-right">
-                            <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="#">Home</a>&nbsp;<i
-                                    class="fa fa-angle-right"></i>
-                            </li>
-                            <li><a class="parent-item" href="">Dishes</a>&nbsp;<i class="fa fa-angle-right"></i>
-                            </li>
-                            <li class="active">Add</li>
-                        </ol>
-                    </div>
-                </div>
+        <div class="page-content-wrapper fixed">
+            <div class="dishes-page-content">
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-10 mx-auto mt-5">
                         <div class="card-box">
                             <div class="card-head">
                                 <header>Add Dish</header>
@@ -123,7 +103,6 @@
 </div>
 <!-- start js include path -->
 <script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
-<script src="<c:url value="/webjars/popper/popper.min.js"/>"></script>
 <script src="<c:url value="/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"/>"></script>
 <!-- bootstrap -->
 <script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>

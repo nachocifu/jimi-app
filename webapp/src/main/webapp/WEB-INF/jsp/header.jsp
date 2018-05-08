@@ -10,7 +10,7 @@
         </div>
         <!-- logo end -->
         <!-- start mobile menu -->
-        <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+        <a href="javascript:" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
             <span></span>
         </a>
         <!-- end mobile menu -->
