@@ -22,7 +22,10 @@
     <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<c:url value="/resources/css/plugins.min.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<c:url value="/resources/css/responsive.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/jimi-rest/register_user.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/jimi-rest/jimi-rest.css"/>" rel="stylesheet" type="text/css">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon"
+          href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
 </head>
 <body class=" page-header-fixed sidemenu-closed-hidelogo page-content-white page-md
           header-white dark-sidebar-color logo-dark">
