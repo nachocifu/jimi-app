@@ -89,7 +89,7 @@ public class TableController {
 
         Table table = ts.findById(id);
         Dish dish = ds.findById(form.getDishid());
-        os.addDishes(table.getOrder(), dish, form.getAmount());
+        os.addDishes(table.getOrder(), dish, form.getAmount()); // TODO handle StockHandlingException
 
         return new ModelAndView("redirect:/tables/" + table.getId());
     }

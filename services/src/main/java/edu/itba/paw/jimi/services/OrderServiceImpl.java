@@ -3,6 +3,7 @@ package edu.itba.paw.jimi.services;
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.exceptions.DishAddedToInactiveOrderException;
 import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
+import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
@@ -32,6 +33,9 @@ public class OrderServiceImpl implements OrderService{
 
         if (!order.getStatus().equals(OrderStatus.OPEN))
             throw new DishAddedToInactiveOrderException();
+
+        if (amount > dish.getStock())
+            throw new StockHandlingException("Amount of dishes exceeds available dish stock.");
 
         int previousAmount;
         if (order.getDishes().containsKey(dish))
