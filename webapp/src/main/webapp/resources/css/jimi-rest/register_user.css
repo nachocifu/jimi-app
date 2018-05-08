@@ -1,0 +1,21 @@
+.page-content-register-user {
+    min-height: 600px;
+    margin-top: 80px;
+    padding: 25px 20px 10px;
+}
+
+.fixed-footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.card-box-register-user {
+    max-width: 30em;
+}
+
+.fixed-button {
+    position: fixed;
+}
