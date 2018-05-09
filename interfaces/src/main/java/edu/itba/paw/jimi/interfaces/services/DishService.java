@@ -37,6 +37,13 @@ public interface DishService {
      */
     int decreaseStock(Dish dish);
 
+    /**
+     * Update status on sensitive operations
+     * like increaseStock, decreaseStock and setStoc.
+     * @param dish The dish to be updated.
+     * @return The new value of status.
+     */
+    void updateStatus(Dish dish);
 
     /**
      * Returns all the dishes.

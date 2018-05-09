@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+
 <!DOCTYPE html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -67,8 +68,15 @@
                                                         <td><c:out value="${dish.name}"/></td>
                                                         <td>$<c:out value="${dish.price}"/></td>
                                                         <td><c:out value="${dish.stock}"/></td>
-                                                        <td><span
-                                                                class="label label-mini">Available</span>
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${dish.status.toString() == 'Available'}">
+                                                                    <span class="label label-success label-mini">Available</span>
+                                                                </c:when>
+                                                            <c:otherwise>
+                                                                <span class="label label-danger label-mini">Unavailable</span>
+                                                            </c:otherwise>
+                                                            </c:choose>
                                                         </td>
                                                         <td>
                                                             <form action="/dishes/setstock">

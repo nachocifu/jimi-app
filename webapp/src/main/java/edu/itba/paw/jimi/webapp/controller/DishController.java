@@ -63,7 +63,7 @@ public class DishController {
 
         Collections.sort(dishes, new Comparator<Dish>() {
             public int compare(Dish o1, Dish o2) {
-                return (int)(o1.getId() - o2.getId());
+                return (int)(o1.getName().compareTo(o2.getName()));
             }
         });
 

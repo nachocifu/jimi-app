@@ -5,6 +5,7 @@ public class Dish {
 	
 	private long id;
 	private String name;
+	private DishStatus status;
 	private float price;
 	private int stock;
 	
@@ -57,4 +58,13 @@ public class Dish {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
+
+	public void setStatus(DishStatus status){
+		this.status = status;
+	}
+
+	public DishStatus getStatus() {
+		return status;
+	}
+
 }

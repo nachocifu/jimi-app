@@ -23,7 +23,7 @@ public enum OrderStatus {
 		throw new IllegalArgumentException("OrderStatus not found."); //TODO
 	}
 
-	@Override
+	@Override //TODO pasar al diccionario.
 	public String toString() {
 		switch (OrderStatus.getTableStatus(id)){
 			case OPEN:

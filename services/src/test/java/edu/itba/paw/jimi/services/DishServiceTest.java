@@ -212,13 +212,11 @@ public class DishServiceTest {
 	}
 	
 	@Test
-	public void findAllNullTest() {
+	public void findAllNotNullTest() {
 		
-		Mockito.when(dishDao.findAll()).thenReturn(null);
-		
+		Mockito.when(dishDao.findAll()).thenReturn(new HashSet<Dish>());
 		Collection<Dish> dbDishes = dishService.findAll();
-		
-		assertNull(dbDishes);
+		assertNotNull(dbDishes);
 	}
 	
 	@Test
