@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 	
 	@Autowired
