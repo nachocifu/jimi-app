@@ -67,7 +67,18 @@
                                                         <tr>
                                                             <td><c:out value="${table.name}"/></td>
                                                             <td><c:out value="${table.diners}"/></td>
-                                                            <td><span class="label label-success label-mini"> <c:out value="${table.status.toString()}"/> </span></td>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${table.status.toString() == 'Free'}">
+                                                                        <span class="label label-success label-mini">FREE</span></td>
+                                                                    </c:when>
+                                                                    <c:when test="${table.status.toString() == 'Busy'}">
+                                                                        <span class="label label-danger label-mini">BUSY</span></td>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span class="label label-warning label-mini">CLEANING REQUIRED</span></td>
+                                                                    </c:otherwise>
+                                                                </c:choose>
                                                             <td><c:out value="${table.id}"/></td>
                                                         </tr>
                                                     </tr>
