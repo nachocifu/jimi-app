@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
-<html>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+
+<!DOCTYPE html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
@@ -26,6 +29,7 @@
     <link rel="shortcut icon" type="image/x-icon"
           href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
 </head>
+
 <body class="page-header-fixed page-content-white page-md header-white logo-dark">
 <div class="page-wrapper">
     <!-- start header -->
@@ -44,7 +48,7 @@
                             <div class="col-md-10 mx-auto mt-5">
                                 <div class="card card-topline-purple">
                                     <div class="card-head">
-                                        <header>Tables</header>
+                                        <header>Dishes</header>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -54,17 +58,18 @@
                                                     <th>Name</th>
                                                     <th>Diners</th>
                                                     <th>Status</th>
+                                                    <th>Id</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <c:forEach items="${tables}" var="table">
                                                     <tr>
-                                                        <td><c:out value="${table.name}"/></td>
-                                                        <td><c:out value="${table.diners}"/></td>
-                                                        <td><c:out value="${table.status}"/></td>
-                                                        <td>
-                                                            <a href="/tables/${table.id}">=</a>
-                                                        </td>
+                                                        <tr>
+                                                            <td><c:out value="${table.name}"/></td>
+                                                            <td><c:out value="${table.diners}"/></td>
+                                                            <td><span class="label label-success label-mini"> <c:out value="${table.status.toString()}"/> </span></td>
+                                                            <td><c:out value="${table.id}"/></td>
+                                                        </tr>
                                                     </tr>
                                                 </c:forEach>
                                                 </tbody>
@@ -100,3 +105,4 @@
 <!-- end js include path -->
 </body>
 </html>
+

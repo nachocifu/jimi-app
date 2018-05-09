@@ -33,7 +33,7 @@ public class TableController {
 
     @RequestMapping("")
     public ModelAndView list() {
-        final ModelAndView mav = new ModelAndView("tables/list");
+        final ModelAndView mav = new ModelAndView("tables/list_tables");
         // TODO , el dia de manana se busca con queryparams
         mav.addObject("tables", ts.findAll());
         return mav;
