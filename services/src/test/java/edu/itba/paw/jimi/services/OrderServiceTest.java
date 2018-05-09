@@ -3,6 +3,7 @@ package edu.itba.paw.jimi.services;
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.exceptions.DishAddedToInactiveOrderException;
 import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
+import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
@@ -88,6 +89,23 @@ public class OrderServiceTest {
         Assert.assertEquals(retValue, 5);
     }
 
+    @Test(expected = StockHandlingException.class)
+    public void addExceededAmountOfDishesTest() {
+
+        Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
+        Order order = new Order(1, OPENEDAT, null, OrderStatus.OPEN);
+
+        // Mockito mocking
+        Order returnOrder = new Order(1, OPENEDAT, null, OrderStatus.OPEN);
+        returnOrder.setDish(dish, 0);
+
+        Mockito.when(orderDao.findById(1)).thenReturn(returnOrder);
+        // Mockito mocking
+
+        orderService.addDishes(order, dish, DISH_STOCK + 1);
+
+    }
+
     @Test(expected = DishAddedToInactiveOrderException.class)
     public void addDishesToInactiveOrderTest() {
 
@@ -96,7 +114,7 @@ public class OrderServiceTest {
 
         // Mockito mocking
         Order returnOrder = new Order(1, null, null, OrderStatus.INACTIVE);
-        returnOrder.setDish(dish, 5);
+        returnOrder.setDish(dish, 4);
 
         Mockito.when(orderDao.findById(1)).thenReturn(returnOrder);
         // Mockito mocking
