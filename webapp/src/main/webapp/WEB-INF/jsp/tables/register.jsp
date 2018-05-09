@@ -55,8 +55,8 @@
 
                                 <div class="col-lg-15 p-t-20">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                        <form:label path="name">Name: </form:label>
-                                        <form:input type="text" path="name"/>
+                                        <form:label path="name" cssClass="mdl-textfield__label">Name</form:label>
+                                        <form:input type="text" path="name" cssClass="mdl-textfield__input"/>
                                         <form:errors path="name" cssClass="formError" element="p"/>
                                     </div>
                                 </div>

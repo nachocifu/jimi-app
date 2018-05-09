@@ -43,7 +43,7 @@ public class UserController {
 		
 		final User u = us.create(form.getUsername(), form.getPassword());
 		
-		return new ModelAndView("redirect:/user?userId=" + u.getId());
+		return new ModelAndView("redirect:/users/user?userId=" + u.getId());
 	}
 	
 	@RequestMapping("/users")

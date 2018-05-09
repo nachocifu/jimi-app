@@ -37,7 +37,6 @@
                         </div>
 
                         <div class="card-body">
-
                             <div class="col-lg-15 p-t-20">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
 
@@ -45,7 +44,6 @@
 
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

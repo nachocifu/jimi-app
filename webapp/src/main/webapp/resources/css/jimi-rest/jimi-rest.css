@@ -22,6 +22,10 @@
     max-width: 30em;
 }
 
+.card-box-table-index {
+    max-width: 60em;
+}
+
 .fixed {
     position: fixed;
 }
