@@ -85,7 +85,7 @@ public class TableServiceImpl implements TableService {
                 // Lets close the current order.
                 orderService.close(t.getOrder());
                 //TODO: A pensar... Diners no tendria que ir en order? porque cuando lo cierro, quiero que quede cuanta gente comio ahi. Aparte, como cobras el servicio de mesa si no lo tiene order? Podrian tenerlo los 2?
-
+                //@cappa: deberìa estar en order.
                 // Now lets create a new inactive order for our table.
                 Order newOrder = orderService.create(OrderStatus.INACTIVE, null, null);
                 t.setOrder(newOrder);

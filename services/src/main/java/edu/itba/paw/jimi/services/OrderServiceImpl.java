@@ -109,7 +109,7 @@ public class OrderServiceImpl implements OrderService{
 
         if (!order.getStatus().equals(OrderStatus.OPEN))
             throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
-
+        //TODO: SE DEBE REALIZAR EL COBRO ETC..
         order.setStatus(OrderStatus.CLOSED);
         order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
         orderDao.update(order);

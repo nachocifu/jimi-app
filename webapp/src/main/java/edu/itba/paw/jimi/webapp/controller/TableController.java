@@ -135,4 +135,13 @@ public class TableController {
 
         return new ModelAndView("redirect:/tables/" + table.getId());
     }
+
+    @RequestMapping(value = "/{tableId}/checkout")
+    public ModelAndView getCheckoutBill(@PathVariable("tableId") Integer id) {
+
+        ModelAndView mav = new ModelAndView("tables/checkout");
+        mav.addObject("order", ts.findById(id).getOrder());
+
+        return mav;
+    }
 }

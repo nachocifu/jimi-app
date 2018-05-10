@@ -23,24 +23,46 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link nav-toggle"> <i class="material-icons">widgets</i>
+                    <a href="#" class="nav-link nav-toggle">
+                        <i class="fa fa-home"></i>
                         <span class="title">Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link nav-toggle">
-                        <i class="material-icons">business_center</i>
-                        <span class="title">Dishes</span>
-                        <span class="arrow"></span>
+                        <i class="fa fa-home"></i>
+                        <span class="title">Tables</span>
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
                             <a href="#" class="nav-link ">
+                                <i class="fa fa-plus"></i>
+                                <span class="title">New Table</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link ">
+                                <i class="fa fa-list"></i>
+                                <span class="title">Table List</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link nav-toggle">
+                        <i class="fa fa-bars"></i>
+                        <span class="title">Dishes</span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link ">
+                                <i class="fa fa-plus"></i>
                                 <span class="title">New Dish</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link ">
+                                <i class="fa fa-list"></i>
                                 <span class="title">Dish List</span>
                             </a>
                         </li>

@@ -1,10 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<html>
+<!DOCTYPE html>
 <head>
     <!-- google font -->
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
+          type="text/css"/>
+    <!-- icons -->
+    <link href="<c:url value="/resources/plugins/simple-line-icons/simple-line-icons.min.css"/>" rel="stylesheet"
+          type="text/css"/>
+    <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
           type="text/css"/>
     <!--bootstrap -->
     <link href="<c:url value="/webjars/bootstrap/4.0.0/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css"/>
@@ -34,7 +39,7 @@
                     <div class="card-box card-box-table-index mx-auto mt-5">
 
                         <div class="card-head">
-                            <header><spring:message code="table.greeting" arguments="${table.name}"/></header>
+                            <header><spring:message code="table.greeting" arguments=": ${table.name}"/></header>
                         </div>
 
                         <div class="card-body">
@@ -109,6 +114,7 @@
                                                 <th><spring:message code="dish.price"/></th>
                                                 <th><spring:message code="dish.amount"/></th>
                                                 <th><spring:message code="dish.total"/></th>
+                                                <th>Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -120,25 +126,31 @@
                                                     <td><c:out value="${dishEntry.value * dishEntry.key.price}"/></td>
                                                     <td>
                                                         <form action="/tables/${table.id}/add_one_dish" method="post">
-                                                            <input type="submit" value="+"/>
+                                                            <button type="submit" class="btn btn-success btn-xs">
+                                                                <i class="fa fa-plus"></i>
+                                                            </button>
                                                             <input type="hidden" value="${dishEntry.key.id}"
-                                                                   name="dishid">
+                                                                   name="dishid"/>
                                                         </form>
                                                     </td>
                                                     <td>
                                                         <form action="/tables/${table.id}/remove_one_dish"
                                                               method="post">
-                                                            <input type="submit" value="-"/>
+                                                            <button type="submit" class="btn btn-primary btn-xs">
+                                                                <i class="fa fa-minus"></i>
+                                                            </button>
                                                             <input type="hidden" value="${dishEntry.key.id}"
-                                                                   name="dishid">
+                                                                   name="dishid"/>
                                                         </form>
                                                     </td>
                                                     <td>
                                                         <form action="/tables/${table.id}/remove_all_dish"
                                                               method="post">
-                                                            <input type="submit" value="X" style="color: red;"/>
+                                                            <button class="btn btn-danger btn-xs">
+                                                                <i class="fa fa-trash-o "></i>
+                                                            </button>
                                                             <input type="hidden" value="${dishEntry.key.id}"
-                                                                   name="dishid">
+                                                                   name="dishid"/>
                                                         </form>
                                                     </td>
                                                 </tr>

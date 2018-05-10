@@ -7,6 +7,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta charset="UTF-8"/>
     <title>Jimi Rest</title>
     <!-- google font -->
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
