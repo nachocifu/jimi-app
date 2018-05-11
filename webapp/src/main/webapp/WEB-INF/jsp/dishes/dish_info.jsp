@@ -3,9 +3,7 @@
 <body>
 <h2>${name} --- $${price} x ${stock} | $${price * stock}</h2>
 
-<form action="/dishes">
-    <input type="submit" value="View all dishes" />
-</form>
+<a href="<c:url value="/dishes"/>"></a>
 
 </body>
 </html>

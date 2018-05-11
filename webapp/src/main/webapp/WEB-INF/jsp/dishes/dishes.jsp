@@ -80,7 +80,7 @@
                                                             </c:choose>
                                                         </td>
                                                         <td>
-                                                            <form action="/dishes/setstock">
+                                                            <form action="<c:url value="/dishes/setstock"/>">
                                                                 <input type="hidden" value="${dish.id}" name="dishid">
                                                                 <input type="hidden" value="${dish.stock+1}"
                                                                        name="stock">
@@ -90,7 +90,7 @@
                                                             </form>
                                                         </td>
                                                         <td>
-                                                            <form action="/dishes/setstock">
+                                                            <form action="<c:url value="/dishes/setstock"/>">
                                                                 <input type="hidden" value="${dish.id}" name="dishid">
                                                                 <input type="hidden" value="${dish.stock-1}"
                                                                        name="stock">
