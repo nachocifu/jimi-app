@@ -67,7 +67,7 @@
                         </form:form>
 
                         <div class="col-lg-12 p-t-20 text-center">
-                            <form action="/tables/${table.id}">
+                            <form action="<c:url value="/tables/${table.id}"/>">
                                 <input type="submit"
                                        class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink "
                                        value="Cancel"/>
