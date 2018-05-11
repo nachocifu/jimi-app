@@ -7,7 +7,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title>Jimi 404</title>
+    <title>Jimi App</title>
     <!-- google font -->
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
           type="text/css"/>
@@ -48,11 +48,11 @@
                             <div class="col-md-10 mx-auto mt-5">
                                 <div class="card card-topline-red text-center">
                                     <div class="card-head">
-                                        <header>This is awkard</header>
+                                        <header>${title}</header>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            Seems like we cant find what your searching for. ¯\_(ツ)_/¯
+                                            ${body}
                                         </div>
                                     </div>
                                 </div>

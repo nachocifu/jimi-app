@@ -6,6 +6,10 @@
         <location>/error/400</location>
     </error-page>
     <error-page>
+        <error-code>401</error-code>
+        <location>/error/401</location>
+    </error-page>
+    <error-page>
         <error-code>403</error-code>
         <location>/error/403</location>
     </error-page>
@@ -43,7 +47,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             edu.itba.paw.jimi.webapp.config.WebConfig,
-            edu.itba.paw.jimi.webapp.config.WebAuthConfig
+            edu.itba.paw.jimi.webapp.config.WebAuthConfig,
         </param-value>
     </context-param>
     <listener>
