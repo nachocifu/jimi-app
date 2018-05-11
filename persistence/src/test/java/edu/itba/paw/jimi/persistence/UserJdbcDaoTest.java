@@ -15,6 +15,8 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -50,7 +52,7 @@ public class UserJdbcDaoTest {
 
     @Test
     public void testCreate() {
-        final User user = userDao.create(USERNAME, PASSWORD);
+        final User user = userDao.create(USERNAME, PASSWORD, null);
         assertNotNull(user);
         assertEquals(USERNAME, user.getUsername());
         assertEquals(PASSWORD, user.getPassword());
@@ -59,9 +61,195 @@ public class UserJdbcDaoTest {
         cleanUp();
     }
 
+
+    @Test
+    public void testCreateWithRoles() {
+        Set<String> roles = new HashSet<String>();
+        roles.add(User.ROLE_ADMIN);
+        roles.add(User.ROLE_USER);
+
+        final User user = userDao.create(USERNAME, PASSWORD, roles);
+        assertNotNull(user);
+        assertEquals(USERNAME, user.getUsername());
+        assertEquals(PASSWORD, user.getPassword());
+        assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
+
+        assertEquals(2, user.getRoles().size());
+        assertEquals(true, user.getRoles().contains(User.ROLE_ADMIN));
+        assertEquals(true, user.getRoles().contains(User.ROLE_USER));
+
+        cleanUp();
+    }
+
+    //TEST WITH ROLES Y DAR EL MISMO MAS DE UNA VEZ. DEBERIA CONTAR COMO UNO POR SET
+
+
+    @Test
+    public void testUpdate() {
+        final User user = userDao.create(USERNAME, PASSWORD, null);
+        assertNotNull(user);
+        User dbUser = userDao.findById(user.getId());
+
+        dbUser.setUsername(USERNAME + "1");
+        dbUser.setPassword(PASSWORD + "1");
+
+        userDao.update(dbUser);
+
+        User dbUser2 = userDao.findById(user.getId());
+
+        assertEquals(USERNAME + "1", dbUser2.getUsername());
+        assertEquals(PASSWORD + "1", dbUser2.getPassword());
+
+        cleanUp();
+    }
+
+    @Test
+    public void testUpdateNewRoles() {
+        final User user = userDao.create(USERNAME, PASSWORD, null);
+        assertNotNull(user);
+        User dbUser = userDao.findById(user.getId());
+
+        dbUser.setUsername(USERNAME + "1");
+        dbUser.setPassword(PASSWORD + "1");
+        Set<String> roles = new HashSet<String>();
+        roles.add(User.ROLE_ADMIN);
+        dbUser.setRoles(roles);
+
+        userDao.update(dbUser);
+
+        User dbUser2 = userDao.findById(user.getId());
+
+        assertEquals(USERNAME + "1", dbUser2.getUsername());
+        assertEquals(PASSWORD + "1", dbUser2.getPassword());
+        assertEquals(1, dbUser2.getRoles().size());
+        assertEquals(true, dbUser2.getRoles().contains(User.ROLE_ADMIN));
+
+        cleanUp();
+    }
+
+    @Test
+    public void testUpdateDifferentRole() {
+        Set<String> roles1 = new HashSet<String>();
+        roles1.add(User.ROLE_ADMIN);
+        final User user = userDao.create(USERNAME, PASSWORD, roles1);
+        assertNotNull(user);
+        User dbUser = userDao.findById(user.getId());
+
+        dbUser.setUsername(USERNAME + "1");
+        dbUser.setPassword(PASSWORD + "1");
+        assertEquals(1, dbUser.getRoles().size());
+        assertEquals(true, dbUser.getRoles().contains(User.ROLE_ADMIN));
+
+
+        Set<String> roles = new HashSet<String>();
+        roles.add(User.ROLE_USER);
+        dbUser.setRoles(roles);
+
+        userDao.update(dbUser);
+
+        User dbUser2 = userDao.findById(user.getId());
+
+        assertEquals(USERNAME + "1", dbUser2.getUsername());
+        assertEquals(PASSWORD + "1", dbUser2.getPassword());
+        assertEquals(1, dbUser2.getRoles().size());
+        assertEquals(true, dbUser2.getRoles().contains(User.ROLE_USER));
+
+        cleanUp();
+    }
+
+    @Test
+    public void testUpdateDifferentRoles() {
+        Set<String> roles1 = new HashSet<String>();
+        roles1.add(User.ROLE_ADMIN);
+        final User user = userDao.create(USERNAME, PASSWORD, roles1);
+        assertNotNull(user);
+        User dbUser = userDao.findById(user.getId());
+
+        dbUser.setUsername(USERNAME + "1");
+        dbUser.setPassword(PASSWORD + "1");
+        assertEquals(1, dbUser.getRoles().size());
+        assertEquals(true, dbUser.getRoles().contains(User.ROLE_ADMIN));
+
+
+        Set<String> roles = new HashSet<String>();
+        roles.add(User.ROLE_USER);
+        roles.add(User.ROLE_ADMIN);
+        dbUser.setRoles(roles);
+
+        userDao.update(dbUser);
+
+        User dbUser2 = userDao.findById(user.getId());
+
+        assertEquals(USERNAME + "1", dbUser2.getUsername());
+        assertEquals(PASSWORD + "1", dbUser2.getPassword());
+        assertEquals(2, dbUser2.getRoles().size());
+        assertEquals(true, dbUser2.getRoles().contains(User.ROLE_USER));
+        assertEquals(true, dbUser2.getRoles().contains(User.ROLE_ADMIN));
+
+        cleanUp();
+    }
+
+    @Test
+    public void testUpdateNoMoreRolesNull() {
+        Set<String> roles1 = new HashSet<String>();
+        roles1.add(User.ROLE_ADMIN);
+        roles1.add(User.ROLE_USER);
+        final User user = userDao.create(USERNAME, PASSWORD, roles1);
+        assertNotNull(user);
+        User dbUser = userDao.findById(user.getId());
+
+        dbUser.setUsername(USERNAME + "1");
+        dbUser.setPassword(PASSWORD + "1");
+        assertEquals(2, dbUser.getRoles().size());
+        assertEquals(true, dbUser.getRoles().contains(User.ROLE_ADMIN));
+
+
+        dbUser.setRoles(null); //If you set roles as null, then we do not alter the roles.
+
+        userDao.update(dbUser);
+
+        User dbUser2 = userDao.findById(user.getId());
+
+        assertEquals(USERNAME + "1", dbUser2.getUsername());
+        assertEquals(PASSWORD + "1", dbUser2.getPassword());
+        assertEquals(2, dbUser2.getRoles().size());
+        assertEquals(true, dbUser2.getRoles().contains(User.ROLE_USER));
+        assertEquals(true, dbUser2.getRoles().contains(User.ROLE_ADMIN));
+
+        cleanUp();
+    }
+
+    @Test
+    public void testUpdateNoMoreRolesEmpty() {
+        Set<String> roles1 = new HashSet<String>();
+        roles1.add(User.ROLE_ADMIN);
+        roles1.add(User.ROLE_USER);
+        final User user = userDao.create(USERNAME, PASSWORD, roles1);
+        assertNotNull(user);
+        User dbUser = userDao.findById(user.getId());
+
+        dbUser.setUsername(USERNAME + "1");
+        dbUser.setPassword(PASSWORD + "1");
+        assertEquals(2, dbUser.getRoles().size());
+        assertEquals(true, dbUser.getRoles().contains(User.ROLE_ADMIN));
+
+
+        dbUser.setRoles(new HashSet<String>());
+
+        userDao.update(dbUser);
+
+        User dbUser2 = userDao.findById(user.getId());
+
+        assertEquals(USERNAME + "1", dbUser2.getUsername());
+        assertEquals(PASSWORD + "1", dbUser2.getPassword());
+        assertEquals(0, dbUser2.getRoles().size());
+
+        cleanUp();
+    }
+
     @Test
     public void testFindById() {
-        User user = userDao.create(USERNAME, PASSWORD);
+        User user = userDao.create(USERNAME, PASSWORD, null);
         final User dbUser = userDao.findById(user.getId());
 
         assertEquals(user.getId(), dbUser.getId());
@@ -118,7 +306,7 @@ public class UserJdbcDaoTest {
 
     @Test
     public void testFindByUsername() {
-        User user = userDao.create(USERNAME, PASSWORD);
+        User user = userDao.create(USERNAME, PASSWORD, null);
         final User dbUser = userDao.findByUsername(USERNAME);
 
         assertEquals(user.getId(), dbUser.getId());
@@ -143,10 +331,10 @@ public class UserJdbcDaoTest {
     @Test
     public void testFindAllWithSome() {
 
-        userDao.create(USERNAME + "1", PASSWORD);
-        userDao.create(USERNAME + "2", PASSWORD);
-        userDao.create(USERNAME + "3", PASSWORD);
-        userDao.create(USERNAME + "4", PASSWORD);
+        userDao.create(USERNAME + "1", PASSWORD, null);
+        userDao.create(USERNAME + "2", PASSWORD, null);
+        userDao.create(USERNAME + "3", PASSWORD, null);
+        userDao.create(USERNAME + "4", PASSWORD, null);
 
 
         Object object = userDao.findAll();
@@ -161,8 +349,8 @@ public class UserJdbcDaoTest {
     @Test(expected = DuplicateKeyException.class)
     public void testCreateWithSameUsername() {
 
-        userDao.create(USERNAME, PASSWORD);
-        userDao.create(USERNAME, PASSWORD);
+        userDao.create(USERNAME, PASSWORD, null);
+        userDao.create(USERNAME, PASSWORD, null);
 
         cleanUp();
     }
