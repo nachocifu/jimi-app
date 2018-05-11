@@ -14,6 +14,11 @@ public class ErrorsController {
 		return new ModelAndView("errors/400");
 	}
 
+	@RequestMapping("/403")
+	public ModelAndView error403() {
+		return new ModelAndView("errors/403");
+	}
+
 	@RequestMapping("/404")
 	public ModelAndView error404() {
 		return new ModelAndView("errors/404");

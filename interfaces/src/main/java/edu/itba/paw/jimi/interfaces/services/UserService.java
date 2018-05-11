@@ -10,6 +10,13 @@ public interface UserService {
     User findById(long id);
 
     /**
+     * Finds the User by the username.
+     * @param username The username to search.
+     * @return the user with said username.
+     */
+    User findByUsername(String username);
+
+    /**
      * Returns all the users.
      *
      * @return all the users.

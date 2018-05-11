@@ -38,7 +38,8 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            edu.itba.paw.jimi.webapp.config.WebConfig
+            edu.itba.paw.jimi.webapp.config.WebConfig,
+            edu.itba.paw.jimi.webapp.config.WebAuthConfig,
         </param-value>
     </context-param>
     <listener>

@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Jimi 404</title>
+    <title>Jimi 403</title>
 </head>
 <body>
-    Pinchó ¯\_(ツ)_/¯ No encontro
+Error de 403!
 </body>
 </html>

@@ -61,4 +61,12 @@ public class UserJdbcDao implements UserDao {
         return new User(username, userId.longValue(), password); //este assert me parece que esta mal
     }
 
+    public User findByUsername(String username) {
+        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE username = ?", ROW_MAPPER, username);
+        if (users.isEmpty()) {
+            return null;
+        }
+        return users.get(0);
+    }
+
 }

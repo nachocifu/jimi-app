@@ -18,4 +18,12 @@ public interface UserDao {
      * @return The created user.
      */
     User create(String username, String password);
+
+
+    /**
+     * Finds the User by the username.
+     * @param username The username to search.
+     * @return the user with said username.
+     */
+    User findByUsername(String username);
 }
