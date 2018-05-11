@@ -53,7 +53,7 @@
                                                 code="table.free"/></span>. <spring:message
                                                 code="table.ask_occupy"/></h2>
 
-                                        <form action="/tables/${table.id}/status" method="post">
+                                        <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                             <input value="1" name="status" type="hidden"/>
                                             <input type="submit"
                                                    class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink"
@@ -69,7 +69,7 @@
                                                 code="table.cleaning"/></span>. <spring:message
                                                 code="table.ask_ready_for_use"/></h2>
 
-                                        <form action="/tables/${table.id}/status" method="post">
+                                        <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                             <input value="2" name="status" type="hidden"/>
                                             <input type="submit"
                                                    class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink"
@@ -85,7 +85,7 @@
                                                 code="table.busy"/></span>. <spring:message
                                                 code="table.ask_close_and_clean"/></h2>
 
-                                        <form action="/tables/${table.id}/status" method="post">
+                                        <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                             <input value="3" name="status" type="hidden"/>
                                             <input type="submit"
                                                    class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink"
@@ -125,7 +125,7 @@
                                                     <td><c:out value="${dishEntry.value}"/></td>
                                                     <td><c:out value="${dishEntry.value * dishEntry.key.price}"/></td>
                                                     <td>
-                                                        <form action="/tables/${table.id}/add_one_dish" method="post">
+                                                        <form action="<c:url value="/tables/${table.id}/add_one_dish"/>" method="post">
                                                             <button type="submit" class="btn btn-success btn-xs">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
@@ -134,7 +134,7 @@
                                                         </form>
                                                     </td>
                                                     <td>
-                                                        <form action="/tables/${table.id}/remove_one_dish"
+                                                        <form action="<c:url value="/tables/${table.id}/remove_one_dish"/>"
                                                               method="post">
                                                             <button type="submit" class="btn btn-primary btn-xs">
                                                                 <i class="fa fa-minus"></i>
@@ -144,7 +144,7 @@
                                                         </form>
                                                     </td>
                                                     <td>
-                                                        <form action="/tables/${table.id}/remove_all_dish"
+                                                        <form action="<c:url value="/tables/${table.id}/remove_all_dish"/>"
                                                               method="post">
                                                             <button class="btn btn-danger btn-xs">
                                                                 <i class="fa fa-trash-o "></i>
@@ -160,7 +160,7 @@
                                     </div>
                                 </div>
 
-                                <form action="/tables/${table.id}/add_dish">
+                                <form action="<c:url value="/tables/${table.id}/add_dish"/>">
                                     <input type="submit" value="Add dish"/>
                                 </form>
                                 </c:if>
@@ -170,7 +170,7 @@
 
 
                         <div class="col-lg-12 p-t-20 text-center">
-                            <a href="/tables"><spring:message code="table.return_to_table_list"/></a><br>
+                            <a href="<c:url value="/tables"/>"><spring:message code="table.return_to_table_list"/></a><br>
                         </div>
                     </div>
 
