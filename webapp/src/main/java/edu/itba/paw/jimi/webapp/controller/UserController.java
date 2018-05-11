@@ -21,13 +21,13 @@ public class UserController {
 	@Autowired
 	private UserService us;
 	
-	@RequestMapping("/")
+	@RequestMapping("/register")
 	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
 		return new ModelAndView("users/register");
 	}
 	
 	
-	@RequestMapping("/user")
+	@RequestMapping("/{userId}")
 	public ModelAndView index(@RequestParam(value = "userId", required = true) final int id) {
 		final ModelAndView mav = new ModelAndView("users/index");
 		mav.addObject("user", us.findById(id));
@@ -46,7 +46,7 @@ public class UserController {
 		return new ModelAndView("redirect:/users/user?userId=" + u.getId());
 	}
 	
-	@RequestMapping("/users")
+	@RequestMapping("")
 	public ModelAndView list() {
 		final ModelAndView mav = new ModelAndView("users/list");
 		// TODO , el dia de manana se busca con queryparams
