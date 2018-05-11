@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <head>
@@ -43,9 +44,9 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card-box card-box-register-user mx-auto mt-5">
+                    <div class="card-box card-box-register-user mx-auto mt-3">
                         <div class="card-head">
-                            <header>Register User</header>
+                            <header><spring:message code="user.register_header"/></header>
                         </div>
 
                         <c:url value="/users/create" var="postPath"/>
@@ -56,7 +57,8 @@
                                 <div class="col-lg-15 p-t-20">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
                                         <form:label type="text" path="username"
-                                                    cssClass="mdl-textfield__label">Username</form:label>
+                                                    cssClass="mdl-textfield__label"><spring:message
+                                                code="user.username_form_label"/></form:label>
                                         <form:input type="text" path="username" cssClass="mdl-textfield__input"/>
                                         <form:errors path="username" cssClass="formError" element="p"/>
                                     </div>
@@ -67,29 +69,29 @@
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
 
                                         <form:label type="text" path="password"
-                                                    cssClass="mdl-textfield__label">Password</form:label>
+                                                    cssClass="mdl-textfield__label"><spring:message
+                                                code="user.password_form_label"/></form:label>
                                         <form:input type="password" path="password" cssClass="mdl-textfield__input"/>
                                         <form:errors path="password" cssClass="formError" element="p"/>
                                     </div>
                                 </div>
 
-
                                 <div class="col-lg-15 p-t-20">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
 
                                         <form:label path="repeatPassword"
-                                                    cssClass="mdl-textfield__label">Repeat password</form:label>
+                                                    cssClass="mdl-textfield__label"><spring:message
+                                                code="user.repeat_password_form_label"/></form:label>
                                         <form:input type="password" path="repeatPassword"
                                                     cssClass="mdl-textfield__input"/>
                                         <form:errors path="repeatPassword" cssClass="formError" element="p"/>
                                     </div>
                                 </div>
 
-
                                 <div class="col-lg-12 p-t-20 text-center">
                                     <button type="submit"
                                             class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink">
-                                        Register
+                                        <spring:message code="register_button_label"/>
                                     </button>
                                 </div>
 
