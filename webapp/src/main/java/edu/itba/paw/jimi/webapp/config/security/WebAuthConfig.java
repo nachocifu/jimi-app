@@ -2,12 +2,17 @@ package edu.itba.paw.jimi.webapp.config.security;
 
 import edu.itba.paw.jimi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +22,8 @@ import java.util.concurrent.TimeUnit;
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private PawUserDetailsService userDetailsService;
-	
+
+
 	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
@@ -39,6 +45,21 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/resources/css/**", "/resources/js/**", "/resources/img/**", "/favicon.ico", "/error/403");
 	}
 
-	//TODO: Cambiar verificacion de password.
+	@Bean
+	public PasswordEncoder passwordEncoder(){
+		return new BCryptPasswordEncoder();
+	}
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(authProvider());
+	}
+
+	@Bean
+	public DaoAuthenticationProvider authProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		authProvider.setUserDetailsService(userDetailsService);
+		authProvider.setPasswordEncoder(passwordEncoder());
+		return authProvider;
+	}
 
 }

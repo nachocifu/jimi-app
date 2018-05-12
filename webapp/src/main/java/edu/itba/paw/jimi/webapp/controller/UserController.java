@@ -4,6 +4,7 @@ import edu.itba.paw.jimi.form.UserForm;
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +21,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService us;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@RequestMapping("/register")
 	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
@@ -41,7 +45,7 @@ public class UserController {
 			return register(form);
 		}
 		
-		final User u = us.create(form.getUsername(), form.getPassword());
+		final User u = us.create(form.getUsername(), passwordEncoder.encode(form.getPassword()));
 		
 		return new ModelAndView("redirect:/users/user?userId=" + u.getId());
 	}
