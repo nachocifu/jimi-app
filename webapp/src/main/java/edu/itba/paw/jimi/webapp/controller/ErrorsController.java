@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,33 +20,63 @@ public class ErrorsController {
     @RequestMapping("/400")
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView error400() {
-        return getErrorView("You sure?", "I that the right way of asking?" );
+        return getErrorView(
+                messageSource.getMessage("error.400.title",
+                        null,
+                        LocaleContextHolder.getLocale())
+                , messageSource.getMessage("error.400.body",
+                        null,
+                        LocaleContextHolder.getLocale()));
     }
 
     @RequestMapping("/401")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ModelAndView error401() {
-        return getErrorView("Identify yourself!", "Who are you? This is private property");
+        return getErrorView(
+                messageSource.getMessage("error.401.title",
+                        null,
+                        LocaleContextHolder.getLocale())
+                , messageSource.getMessage("error.401.body",
+                        null,
+                        LocaleContextHolder.getLocale()));
     }
 
     @RequestMapping("/403")
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView error403() {
 
-        return getErrorView("This is awkard!", "Why are accesing something you know you cant?");
+        return getErrorView(
+                messageSource.getMessage("error.403.title",
+                        null,
+                        LocaleContextHolder.getLocale())
+                , messageSource.getMessage("error.403.body",
+                        null,
+                        LocaleContextHolder.getLocale()));
     }
 
     @RequestMapping("/404")
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView error404() {
 
-        return getErrorView("This is awkard!", "Seems like we cant find what your wanted. ¯\\_(ツ)_/¯");
+        return getErrorView(
+                messageSource.getMessage("error.404.title",
+                        null,
+                        LocaleContextHolder.getLocale())
+                , messageSource.getMessage("error.404.body",
+                        null,
+                        LocaleContextHolder.getLocale()));
     }
 
     @RequestMapping("/500")
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView error500() {
-        return getErrorView("Something is broken :(", "Seems like someone didnt check their work. We wil fix it for you the first chance we have.\n Our bad! ¯\\_(ツ)_/¯");
+        return getErrorView(
+                messageSource.getMessage("error.500.title",
+                        null,
+                        LocaleContextHolder.getLocale())
+                , messageSource.getMessage("error.500.body",
+                        null,
+                        LocaleContextHolder.getLocale()));
     }
 
     private ModelAndView getErrorView(String title, String message) {
