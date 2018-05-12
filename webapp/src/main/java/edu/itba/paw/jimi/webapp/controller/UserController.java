@@ -50,6 +50,7 @@ public class UserController {
 	public ModelAndView list() {
 		final ModelAndView mav = new ModelAndView("users/list");
 		// TODO , el dia de manana se busca con queryparams
+
 		mav.addObject("users", us.findAll());
 		return mav;
 	}

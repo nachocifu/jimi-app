@@ -1,4 +1,4 @@
-package edu.itba.paw.jimi.webapp.config;
+package edu.itba.paw.jimi.webapp.config.security;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

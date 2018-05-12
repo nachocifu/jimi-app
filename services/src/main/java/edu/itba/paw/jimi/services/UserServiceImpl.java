@@ -40,4 +40,6 @@ public class UserServiceImpl implements UserService {
         roles.add(User.ROLE_ADMIN);
         return userDao.create(username, password, roles);
     }
+
+    //TODO: makeAdmin(user), makeUser(user).
 }

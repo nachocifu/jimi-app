@@ -86,11 +86,16 @@ public class UserJdbcDao implements UserDao {
         final Number userId = jdbcInsert.executeAndReturnKey(args);
         User user =  new User(username, userId.longValue(), password);
 
-        if (roles != null)
+        if (roles != null) {
             for (String role : roles)
                 userRolesDao.create(user, role);
 
-        user.setRoles(roles);
+            user.setRoles(roles);
+        } else {
+            user.setRoles(new HashSet<String>());
+        }
+
+
 
         return user;
     }

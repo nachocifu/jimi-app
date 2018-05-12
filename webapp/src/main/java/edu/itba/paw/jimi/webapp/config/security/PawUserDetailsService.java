@@ -1,17 +1,16 @@
-package edu.itba.paw.jimi.webapp.config;
+package edu.itba.paw.jimi.webapp.config.security;
 
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class PawUserDetailsService implements UserDetailsService {
@@ -25,11 +24,10 @@ public class PawUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("No user by the username " + username);
         }
 
-        //TODO: Hacer que el objeto User devuelva la lista de permisos.
-
-        final Collection<? extends GrantedAuthority> authorities = Arrays.asList(
-                new SimpleGrantedAuthority(User.ROLE_USER),
-                new SimpleGrantedAuthority(User.ROLE_ADMIN));
+        Set<SimpleGrantedAuthority> authorities = new HashSet<SimpleGrantedAuthority>();
+        for (String role : user.getRoles()) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
 
         return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
 
