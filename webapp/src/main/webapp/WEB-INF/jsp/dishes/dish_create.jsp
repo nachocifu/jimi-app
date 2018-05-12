@@ -80,10 +80,11 @@
                                                 class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">
                                             Add
                                         </button>
-                                        <button type="button"
-                                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">
-                                            Cancel
-                                        </button>
+                                        <form action="<c:url value="/dishes/"/>" >
+                                            <button type="button submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">
+                                                Cancel
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </form:form>
