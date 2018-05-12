@@ -1,10 +1,20 @@
 package edu.itba.paw.jimi.models;
 
+import java.util.Set;
+
 public class User {
+
+	public final static String ROLE_ADMIN = "ROLE_ADMIN";
+	public final static String ROLE_USER = "ROLE_USER";
+
+	public final static String ADMIN = "ADMIN";
+	public final static String USER = "USER";
 	
 	private long id;
 	private String username;
 	private String password;
+
+	private Set<String> roles;
 	
 	public User(String name, long id, String password) {
 		this.id = id;
@@ -30,6 +40,14 @@ public class User {
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Set<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
 	}
 
 	@Override

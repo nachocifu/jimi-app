@@ -1,5 +1,6 @@
 package edu.itba.paw.jimi.webapp.config;
 
+import edu.itba.paw.jimi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,19 +24,21 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		
 		http.userDetailsService(userDetailsService).sessionManagement()
 				.invalidSessionUrl("/login").and().authorizeRequests()
-				.antMatchers("/login").anonymous().antMatchers("/admin/**").hasRole("ADMIN")
-				.antMatchers("/**").authenticated().and().formLogin()
-				.usernameParameter("j_username").passwordParameter("j_password").defaultSuccessUrl("/", false).loginPage("/login")
-				.and().rememberMe().rememberMeParameter("j_rememberme").userDetailsService(userDetailsService).key("estakeyestanbuenaquenuncalavanaadivinar")
-				.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
-				.and().logout()
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login").and().exceptionHandling()
-				.accessDeniedPage("/403").and().csrf().disable();
+				.antMatchers("/login").anonymous()
+				.antMatchers("/admin/**").hasRole(User.ADMIN)
+				.antMatchers("/**").authenticated().and()
+				.formLogin().usernameParameter("j_username").passwordParameter("j_password").defaultSuccessUrl("/", false).loginPage("/login").and()
+				.rememberMe().rememberMeParameter("j_rememberme").userDetailsService(userDetailsService).key("estakeyestanbuenaquenuncalavanaadivinar")
+				.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)).and()
+				.logout().logoutUrl("/logout").logoutSuccessUrl("/login").and()
+				.exceptionHandling().accessDeniedPage("/error/403").and()
+				.csrf().disable();
 	}
 	@Override
 	public void configure(final WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/resources/css/**", "/resources/js/**", "/resources/img/**", "/favicon.ico", "/403");
+		web.ignoring().antMatchers("/resources/css/**", "/resources/js/**", "/resources/img/**", "/favicon.ico", "/error/403");
 	}
+
+	//TODO: Cambiar verificacion de password.
 
 }

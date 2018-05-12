@@ -3,6 +3,7 @@ package edu.itba.paw.jimi.interfaces.daos;
 import edu.itba.paw.jimi.models.User;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface UserDao {
 
@@ -15,9 +16,10 @@ public interface UserDao {
      *
      * @param username The name of the user.
      * @param password The password of the user.
+     * @param roles A set of roles.
      * @return The created user.
      */
-    User create(String username, String password);
+    User create(String username, String password, Set<String> roles);
 
 
     /**
@@ -26,4 +28,11 @@ public interface UserDao {
      * @return the user with said username.
      */
     User findByUsername(String username);
+
+
+    /**
+     * Updates all the contents of the user.
+     * @param user The user to be updated.
+     */
+    void update(User user);
 }

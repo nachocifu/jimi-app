@@ -28,8 +28,8 @@ public class PawUserDetailsService implements UserDetailsService {
         //TODO: Hacer que el objeto User devuelva la lista de permisos.
 
         final Collection<? extends GrantedAuthority> authorities = Arrays.asList(
-                new SimpleGrantedAuthority("ROLE_USER"),
-                new SimpleGrantedAuthority("ROLE_ADMIN"));
+                new SimpleGrantedAuthority(User.ROLE_USER),
+                new SimpleGrantedAuthority(User.ROLE_ADMIN));
 
         return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
 
