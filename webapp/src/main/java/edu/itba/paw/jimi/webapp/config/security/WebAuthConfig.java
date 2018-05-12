@@ -18,42 +18,43 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("edu.itba.paw.jimi.webapp.config")
+@ComponentScan("edu.itba.paw.jimi.webapp.config" )
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private PawUserDetailsService userDetailsService;
-
-
+	
 	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		
 		http.userDetailsService(userDetailsService).sessionManagement()
-				.invalidSessionUrl("/login").and().authorizeRequests()
-				.antMatchers("/login").anonymous()
-				.antMatchers("/admin/**", "/dishes/**", "/users/**").hasRole(User.ADMIN)
-				.antMatchers("/**").authenticated().and()
-				.formLogin().usernameParameter("j_username").passwordParameter("j_password").defaultSuccessUrl("/", false).loginPage("/login").and()
-				.rememberMe().rememberMeParameter("j_rememberme").userDetailsService(userDetailsService).key("estakeyestanbuenaquenuncalavanaadivinar")
+				.invalidSessionUrl("/login" ).and().authorizeRequests()
+				.antMatchers("/login" ).anonymous()
+				.antMatchers("/admin/**", "/dishes/**", "/users/**" ).hasRole(User.ADMIN)
+				.antMatchers("/**" ).authenticated().and()
+				.formLogin().usernameParameter("j_username" ).passwordParameter("j_password" ).defaultSuccessUrl("/", false).loginPage("/login" ).and()
+				.rememberMe().rememberMeParameter("j_rememberme" ).userDetailsService(userDetailsService).key("estakeyestanbuenaquenuncalavanaadivinar" )
 				.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)).and()
-				.logout().logoutUrl("/logout").logoutSuccessUrl("/login").and()
-				.exceptionHandling().accessDeniedPage("/error/403").and()
+				.logout().logoutUrl("/logout" ).logoutSuccessUrl("/login" ).and()
+				.exceptionHandling().accessDeniedPage("/error/403" ).and()
 				.csrf().disable();
 	}
+	
 	@Override
 	public void configure(final WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/resources/css/**", "/resources/js/**", "/resources/img/**", "/favicon.ico", "/error/403");
+		web.ignoring().antMatchers("/resources/css/**", "/resources/js/**", "/resources/img/**", "/resources/plugins/**", "/favicon.ico", "/error/403" );
 	}
-
+	
 	@Bean
-	public PasswordEncoder passwordEncoder(){
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authProvider());
 	}
-
+	
 	@Bean
 	public DaoAuthenticationProvider authProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -61,5 +62,5 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		authProvider.setPasswordEncoder(passwordEncoder());
 		return authProvider;
 	}
-
+	
 }
