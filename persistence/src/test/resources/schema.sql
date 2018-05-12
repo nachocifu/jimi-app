@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS users (
   userid   INTEGER IDENTITY PRIMARY KEY,
-  username varchar(100),
+  username varchar(100) UNIQUE,
   password varchar(100)
 );
 
@@ -33,4 +33,10 @@ CREATE TABLE IF NOT EXISTS orders_items
   orderid  INTEGER NOT NULL,
   dishid   INTEGER NOT NULL,
   quantity INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user_roles
+(
+  userid   INTEGER NOT NULL,
+  role     VARCHAR(30)
 );
