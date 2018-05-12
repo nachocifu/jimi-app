@@ -51,8 +51,8 @@
 
                                         <h2><spring:message code="table.table_is"/> <span
                                                 style="color: green;"><spring:message
-                                                code="table.free"/></span>. <spring:message
-                                                code="table.ask_occupy"/></h2>
+                                                code="table.free"/></span>
+                                        </h2>
 
                                         <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                             <input value="1" name="status" type="hidden"/>
@@ -102,7 +102,7 @@
                                     <form:form modelAttribute="tableSetDinersForm" action="${postPath}"
                                                method="post">
                                         <form:label for="diners" path="diners">Number of diners</form:label>
-                                        <form:input type="number" id="diners" name="diners" value="${table.diners}"
+                                        <form:input type="number" id="diners" name="diners" value="${diners}"
                                                     path="diners"/>
                                         <form:errors path="diners" cssStyle="color: red;" element="p"/>
                                         <input type="submit" value="Set"/>
@@ -171,7 +171,7 @@
 
 
                         <div class="col-lg-12 p-t-20 text-center">
-                            <a href="<c:url value="/tables"/>"><spring:message code="table.return_to_table_list"/></a><br>
+                            <a href="<c:url value="/tables/"/>"><spring:message code="table.return_to_table_list"/></a><br>
                         </div>
                     </div>
 

@@ -16,8 +16,7 @@ CREATE TABLE IF NOT EXISTS "tables"
   name     VARCHAR(100)       NOT NULL,
   tableid  SERIAL PRIMARY KEY NOT NULL,
   statusid INTEGER            NOT NULL,
-  orderid  INTEGER,
-  diners   INTEGER
+  orderid  INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS "orders"
@@ -25,7 +24,8 @@ CREATE TABLE IF NOT EXISTS "orders"
   orderid SERIAL PRIMARY KEY NOT NULL,
   openedAt TIMESTAMP,
   closedAt TIMESTAMP,
-  statusid INTEGER
+  statusid INTEGER,
+  diners   INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS orders_items

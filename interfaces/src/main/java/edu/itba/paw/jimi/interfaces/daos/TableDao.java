@@ -37,9 +37,8 @@ public interface TableDao {
 	 * @param name Name of the table.
 	 * @param ts Status of the table.
 	 * @param order Tables order.
-	 * @param diners Number of diners.
 	 * @throws TableWithNullOrderException when a order not in the DB or null is passed.
 	 * @return The created table.
 	 */
-	Table create(String name, TableStatus ts, Order order, int diners) throws TableWithNullOrderException;
+	Table create(String name, TableStatus ts, Order order) throws TableWithNullOrderException;
 }

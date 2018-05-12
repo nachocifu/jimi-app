@@ -8,9 +8,10 @@ import java.util.Collection;
 public interface TableService {
 	
 	Table findById(long id);
-
+	
 	/**
 	 * Creates a new table with a order.
+	 *
 	 * @param name
 	 * @return
 	 */
@@ -22,23 +23,16 @@ public interface TableService {
 	 * @return all the tables.
 	 */
 	Collection<Table> findAll();
-
-	/**
-	 * Sets the amount of dinners.
-	 * @param table The table to modify.
-	 * @param diners The positive amount of diners.
-	 * @return The amount of diners saved.
-	 */
-	int setDiners(Table table, int diners);
-
-
+	
+	
 	/**
 	 * Sets the status of the table.
-	 * @param table The table to modify.
+	 *
+	 * @param table  The table to modify.
 	 * @param status The new status of the table.
 	 */
 	void changeStatus(Table table, TableStatus status);
-
+	
 	//TODO: Implementar.
 //	/**
 //	 * Closes the order and changes the status.

@@ -5,14 +5,12 @@ public class
 Table {
 	
 	private long id;
-	private int diners;
 	private String name;
 	private TableStatus status;
 	private Order order;
 	
-	public Table(String name, long id, TableStatus status, Order order, int diners) {
+	public Table(String name, long id, TableStatus status, Order order) {
 		this.id = id;
-		this.diners = diners;
 		this.name = name;
 		this.status = status;
 		this.order = order;
@@ -33,7 +31,6 @@ Table {
 	@Override
 	public String toString() {
 		return "Table{" +
-				"diners=" + diners +
 				", name='" + name + '\'' +
 				", status=" + status +
 				", order=" + order +
@@ -43,21 +40,13 @@ Table {
 	public void setId(long id) {
 		this.id = id;
 	}
-
-	public void setDiners(int diners) {
-		this.diners = diners;
-	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	public void setStatus(TableStatus status) {
 		this.status = status;
-	}
-
-	public int getDiners() {
-		return diners;
 	}
 	
 	public String getName() {

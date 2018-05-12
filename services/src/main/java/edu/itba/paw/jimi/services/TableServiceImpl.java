@@ -1,8 +1,6 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
-import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotBusyTableException;
-import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotOpenOrderException;
 import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
@@ -29,30 +27,12 @@ public class TableServiceImpl implements TableService {
     }
 
     public Table create(String name) {
-        Order order = orderService.create(OrderStatus.INACTIVE, null, null);
-        return tableDao.create(name, TableStatus.Free, order, 0);
+        Order order = orderService.create(OrderStatus.INACTIVE, null, null, 0);
+        return tableDao.create(name, TableStatus.Free, order);
     }
 
     public Collection<Table> findAll() {
         return tableDao.findAll();
-    }
-
-    public int setDiners(Table table, int diners) {
-        Table t = tableDao.findById(table.getId());
-
-        if (!t.getStatus().equals(TableStatus.Busy))
-            throw new DinersSetOnNotBusyTableException();
-
-        if (!t.getOrder().getStatus().equals(OrderStatus.OPEN))
-            throw new DinersSetOnNotOpenOrderException();
-
-        if (diners >= 0){
-            t.setDiners(diners);
-            table.setDiners(diners);
-            tableDao.update(t);
-            return diners;
-        }
-        return 0;
     }
 
     public void changeStatus(Table table, TableStatus status) {
@@ -87,9 +67,8 @@ public class TableServiceImpl implements TableService {
                 //TODO: A pensar... Diners no tendria que ir en order? porque cuando lo cierro, quiero que quede cuanta gente comio ahi. Aparte, como cobras el servicio de mesa si no lo tiene order? Podrian tenerlo los 2?
                 //@cappa: deberìa estar en order.
                 // Now lets create a new inactive order for our table.
-                Order newOrder = orderService.create(OrderStatus.INACTIVE, null, null);
+                Order newOrder = orderService.create(OrderStatus.INACTIVE, null, null, 0);
                 t.setOrder(newOrder);
-                t.setDiners(0);
 
                 break;
             }

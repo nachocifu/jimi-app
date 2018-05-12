@@ -1,10 +1,10 @@
 package edu.itba.paw.jimi.persistence;
 
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
+import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,34 +23,33 @@ import java.util.Map;
 public class TableJdbcDao implements TableDao {
 	
 	private JdbcTemplate jdbcTemplate;
-
+	
 	private SimpleJdbcInsert jdbcInsert;
-
+	
 	private OrderJdbcDao orderJdbcDao;
-
+	
 	private static final String TABLE_TABLE_NAME = "tables";
-
+	
 	private ResultSetExtractor<Collection<Table>> ROW_MAPPER = new ResultSetExtractor<Collection<Table>>() {
 		
 		public Collection<Table> extractData(ResultSet rs) throws SQLException, DataAccessException {
 			
 			Map<Long, Table> tables = new HashMap<Long, Table>();
-
+			
 			while (rs.next()) {
 				// Get the order from the orderDao.
 				Order order = orderJdbcDao.findById(rs.getLong("orderid"));
-
+				
 				// Create the table with the correct values.
 				Table table = new Table(rs.getString("name"),
-										rs.getLong("tableid"),
-										TableStatus.getTableStatus(rs.getInt("statusid")),
-										order,
-										rs.getInt("diners"));
-
+						rs.getLong("tableid"),
+						TableStatus.getTableStatus(rs.getInt("statusid")),
+						order);
+				
 				// Save it.
 				tables.put(table.getId(), table);
 			}
-
+			
 			return tables.values();
 		}
 	};
@@ -60,28 +59,27 @@ public class TableJdbcDao implements TableDao {
 		
 		orderJdbcDao = new OrderJdbcDao(ds);
 		jdbcTemplate = new JdbcTemplate(ds);
-
+		
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
 				.withTableName(TABLE_TABLE_NAME)
 				.usingGeneratedKeyColumns("tableid");
-
+		
 	}
-
-	public Table create(String name, TableStatus ts, Order order, int diners) throws TableWithNullOrderException{
-
+	
+	public Table create(String name, TableStatus ts, Order order) throws TableWithNullOrderException {
+		
 		// In case the order is null or empty, throw exception.
 		if (order == null || orderJdbcDao.findById(order.getId()) == null)
 			throw new TableWithNullOrderException();
-
+		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("name", name);
 		args.put("statusid", ts.getId());
 		args.put("orderid", order.getId());
-		args.put("diners", diners);
 		final Number tableId = jdbcInsert.executeAndReturnKey(args);
 		return findById(tableId.intValue());
 	}
-
+	
 	
 	public Table findById(long id) {
 		final Collection<Table> list = jdbcTemplate.query(
@@ -98,10 +96,9 @@ public class TableJdbcDao implements TableDao {
 		
 		orderJdbcDao.update(table.getOrder());
 		
-		jdbcTemplate.update("UPDATE tables SET (statusid, orderid, diners, name) = (?, ?, ?, ?) WHERE tableid = ?",
+		jdbcTemplate.update("UPDATE tables SET (statusid, orderid, name) = (?, ?, ?) WHERE tableid = ?",
 				table.getStatus().getId(),
 				table.getOrder().getId(),
-				table.getDiners(),
 				table.getName(),
 				table.getId());
 		

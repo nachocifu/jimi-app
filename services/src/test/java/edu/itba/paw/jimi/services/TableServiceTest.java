@@ -2,9 +2,6 @@ package edu.itba.paw.jimi.services;
 
 
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
-import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotBusyTableException;
-import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotOpenOrderException;
-import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
 import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
@@ -46,16 +43,15 @@ public class TableServiceTest {
     public void before(){
         MockitoAnnotations.initMocks(this);
     }
-
-
+    
     @Test
     public void createTest() {
 
         // Mockito mocking
-        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
 
-        Mockito.when(orderService.create(OrderStatus.INACTIVE, null, null)).thenReturn(order);
-        Mockito.when(tableDao.create(TABLE_NAME, TableStatus.Free, order, 0)).thenReturn(new Table(TABLE_NAME, 1, TableStatus.Free, order, 0));
+        Mockito.when(orderService.create(OrderStatus.INACTIVE, null, null, 0)).thenReturn(order);
+        Mockito.when(tableDao.create(TABLE_NAME, TableStatus.Free, order)).thenReturn(new Table(TABLE_NAME, 1, TableStatus.Free, order));
         // Mockito mocking
 
         Table table = tableService.create(TABLE_NAME);
@@ -63,67 +59,13 @@ public class TableServiceTest {
         assertEquals(TableStatus.Free, table.getStatus());
         assertEquals(order.getId(), table.getOrder().getId());
         assertEquals(OrderStatus.INACTIVE, order.getStatus());
-        assertEquals(0, table.getDiners());
+        assertEquals(0, table.getOrder().getDiners());
     }
-
-    @Test
-    public void setDinersTest(){
-        Order order = new Order(1, null, null, OrderStatus.OPEN);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order, 0);
-
-        // Mockito mocking
-        Mockito.when(tableDao.findById(1)).thenReturn(table);
-        // Mockito mocking
-
-        tableService.setDiners(table, 5);
-
-        assertEquals(5, table.getDiners());
-    }
-
-    @Test(expected = DinersSetOnNotBusyTableException.class)
-    public void setDinersOnNotBusyTableTest(){
-        Order order = new Order(1, null, null, OrderStatus.OPEN);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
-
-        // Mockito mocking
-        Mockito.when(tableDao.findById(1)).thenReturn(table);
-        // Mockito mocking
-
-        tableService.setDiners(table, 5);
-    }
-
-    @Test(expected = DinersSetOnNotOpenOrderException.class)
-    public void setDinersOnNotOpenOrderTest(){
-        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order, 0);
-
-        // Mockito mocking
-        Mockito.when(tableDao.findById(1)).thenReturn(table);
-        // Mockito mocking
-
-        tableService.setDiners(table, 5);
-    }
-
-
-    @Test
-    public void setDinersNegativeTest(){
-        Order order = new Order(1, null, null, OrderStatus.OPEN);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order, 0);
-
-        // Mockito mocking
-        Mockito.when(tableDao.findById(1)).thenReturn(table);
-        // Mockito mocking
-
-        tableService.setDiners(table, -5);
-
-        assertEquals(0, table.getDiners());
-    }
-
 
     @Test
     public void setStatusFromFreeToBusyTest(){
-        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order);
 
         // Mockito mocking
         Mockito.when(tableDao.findById(1)).thenReturn(table);
@@ -136,8 +78,8 @@ public class TableServiceTest {
 
     @Test(expected = TableStatusTransitionInvalid.class)
     public void setStatusFromFreeToNOTBusyTest(){
-        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order, 0);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Free, order);
 
         // Mockito mocking
         Mockito.when(tableDao.findById(1)).thenReturn(table);
@@ -149,8 +91,8 @@ public class TableServiceTest {
 
     @Test
     public void setStatusFromBusyToCleaningTest(){
-        Order order = new Order(1, null, null, OrderStatus.OPEN);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order, 0);
+        Order order = new Order(1, null, null, OrderStatus.OPEN,0 );
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order);
 
         // Mockito mocking
         Mockito.when(tableDao.findById(1)).thenReturn(table);
@@ -163,8 +105,8 @@ public class TableServiceTest {
 
     @Test(expected = TableStatusTransitionInvalid.class)
     public void setStatusFromBusyToNOTCleaningTest(){
-        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order, 0);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.Busy, order);
 
         // Mockito mocking
         Mockito.when(tableDao.findById(1)).thenReturn(table);
@@ -176,8 +118,8 @@ public class TableServiceTest {
 
     @Test
     public void setStatusFromCleaningToFreeTest(){
-        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.CleaningRequired, order, 0);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.CleaningRequired, order);
 
         // Mockito mocking
         Mockito.when(tableDao.findById(1)).thenReturn(table);
@@ -190,8 +132,8 @@ public class TableServiceTest {
 
     @Test(expected = TableStatusTransitionInvalid.class)
     public void setStatusFromCleaningToNOTFreeTest(){
-        Order order = new Order(1, null, null, OrderStatus.INACTIVE);
-        Table table = new Table(TABLE_NAME, 1, TableStatus.CleaningRequired, order, 0);
+        Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+        Table table = new Table(TABLE_NAME, 1, TableStatus.CleaningRequired, order);
 
         // Mockito mocking
         Mockito.when(tableDao.findById(1)).thenReturn(table);
