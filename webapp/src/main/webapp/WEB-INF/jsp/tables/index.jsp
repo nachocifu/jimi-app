@@ -126,7 +126,8 @@
                                                     <td><c:out value="${dishEntry.value}"/></td>
                                                     <td><c:out value="${dishEntry.value * dishEntry.key.price}"/></td>
                                                     <td>
-                                                        <form action="<c:url value="/tables/${table.id}/add_one_dish"/>" method="post">
+                                                        <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
+                                                              method="post">
                                                             <button type="submit" class="btn btn-success btn-xs">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
@@ -171,7 +172,8 @@
 
 
                         <div class="col-lg-12 p-t-20 text-center">
-                            <a href="<c:url value="/tables/"/>"><spring:message code="table.return_to_table_list"/></a><br>
+                            <a href="<c:url value="/tables/"/>"><spring:message
+                                    code="table.return_to_table_list"/></a><br>
                         </div>
                     </div>
 
