@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -32,10 +29,15 @@ public class UserController {
 	
 	
 	@RequestMapping("/{userId}")
-	public ModelAndView index(@RequestParam(value = "userId", required = true) final int id) {
+	public ModelAndView index(@PathVariable("userId") final int id) {
 		final ModelAndView mav = new ModelAndView("users/index");
-		mav.addObject("user", us.findById(id));
-		return mav;
+		User user = us.findById(id);
+		if (user != null) {
+			mav.addObject("user", user);
+			return mav;
+		}else{
+			return new ModelAndView("users/list"); //TODO: Aca va un error....
+		}
 	}
 	
 	@RequestMapping(value = "/create", method = {RequestMethod.POST})

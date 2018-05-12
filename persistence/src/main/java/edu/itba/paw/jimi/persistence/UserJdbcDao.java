@@ -68,7 +68,7 @@ public class UserJdbcDao implements UserDao {
 
 
     public User findById(long id) {
-        final Collection<User> list = jdbcTemplate.query("SELECT * FROM users LEFT OUTER JOIN user_roles ON (user_roles.userid = users.userid) WHERE userid = ?", ROW_MAPPER, id);
+        final Collection<User> list = jdbcTemplate.query("SELECT * FROM users LEFT OUTER JOIN user_roles ON (user_roles.userid = users.userid) WHERE users.userid = ?", ROW_MAPPER, id);
         if (list.isEmpty()) {
             return null;
         }
