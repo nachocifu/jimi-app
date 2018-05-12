@@ -54,7 +54,7 @@
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-striped custom-table">
-                                                <thead>
+                                                <thead class="text-left">
                                                 <tr>
                                                     <th>Name</th>
                                                     <th>Price</th>
@@ -66,6 +66,7 @@
                                                 <tbody>
                                                 <c:forEach items="${dishes}" var="dish">
                                                     <tr>
+                                                    <tr>
                                                         <td><c:out value="${dish.name}"/></td>
                                                         <td>$<c:out value="${dish.price}"/></td>
                                                         <td><c:out value="${dish.stock}"/></td>
@@ -74,9 +75,9 @@
                                                                 <c:when test="${dish.status.toString() == 'Available'}">
                                                                     <span class="label label-success label-mini">Available</span>
                                                                 </c:when>
-                                                            <c:otherwise>
-                                                                <span class="label label-danger label-mini">Unavailable</span>
-                                                            </c:otherwise>
+                                                                <c:otherwise>
+                                                                    <span class="label label-danger label-mini">Unavailable</span>
+                                                                </c:otherwise>
                                                             </c:choose>
                                                         </td>
                                                         <td>
@@ -99,6 +100,7 @@
                                                                 </button>
                                                             </form>
                                                         </td>
+                                                    </tr>
                                                     </tr>
                                                 </c:forEach>
                                                 </tbody>
