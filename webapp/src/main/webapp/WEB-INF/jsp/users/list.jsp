@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -44,15 +47,15 @@
                             <div class="col-md-10 mx-auto mt-5">
                                 <div class="card card-topline-purple">
                                     <div class="card-head">
-                                        <header>Users</header>
+                                        <header><spring:message code="user.list_header"/></header>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-striped custom-table">
                                                 <thead>
                                                 <tr>
-                                                    <th>Name</th>
-                                                    <th>Id</th>
+                                                    <th><spring:message code="user.username_form_label"/></th>
+                                                    <th><spring:message code="user.id_table_head"/></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>

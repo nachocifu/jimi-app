@@ -68,7 +68,7 @@
                                 <div class="col-lg-15 p-t-20">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
 
-                                        <form:label type="text" path="password"
+                                        <form:label path="password"
                                                     cssClass="mdl-textfield__label"><spring:message
                                                 code="user.password_form_label"/></form:label>
                                         <form:input type="password" path="password" cssClass="mdl-textfield__input"/>

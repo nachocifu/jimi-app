@@ -51,13 +51,12 @@
 
                                         <h2><spring:message code="table.table_is"/> <span
                                                 style="color: green;"><spring:message
-                                                code="table.free"/></span>
-                                        </h2>
+                                                code="table.free"/></span>.</h2>
 
                                         <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                             <input value="1" name="status" type="hidden"/>
                                             <input type="submit"
-                                                   class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink"
+                                                   class="btn btn-default btn-pink"
                                                    value="OCCUPY"/>
                                         </form>
 
@@ -67,13 +66,12 @@
 
                                         <h2><spring:message code="table.table_is"/> <span
                                                 style="color: orange;"><spring:message
-                                                code="table.cleaning"/></span>. <spring:message
-                                                code="table.ask_ready_for_use"/></h2>
+                                                code="table.cleaning"/></span>.</h2>
 
                                         <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                             <input value="2" name="status" type="hidden"/>
                                             <input type="submit"
-                                                   class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink"
+                                                   class="btn btn-default btn-pink"
                                                    value="FREE"/>
                                         </form>
 
@@ -81,24 +79,18 @@
 
                                     <c:if test="${table.status == 'Busy'}">
 
-                                        <h2><spring:message code="table.table_is"/>
-                                            <span
-                                                    style="color: red;"><spring:message
-                                                    code="table.busy"/></span>.
-                                        </h2>
+                                    <h2><spring:message code="table.table_is"/>
+                                        <span style="color: red;"><spring:message code="table.busy"/></span>.
+                                    </h2>
 
-                                        <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                            <input value="3" name="status" type="hidden"/>
-                                            <input type="submit"
-                                                   class="btn btn-default btn-pink"
-                                                   value="CLEAN"/>
-                                        </form>
+                                    <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
+                                        <input value="3" name="status" type="hidden"/>
+                                        <input type="submit"
+                                               class="btn btn-default btn-pink"
+                                               value="<spring:message code="table.cleaning_caps"/>"/>
+                                    </form>
 
 
-                                    </c:if>
-
-
-                                    <c:if test="${table.status == 'Busy'}">
                                     <c:url value="/tables/${table.id}/set_diners" var="postPath"/>
                                     <form:form modelAttribute="tableSetDinersForm" action="${postPath}"
                                                method="post">
@@ -131,14 +123,11 @@
                                                 <th><spring:message code="dish.price"/></th>
                                                 <th><spring:message code="dish.amount"/></th>
                                                 <th><spring:message code="dish.total"/></th>
-                                                <th>Actions</th>
-                                                <th></th>
                                                 <th></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <c:forEach items="${dishes}" var="dishEntry">
-                                                <tr>
                                                 <tr>
                                                     <td><c:out value="${dishEntry.key.name}"/></td>
                                                     <td><c:out value="${dishEntry.key.price}"/></td>
@@ -181,7 +170,6 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                </tr>
                                             </c:forEach>
                                             </tbody>
                                         </table>
@@ -189,20 +177,18 @@
                                 </div>
 
                                 <form action="<c:url value="/tables/${table.id}/add_dish"/>">
-                                    <input type="submit" value="Add dish" class="btn btn-default"/>
+                                    <input type="submit" value="<spring:message code="table.add_dish"/>" class="btn btn-default"/>
                                 </form>
                                 </c:if>
 
+                                <div class="col-lg-12 text-center">
+                                    <a href="<c:url value="/tables/"/>" class="btn btn-default btn-pink"><spring:message
+                                            code="table.return_to_table_list"/></a><br>
+                                </div>
+
                             </div>
                         </div>
-
-
-                        <div class="col-lg-12 p-t-20 text-center">
-                            <a href="<c:url value="/tables/"/>"><spring:message
-                                    code="table.return_to_table_list"/></a><br>
-                        </div>
                     </div>
-
                 </div>
                 <!-- end page content -->
 

@@ -61,7 +61,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="col-lg-12 p-t-20 text-center">
                                     <button type="submit"
                                             class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink ">
