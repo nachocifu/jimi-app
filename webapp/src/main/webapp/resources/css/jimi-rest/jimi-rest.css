@@ -43,3 +43,8 @@
 p {
     color: rebeccapurple;
 }
+
+.form-with-buttons {
+    margin-top: 1em;
+    margin-right: 1em;
+}
