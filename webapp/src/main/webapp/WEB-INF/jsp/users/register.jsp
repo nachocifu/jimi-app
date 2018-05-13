@@ -44,7 +44,7 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card-box card-box-register-user mx-auto mt-3">
+                    <div class="card-box card-box-user mx-auto mt-3">
                         <div class="card-head">
                             <header><spring:message code="user.register_header"/></header>
                         </div>
@@ -90,7 +90,7 @@
 
                                 <div class="col-lg-12 p-t-20 text-center">
                                     <button type="submit"
-                                            class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink">
+                                            class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color">
                                         <spring:message code="register_button_label"/>
                                     </button>
                                 </div>

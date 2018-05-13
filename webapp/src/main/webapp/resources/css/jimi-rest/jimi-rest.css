@@ -4,6 +4,18 @@
     font-size: 25px;
 }
 
+.page-logo {
+    box-sizing: border-box;
+}
+
+.page-footer {
+    box-sizing: border-box;
+}
+
+.page-content-wrapper {
+    margin-bottom: 80px;
+}
+
 .page-content-register-user {
     min-height: 600px;
     margin-top: 80px;
@@ -18,7 +30,9 @@
     text-align: center;
 }
 
-.card-box-register-user {
+.card-box-user {
+    margin: 0 auto;
+    float: none;
     max-width: 30em;
 }
 
@@ -47,4 +61,24 @@ p {
 .form-with-buttons {
     margin-top: 1em;
     margin-right: 1em;
+}
+
+.rebeccapurple-color {
+    background-color: #663399 !important;
+    border: 1px solid #663399 !important;
+    color: #fff !important;
+}
+
+.rebeccapurple-color:active,
+.rebeccapurple-color:focus,
+.rebeccapurple-color:hover,
+.rebeccapurple-color.active,
+.rebeccapurple-color.focus,
+.rebeccapurple-color:active,
+.rebeccapurple-color:focus,
+.rebeccapurple-color:hover,
+.open > .dropdown-toggle.rebeccapurple-color {
+    background-color: #663399 !important;
+    border: 1px solid #663399 !important;
+    color: #fff !important;
 }

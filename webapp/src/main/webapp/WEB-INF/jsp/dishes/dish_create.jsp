@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <head>
@@ -48,7 +49,7 @@
                     <div class="col-sm-10 mx-auto mt-5">
                         <div class="card-box">
                             <div class="card-head">
-                                <header>Add Dish</header>
+                                <header><spring:message code="dish.add_dish_header"/></header>
                             </div>
                             <c:url value="/dishes/create" var="postPath"/>
                             <form:form modelAttribute="dishCreateForm" action="${postPath}" method="post">
@@ -56,35 +57,39 @@
                                     <div class="col-lg-6 p-t-20">
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
                                             <form:input class="mdl-textfield__input" type="text" path="name"/>
-                                            <label class="mdl-textfield__label">Name</label>
+                                            <label class="mdl-textfield__label"><spring:message
+                                                    code="dish.name"/></label>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 p-t-20">
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
                                             <form:input class="mdl-textfield__input" type="text"
                                                         pattern="[0-9]*(\.[0-9]+)?" path="price"/>
-                                            <label class="mdl-textfield__label">Price</label>
-                                            <span class="mdl-textfield__error">Number required!</span>
+                                            <label class="mdl-textfield__label"><spring:message
+                                                    code="dish.price"/></label>
+                                            <span class="mdl-textfield__error"><spring:message
+                                                    code="dish.number_required"/></span>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 p-t-20">
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
                                             <form:input class="mdl-textfield__input" type="text"
                                                         pattern="[0-9]+" path="stock"/>
-                                            <label class="mdl-textfield__label">Amount</label>
-                                            <span class="mdl-textfield__error">Number required!</span>
+                                            <label class="mdl-textfield__label"><spring:message
+                                                    code="dish.amount"/></label>
+                                            <span class="mdl-textfield__error"><spring:message
+                                                    code="dish.number_required"/></span>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 p-t-20 text-center">
                                         <button type="submit"
-                                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">
-                                            Add
+                                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 rebeccapurple-color">
+                                            <spring:message
+                                                    code="dish.add"/>
                                         </button>
-                                        <form action="<c:url value="/dishes/"/>" >
-                                            <button type="button submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">
-                                                Cancel
-                                            </button>
-                                        </form>
+                                        <a href="<c:url value="/dishes/"/>"
+                                           class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default"><spring:message
+                                                code="dish.cancel"/></a><br>
                                     </div>
                                 </div>
                             </form:form>

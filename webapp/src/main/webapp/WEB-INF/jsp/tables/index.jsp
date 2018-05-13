@@ -32,7 +32,7 @@
 
 
     <!-- start page content -->
-    <div class="page-content-wrapper fixed">
+    <div class="page-content-wrapper">
         <div class="page-content-register-user">
 
             <div class="row">
@@ -49,30 +49,30 @@
 
                                     <c:if test="${table.status == 'Free'}">
 
-                                        <h2><spring:message code="table.table_is"/> <span
+                                        <h2><spring:message code="table.table_is"/> <strong><span
                                                 style="color: green;"><spring:message
-                                                code="table.free"/></span>.</h2>
+                                                code="table.free"/></span></strong>.</h2>
 
                                         <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                             <input value="1" name="status" type="hidden"/>
                                             <input type="submit"
-                                                   class="btn btn-default btn-pink"
-                                                   value="OCCUPY"/>
+                                                   class="btn btn-default rebeccapurple-color"
+                                                   value="<spring:message code="table.occupy"/>"/>
                                         </form>
 
                                     </c:if>
 
                                     <c:if test="${table.status == 'CleaningRequired'}">
 
-                                        <h2><spring:message code="table.table_is"/> <span
+                                        <h2><spring:message code="table.table_is"/> <strong><span
                                                 style="color: orange;"><spring:message
-                                                code="table.cleaning"/></span>.</h2>
+                                                code="table.cleaning"/></span></strong>.</h2>
 
                                         <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                             <input value="2" name="status" type="hidden"/>
                                             <input type="submit"
-                                                   class="btn btn-default btn-pink"
-                                                   value="FREE"/>
+                                                   class="btn btn-default rebeccapurple-color"
+                                                   value="<spring:message code="table.free"/>"/>
                                         </form>
 
                                     </c:if>
@@ -80,13 +80,14 @@
                                     <c:if test="${table.status == 'Busy'}">
 
                                     <h2><spring:message code="table.table_is"/>
-                                        <span style="color: red;"><spring:message code="table.busy"/></span>.
+                                        <strong><span style="color: red;"><spring:message
+                                                code="table.busy"/></span></strong>.
                                     </h2>
 
                                     <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                         <input value="3" name="status" type="hidden"/>
                                         <input type="submit"
-                                               class="btn btn-default btn-pink"
+                                               class="btn btn-default rebeccapurple-color"
                                                value="<spring:message code="table.cleaning_caps"/>"/>
                                     </form>
 
@@ -98,7 +99,8 @@
                                             <div class="form-group col-md-6">
                                                 <form:label for="diners"
                                                             path="diners"
-                                                            placeholder=".col-lg-2">Number of diners:</form:label>
+                                                            placeholder=".col-lg-2"><spring:message
+                                                        code="table.number_of_diners"/>:</form:label>
                                                 <div class="form-row">
                                                     <div class="col-md-2">
                                                         <form:input type="number" id="diners" name="diners"
@@ -108,13 +110,16 @@
                                                         <form:errors path="diners" cssStyle="color: red;" element="p"/>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input type="submit" value="Set"
+                                                        <input type="submit"
+                                                               value="<spring:message code="table.set_diners"/>"
                                                                class="btn btn-default"/>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </form:form>
+                                    <c:choose>
+                                    <c:when test="${table.order.dishes.size() > 0}">
                                     <div class="table-responsive">
                                         <table class="table table-striped custom-table">
                                             <thead class="text-left">
@@ -173,35 +178,43 @@
                                             </c:forEach>
                                             </tbody>
                                         </table>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="alert alert-info text-center">
+                                                <spring:message code="table.no_dishes"/>
+                                            </div>
+                                        </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
 
                                 <form action="<c:url value="/tables/${table.id}/add_dish"/>">
-                                    <input type="submit" value="<spring:message code="table.add_dish"/>" class="btn btn-default"/>
+                                    <input type="submit" value="<spring:message code="table.add_dish"/>"
+                                           class="btn btn-default"/>
                                 </form>
                                 </c:if>
 
                                 <div class="col-lg-12 text-center">
-                                    <a href="<c:url value="/tables/"/>" class="btn btn-default btn-pink"><spring:message
+                                    <a href="<c:url value="/tables/"/>"
+                                       class="btn btn-default rebeccapurple-color"><spring:message
                                             code="table.return_to_table_list"/></a><br>
                                 </div>
 
                             </div>
                         </div>
+
                     </div>
                 </div>
-                <!-- end page content -->
-
-
-                <!-- start footer -->
-                <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-                <!-- end footer -->
-
             </div>
 
         </div>
-
     </div>
+    <!-- end page content -->
+
+
+    <!-- start footer -->
+    <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
+    <!-- end footer -->
 
     <!-- start js include path -->
     <script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
