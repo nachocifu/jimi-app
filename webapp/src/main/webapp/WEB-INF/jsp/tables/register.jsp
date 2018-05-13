@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <head>
@@ -45,7 +46,7 @@
                 <div class="col-sm-12">
                     <div class="card-box card-box-user mx-auto mt-5">
                         <div class="card-head">
-                            <header>Register Table</header>
+                            <header><spring:message code="table.register_header"/></header>
                         </div>
 
                         <c:url value="/tables/create" var="postPath"/>
@@ -55,7 +56,8 @@
 
                                 <div class="col-lg-15 p-t-20">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                        <form:label path="name" cssClass="mdl-textfield__label">Name</form:label>
+                                        <form:label path="name" cssClass="mdl-textfield__label"><spring:message
+                                                code="table.name"/></form:label>
                                         <form:input type="text" path="name" cssClass="mdl-textfield__input"/>
                                         <form:errors path="name" cssClass="formError" element="p"/>
                                     </div>
@@ -64,7 +66,7 @@
                                 <div class="col-lg-12 p-t-20 text-center">
                                     <button type="submit"
                                             class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink ">
-                                        Register
+                                        <spring:message code="table.register"/>
                                     </button>
                                 </div>
 

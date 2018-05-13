@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
 <html>
@@ -49,18 +50,19 @@
                             <div class="col-md-10 mx-auto mt-5">
                                 <div class="card card-topline-purple">
                                     <div class="card-head">
-                                        <header>Dishes</header>
+                                        <header><spring:message code="dishes"/></header>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-striped custom-table">
                                                 <thead class="text-left">
                                                 <tr>
-                                                    <th>Name</th>
-                                                    <th>Price</th>
-                                                    <th>Stock</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
+                                                    <th><spring:message code="dish.name"/></th>
+                                                    <th><spring:message code="dish.price"/></th>
+                                                    <th><spring:message code="dish.stock"/></th>
+                                                    <th><spring:message code="dish.status"/></th>
+                                                    <th></th>
+                                                    <th></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -73,10 +75,12 @@
                                                         <td>
                                                             <c:choose>
                                                                 <c:when test="${dish.status.toString() == 'Available'}">
-                                                                    <span class="label label-success label-mini">Available</span>
+                                                                    <span class="label label-success label-mini"><spring:message
+                                                                            code="dish.available"/></span>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <span class="label label-danger label-mini">Unavailable</span>
+                                                                    <span class="label label-danger label-mini"><spring:message
+                                                                            code="dish.unavailable"/></span>
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>

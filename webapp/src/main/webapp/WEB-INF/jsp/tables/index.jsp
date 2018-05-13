@@ -57,7 +57,7 @@
                                             <input value="1" name="status" type="hidden"/>
                                             <input type="submit"
                                                    class="btn btn-default btn-pink"
-                                                   value="OCCUPY"/>
+                                                   value="<spring:message code="table.occupy"/>"/>
                                         </form>
 
                                     </c:if>
@@ -72,7 +72,7 @@
                                             <input value="2" name="status" type="hidden"/>
                                             <input type="submit"
                                                    class="btn btn-default btn-pink"
-                                                   value="FREE"/>
+                                                   value="<spring:message code="table.free"/>"/>
                                         </form>
 
                                     </c:if>
@@ -98,7 +98,8 @@
                                             <div class="form-group col-md-6">
                                                 <form:label for="diners"
                                                             path="diners"
-                                                            placeholder=".col-lg-2">Number of diners:</form:label>
+                                                            placeholder=".col-lg-2"><spring:message
+                                                        code="table.number_of_diners"/>:</form:label>
                                                 <div class="form-row">
                                                     <div class="col-md-2">
                                                         <form:input type="number" id="diners" name="diners"
@@ -108,7 +109,8 @@
                                                         <form:errors path="diners" cssStyle="color: red;" element="p"/>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input type="submit" value="Set"
+                                                        <input type="submit"
+                                                               value="<spring:message code="table.set_diners"/>"
                                                                class="btn btn-default"/>
                                                     </div>
                                                 </div>
@@ -177,7 +179,8 @@
                                 </div>
 
                                 <form action="<c:url value="/tables/${table.id}/add_dish"/>">
-                                    <input type="submit" value="<spring:message code="table.add_dish"/>" class="btn btn-default"/>
+                                    <input type="submit" value="<spring:message code="table.add_dish"/>"
+                                           class="btn btn-default"/>
                                 </form>
                                 </c:if>
 

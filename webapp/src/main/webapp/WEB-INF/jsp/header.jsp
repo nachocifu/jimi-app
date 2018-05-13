@@ -1,16 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="page-header navbar navbar-fixed-top">
     <div class="page-header-inner ">
         <!-- logo start -->
         <div class="page-logo">
             <a href="index.html">
-                <span class="logo-default" >JIMI REST APP</span> </a>
+                <span class="logo-default"><spring:message code="jimi.app_name"/></span> </a>
         </div>
         <!-- logo end -->
         <!-- start mobile menu -->
-        <a href="javascript:" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+        <a href="javascript:" class="menu-toggler responsive-toggler" data-toggle="collapse"
+           data-target=".navbar-collapse">
             <span></span>
         </a>
         <!-- end mobile menu -->
@@ -19,8 +21,9 @@
             <ul class="nav navbar-nav pull-right">
                 <!-- start manage user dropdown -->
                 <li class="dropdown dropdown-user">
-                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                        <img alt="" class="img-circle " src="assets/img/dp.jpg" />
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                       data-close-others="true">
+                        <img alt="" class="img-circle " src="assets/img/dp.jpg"/>
                         <span class="username username-hide-on-mobile"> John </span>
                         <i class="fa fa-angle-down"></i>
                     </a>
@@ -39,7 +42,7 @@
                                 <i class="icon-directions"></i> Help
                             </a>
                         </li>
-                        <li class="divider"> </li>
+                        <li class="divider"></li>
                         <li>
                             <a href="#">
                                 <i class="icon-lock"></i> Lock
