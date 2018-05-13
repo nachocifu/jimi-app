@@ -90,7 +90,7 @@
 
                                 <div class="col-lg-12 p-t-20 text-center">
                                     <button type="submit"
-                                            class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink">
+                                            class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color">
                                         <spring:message code="register_button_label"/>
                                     </button>
                                 </div>

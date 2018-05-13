@@ -49,7 +49,7 @@
                     <div class="col-sm-10 mx-auto mt-5">
                         <div class="card-box">
                             <div class="card-head">
-                                <header>Add Dish</header>
+                                <header><spring:message code="dish.add_dish_header"/></header>
                             </div>
                             <c:url value="/dishes/create" var="postPath"/>
                             <form:form modelAttribute="dishCreateForm" action="${postPath}" method="post">
@@ -83,17 +83,13 @@
                                     </div>
                                     <div class="col-lg-12 p-t-20 text-center">
                                         <button type="submit"
-                                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">
+                                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 rebeccapurple-color">
                                             <spring:message
                                                     code="dish.add"/>
                                         </button>
-                                        <form action="<c:url value="/dishes/"/>">
-                                            <button type="button"
-                                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">
-                                                <spring:message
-                                                        code="dish.cancel"/>
-                                            </button>
-                                        </form>
+                                        <a href="<c:url value="/dishes/"/>"
+                                           class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default"><spring:message
+                                                code="dish.cancel"/></a><br>
                                     </div>
                                 </div>
                             </form:form>

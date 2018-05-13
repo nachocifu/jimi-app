@@ -65,7 +65,7 @@
                                     <form:errors path="amount" cssClass="formError" element="p"/>
                                 </form:select>
                                 <input type="submit" value="<spring:message code="dish.add"/>"
-                                       class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-pink"/>
+                                       class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color"/>
 
                             </div>
                         </form:form>

@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="col-lg-12 p-t-20 text-center">
                                     <input type="submit" value="<spring:message
-                code="login.button_label"/>" class="mdl-button mdl-button--raised btn-pink">
+                code="login.button_label"/>" class="mdl-button mdl-button--raised rebeccapurple-color">
                                 </div>
                             </form>
 

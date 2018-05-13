@@ -54,68 +54,17 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-striped custom-table">
-                                                <thead class="text-left">
-                                                <tr>
-                                                    <th><spring:message code="dish.name"/></th>
-                                                    <th><spring:message code="dish.price"/></th>
-                                                    <th><spring:message code="dish.stock"/></th>
-                                                    <th><spring:message code="dish.status"/></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <c:forEach items="${dishes}" var="dish">
-                                                    <tr>
-                                                    <tr>
-                                                        <td><c:out value="${dish.name}"/></td>
-                                                        <td>$<c:out value="${dish.price}"/></td>
-                                                        <td><c:out value="${dish.stock}"/></td>
-                                                        <td>
-                                                            <c:choose>
-                                                                <c:when test="${dish.status.toString() == 'Available'}">
-                                                                    <span class="label label-success label-mini"><spring:message
-                                                                            code="dish.available"/></span>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <span class="label label-danger label-mini"><spring:message
-                                                                            code="dish.unavailable"/></span>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </td>
-                                                        <td>
-                                                            <form action="<c:url value="/dishes/setstock"/>">
-                                                                <input type="hidden" value="${dish.id}" name="dishid">
-                                                                <input type="hidden" value="${dish.stock+1}"
-                                                                       name="stock">
-                                                                <button type="submit" class="btn btn-success btn-xs">
-                                                                    <i class="fa fa-plus"></i>
-                                                                </button>
-                                                            </form>
-                                                        </td>
-                                                        <td>
-                                                            <form action="<c:url value="/dishes/setstock"/>">
-                                                                <input type="hidden" value="${dish.id}" name="dishid">
-                                                                <input type="hidden" value="${dish.stock-1}"
-                                                                       name="stock">
-                                                                <button type="submit" class="btn btn-primary btn-xs">
-                                                                    <i class="fa fa-minus"></i>
-                                                                </button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                    </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                                <c:choose>
-                                                    <c:when test="${dishes.size() > 0}">
+                                            <c:choose>
+                                                <c:when test="${dishes.size() > 0}">
+                                                    <table class="table table-striped custom-table">
+                                                        <thead class="text-left">
                                                         <tr>
-                                                            <th>Name</th>
-                                                            <th>Price</th>
-                                                            <th>Stock</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
+                                                            <th><spring:message code="dish.name"/></th>
+                                                            <th><spring:message code="dish.price"/></th>
+                                                            <th><spring:message code="dish.stock"/></th>
+                                                            <th><spring:message code="dish.status"/></th>
+                                                            <th></th>
+                                                            <th></th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -128,29 +77,35 @@
                                                                 <td>
                                                                     <c:choose>
                                                                         <c:when test="${dish.stock > 0}">
-                                                                            <span class="label label-success label-mini">Available</span>
+                                                            <span class="label label-success label-mini"><spring:message
+                                                                    code="dish.available"/></span>
                                                                         </c:when>
                                                                         <c:otherwise>
-                                                                            <span class="label label-danger label-mini">Unavailable</span>
+                                                            <span class="label label-danger label-mini"><spring:message
+                                                                    code="dish.unavailable"/></span>
                                                                         </c:otherwise>
                                                                     </c:choose>
                                                                 </td>
                                                                 <td>
                                                                     <form action="<c:url value="/dishes/setstock"/>">
-                                                                        <input type="hidden" value="${dish.id}" name="dishid">
+                                                                        <input type="hidden" value="${dish.id}"
+                                                                               name="dishid">
                                                                         <input type="hidden" value="${dish.stock+1}"
                                                                                name="stock">
-                                                                        <button type="submit" class="btn btn-success btn-xs">
+                                                                        <button type="submit"
+                                                                                class="btn btn-success btn-xs">
                                                                             <i class="fa fa-plus"></i>
                                                                         </button>
                                                                     </form>
                                                                 </td>
                                                                 <td>
                                                                     <form action="<c:url value="/dishes/setstock"/>">
-                                                                        <input type="hidden" value="${dish.id}" name="dishid">
+                                                                        <input type="hidden" value="${dish.id}"
+                                                                               name="dishid">
                                                                         <input type="hidden" value="${dish.stock-1}"
                                                                                name="stock">
-                                                                        <button type="submit" class="btn btn-primary btn-xs">
+                                                                        <button type="submit"
+                                                                                class="btn btn-primary btn-xs">
                                                                             <i class="fa fa-minus"></i>
                                                                         </button>
                                                                     </form>
@@ -159,18 +114,21 @@
                                                             </tr>
                                                         </c:forEach>
                                                         </tbody>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <div class="alert alert-danger text-center">
-                                                            <strong>Ouch!</strong> There are no dishes available right now.
-                                                        </div>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </table>
+                                                    </table>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="alert alert-danger text-center">
+                                                        <strong><spring:message code="dish.ouch"/></strong>
+                                                        <spring:message code="dish.no_dishes"/>
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                         <div>
                                             <form action="<c:url value="/dishes/create"/>">
-                                                <button type="button submit" class="btn btn-success"><i class="fa fa-plus"></i>Add</button>
+                                                <button type="submit" class="btn rebeccapurple-color"><i
+                                                        class="fa fa-plus"></i><spring:message code="dish.add"/>
+                                                </button>
                                             </form>
                                         </div>
                                     </div>

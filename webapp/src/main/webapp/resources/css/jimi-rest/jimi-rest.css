@@ -12,6 +12,10 @@
     box-sizing: border-box;
 }
 
+.page-content-wrapper {
+    margin-bottom: 80px;
+}
+
 .page-content-register-user {
     min-height: 600px;
     margin-top: 80px;
@@ -57,4 +61,24 @@ p {
 .form-with-buttons {
     margin-top: 1em;
     margin-right: 1em;
+}
+
+.rebeccapurple-color {
+    background-color: #663399 !important;
+    border: 1px solid #663399 !important;
+    color: #fff !important;
+}
+
+.rebeccapurple-color:active,
+.rebeccapurple-color:focus,
+.rebeccapurple-color:hover,
+.rebeccapurple-color.active,
+.rebeccapurple-color.focus,
+.rebeccapurple-color:active,
+.rebeccapurple-color:focus,
+.rebeccapurple-color:hover,
+.open > .dropdown-toggle.rebeccapurple-color {
+    background-color: #663399 !important;
+    border: 1px solid #663399 !important;
+    color: #fff !important;
 }
