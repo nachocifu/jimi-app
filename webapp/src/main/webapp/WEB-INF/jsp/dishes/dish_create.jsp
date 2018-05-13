@@ -49,8 +49,7 @@
                     <div class="col-sm-10 mx-auto mt-5">
                         <div class="card-box">
                             <div class="card-head">
-                                <header><spring:message
-                                        code="table.add_dish"/></header>
+                                <header>Add Dish</header>
                             </div>
                             <c:url value="/dishes/create" var="postPath"/>
                             <form:form modelAttribute="dishCreateForm" action="${postPath}" method="post">
@@ -88,11 +87,13 @@
                                             <spring:message
                                                     code="dish.add"/>
                                         </button>
-                                        <button type="button"
-                                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">
-                                            <spring:message
-                                                    code="dish.cancel"/>
-                                        </button>
+                                        <form action="<c:url value="/dishes/"/>">
+                                            <button type="button"
+                                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">
+                                                <spring:message
+                                                        code="dish.cancel"/>
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </form:form>
