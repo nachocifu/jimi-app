@@ -1,8 +1,7 @@
 package edu.itba.paw.jimi.models;
 
 
-public class
-Table {
+public class Table {
 	
 	private long id;
 	private String name;

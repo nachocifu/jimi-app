@@ -12,10 +12,6 @@
                 </li>
                 <li class="sidebar-user-panel">
                     <div class="user-panel">
-                        <div class="row">
-                            <div class="sidebar-userpic">
-                                <img src="assets/img/dp.jpg" class="img-responsive" alt=""> </div>
-                        </div>
                         <div class="profile-usertitle">
                             <div class="sidebar-userpic-name"> John Deo </div>
                             <div class="profile-usertitle-job"> Manager </div>

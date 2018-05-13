@@ -46,7 +46,6 @@
         <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
         <!-- end sidebar menu -->
 
-
         <!-- start page content -->
         <div class="page-content-wrapper">
             <div class="page-content">
@@ -55,41 +54,38 @@
                     <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                         <div class="card">
                             <div class="panel-body">
-                                    <h3>Free Tables</h3>
-                                <div class="progressbar-xs progress-rounded progress-striped progress ng-isolate-scope active">
-                                    <div class="progress-bar progress-bar-green width-60" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                <h3>Free Tables: <c:out value="${freeTablesPercentage}"/>%</h3>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" style="width:<c:out value="${freeTablesPercentage}"/>%"></div>
                                 </div>
-                                <span class="text-small margin-top-10 full-width">14% higher than last month</span> </div>
+                                <span class="text-small margin-top-10 full-width">
+                                    Busy <c:out value="${busyTables}"/> of <c:out value="${totalTables}"/> Tables.</span></div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                         <div class="card">
                             <div class="panel-body">
-                                <h3>Diners Today</h3>
-                                <div class="progressbar-xs progress-rounded progress-striped progress ng-isolate-scope active">
-                                    <div class="progress-bar progress-bar-orange width-75" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"></div>
+                                <h3>Stock Status: <c:out value="${stockStatePercentage}"/>%</h3>
+                                <div class="progress">
+                                    <div class="progress-bar bg-danger" style="width:<c:out value="${stockStatePercentage}"/>%"></div>
                                 </div>
-                                <span class="text-small margin-top-10 full-width">7% higher than last month</span> </div>
+                                <span class="text-small margin-top-10 full-width">Stock under 50 units.</span></div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                         <div class="card">
                             <div class="panel-body">
-                                <h3>Dishes Sold Today</h3>
-                                <div class="progressbar-xs progress-rounded progress-striped progress ng-isolate-scope active" >
-                                    <div class="progress-bar progress-bar-purple width-40" role="progressbar" aria-valuenow="52" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class="text-small margin-top-10 full-width">123 Dishes.</span> </div>
+                                <h3>Dishes Sold Today:</h3>
+                                <h2><c:out value="${dishesSold}"/></h2>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                         <div class="card">
                             <div class="panel-body">
-                                <h3>Stock State</h3>
-                                <div class="progressbar-xs progress-rounded progress-striped progress ng-isolate-scope active" >
-                                    <div class="progress-bar progress-bar-cyan width-60" role="progressbar" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class="text-small margin-top-10 full-width">Dishes containing less than 50 units.</span> </div>
+                                <h3>Diners Today:</h3>
+                                <h2><c:out value="${dinersToday}"/></h2>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,7 +103,6 @@
                                             <table class="table">
                                                 <tbody>
                                                 <tr>
-                                                    <th>Image</th>
                                                     <th>Name</th>
                                                     <th>Date</th>
                                                     <th>Status</th>
@@ -115,9 +110,6 @@
                                                     <th>Transaction ID</th>
                                                 </tr>
                                                 <tr>
-                                                    <td class="patient-img sorting_1">
-                                                        <img src="assets/img/user/user6.jpg" alt="">
-                                                    </td>
                                                     <td>John Deo</td>
                                                     <td>05-01-2017</td>
                                                     <td><span class="label label-danger">Unpaid</span></td>
