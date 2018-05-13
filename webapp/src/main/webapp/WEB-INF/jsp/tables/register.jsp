@@ -43,7 +43,7 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card-box card-box-register-user mx-auto mt-5">
+                    <div class="card-box card-box-user mx-auto mt-5">
                         <div class="card-head">
                             <header>Register Table</header>
                         </div>

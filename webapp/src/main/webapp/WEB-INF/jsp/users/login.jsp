@@ -40,9 +40,9 @@
     <!-- start page content -->
     <div class="page-content-wrapper fixed">
         <div class="page-content-register-user">
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-sm-12">
-                    <div class="card-box card-box-register-user mx-auto mt-3">
+                    <div class="card-box card-box-user mx-auto mt-3">
                         <div class="card-head">
                             <header><spring:message code="login.header"/></header>
                         </div>
@@ -71,7 +71,7 @@
 
                                     <div class="centeritems mdl-grid">
                                         <div class="mdl-layout-spacer"></div>
-                                        <div class="mdl-cell mdl-cell--6-col">
+                                        <div class="col-md-6">
 
                                             <label class="mdl-checkbox mdl-js-checkbox" for="checkbox_remember_me">
                                                 <input name="j_rememberme" type="checkbox" id="checkbox_remember_me"
@@ -108,7 +108,6 @@
 
 <!-- start js include path -->
 <script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
-<script src="<c:url value="/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"/>"></script>
 <!-- bootstrap -->
 <script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
 <!-- Material -->
