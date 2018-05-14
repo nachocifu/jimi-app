@@ -19,15 +19,6 @@ public interface UserRolesDao {
 	void create(User user, String role);
 	
 	/**
-	 * Removes instances of the role of the user.
-	 *
-	 * @param user the user to remove a role from.
-	 * @param role the role to remove.
-	 */
-	void delete(User user, String role);
-	
-	
-	/**
 	 * Removes all the roles from the user.
 	 *
 	 * @param user the user to remove all roles from.
