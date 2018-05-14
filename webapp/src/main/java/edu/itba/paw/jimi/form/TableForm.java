@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 public class TableForm {
 	
 	@Size(min = 4, max = 10)
-	@Pattern(regexp = "[a-zA-Z0-9]+")
+	@Pattern(regexp = "^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$")
 	private String name;
 	
 	public void setName(String name) {
