@@ -51,7 +51,6 @@ public class TableServiceImpl implements TableService {
 
         switch (status) {
             case Busy: {
-
                 orderService.open(t.getOrder());
                 break;
             }

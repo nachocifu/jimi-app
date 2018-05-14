@@ -23,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(classes = OrderServiceTestConfig.class)
 public class UserServiceTest {
 
-
     private static final String USERNAME = "test";
     private static final String PASSWORD = "test";
     private static Set<String> userRoles;

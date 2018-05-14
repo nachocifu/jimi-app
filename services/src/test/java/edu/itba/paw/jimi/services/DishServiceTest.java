@@ -29,8 +29,7 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DishServiceTestConfig.class)
 public class DishServiceTest {
-	
-	
+
 	private static final String NAME = "Papa";
 	private static final float PRICE = 10.50F;
 	private static final int DEFAULT_STOCK = 0;
@@ -238,6 +237,5 @@ public class DishServiceTest {
 		
 		assertEquals(dbDishes.size() - 1, nonRepetingDishes.size());
 	}
-	
 	
 }
