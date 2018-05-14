@@ -124,7 +124,7 @@
                                                     </c:when>
                                                     <c:otherwise>
                                                         <div class="alert alert-danger text-center">
-                                                            <strong><spring:message code="dish.ouch"/></strong>
+                                                            <strong><spring:message code="ouch"/></strong>
                                                             <spring:message code="dish.no_dishes"/>
                                                         </div>
                                                     </c:otherwise>
@@ -227,7 +227,7 @@
                                                     </c:when>
                                                     <c:otherwise>
                                                         <div class="alert alert-danger text-center">
-                                                            <strong><spring:message code="dish.ouch"/></strong>
+                                                            <strong><spring:message code="ouch"/></strong>
                                                             <spring:message code="dish.no_dishes"/>
                                                         </div>
                                                     </c:otherwise>

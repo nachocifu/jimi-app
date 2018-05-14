@@ -55,7 +55,7 @@
                             <div class="col-sm-12">
                                 <div class="card-box">
                                     <div class="card-head">
-                                        <header>Latest Bills</header>
+                                        <header><spring:message code="table.tables_header"/></header>
                                     </div>
                                     <div class="card-body">
                                         <c:choose>
@@ -112,13 +112,16 @@
                                             </c:when>
                                             <c:otherwise>
                                                 <div class="alert alert-danger text-center">
-                                                    <strong>Ouch!</strong> There are no tables available right now.
+                                                    <strong><spring:message code="ouch"/></strong> <spring:message
+                                                        code="table.no_tables"/>
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>
                                         <div>
                                             <form action="<c:url value="/tables/register"/>">
-                                                <button type="button submit" class="btn btn-success"><i class="fa fa-plus"></i>Add</button>
+                                                <button type="submit" class="btn btn-success"><i
+                                                        class="fa fa-plus"></i><spring:message code="table.add"/>
+                                                </button>
                                             </form>
                                         </div>
                                     </div>
@@ -203,13 +206,17 @@
                                                     </c:when>
                                                     <c:otherwise>
                                                         <div class="alert alert-danger text-center">
-                                                            <strong>Ouch!</strong> There are no tables available right now.
+                                                            <strong><spring:message code="ouch"/></strong>
+                                                            <spring:message code="table.no_tables"/>
                                                         </div>
                                                     </c:otherwise>
                                                 </c:choose>
                                                 <div>
                                                     <form action="<c:url value="/tables/register"/>">
-                                                        <button type="button submit" class="btn btn-success"><i class="fa fa-plus"></i>Add</button>
+                                                        <button type="submit" class="btn btn-success"><i
+                                                                class="fa fa-plus"></i><spring:message
+                                                                code="table.add"/>
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </div>
