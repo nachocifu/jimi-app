@@ -1,6 +1,5 @@
 package edu.itba.paw.jimi.services;
 
-import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.models.*;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,23 +16,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = StatsServiceTestConfig.class)
+@RunWith(SpringJUnit4ClassRunner.class)st
 public class StatsServiceTest {
 
     private static final int ID = 123;
-    private static final String NAME = "Table1";
+    private static final String NAME = "Table221";
     private static final Order ORDER = new Order(ID, new Timestamp(10000), new Timestamp(100002),OrderStatus.INACTIVE, 0);
 
-    @InjectMocks
     @Autowired
     private StatsServiceImpl statsService;
 
-    @Autowired
+
+    @InjectMocks
     @Mock
     private DishServiceImpl dishService;
 
-    @Autowired
     @Mock
     private TableServiceImpl tableService;
 
@@ -42,6 +39,7 @@ public class StatsServiceTest {
     public void before() {
         MockitoAnnotations.initMocks(this);
     }
+
 
     @Test
     public void getBusyTablesUnitsWithNoTables(){
@@ -192,6 +190,7 @@ public class StatsServiceTest {
     @Test
     public void getStockStateMultipleItems2Percentage(){
         LinkedList<Dish> list = new LinkedList<Dish>();
+        int percentageExpected = (int) ((3.0/5.0) * 100.0);
 
         list.add(new Dish(NAME, (float)0.0, ID, 20));
         list.add(new Dish(NAME + "a", (float)0.0, ID + 1, 20));
@@ -203,6 +202,6 @@ public class StatsServiceTest {
 
         Assert.assertTrue(statsService.getStockState() >= 0
                 && statsService.getStockState() <= 100);
-        Assert.assertEquals(50,statsService.getStockState());
+        Assert.assertEquals(percentageExpected, statsService.getStockState());
     }
 }

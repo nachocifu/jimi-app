@@ -17,12 +17,12 @@ public class StatsServiceTestConfig {
     @Bean
     @Primary
     public DishServiceImpl dishService() {
-        return Mockito.mock(DishServiceImpl.class);
+        return Mockito.mock(new DishServiceImpl());
     }
 
     @Bean
     @Primary
-    public TableServiceImpl tableServiceImpl() {
+    public TableServiceImpl tableService() {
         return Mockito.mock(TableServiceImpl.class);
     }
 
