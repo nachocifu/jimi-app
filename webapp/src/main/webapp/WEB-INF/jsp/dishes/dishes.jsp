@@ -40,7 +40,6 @@
 
     <!-- start page container -->
     <div class="dishes-page-container">
-
         <sec:authorize access="hasRole('ROLE_ADMIN')">
 
                 <!-- start page container -->
