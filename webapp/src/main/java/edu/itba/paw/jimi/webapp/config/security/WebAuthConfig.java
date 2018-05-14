@@ -30,7 +30,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		http.userDetailsService(userDetailsService).sessionManagement()
 				.invalidSessionUrl("/login" ).and().authorizeRequests()
 				.antMatchers("/login" ).anonymous()
-				.antMatchers("/admin/**", "/dishes/**", "/users/**" ).hasRole(User.ADMIN)
+				.antMatchers("/admin/**").hasRole(User.ADMIN)
 				.antMatchers("/**" ).authenticated().and()
 				.formLogin().usernameParameter("j_username" ).passwordParameter("j_password" ).defaultSuccessUrl("/", false).loginPage("/login" ).and()
 				.rememberMe().rememberMeParameter("j_rememberme" ).userDetailsService(userDetailsService).key("estakeyestanbuenaquenuncalavanaadivinar" )
