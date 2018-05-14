@@ -157,6 +157,7 @@
         <!-- end page content -->
     </div>
     <!-- end page container -->
+
     <!-- start footer -->
     <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
     <!-- end footer -->
