@@ -69,6 +69,15 @@ p {
     color: #fff !important;
 }
 
+button.transparent {
+    background-color: Transparent;!important
+background-repeat:no-repeat;!important
+border: none;!important
+cursor:pointer;!important
+overflow: hidden;!important
+outline:none;!important
+}
+
 .rebeccapurple-color:active,
 .rebeccapurple-color:focus,
 .rebeccapurple-color:hover,

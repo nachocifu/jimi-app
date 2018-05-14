@@ -52,7 +52,7 @@ public class TableController {
 	@RequestMapping(value = "/{tableId}/status", method = {RequestMethod.POST})
 	public ModelAndView statusChange(@PathVariable("tableId") Integer id, @RequestParam(value = "status") final Integer statusId) {
 		
-		//TODO: Cuando pasa de busy a free hay que llevar a una pantalla de cerrar cuenta y despues limpiar (los datos) de la mesa. 
+		//TODO: Cuando pasa de busy a free hay que llevar a una pantalla de cerrar cuenta y despues limpiar (los datos) de la mesa.
 		// Eso deberia ir adentro del servicio.
 		// Y el controler deberia elegir a que pagina ir dependiendo de la transision.
 		ts.changeStatus(ts.findById(id), TableStatus.getTableStatus(statusId));

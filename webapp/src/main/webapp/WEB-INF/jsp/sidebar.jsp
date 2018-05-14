@@ -19,7 +19,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link nav-toggle">
+                    <a href="<c:url value="/admin/"/>" class="nav-link nav-toggle">
                         <i class="fa fa-home"></i>
                         <span class="title">Dashboard</span>
                     </a>
@@ -31,13 +31,13 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">
+                            <a href="<c:url value="/tables/register"/>" class="nav-link ">
                                 <i class="fa fa-plus"></i>
                                 <span class="title">New Table</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">
+                            <a href="<c:url value="/tables/"/>" class="nav-link ">
                                 <i class="fa fa-list"></i>
                                 <span class="title">Table List</span>
                             </a>
@@ -51,13 +51,13 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">
+                            <a href="<c:url value="/dishes/create/"/>" class="nav-link ">
                                 <i class="fa fa-plus"></i>
                                 <span class="title">New Dish</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">
+                            <a href="<c:url value="/dishes/"/>" class="nav-link ">
                                 <i class="fa fa-list"></i>
                                 <span class="title">Dish List</span>
                             </a>

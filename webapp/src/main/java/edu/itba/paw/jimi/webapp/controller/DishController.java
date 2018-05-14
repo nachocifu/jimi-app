@@ -41,7 +41,7 @@ public class DishController {
 
     @RequestMapping(value = {"/create"}, method = { RequestMethod.GET })
     public ModelAndView register(@ModelAttribute("dishCreateForm") final DishForm form) {
-        return new ModelAndView("dishes/dish_create");
+        return new ModelAndView("dishes/test_create_dish");
     }
 
     @RequestMapping(value = "/create", method = { RequestMethod.POST })
