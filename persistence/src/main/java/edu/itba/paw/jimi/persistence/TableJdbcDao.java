@@ -80,8 +80,7 @@ public class TableJdbcDao implements TableDao {
 		return findById(tableId.intValue());
 	}
 	
-	
-	public Table findById(long id) {
+	public Table findById(final long id) {
 		final Collection<Table> list = jdbcTemplate.query(
 				"SELECT * FROM tables " +
 						"WHERE tableid = ?", ROW_MAPPER, id);

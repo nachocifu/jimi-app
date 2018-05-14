@@ -15,7 +15,7 @@ public interface TableDao {
 	 * @param id the id to look for.
 	 * @return the table with said id.
 	 */
-	Table findById(long id);
+	Table findById(final long id);
 	
 	/**
 	 * Updates the table.
