@@ -94,7 +94,7 @@
                                                                 <c:otherwise>
                                                                     <td> <span
                                                                             class="label label-warning label-mini"><spring:message
-                                                                            code="table.cleaning"/></span>
+                                                                            code="table.paying"/></span>
                                                                     </td>
                                                                 </c:otherwise>
                                                             </c:choose>

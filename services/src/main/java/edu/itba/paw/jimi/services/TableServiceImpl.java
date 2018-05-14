@@ -37,44 +37,34 @@ public class TableServiceImpl implements TableService {
 
     public void changeStatus(Table table, TableStatus status) {
 
-        Table t = tableDao.findById(table.getId());
-
-        if (t.getStatus().equals(TableStatus.BUSY) && !status.equals(TableStatus.PAYING))
+        if (table.getStatus().equals(TableStatus.BUSY) && !status.equals(TableStatus.PAYING))
             throw new TableStatusTransitionInvalid(TableStatus.PAYING, status);
 
-        if (t.getStatus().equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE))
+        if (table.getStatus().equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE))
             throw new TableStatusTransitionInvalid(TableStatus.FREE, status);
 
-        if (t.getStatus().equals(TableStatus.FREE) && !status.equals(TableStatus.BUSY))
+        if (table.getStatus().equals(TableStatus.FREE) && !status.equals(TableStatus.BUSY))
             throw new TableStatusTransitionInvalid(TableStatus.BUSY, status);
 
 
         switch (status) {
             case BUSY: {
-                orderService.open(t.getOrder());
+                orderService.open(table.getOrder());
                 break;
             }
             case FREE: {
-
-                //Nothing to do.
+                Order newOrder = orderService.create(OrderStatus.INACTIVE, null, null, 0);
+                table.setOrder(newOrder);
                 break;
             }
             case PAYING: {
-
-                // Lets close the current order.
-                orderService.close(t.getOrder());
-                //TODO: A pensar... Diners no tendria que ir en order? porque cuando lo cierro, quiero que quede cuanta gente comio ahi. Aparte, como cobras el servicio de mesa si no lo tiene order? Podrian tenerlo los 2?
-                //@cappa: deberìa estar en order.
-                // Now lets create a new inactive order for our table.
-                Order newOrder = orderService.create(OrderStatus.INACTIVE, null, null, 0);
-                t.setOrder(newOrder);
-
+                orderService.close(table.getOrder());
                 break;
             }
         }
 
         table.setStatus(status);
-        t.setStatus(status);
-        tableDao.update(t);
+        table.setStatus(status);
+        tableDao.update(table);
     }
 }
