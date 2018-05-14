@@ -39,17 +39,22 @@
 
     <!-- start page container -->
     <div class="dishes-page-container">
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
 
-        <!-- start page content -->
-        <div class="page-content-wrapper">
-            <div class="dishes-page-content">
-                <div class="row">
-                    <div class="col-md-12">
+            <!-- start page container -->
+            <div class="page-container">
+                <!-- start sidebar menu -->
+                <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
+                <!-- end sidebar menu -->
+
+                <!-- start page content -->
+                <div class="page-content-wrapper">
+                    <div class="page-content">
                         <div class="row">
-                            <div class="col-md-10 mx-auto mt-5">
-                                <div class="card card-topline-purple">
+                            <div class="col-sm-12">
+                                <div class="card-box">
                                     <div class="card-head">
-                                        <header><spring:message code="table.tables_header"/></header>
+                                        <header>Latest Bills</header>
                                     </div>
                                     <div class="card-body">
                                         <c:choose>
@@ -121,11 +126,106 @@
                         </div>
                     </div>
                 </div>
+                <!-- end page content -->
             </div>
-        </div>
-        <!-- end page content -->
+            <!-- end page container -->
+
+        </sec:authorize>
+
+        <sec:authorize access="hasRole('ROLE_USER')">
+            <!-- start page container -->
+            <div class="dishes-page-container">
+
+                <!-- start page content -->
+                <div class="page-content-wrapper">
+                    <div class="dishes-page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-10 mx-auto mt-5">
+                                        <div class="card card-topline-purple">
+                                            <div class="card-head">
+                                                <header><spring:message code="table.tables_header"/></header>
+                                            </div>
+                                            <div class="card-body">
+                                                <c:choose>
+                                                    <c:when test="${tables.size() > 0}">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped custom-table">
+                                                                <thead class="text-left">
+                                                                <tr>
+                                                                    <th><spring:message code="table.name"/></th>
+                                                                    <th><spring:message code="table.diners"/></th>
+                                                                    <th><spring:message code="table.status"/></th>
+                                                                    <th></th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <c:forEach items="${tables}" var="table">
+                                                                    <tr>
+                                                                    <tr>
+                                                                        <td><c:out value="${table.name}"/></td>
+                                                                        <td><c:out value="${table.order.diners}"/></td>
+
+                                                                        <c:choose>
+                                                                            <c:when test="${table.status.toString() == 'Free'}">
+                                                                                <td><span
+                                                                                        class="label label-success label-mini"><spring:message
+                                                                                        code="table.free"/></span>
+                                                                                </td>
+                                                                            </c:when>
+                                                                            <c:when test="${table.status.toString() == 'Busy'}">
+                                                                                <td><span
+                                                                                        class="label label-danger label-mini"><spring:message
+                                                                                        code="table.busy"/></span>
+                                                                                </td>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <td> <span
+                                                                                        class="label label-warning label-mini"><spring:message
+                                                                                        code="table.cleaning"/></span>
+                                                                                </td>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                        <td>
+                                                                            <a href=<c:url
+                                                                                    value="/tables/${table.id}"/>>
+                                                                                <i class="fa fa-edit fa-lg"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tr>
+                                                                </c:forEach>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <div class="alert alert-danger text-center">
+                                                            <strong>Ouch!</strong> There are no tables available right now.
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <div>
+                                                    <form action="<c:url value="/tables/register"/>">
+                                                        <button type="button submit" class="btn btn-success"><i class="fa fa-plus"></i>Add</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end page content -->
+            </div>
+            <!-- end page container -->
+        </sec:authorize>
     </div>
     <!-- end page container -->
+
 
     <!-- start footer -->
     <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
