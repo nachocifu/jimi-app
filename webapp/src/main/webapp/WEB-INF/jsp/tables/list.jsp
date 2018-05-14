@@ -55,7 +55,7 @@
                             <div class="col-sm-12">
                                 <div class="card-box">
                                     <div class="card-head">
-                                        <header>Latest Bills</header>
+                                        <header><spring:message code="table.tables_header"/></header>
                                     </div>
                                     <div class="card-body">
                                         <c:choose>
