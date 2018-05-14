@@ -92,11 +92,9 @@
                                                                 </c:choose>
                                                             </td>
                                                             <td>
-                                                                <form action="<c:url value="/admin/dishes/setstock"/>">
+                                                                <form method="POST" action="<c:url value="/admin/dishes/stock/increase"/>">
                                                                     <input type="hidden" value="${dish.id}"
                                                                            name="dishid">
-                                                                    <input type="hidden" value="${dish.stock+1}"
-                                                                           name="stock">
                                                                     <button type="submit"
                                                                             class="btn btn-success btn-xs">
                                                                         <i class="fa fa-plus"></i>
@@ -104,11 +102,9 @@
                                                                 </form>
                                                             </td>
                                                             <td>
-                                                                <form action="<c:url value="/admin/dishes/setstock"/>">
+                                                                <form method="POST" action="<c:url value="/admin/dishes/stock/decrease"/>">
                                                                     <input type="hidden" value="${dish.id}"
                                                                            name="dishid">
-                                                                    <input type="hidden" value="${dish.stock-1}"
-                                                                           name="stock">
                                                                     <button type="submit"
                                                                             class="btn btn-primary btn-xs">
                                                                         <i class="fa fa-minus"></i>
