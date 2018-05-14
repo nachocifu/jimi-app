@@ -56,7 +56,7 @@ public class StatsServiceTest {
 	@Test
 	public void getBusyTablesUnitsWithOneTable() {
 		LinkedList<Table> list = new LinkedList<Table>();
-		list.add(new Table(NAME, ID, TableStatus.Busy, ORDER));
+		list.add(new Table(NAME, ID, TableStatus.BUSY, ORDER));
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
 		Assert.assertEquals(1, tableService.findAll().size());
@@ -67,15 +67,15 @@ public class StatsServiceTest {
 	public void getBusyTablesUnitsWithMultipleTables() {
 		LinkedList<Table> list = new LinkedList<Table>();
 		
-		list.add(new Table(NAME, ID, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 1, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 2, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 3, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 4, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 5, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 6, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 7, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 8, TableStatus.Free, ORDER));
+		list.add(new Table(NAME, ID, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 1, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 2, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 3, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 4, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 5, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 6, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 7, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 8, TableStatus.FREE, ORDER));
 		
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
@@ -88,15 +88,15 @@ public class StatsServiceTest {
 		int percentageExpected = (int) ((5.0 / 9.0) * 100.0);
 		LinkedList<Table> list = new LinkedList<Table>();
 		
-		list.add(new Table(NAME, ID, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 1, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 2, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 3, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 4, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 5, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 6, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 7, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 8, TableStatus.Free, ORDER));
+		list.add(new Table(NAME, ID, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 1, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 2, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 3, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 4, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 5, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 6, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 7, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 8, TableStatus.FREE, ORDER));
 		
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
@@ -116,7 +116,7 @@ public class StatsServiceTest {
 	@Test
 	public void getFreeTablesUnitsWithOneTable() {
 		LinkedList<Table> list = new LinkedList<Table>();
-		list.add(new Table(NAME, ID, TableStatus.Free, ORDER));
+		list.add(new Table(NAME, ID, TableStatus.FREE, ORDER));
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
 		Assert.assertEquals(1, tableService.findAll().size());
@@ -127,15 +127,15 @@ public class StatsServiceTest {
 	public void getFreeTablesUnitsWithMultipleTables() {
 		LinkedList<Table> list = new LinkedList<Table>();
 		
-		list.add(new Table(NAME, ID, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 1, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 2, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 3, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 4, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 5, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 6, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 7, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 8, TableStatus.Free, ORDER));
+		list.add(new Table(NAME, ID, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 1, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 2, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 3, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 4, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 5, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 6, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 7, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 8, TableStatus.FREE, ORDER));
 		
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
@@ -148,15 +148,15 @@ public class StatsServiceTest {
 		int percentageExpected = (int) ((4.0 / 9.0) * 100.0);
 		LinkedList<Table> list = new LinkedList<Table>();
 		
-		list.add(new Table(NAME, ID, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 1, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 2, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 3, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 4, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 5, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 6, TableStatus.Free, ORDER));
-		list.add(new Table(NAME, ID + 7, TableStatus.Busy, ORDER));
-		list.add(new Table(NAME, ID + 8, TableStatus.Free, ORDER));
+		list.add(new Table(NAME, ID, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 1, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 2, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 3, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 4, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 5, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 6, TableStatus.FREE, ORDER));
+		list.add(new Table(NAME, ID + 7, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 8, TableStatus.FREE, ORDER));
 		
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		

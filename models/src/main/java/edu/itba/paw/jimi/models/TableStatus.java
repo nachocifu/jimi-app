@@ -1,9 +1,9 @@
 package edu.itba.paw.jimi.models;
 
 public enum TableStatus {
-	Busy(1),
-	Free(2),
-	CleaningRequired(3);
+	BUSY(1),
+	FREE(2),
+	PAYING(3);
 	
 	
 	private int id;
@@ -26,11 +26,11 @@ public enum TableStatus {
 	@Override
 	public String toString() {
 		switch (TableStatus.getTableStatus(id)) {
-			case Busy:
-				return "Busy";
-			case Free:
-				return "Free";
-			case CleaningRequired:
+			case BUSY:
+				return "BUSY";
+			case FREE:
+				return "FREE";
+			case PAYING:
 				return "Cleaning required";
 			default:
 				return "Not found";

@@ -47,7 +47,7 @@
                             <div class="col-lg-15 p-t-20">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
 
-                                    <c:if test="${table.status == 'Free'}">
+                                    <c:if test="${table.status == 'FREE'}">
 
                                         <h2><spring:message code="table.table_is"/> <strong><span
                                                 style="color: green;"><spring:message
@@ -62,7 +62,7 @@
 
                                     </c:if>
 
-                                    <c:if test="${table.status == 'CleaningRequired'}">
+                                    <c:if test="${table.status == 'PAYING'}">
 
                                         <h2><spring:message code="table.table_is"/> <strong><span
                                                 style="color: orange;"><spring:message
@@ -77,7 +77,7 @@
 
                                     </c:if>
 
-                                    <c:if test="${table.status == 'Busy'}">
+                                    <c:if test="${table.status == 'BUSY'}">
 
                                     <h2><spring:message code="table.table_is"/>
                                         <strong><span style="color: red;"><spring:message

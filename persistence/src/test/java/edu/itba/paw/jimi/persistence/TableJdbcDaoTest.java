@@ -71,7 +71,7 @@ public class TableJdbcDaoTest {
 	@Test
 	public void testCreate() {
 		Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 2);
-		Table table = tableDao.create(TABLE_NAME, TableStatus.Free, order);
+		Table table = tableDao.create(TABLE_NAME, TableStatus.FREE, order);
 		assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, TABLE_TABLE_NAME));
 		cleanDB();
 	}
@@ -83,7 +83,7 @@ public class TableJdbcDaoTest {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2);
 		order.setDish(dish, 2);
 		orderDao.update(order);
-		final Table table = tableDao.create(TABLE_NAME, TableStatus.Free, order);
+		final Table table = tableDao.create(TABLE_NAME, TableStatus.FREE, order);
 		
 		Table dbTable = tableDao.findById(table.getId());
 		assertNotNull(dbTable);
@@ -93,7 +93,7 @@ public class TableJdbcDaoTest {
 		
 		//Assert table.
 		assertEquals(TABLE_NAME, dbTable.getName());
-		assertEquals(TableStatus.Free.getId(), dbTable.getStatus().getId());
+		assertEquals(TableStatus.FREE.getId(), dbTable.getStatus().getId());
 		assertEquals(order.getId(), dbTable.getOrder().getId());
 		
 		//Assert order.
@@ -120,7 +120,7 @@ public class TableJdbcDaoTest {
 	@Test(expected = TableWithNullOrderException.class)
 	public void testFindByIdNullOrderException() {
 		
-		tableDao.create(TABLE_NAME, TableStatus.Free, null);
+		tableDao.create(TABLE_NAME, TableStatus.FREE, null);
 		
 		cleanDB();
 	}
@@ -129,7 +129,7 @@ public class TableJdbcDaoTest {
 	public void testFindByIdUnsavedOrderException() {
 		
 		final Order order = new Order();
-		tableDao.create(TABLE_NAME, TableStatus.Free, order);
+		tableDao.create(TABLE_NAME, TableStatus.FREE, order);
 		
 		cleanDB();
 	}
@@ -142,7 +142,7 @@ public class TableJdbcDaoTest {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 2);
 		order.setDish(dish, 2);
 		orderDao.update(order);
-		final Table table = tableDao.create(TABLE_NAME, TableStatus.Free, order);
+		final Table table = tableDao.create(TABLE_NAME, TableStatus.FREE, order);
 		
 		Table dbTable = tableDao.findById(table.getId());
 		assertNotNull(dbTable);
@@ -152,7 +152,7 @@ public class TableJdbcDaoTest {
 		
 		//Assert table.
 		assertEquals(TABLE_NAME, dbTable.getName());
-		assertEquals(TableStatus.Free.getId(), dbTable.getStatus().getId());
+		assertEquals(TableStatus.FREE.getId(), dbTable.getStatus().getId());
 		assertEquals(order.getId(), dbTable.getOrder().getId());
 		
 		//Assert order.
@@ -171,7 +171,7 @@ public class TableJdbcDaoTest {
 		dbTable.getOrder().setDish(dish, 5);
 		dbTable.getOrder().setDiners(5);
 		dbTable.setName(TABLE_NAME2);
-		dbTable.setStatus(TableStatus.Busy);
+		dbTable.setStatus(TableStatus.BUSY);
 		
 		tableDao.update(dbTable);
 		
@@ -181,7 +181,7 @@ public class TableJdbcDaoTest {
 		assertNotNull(dbTableUpdated);
 		assertEquals(5, dbTableUpdated.getOrder().getDishes().get(dish).intValue());
 		assertEquals(TABLE_NAME2, dbTableUpdated.getName());
-		assertEquals(dbTableUpdated.getStatus().getId(), TableStatus.Busy.getId());
+		assertEquals(dbTableUpdated.getStatus().getId(), TableStatus.BUSY.getId());
 		assertEquals(5, dbTableUpdated.getOrder().getDiners());
 		
 		cleanDB();
@@ -195,7 +195,7 @@ public class TableJdbcDaoTest {
 			final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 1);
 			order.setDish(dish, 1);
 			orderDao.update(order);
-			tableDao.create(TABLE_NAME, TableStatus.Free, order);
+			tableDao.create(TABLE_NAME, TableStatus.FREE, order);
 		}
 		
 		assertEquals(NUMBER_OF_TABLES, JdbcTestUtils.countRowsInTable(jdbcTemplate, TABLE_TABLE_NAME));
@@ -203,7 +203,7 @@ public class TableJdbcDaoTest {
 		
 		for (Table table : tables) {
 			assertEquals(TABLE_NAME, table.getName());
-			assertEquals(TableStatus.Free.getId(), table.getStatus().getId());
+			assertEquals(TableStatus.FREE.getId(), table.getStatus().getId());
 			assertEquals(1, table.getOrder().getDiners());
 			assertEquals(DISH_NAME, table.getOrder().getDishes().keySet().iterator().next().getName());
 			assertEquals(DISH_PRICE, table.getOrder().getDishes().keySet().iterator().next().getPrice());

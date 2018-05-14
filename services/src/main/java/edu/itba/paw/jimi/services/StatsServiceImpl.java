@@ -28,7 +28,7 @@ public class StatsServiceImpl implements StatsService {
 	public int getBusyTablesUnits() {
 		int busy = 0;
 		for (Table t : tableService.findAll()) {
-			if (t.getStatus() == TableStatus.Busy)
+			if (t.getStatus() == TableStatus.BUSY)
 				busy += 1;
 		}
 		return busy;
@@ -41,7 +41,7 @@ public class StatsServiceImpl implements StatsService {
 	public int getFreeTablesUnits() {
 		int free = 0;
 		for (Table t : tableService.findAll()) {
-			if (t.getStatus() == TableStatus.Free)
+			if (t.getStatus() == TableStatus.FREE)
 				free += 1;
 		}
 		return free;

@@ -28,7 +28,7 @@ public class TableServiceImpl implements TableService {
 
     public Table create(String name) {
         Order order = orderService.create(OrderStatus.INACTIVE, null, null, 0);
-        return tableDao.create(name, TableStatus.Free, order);
+        return tableDao.create(name, TableStatus.FREE, order);
     }
 
     public Collection<Table> findAll() {
@@ -39,27 +39,27 @@ public class TableServiceImpl implements TableService {
 
         Table t = tableDao.findById(table.getId());
 
-        if (t.getStatus().equals(TableStatus.Busy) && !status.equals(TableStatus.CleaningRequired))
-            throw new TableStatusTransitionInvalid(TableStatus.CleaningRequired, status);
+        if (t.getStatus().equals(TableStatus.BUSY) && !status.equals(TableStatus.PAYING))
+            throw new TableStatusTransitionInvalid(TableStatus.PAYING, status);
 
-        if (t.getStatus().equals(TableStatus.CleaningRequired) && !status.equals(TableStatus.Free))
-            throw new TableStatusTransitionInvalid(TableStatus.Free, status);
+        if (t.getStatus().equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE))
+            throw new TableStatusTransitionInvalid(TableStatus.FREE, status);
 
-        if (t.getStatus().equals(TableStatus.Free) && !status.equals(TableStatus.Busy))
-            throw new TableStatusTransitionInvalid(TableStatus.Busy, status);
+        if (t.getStatus().equals(TableStatus.FREE) && !status.equals(TableStatus.BUSY))
+            throw new TableStatusTransitionInvalid(TableStatus.BUSY, status);
 
 
         switch (status) {
-            case Busy: {
+            case BUSY: {
                 orderService.open(t.getOrder());
                 break;
             }
-            case Free: {
+            case FREE: {
 
                 //Nothing to do.
                 break;
             }
-            case CleaningRequired: {
+            case PAYING: {
 
                 // Lets close the current order.
                 orderService.close(t.getOrder());
