@@ -82,19 +82,19 @@ public class OrderJdbcDao implements OrderDao {
 	}
 	
 	
-	public Order findById(long id) {
+	public Order findById(final long id) {
 		// This SQL sentence joins the orders, orders_items and dishes tables to one.
 		// The orders table is on the outer side of the join so it returns orders with no dishes inside.
 		final Collection<Order> list = jdbcTemplate.query(
 				"SELECT * " +
-					"FROM (SELECT orders.orderid, dishid, quantity, statusid, openedAt, closedAt, diners " +
-							"FROM orders  LEFT OUTER JOIN orders_items "  +
-							"ON (orders.orderid = orders_items.orderid))" +
-						  "as o LEFT OUTER JOIN dishes " 				  +
-					"ON (o.dishid = dishes.dishid) "					  +
-					"WHERE o.orderid = ?"
+						"FROM (SELECT orders.orderid, dishid, quantity, statusid, openedAt, closedAt, diners " +
+						"FROM orders  LEFT OUTER JOIN orders_items " +
+						"ON (orders.orderid = orders_items.orderid))" +
+						"as o LEFT OUTER JOIN dishes " +
+						"ON (o.dishid = dishes.dishid) " +
+						"WHERE o.orderid = ?"
 				, ROW_MAPPER, id);
-
+		
 		if (list.isEmpty()) {
 			return null;
 		}

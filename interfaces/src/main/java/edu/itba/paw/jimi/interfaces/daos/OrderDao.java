@@ -13,7 +13,7 @@ public interface OrderDao {
 	 * @param id the id to look for.
 	 * @return The dish with the passed id.
 	 */
-	Order findById(long id);
+	Order findById(final long id);
 	
 	/**
 	 * Create an order.

@@ -5,7 +5,7 @@ import edu.itba.paw.jimi.models.Dish;
 import java.util.Collection;
 
 public interface DishService {
-    Dish findById(long id);
+    Dish findById(final long id);
 
     /**
      * Create a new dish.

@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface TableService {
 	
-	Table findById(long id);
+	Table findById(final long id);
 	
 	/**
 	 * Creates a new table with a order.

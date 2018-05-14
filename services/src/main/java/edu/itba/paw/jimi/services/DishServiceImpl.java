@@ -4,14 +4,10 @@ import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.interfaces.exceptions.MaxStockException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.DishStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -21,13 +17,12 @@ public class DishServiceImpl implements DishService {
 	
 	private static final int MAX_STOCK = 1000000;
 	
-	public Dish findById(long id) {
+	public Dish findById(final long id) {
 		return dishDao.findById(id);
 	}
 	
 	public Dish create(String name, float price) {
-		Dish dish = dishDao.create(name, price, 0);
-		return dish;
+		return dishDao.create(name, price, 0);
 	}
 	
 	public int setStock(Dish dish, int stock) {
@@ -45,8 +40,7 @@ public class DishServiceImpl implements DishService {
 	}
 	
 	public int increaseStock(Dish dish) {
-		int stock = setStock(dish, dish.getStock() + 1);
-		return stock;
+		return setStock(dish, dish.getStock() + 1);
 	}
 	
 	public int decreaseStock(Dish dish) {
@@ -54,10 +48,9 @@ public class DishServiceImpl implements DishService {
 			return 0;
 		}
 		
-		int stock = setStock(dish, dish.getStock() - 1);
-		return stock;
+		return setStock(dish, dish.getStock() - 1);
 	}
-
+	
 	public Collection<Dish> findAll() {
 		return dishDao.findAll();
 	}

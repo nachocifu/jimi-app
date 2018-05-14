@@ -22,7 +22,7 @@ public class TableServiceImpl implements TableService {
     @Autowired
     private OrderService orderService;
 
-    public Table findById(long id) {
+    public Table findById(final long id) {
         return tableDao.findById(id);
     }
 
@@ -67,4 +67,5 @@ public class TableServiceImpl implements TableService {
         table.setStatus(status);
         tableDao.update(table);
     }
+
 }
