@@ -15,7 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Controller
-@RequestMapping("/dishes")
+@RequestMapping("/admin/dishes")
 public class DishController {
 
     @Autowired
@@ -55,7 +55,7 @@ public class DishController {
         final Dish d = dishService.create(form.getName(), form.getPrice());
         final int i = dishService.setStock(d, form.getStock());
 
-        return new ModelAndView("redirect:/dishes");
+        return new ModelAndView("redirect:/admin/dishes");
     }
 
     @RequestMapping("")

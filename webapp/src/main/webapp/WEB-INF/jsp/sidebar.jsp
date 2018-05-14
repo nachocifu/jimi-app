@@ -51,13 +51,13 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
-                            <a href="<c:url value="/dishes/create/"/>" class="nav-link ">
+                            <a href="<c:url value="/admin/dishes/create/"/>" class="nav-link ">
                                 <i class="fa fa-plus"></i>
                                 <span class="title">New Dish</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<c:url value="/dishes/"/>" class="nav-link ">
+                            <a href="<c:url value="/admin/dishes/"/>" class="nav-link ">
                                 <i class="fa fa-list"></i>
                                 <span class="title">Dish List</span>
                             </a>
