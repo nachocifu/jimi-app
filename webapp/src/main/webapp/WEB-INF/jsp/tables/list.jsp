@@ -44,9 +44,9 @@
         <sec:authorize access="hasRole('ROLE_ADMIN')">
         <!-- start page container -->
         <div class="page-container">
-                <!-- start sidebar menu -->
-                <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
-                <!-- end sidebar menu -->
+            <!-- start sidebar menu -->
+            <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
+            <!-- end sidebar menu -->
             </sec:authorize>
 
             <!-- start page content -->
@@ -134,9 +134,9 @@
                 </div>
             </div>
             <!-- end page content -->
-<sec:authorize access="hasRole('ROLE_ADMIN')">
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
         </div>
-            </sec:authorize>
+        </sec:authorize>
         <!-- end page container -->
 
     </div>

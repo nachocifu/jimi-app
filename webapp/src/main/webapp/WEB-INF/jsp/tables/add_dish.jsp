@@ -55,47 +55,62 @@
                         <div class="card-body">
 
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <c:url value="/tables/${table.id}/add_dish" var="postPath"/>
-                                    <form:form modelAttribute="tableAddDishForm" action="${postPath}" method="post">
+                                <div class="col-sm-12">
 
-                                        <div class="row">
-                                            <div class="form-group col-sm-7">
+                                    <c:choose>
+                                        <c:when test="${dishes.size() > 0}">
 
-                                                <form class="form-inline well">
-                                                    <div class="row">
-                                                        <div class="form-group col-sm-5 display-4">
-                                                            <form:select cssClass="control-label" id="dishid"
-                                                                         name="dishid" path="dishid">
-                                                                <c:forEach items="${dishes}" var="dish">
-                                                                    <option value="${dish.id}"
-                                                                            data-max="${dish.stock}">${dish.name}</option>
-                                                                </c:forEach>
-                                                            </form:select>
-                                                        </div>
+                                            <c:url value="/tables/${table.id}/add_dish" var="postPath"/>
+                                            <form:form modelAttribute="tableAddDishForm" action="${postPath}"
+                                                       method="post">
 
-                                                        <div class="form-group col-sm-7">
-                                                            <form:input type="number" id="amount" path="amount"
-                                                                        step="1" min="1"
-                                                                        max="100"
-                                                                        value="1" class="form-control"/>
-                                                            <form:errors path="amount" cssClass="formError"
-                                                                         element="p"/>
-                                                        </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-7">
+
+                                                        <form class="form-inline well">
+                                                            <div class="row">
+
+                                                                <div class="form-group col-sm-5 display-4">
+                                                                    <form:select cssClass="control-label" id="dishid"
+                                                                                 name="dishid" path="dishid">
+                                                                        <c:forEach items="${dishes}" var="dish">
+                                                                            <option value="${dish.id}"
+                                                                                    data-max="${dish.stock}">${dish.name}</option>
+                                                                        </c:forEach>
+                                                                    </form:select>
+                                                                </div>
+
+                                                                <div class="form-group col-sm-7">
+                                                                    <form:input type="number" id="amount" path="amount"
+                                                                                step="1" min="1"
+                                                                                max="100"
+                                                                                value="1" class="form-control"/>
+                                                                    <form:errors path="amount" cssClass="formError"
+                                                                                 element="p"/>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+
+
                                                     </div>
-                                                </form>
 
+                                                    <div class="form-group col-sm-3">
+                                                        <input type="submit" value="<spring:message code="dish.add"/>"
+                                                               class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color"/>
+                                                    </div>
 
+                                                </div>
+
+                                            </form:form>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="alert alert-info text-center">
+                                                <strong><spring:message code="ouch"/></strong>
+                                                <spring:message
+                                                        code="dishes.no_dishes"/>
                                             </div>
-
-                                            <div class="form-group col-sm-3">
-                                                <input type="submit" value="<spring:message code="dish.add"/>"
-                                                       class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color"/>
-                                            </div>
-
-                                        </div>
-
-                                    </form:form>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
 
