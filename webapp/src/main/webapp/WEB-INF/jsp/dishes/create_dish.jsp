@@ -81,7 +81,7 @@
                                     <div class="col-lg-6 p-t-20">
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
                                             <form:input class="mdl-textfield__input" type="text" pattern="[0-9]+"
-                                                        path="stock"/>
+                                                        path="stock" value="1"/>
                                             <label class="mdl-textfield__label"><spring:message
                                                     code="dish.amount"/></label>
                                             <span class="mdl-textfield__error"><spring:message
