@@ -33,7 +33,7 @@ public class TableController {
 	
 	@RequestMapping("")
 	public ModelAndView list() {
-		final ModelAndView mav = new ModelAndView("tables/list");
+		final ModelAndView mav = new ModelAndView("tables/table_list");
 		// TODO , el dia de manana se busca con queryparams
 		mav.addObject("tables", ts.findAll());
 		return mav;
@@ -44,7 +44,7 @@ public class TableController {
 		Table table = ts.findById(id);
 		final ModelAndView mav;
 		if (table.getStatus().equals(TableStatus.PAYING))
-			mav = new ModelAndView("tables/checkout");
+			mav = new ModelAndView("tables/table_checkout");
 		else
 			mav = new ModelAndView("tables/index");
 
@@ -52,6 +52,7 @@ public class TableController {
 		mav.addObject("dishes", table.getOrder().getDishes());
 		mav.addObject("diners", table.getOrder().getDiners());
 		mav.addObject("total", table.getOrder().getTotal());
+		return mav;
 	}
 	
 	@RequestMapping(value = "/{tableId}/status", method = {RequestMethod.POST})
@@ -68,7 +69,7 @@ public class TableController {
 	
 	@RequestMapping("/register")
 	public ModelAndView register(@ModelAttribute("registerForm") final TableForm form) {
-		return new ModelAndView("tables/register");
+		return new ModelAndView("tables/table_create");
 	}
 	
 	@RequestMapping(value = "/create", method = {RequestMethod.POST})
@@ -86,7 +87,7 @@ public class TableController {
 	@RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.GET})
 	public ModelAndView addDish(@PathVariable("tableId") Integer id, @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
 		
-		ModelAndView mav = new ModelAndView("tables/add_dish");
+		ModelAndView mav = new ModelAndView("tables/table_add_dish");
 		mav.addObject("table", ts.findById(id));
 		mav.addObject("dishes", ds.findAllAvailable());
 		
@@ -153,7 +154,7 @@ public class TableController {
 	@RequestMapping(value = "/{tableId}/checkout")
 	public ModelAndView getCheckoutBill(@PathVariable("tableId") Integer id) {
 		
-		ModelAndView mav = new ModelAndView("tables/checkout");
+		ModelAndView mav = new ModelAndView("tables/table_checkout");
 		mav.addObject("order", ts.findById(id).getOrder());
 		
 		return mav;

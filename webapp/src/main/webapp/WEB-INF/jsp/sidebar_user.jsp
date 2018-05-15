@@ -19,47 +19,15 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="<c:url value="/admin/"/>" class="nav-link nav-toggle">
-                        <i class="fa fa-home"></i>
-                        <span class="title">Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="#" class="nav-link nav-toggle">
                         <i class="fa fa-home"></i>
                         <span class="title">Tables</span>
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
-                            <a href="<c:url value="/tables/register"/>" class="nav-link ">
-                                <i class="fa fa-plus"></i>
-                                <span class="title">New Table</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="<c:url value="/tables/"/>" class="nav-link ">
                                 <i class="fa fa-list"></i>
                                 <span class="title">Table List</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link nav-toggle">
-                        <i class="fa fa-bars"></i>
-                        <span class="title">Dishes</span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li class="nav-item">
-                            <a href="<c:url value="/admin/dishes/create/"/>" class="nav-link ">
-                                <i class="fa fa-plus"></i>
-                                <span class="title">New Dish</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<c:url value="/admin/dishes/"/>" class="nav-link ">
-                                <i class="fa fa-list"></i>
-                                <span class="title">Dish List</span>
                             </a>
                         </li>
                     </ul>

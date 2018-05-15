@@ -2,8 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 <head>
@@ -35,14 +34,21 @@
 <body class="page-header-fixed sidemenu-closed-hidelogo page-content-white page-md header-white dark-sidebar-color logo-dark">
 <div class="page-wrapper">
     <!-- start header -->
-    <jsp:include page="/WEB-INF/jsp/clean_header.jsp"/>
+    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
     <!-- end header -->
 
     <!-- start page container -->
     <div class="page-container">
-        <!-- start sidebar menu -->
-        <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
-        <!-- end sidebar menu -->
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <!-- start sidebar menu -->
+            <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
+            <!-- end sidebar menu -->
+        </sec:authorize>
+        <sec:authorize access="hasRole('ROLE_USER')">
+            <!-- start sidebar menu -->
+            <jsp:include page="/WEB-INF/jsp/sidebar_user.jsp"/>
+            <!-- end sidebar menu -->
+        </sec:authorize>
 
         <!-- start page content -->
         <div class="page-content-wrapper">
@@ -52,10 +58,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="white-box">
-                            <h3><b><spring:message code="checkout.receipt"/></b> ${table.order.diners} <spring:message code="checkout.diners"/> <span class="pull-right"><fmt:formatDate value="${table.order.closedAt}" pattern="yyyy-MM-dd HH:mm" /></span></h3>
-                            <hr>
+                            <h3><b><spring:message code="checkout.receipt"/></b> ${table.order.diners} <spring:message code="checkout.diners"/> <span class="pull-right"><fmt:formatDate value="${table.order.closedAt}" pattern="yyyy-MM-dd HH:mm" /></span></h3
                             <div class="row">
-
                                 <div class="col-md-12">
                                     <div class="table-responsive m-t-40">
                                         <table class="table table-hover">
@@ -93,8 +97,14 @@
                                                    class="btn btn-success"
                                                    value="<spring:message code="checkout.charged"/>"/>
                                         </form>
-                                        <button onclick="javascript:window.print();" class="btn btn-info" type="button"> <span><i class="fa fa-print"></i> <spring:message code="checkout.print"/></span> </button>
-                                        <a href="<c:url value="/tables"/>"><button class="btn btn-secondary" type="button"> <span><i class="fa fa-list"></i> <spring:message code="checkout.tables"/></span> </button></a>
+                                        <button onclick="javascript:window.print();" class="btn btn-info" type="button">
+                                            <span><i class="fa fa-print"></i> <spring:message code="checkout.print"/></span>
+                                        </button>
+                                        <a href="<c:url value="/tables/"/>">
+                                            <button class="btn btn-secondary" type="button">
+                                                <span><i class="fa fa-list"></i> <spring:message code="checkout.tables"/></span>
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

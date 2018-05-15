@@ -35,15 +35,22 @@
 <body class="page-header-fixed page-content-white page-md header-white logo-dark">
 <div class="page-wrapper">
     <!-- start header -->
-    <jsp:include page="/WEB-INF/jsp/clean_header.jsp"/>
+    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
     <!-- end header -->
 
     <!-- start page container -->
-    <sec:authorize access="hasRole('ROLE_ADMIN')">
+
         <div class="page-container">
-            <!-- start sidebar menu -->
-            <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
-            <!-- end sidebar menu -->
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <!-- start sidebar menu -->
+                <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
+                <!-- end sidebar menu -->
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_USER')">
+                <!-- start sidebar menu -->
+                <jsp:include page="/WEB-INF/jsp/sidebar_user.jsp"/>
+                <!-- end sidebar menu -->
+            </sec:authorize>
                 <div class="page-content-wrapper">
                     <div class="page-content">
                         <div class="row">
@@ -128,7 +135,6 @@
                     </div>
                 </div>
         </div>
-    </sec:authorize>
     <!-- end page container -->
 
     </div>

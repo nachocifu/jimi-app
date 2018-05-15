@@ -27,32 +27,27 @@
 
 <div class="page-wrapper">
     <!-- start header -->
-    <jsp:include page="/WEB-INF/jsp/clean_header.jsp"/>
+    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
     <!-- end header -->
-
 
     <!-- start page content -->
     <div class="page-content-wrapper">
         <div class="page-content-register-user">
-
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card-box card-box-table-index mx-auto mt-5">
-
                         <div class="card-head">
                             <header><spring:message code="table.greeting" arguments=": ${table.name}"/></header>
                         </div>
-
                         <div class="card-body">
                             <div class="col-lg-15 p-t-20">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-
                                     <c:if test="${table.status == 'FREE'}">
-
-                                        <h2><spring:message code="table.table_is"/> <strong><span
-                                                style="color: green;"><spring:message
-                                                code="table.free"/></span></strong>.</h2>
-
+                                        <h2><spring:message code="table.table_is"/>
+                                            <strong>
+                                                <span style="color: green;"><spring:message code="table.free"/>.</span>
+                                            </strong>
+                                        </h2>
                                         <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                             <input value="1" name="status" type="hidden"/>
                                             <input type="submit"
@@ -178,16 +173,13 @@
                                            class="btn btn-default"/>
                                 </form>
                                 </c:if>
-
                                 <div class="col-lg-12 text-center">
                                     <a href="<c:url value="/tables/"/>"
                                        class="btn btn-default rebeccapurple-color"><spring:message
                                             code="table.return_to_table_list"/></a><br>
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
