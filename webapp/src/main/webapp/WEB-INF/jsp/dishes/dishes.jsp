@@ -92,7 +92,8 @@
                                                                 </c:choose>
                                                             </td>
                                                             <td>
-                                                                <form method="POST" action="<c:url value="/admin/dishes/stock/increase"/>">
+                                                                <form method="POST"
+                                                                      action="<c:url value="/admin/dishes/stock/increase"/>">
                                                                     <input type="hidden" value="${dish.id}"
                                                                            name="dishid">
                                                                     <button type="submit"
@@ -102,14 +103,17 @@
                                                                 </form>
                                                             </td>
                                                             <td>
-                                                                <form method="POST" action="<c:url value="/admin/dishes/stock/decrease"/>">
-                                                                    <input type="hidden" value="${dish.id}"
-                                                                           name="dishid">
-                                                                    <button type="submit"
-                                                                            class="btn btn-primary btn-xs">
-                                                                        <i class="fa fa-minus"></i>
-                                                                    </button>
-                                                                </form>
+                                                                <c:if test="${dish.stock > 0}">
+                                                                    <form method="POST"
+                                                                          action="<c:url value="/admin/dishes/stock/decrease"/>">
+                                                                        <input type="hidden" value="${dish.id}"
+                                                                               name="dishid">
+                                                                        <button type="submit"
+                                                                                class="btn btn-primary btn-xs">
+                                                                            <i class="fa fa-minus"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </c:if>
                                                             </td>
                                                         </tr>
                                                         </tr>
