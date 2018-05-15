@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="sidebar-container">
     <div class="sidemenu-container navbar-collapse collapse fixed-menu">
@@ -21,25 +22,25 @@
                 <li class="nav-item">
                     <a href="<c:url value="/admin/"/>" class="nav-link nav-toggle">
                         <i class="fa fa-home"></i>
-                        <span class="title">Dashboard</span>
+                        <span class="title"><spring:message code="sidebar.dashboard"/></span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link nav-toggle">
                         <i class="fa fa-home"></i>
-                        <span class="title">Tables</span>
+                        <span class="title"><spring:message code="sidebar.tables"/></span>
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
                             <a href="<c:url value="/tables/register"/>" class="nav-link ">
                                 <i class="fa fa-plus"></i>
-                                <span class="title">New Table</span>
+                                <span class="title"><spring:message code="sidebar.new_table"/></span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<c:url value="/tables/"/>" class="nav-link ">
                                 <i class="fa fa-list"></i>
-                                <span class="title">Table List</span>
+                                <span class="title"><spring:message code="sidebar.table_list"/></span>
                             </a>
                         </li>
                     </ul>
@@ -47,19 +48,19 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link nav-toggle">
                         <i class="fa fa-bars"></i>
-                        <span class="title">Dishes</span>
+                        <span class="title"><spring:message code="sidebar.dishes"/></span>
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
                             <a href="<c:url value="/admin/dishes/create/"/>" class="nav-link ">
                                 <i class="fa fa-plus"></i>
-                                <span class="title">New Dish</span>
+                                <span class="title"><spring:message code="sidebar.new_dish"/></span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<c:url value="/admin/dishes/"/>" class="nav-link ">
                                 <i class="fa fa-list"></i>
-                                <span class="title">Dish List</span>
+                                <span class="title"><spring:message code="sidebar.dish_list"/></span>
                             </a>
                         </li>
                     </ul>
@@ -67,7 +68,7 @@
                 <li class="nav-item">
                     <a href="<c:url value="/logout"/>" class="nav-link">
                         <i class="fa fa-sign-out"></i>
-                        <span class="title">Log out</span>
+                        <span class="title"><spring:message code="sidebar.logout"/></span>
                     </a>
                 </li>
             </ul>

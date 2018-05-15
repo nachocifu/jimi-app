@@ -36,96 +36,48 @@
 <!-- END HEAD -->
 <body class="page-header-fixed page-content-white page-md header-white logo-dark">
 
-    <div class="page-wrapper">
-        <!-- start header -->
-        <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-        <!-- end header -->
+<div class="page-wrapper">
+    <!-- start header -->
+    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+    <!-- end header -->
 
-        <sec:authorize access="hasRole('ROLE_ADMIN')">
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
+        <!-- start page content -->
+        <div class="page-container">
+            <!-- start sidebar menu -->
+            <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
+            <!-- end sidebar menu -->
+
             <!-- start page content -->
-            <div class="page-container">
-                <!-- start sidebar menu -->
-                <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
-                <!-- end sidebar menu -->
-
-                <!-- start page content -->
-                <div class="page-content-wrapper">
-                    <div class="page-content">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card-box">
-                                    <div class="card-head">
-                                        <header><spring:message code="table.register_header"/></header>
-                                    </div>
-                                    <div class="card-body">
-                                        <c:url value="/tables/create" var="postPath"/>
-                                        <form:form modelAttribute="registerForm" action="${postPath}" method="post">
-
-                                            <div class="card-body">
-
-                                                <div class="col-lg-15 p-t-20">
-                                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                                        <form:label path="name" cssClass="mdl-textfield__label"><spring:message
-                                                                code="table.name"/></form:label>
-                                                        <form:input type="text" path="name" cssClass="mdl-textfield__input"/>
-                                                        <form:errors path="name" cssClass="formError" element="p"/>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-12 p-t-20 text-center">
-                                            <span>
-                                                <button type="submit" class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color">
-                                                    <spring:message code="table.register"/>
-                                                </button>
-                                                <a href="<c:url value="/tables/"/>"
-                                                   class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-default">
-                                                    <spring:message code="dish.cancel"/>
-                                                </a>
-                                            </span>
-                                                </div>
-
-                                            </div>
-
-                                        </form:form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- end page content -->
-        </sec:authorize>
-
-        <sec:authorize access="hasRole('ROLE_USER')">
-            <!-- start page content -->
-            <div class="page-content-wrapper fixed">
-                <div class="page-content-register-user">
-
+            <div class="page-content-wrapper">
+                <div class="page-content">
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="card-box card-box-user mx-auto mt-5">
+                            <div class="card-box">
                                 <div class="card-head">
                                     <header><spring:message code="table.register_header"/></header>
                                 </div>
+                                <div class="card-body">
+                                    <c:url value="/tables/create" var="postPath"/>
+                                    <form:form modelAttribute="registerForm" action="${postPath}" method="post">
 
-                                <c:url value="/tables/create" var="postPath"/>
-                                <form:form modelAttribute="registerForm" action="${postPath}" method="post">
+                                        <div class="card-body">
 
-                                    <div class="card-body">
-
-                                        <div class="col-lg-15 p-t-20">
-                                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                                <form:label path="name" cssClass="mdl-textfield__label"><spring:message
-                                                        code="table.name"/></form:label>
-                                                <form:input type="text" path="name" cssClass="mdl-textfield__input"/>
-                                                <form:errors path="name" cssClass="formError" element="p"/>
+                                            <div class="col-lg-15 p-t-20">
+                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                                    <form:label path="name"
+                                                                cssClass="mdl-textfield__label"><spring:message
+                                                            code="table.name"/></form:label>
+                                                    <form:input type="text" path="name"
+                                                                cssClass="mdl-textfield__input"/>
+                                                    <form:errors path="name" cssClass="formError" element="p"/>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-lg-12 p-t-20 text-center">
+                                            <div class="col-lg-12 p-t-20 text-center">
                                             <span>
-                                                <button type="submit" class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color">
+                                                <button type="submit"
+                                                        class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color">
                                                     <spring:message code="table.register"/>
                                                 </button>
                                                 <a href="<c:url value="/tables/"/>"
@@ -133,23 +85,24 @@
                                                     <spring:message code="dish.cancel"/>
                                                 </a>
                                             </span>
+                                            </div>
+
                                         </div>
 
-                                    </div>
-
-                                </form:form>
+                                    </form:form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- end page content -->
-        </sec:authorize>
+        </div>
+        <!-- end page content -->
+    </sec:authorize>
 
-        <!-- start footer -->
-        <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-        <!-- end footer -->
-    </div>
+    <!-- start footer -->
+    <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
+    <!-- end footer -->
 </div>
     <!-- start js include path -->
     <script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
