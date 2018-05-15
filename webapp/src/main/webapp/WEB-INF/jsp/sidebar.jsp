@@ -64,6 +64,12 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="<c:url value="/logout"/>" class="nav-link nav-toggle">
+                        <i class="fa fa-home"></i>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

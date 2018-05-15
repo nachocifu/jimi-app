@@ -52,7 +52,6 @@ public class TableController {
 		mav.addObject("dishes", table.getOrder().getDishes());
 		mav.addObject("diners", table.getOrder().getDiners());
 		mav.addObject("total", table.getOrder().getTotal());
-		return mav;
 	}
 	
 	@RequestMapping(value = "/{tableId}/status", method = {RequestMethod.POST})
