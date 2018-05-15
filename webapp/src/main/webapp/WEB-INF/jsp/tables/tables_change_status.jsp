@@ -37,14 +37,14 @@
     <!-- start page container -->
     <div class="page-container">
         <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <!-- start sidebar menu -->
+            <!-- start sidebar menu -->
             <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
-        <!-- end sidebar menu -->
+            <!-- end sidebar menu -->
         </sec:authorize>
         <sec:authorize access="hasRole('ROLE_USER')">
-        <!-- start sidebar menu -->
+            <!-- start sidebar menu -->
             <jsp:include page="/WEB-INF/jsp/sidebar_user.jsp"/>
-        <!-- end sidebar menu -->
+            <!-- end sidebar menu -->
         </sec:authorize>
 
         <!-- start page content -->
@@ -62,7 +62,8 @@
                                         <c:if test="${table.status == 'FREE'}">
                                             <h2><spring:message code="table.table_is"/>
                                                 <strong>
-                                                    <span style="color: green;"><spring:message code="table.free"/>.</span>
+                                                    <span style="color: green;"><spring:message
+                                                            code="table.free"/>.</span>
                                                 </strong>
                                             </h2>
                                             <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
@@ -73,16 +74,16 @@
                                             </form>
                                         </c:if>
                                         <c:if test="${table.status == 'BUSY'}">
-                                            <h2><spring:message code="table.table_is"/>
-                                                <strong><span style="color: red;"><spring:message
-                                                        code="table.busy"/></span></strong>.
-                                            </h2>
-                                            <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                                <input value="3" name="status" type="hidden"/>
-                                                <input type="submit"
-                                                       class="btn btn-default rebeccapurple-color"
-                                                       value="<spring:message code="table.charge_caps"/>"/>
-                                            </form>
+                                        <h2><spring:message code="table.table_is"/>
+                                            <strong><span style="color: red;"><spring:message
+                                                    code="table.busy"/></span></strong>.
+                                        </h2>
+                                        <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
+                                            <input value="3" name="status" type="hidden"/>
+                                            <input type="submit"
+                                                   class="btn btn-default rebeccapurple-color"
+                                                   value="<spring:message code="table.charge_caps"/>"/>
+                                        </form>
                                         <c:url value="/tables/${table.id}/set_diners" var="postPath"/>
                                         <form:form modelAttribute="tableSetDinersForm" action="${postPath}"
                                                    method="post">
@@ -98,7 +99,8 @@
                                                                         value="${diners}"
                                                                         path="diners" step="1" min="1" max="10"
                                                                         class="form-control"/>
-                                                            <form:errors path="diners" cssStyle="color: red;" element="p"/>
+                                                            <form:errors path="diners" cssStyle="color: red;"
+                                                                         element="p"/>
                                                         </div>
                                                         <div class="col-md-2">
                                                             <input type="submit"
@@ -114,13 +116,13 @@
                                         <div class="table-responsive">
                                             <table class="table table-striped custom-table">
                                                 <thead class="text-left">
-                                                    <tr>
-                                                        <th><spring:message code="dish.name"/></th>
-                                                        <th><spring:message code="dish.price"/></th>
-                                                        <th><spring:message code="dish.amount"/></th>
-                                                        <th><spring:message code="dish.total"/></th>
-                                                        <th></th>
-                                                    </tr>
+                                                <tr>
+                                                    <th><spring:message code="dish.name"/></th>
+                                                    <th><spring:message code="dish.price"/></th>
+                                                    <th><spring:message code="dish.amount"/></th>
+                                                    <th><spring:message code="dish.total"/></th>
+                                                    <th></th>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
                                                 <c:forEach items="${dishes}" var="dishEntry">
@@ -128,18 +130,26 @@
                                                         <td><c:out value="${dishEntry.key.name}"/></td>
                                                         <td><c:out value="${dishEntry.key.price}"/></td>
                                                         <td><c:out value="${dishEntry.value}"/></td>
-                                                        <td><c:out value="${dishEntry.value * dishEntry.key.price}"/></td>
+                                                        <td><c:out
+                                                                value="${dishEntry.value * dishEntry.key.price}"/></td>
                                                         <td>
                                                             <div class="row">
                                                                 <div class="col-md-3">
-                                                                    <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
-                                                                          method="post" class="form-with-buttons">
-                                                                        <button type="submit"
-                                                                                class="btn btn-success btn-xs">
-                                                                            <i class="fa fa-plus"></i>
-                                                                        </button>
-                                                                        <input type="hidden" value="${dishEntry.key.id}" name="dishid"/>
-                                                                    </form>
+                                                                    <c:choose>
+                                                                        <c:when test="${dishEntry.key.stock != 0}">
+                                                                            <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
+                                                                                  method="post"
+                                                                                  class="form-with-buttons">
+                                                                                <button type="submit"
+                                                                                        class="btn btn-success btn-xs">
+                                                                                    <i class="fa fa-plus"></i>
+                                                                                </button>
+                                                                                <input type="hidden"
+                                                                                       value="${dishEntry.key.id}"
+                                                                                       name="dishid"/>
+                                                                            </form>
+                                                                        </c:when>
+                                                                    </c:choose>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <form action="<c:url value="/tables/${table.id}/remove_one_dish"/>"
@@ -155,7 +165,8 @@
                                                                 <div class="col-md-3">
                                                                     <form action="<c:url value="/tables/${table.id}/remove_all_dish"/>"
                                                                           method="post" class="form-with-buttons">
-                                                                        <button type="submit" class="btn btn-danger btn-xs">
+                                                                        <button type="submit"
+                                                                                class="btn btn-danger btn-xs">
                                                                             <i class="fa fa-trash-o "></i>
                                                                         </button>
                                                                         <input type="hidden" value="${dishEntry.key.id}"
