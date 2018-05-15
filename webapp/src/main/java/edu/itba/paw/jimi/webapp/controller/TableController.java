@@ -48,9 +48,11 @@ public class TableController {
 			 mav = new ModelAndView("tables/checkout");
 		else
 			mav = new ModelAndView("tables/index");
+
 		mav.addObject("table", table);
 		mav.addObject("dishes", table.getOrder().getDishes());
 		mav.addObject("diners", table.getOrder().getDiners());
+		mav.addObject("total", table.getOrder().getTotal());
 		return mav;
 	}
 	
