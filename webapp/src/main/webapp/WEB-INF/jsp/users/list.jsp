@@ -30,7 +30,7 @@
 <body class="page-header-fixed page-content-white page-md header-white logo-dark">
 <div class="page-wrapper">
     <!-- start header -->
-    <jsp:include page="/WEB-INF/jsp/clean_header.jsp"/>
+    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
     <!-- end header -->
 
     <!-- start page container -->

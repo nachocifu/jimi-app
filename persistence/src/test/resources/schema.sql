@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS tables
   name     VARCHAR(100) NOT NULL,
   tableid  INTEGER IDENTITY PRIMARY KEY,
   statusid INTEGER      NOT NULL,
-  orderid  INTEGER
+  orderid  INTEGER  UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS orders
