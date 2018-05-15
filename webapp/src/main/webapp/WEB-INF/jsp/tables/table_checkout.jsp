@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 <head>
@@ -34,62 +34,58 @@
 <body class="page-header-fixed sidemenu-closed-hidelogo page-content-white page-md header-white dark-sidebar-color logo-dark">
 <div class="page-wrapper">
     <!-- start header -->
-    <jsp:include page="/WEB-INF/jsp/clean_header.jsp"/>
+    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
     <!-- end header -->
 
     <!-- start page container -->
     <div class="page-container">
-        <!-- start sidebar menu -->
-        <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
-        <!-- end sidebar menu -->
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <!-- start sidebar menu -->
+            <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
+            <!-- end sidebar menu -->
+        </sec:authorize>
+        <sec:authorize access="hasRole('ROLE_USER')">
+            <!-- start sidebar menu -->
+            <jsp:include page="/WEB-INF/jsp/sidebar_user.jsp"/>
+            <!-- end sidebar menu -->
+        </sec:authorize>
 
         <!-- start page content -->
         <div class="page-content-wrapper">
             <div class="page-content">
-                <div class="page-bar">
-                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="white-box">
-                            <h3><b>RECIPE</b> <span class="pull-right">#345766</span></h3>
-                            <hr>
+                            <h3><b><spring:message code="checkout.receipt"/></b> ${table.order.diners} <spring:message code="checkout.diners"/> <span class="pull-right"><fmt:formatDate value="${table.order.closedAt}" pattern="yyyy-MM-dd HH:mm" /></span></h3
                             <div class="row">
-
                                 <div class="col-md-12">
                                     <div class="table-responsive m-t-40">
                                         <table class="table table-hover">
                                             <thead>
                                             <tr>
-                                                <th class="text-center">#</th>
-                                                <th class="text-center">Date</th>
-                                                <th class="text-center">Descriptions</th>
-                                                <th class="text-center">Charges</th>
-                                                <th class="text-center">Items</th>
-                                                <th class="text-center">Tax</th>
-                                                <th class="text-right">Amount</th>
+                                                <th class="text-center"><spring:message code="checkout.table.description"/></th>
+                                                <th class="text-center"><spring:message code="checkout.table.charges"/></th>
+                                                <th class="text-center"><spring:message code="checkout.table.items"/></th>
+                                                <th class="text-right"><spring:message code="checkout.table.amount"/></th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td class="text-center">1</td>
-                                                <td class="text-center">2016-11-19</td>
-                                                <td class="text-center">Delux Room</td>
-                                                <td class="text-center">$100</td>
-                                                <td class="text-center">2</td>
-                                                <td class="text-center">10%</td>
-                                                <td class="text-right">$112</td>
-                                            </tr>
+                                            <c:forEach items="${table.order.dishes}" var="dish">
+                                                <tr>
+                                                    <td class="text-center">${dish.key.name}</td>
+                                                    <td class="text-center">${dish.key.price}</td>
+                                                    <td class="text-center">${dish.value}</td>
+                                                    <td class="text-right">${dish.value * dish.key.price}</td>
+                                                </tr>
+                                            </c:forEach>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="pull-right m-t-30 text-right">
-                                        <p>Sub - Total amount: $179</p>
-                                        <p>Discount : $10 </p>
-                                        <p>Tax (10%) : $14 </p>
                                         <hr>
-                                        <h3><b>Total :</b> $213</h3> </div>
+                                        <h3><b><spring:message code="checkout.table.total"/> :</b> $${total}</h3> </div>
                                     <div class="clearfix"></div>
                                     <hr>
                                     <div class="text-right">
@@ -99,8 +95,14 @@
                                                    class="btn btn-success"
                                                    value="<spring:message code="checkout.charged"/>"/>
                                         </form>
-                                        <button onclick="javascript:window.print();" class="btn btn-info" type="button"> <span><i class="fa fa-print"></i> <spring:message code="checkout.print"/></span> </button>
-                                        <a href="<c:url value="/tables"/>"><button class="btn btn-secondary" type="button"> <span><i class="fa fa-list"></i> <spring:message code="checkout.tables"/></span> </button></a>
+                                        <button onclick="javascript:window.print();" class="btn btn-info" type="button">
+                                            <span><i class="fa fa-print"></i> <spring:message code="checkout.print"/></span>
+                                        </button>
+                                        <a href="<c:url value="/tables/"/>">
+                                            <button class="btn btn-secondary" type="button">
+                                                <span><i class="fa fa-list"></i> <spring:message code="checkout.tables"/></span>
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
