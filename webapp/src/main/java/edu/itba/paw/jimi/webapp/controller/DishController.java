@@ -20,7 +20,6 @@ public class DishController {
 
     @Autowired
     private DishService dishService;
-    
 
     @RequestMapping(value = {"/create"}, method = { RequestMethod.GET })
     public ModelAndView register(@ModelAttribute("dishCreateForm") final DishForm form) {
