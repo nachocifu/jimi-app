@@ -51,46 +51,43 @@
             <div class="page-content">
                 <!-- start widget -->
                 <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="panel-body">
-                                <h3><spring:message code="admin.free_tables_title"/> <c:out
-                                        value="${freeTablesPercentage}"/>%</h3>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+
+                        <div class="card card-box">
+                            <div class="card-head">
+                                <header><spring:message code="admin.free_tables_title"/> <c:out
+                                        value="${freeTablesPercentage}"/>%
+                                </header>
+                            </div>
+                            <div class="card-body ">
                                 <div class="progress">
                                     <div class="progress-bar bg-success"
                                          style="width:<c:out value="${freeTablesPercentage}"/>%"></div>
                                 </div>
 
                                 <span class="text-small margin-top-10 full-width">
-                                    <spring:message code="admin.busy_tables"
-                                                    arguments="${busyTables}, ${totalTables}"/></span></div>
-
+                                <spring:message code="admin.busy_tables"
+                                                arguments="${busyTables}, ${totalTables}"/></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="panel-body">
-                                <h3><spring:message code="admin.stock_status"/> <c:out value="${stockStatePercentage}"/>%</h3>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+
+                        <div class="card card-box">
+                            <div class="card-head">
+                                <header><spring:message code="admin.stock_status"/> <c:out
+                                        value="${stockStatePercentage}"/>%
+                                </header>
+                            </div>
+                            <div class="card-body ">
                                 <div class="progress">
                                     <div class="progress-bar bg-danger"
                                          style="width:<c:out value="${stockStatePercentage}"/>%"></div>
                                 </div>
-                                <span class="text-small margin-top-10 full-width"><spring:message code="admin.stock_under_50"/></span></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="panel-body">
-                                <h3><spring:message code="admin.dishes_sold_today"/></h3>
-                                <h2><c:out value="${dishesSold}"/></h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="panel-body">
-                                <h3><spring:message code="admin.diners_today"/></h3>
-                                <h2><c:out value="${dinersToday}"/></h2>
+
+                                <span class="text-small margin-top-10 full-width"><spring:message
+                                        code="admin.stock_under_50"/></span>
                             </div>
                         </div>
                     </div>
@@ -127,33 +124,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-12">
-                        <div class="card card-box">
-                            <div class="card-head">
-                                <header><spring:message code="admin.sales"/></header>
-                            </div>
-                            <div class="card-body ">
-                                <div class="row">
-
-                                </div>
-                                <div id="sparkline28"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-12">
-                        <div class="card card-box">
-                            <div class="card-head">
-                                <header><spring:message code="admin.earnings"/></header>
-                            </div>
-                            <div class="card-body ">
-                                <div class="row">
-                                </div>
-                                <div id="sparkline29"></div>
                             </div>
                         </div>
                     </div>
