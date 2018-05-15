@@ -7,6 +7,7 @@ import edu.itba.paw.jimi.models.Dish;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
@@ -53,5 +54,21 @@ public class DishServiceImpl implements DishService {
 	
 	public Collection<Dish> findAll() {
 		return dishDao.findAll();
+	}
+	
+	public Collection<Dish> findAllAvailable() {
+		
+		Collection<Dish> dishes = dishDao.findAll();
+		
+		Collection<Dish> availableDishes = new ArrayList<Dish>();
+		
+		for (Dish d : dishes) {
+			if (d.getStock() > 0) {
+				availableDishes.add(d);
+			}
+		}
+		
+		return availableDishes;
+		
 	}
 }

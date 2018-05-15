@@ -22,14 +22,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DishServiceTestConfig.class)
 public class DishServiceTest {
-
+	
 	private static final String NAME = "Papa";
 	private static final float PRICE = 10.50F;
 	private static final int DEFAULT_STOCK = 0;
@@ -236,6 +234,84 @@ public class DishServiceTest {
 		nonRepetingDishes.addAll(dishes);
 		
 		assertEquals(dbDishes.size() - 1, nonRepetingDishes.size());
+	}
+	
+	@Test
+	public void findAllAvailableTest() {
+		Collection<Dish> dishes = new LinkedList<Dish>();
+		dishes.add(new Dish(NAME, PRICE, 0, 10));
+		dishes.add(new Dish(NAME, PRICE, 1, 10));
+		dishes.add(new Dish(NAME, PRICE, 2, 10));
+		dishes.add(new Dish(NAME, PRICE, 3, 10));
+		Mockito.when(dishDao.findAll()).thenReturn(dishes);
+		
+		Collection<Dish> dbDishes = dishService.findAllAvailable();
+		
+		assertNotNull(dbDishes);
+		
+		// Pass all dishes to hashset and compare sizes to check if find all contains duplicates.
+		Set<Dish> nonRepetingDishes = new HashSet<Dish>();
+		nonRepetingDishes.addAll(dishes);
+		
+		assertEquals(dbDishes.size(), nonRepetingDishes.size());
+	}
+	
+	@Test
+	public void findAllAvailableNotNullTest() {
+		
+		Mockito.when(dishDao.findAll()).thenReturn(new HashSet<Dish>());
+		Collection<Dish> dbDishes = dishService.findAllAvailable();
+		assertNotNull(dbDishes);
+	}
+	
+	@Test
+	public void findAllAvailableTestRepeated() {
+		Collection<Dish> dishes = new LinkedList<Dish>();
+		dishes.add(new Dish(NAME, PRICE, 0, 10));
+		dishes.add(new Dish(NAME, PRICE, 0, 10)); // Duplicated, should return 1 less.
+		dishes.add(new Dish(NAME, PRICE, 2, 10));
+		dishes.add(new Dish(NAME, PRICE, 3, 10));
+		Mockito.when(dishDao.findAll()).thenReturn(dishes);
+		
+		Collection<Dish> dbDishes = dishService.findAllAvailable();
+		
+		assertNotNull(dbDishes);
+		
+		// Pass all dishes to hashset and compare sizes to check if find all contains duplicates.
+		Set<Dish> nonRepetingDishes = new HashSet<Dish>();
+		nonRepetingDishes.addAll(dishes);
+		
+		assertEquals(dbDishes.size() - 1, nonRepetingDishes.size());
+	}
+	
+	@Test
+	public void findAllAvailableTestNonAvailable() {
+		Collection<Dish> dishes = new LinkedList<Dish>();
+		dishes.add(new Dish(NAME, PRICE, 0, 0));
+		dishes.add(new Dish(NAME, PRICE, 1, 0));
+		dishes.add(new Dish(NAME, PRICE, 2, 0));
+		dishes.add(new Dish(NAME, PRICE, 3, 0));
+		Mockito.when(dishDao.findAll()).thenReturn(dishes);
+		
+		Collection<Dish> dbDishes = dishService.findAllAvailable();
+		
+		assertNotNull(dbDishes);
+		assertEquals(0, dbDishes.size());
+	}
+	
+	@Test
+	public void findAllAvailableTestSomeAvailable() {
+		Collection<Dish> dishes = new LinkedList<Dish>();
+		dishes.add(new Dish(NAME, PRICE, 0, 0));
+		dishes.add(new Dish(NAME, PRICE, 1, 7));
+		dishes.add(new Dish(NAME, PRICE, 2, 0));
+		dishes.add(new Dish(NAME, PRICE, 3, 7));
+		Mockito.when(dishDao.findAll()).thenReturn(dishes);
+		
+		Collection<Dish> dbDishes = dishService.findAllAvailable();
+		
+		assertNotNull(dbDishes);
+		assertEquals(2, dbDishes.size());
 	}
 	
 }

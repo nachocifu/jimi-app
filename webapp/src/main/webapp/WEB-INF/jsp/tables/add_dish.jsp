@@ -68,14 +68,16 @@
                                                             <form:select cssClass="control-label" id="dishid"
                                                                          name="dishid" path="dishid">
                                                                 <c:forEach items="${dishes}" var="dish">
-                                                                    <option value="${dish.id}">${dish.name}</option>
+                                                                    <option value="${dish.id}"
+                                                                            data-max="${dish.stock}">${dish.name}</option>
                                                                 </c:forEach>
                                                             </form:select>
                                                         </div>
 
                                                         <div class="form-group col-sm-7">
-                                                            <form:input type="number" path="amount" step="1" min="1"
-                                                                        max="10"
+                                                            <form:input type="number" id="amount" path="amount"
+                                                                        step="1" min="1"
+                                                                        max="100"
                                                                         value="1" class="form-control"/>
                                                             <form:errors path="amount" cssClass="formError"
                                                                          element="p"/>
@@ -132,5 +134,7 @@
     <script src="<c:url value="/resources/js/pages/material_select/getmdl-select.js"/>"></script>
     <!-- animation -->
     <script src="<c:url value="/resources/js/pages/ui/animations.js"/>"></script>
+    <!-- jimi-rest -->
+    <script src="<c:url value="/resources/js/jimi-rest/set_input_on_select_change.js"/>"></script>
 </body>
 </html>
