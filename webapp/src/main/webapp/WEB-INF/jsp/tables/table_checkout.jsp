@@ -56,7 +56,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="white-box">
-                            <h3><b><spring:message code="checkout.receipt"/></b> ${table.order.diners} <spring:message code="checkout.diners"/> <span class="pull-right"><fmt:formatDate value="${table.order.closedAt}" pattern="yyyy-MM-dd HH:mm" /></span></h3
+                            <h3><b><spring:message code="checkout.receipt"/></b> ${table.order.diners} <spring:message code="checkout.diners"/> <span class="pull-right"><fmt:formatDate value="${table.order.closedAt}" pattern="yyyy-MM-dd HH:mm" /></span></h3>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-responsive m-t-40">

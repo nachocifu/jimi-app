@@ -15,15 +15,14 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class OrderJdbcDao implements OrderDao {
 	
 	private static final String ORDER_TABLE_NAME = "orders";
 	private static final String ORDER_ITEM_TABLE_NAME = "orders_items";
+	private static final int ORDER_STATUS_CLOSED = 2;
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -81,7 +80,6 @@ public class OrderJdbcDao implements OrderDao {
 				.usingGeneratedKeyColumns("orderid");
 	}
 	
-	
 	public Order findById(final long id) {
 		// This SQL sentence joins the orders, orders_items and dishes tables to one.
 		// The orders table is on the outer side of the join so it returns orders with no dishes inside.
@@ -123,6 +121,15 @@ public class OrderJdbcDao implements OrderDao {
 				orderItemJdbcDao.delete(order, entry.getKey());
 		}
 		
+	}
+
+	public Collection<Order> findAll() {
+		final Collection<Order> col = jdbcTemplate.query(
+				"SELECT name, closedat " +
+						"SELECT orderid, closedat FROM orders WHERE statusid = ORDER_STATUS_CLOSED ORDER BY orderid;"
+
+				, ROW_MAPPER);
+		return col;
 	}
 	
 }

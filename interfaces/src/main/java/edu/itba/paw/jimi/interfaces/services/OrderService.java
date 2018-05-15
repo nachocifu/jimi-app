@@ -5,6 +5,7 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 
 
 public interface OrderService {
@@ -82,4 +83,11 @@ public interface OrderService {
 	 * @return The amount of diners saved.
 	 */
 	int setDiners(Order order, int diners);
+
+	/**
+	 * Finds all dishes.
+	 *
+	 * @return A collection of said dishes.
+	 */
+	Collection<Order> findAll();
 }

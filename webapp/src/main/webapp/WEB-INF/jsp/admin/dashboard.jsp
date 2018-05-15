@@ -109,14 +109,15 @@
                                             <table class="table">
                                                 <tbody>
                                                 <tr>
-                                                    <th><spring:message code="user.name"/></th>
-                                                    <th><spring:message code="admin.date"/></th>
+                                                    <th><spring:message code="table.name"/></th>
+                                                    <th><spring:message code="bill.date"/></th>
                                                     <th><spring:message code="admin.status"/></th>
-                                                    <th><spring:message code="admin.amount"/></th>
-                                                    <th><spring:message code="admin.transaction_id"/></th>
+                                                    <th><spring:message code="bill.ammount"/></th>
+                                                    <th><spring:message code="bill.transaction_id"/></th>
                                                 </tr>
+                                                <c:forEach items=""
                                                 <tr>
-                                                    <td>John Deo</td>
+                                                    <td>Table 1</td>
                                                     <td>05-01-2017</td>
                                                     <td><span class="label label-danger">Unpaid</span></td>
                                                     <td>1200$</td>
@@ -127,33 +128,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-12">
-                        <div class="card card-box">
-                            <div class="card-head">
-                                <header><spring:message code="admin.sales"/></header>
-                            </div>
-                            <div class="card-body ">
-                                <div class="row">
-
-                                </div>
-                                <div id="sparkline28"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-12">
-                        <div class="card card-box">
-                            <div class="card-head">
-                                <header><spring:message code="admin.earnings"/></header>
-                            </div>
-                            <div class="card-body ">
-                                <div class="row">
-                                </div>
-                                <div id="sparkline29"></div>
                             </div>
                         </div>
                     </div>

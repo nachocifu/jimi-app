@@ -19,6 +19,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import javax.sql.DataSource;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by ioninielavitzky on 28/03/2018.
@@ -62,8 +63,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public MessageSource messageSource() {
 		final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename("classpath:i18n/messages");
-		messageSource.setDefaultEncoding("UTF-8");
-//		messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
+		//messageSource.setDefaultEncoding("UTF-8");
+		messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
 		messageSource.setCacheSeconds(5);
 		return messageSource;
 	}

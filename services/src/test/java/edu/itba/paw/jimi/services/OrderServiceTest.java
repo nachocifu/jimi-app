@@ -9,6 +9,7 @@ import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
+import javafx.beans.binding.When;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Timestamp;
+import java.util.LinkedList;
 
 /**
  * Some tests are duplicated because it is possible that the order has the Dish with value 0 or doesn't even have the dish.
@@ -366,8 +368,7 @@ public class OrderServiceTest {
 		
 		Assert.assertEquals(retValue, 0);
 	}
-	
-	
+
 	@Test
 	public void removeAllDishWithoutAddingReturning0Test() {
 		
@@ -427,7 +428,6 @@ public class OrderServiceTest {
 		orderService.setDiners(order, 5);
 	}
 	
-	
 	@Test
 	public void setDinersNegativeTest() {
 		Order order = new Order(1, null, null, OrderStatus.OPEN, 2);
@@ -440,8 +440,7 @@ public class OrderServiceTest {
 		
 		Assert.assertEquals(2, order.getDiners());
 	}
-	
-	
+
 	@Test
 	public void openOrderTest() {
 		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
@@ -478,6 +477,12 @@ public class OrderServiceTest {
 		Order order = new Order(1, OPENEDAT, null, OrderStatus.INACTIVE, 0);
 		
 		orderService.close(order);
+	}
+
+	@Test
+	public void findAllNotNull(){
+		Mockito.when(orderDao.findAll()).thenReturn(new LinkedList<Order>());
+		Assert.assertNotNull(orderDao.findAll());
 	}
 	
 }

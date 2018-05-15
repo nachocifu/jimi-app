@@ -1,9 +1,9 @@
 package edu.itba.paw.jimi.webapp.controller;
 
 
+import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.StatsService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
-import edu.itba.paw.jimi.interfaces.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +19,12 @@ public class AdminController {
     @Autowired
     TableService tableService;
 
+    @Autowired
+    OrderService orderService;
+
     @RequestMapping("")
     public ModelAndView index() {
-        final ModelAndView mav = new ModelAndView("admin/index");
+        final ModelAndView mav = new ModelAndView("admin/dashboard");
 
         mav.addObject("busyTables", statsService.getBusyTablesUnits());
         mav.addObject("totalTables", tableService.findAll().size());
@@ -29,6 +32,7 @@ public class AdminController {
         mav.addObject("dishesSold", statsService.getDishesSold());
         mav.addObject("freeTablesPercentage", statsService.getFreeTables());
         mav.addObject("stockStatePercentage", statsService.getStockState());
+        mav.addObject("latest10Orders", orderService.findAll());
 
         return mav;
     }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Collection;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -130,6 +131,9 @@ public class OrderServiceImpl implements OrderService {
 		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 		orderDao.update(order);
 	}
-	
+
+	public Collection<Order> findAll(){
+		return orderDao.findAll();
+	}
 	
 }
