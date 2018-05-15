@@ -47,7 +47,7 @@
                             <div class="col-lg-15 p-t-20">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
 
-                                    <c:if test="${table.status == 'Free'}">
+                                    <c:if test="${table.status == 'FREE'}">
 
                                         <h2><spring:message code="table.table_is"/> <strong><span
                                                 style="color: green;"><spring:message
@@ -62,22 +62,7 @@
 
                                     </c:if>
 
-                                    <c:if test="${table.status == 'CleaningRequired'}">
-
-                                        <h2><spring:message code="table.table_is"/> <strong><span
-                                                style="color: orange;"><spring:message
-                                                code="table.cleaning"/></span></strong>.</h2>
-
-                                        <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                            <input value="2" name="status" type="hidden"/>
-                                            <input type="submit"
-                                                   class="btn btn-default rebeccapurple-color"
-                                                   value="<spring:message code="table.free"/>"/>
-                                        </form>
-
-                                    </c:if>
-
-                                    <c:if test="${table.status == 'Busy'}">
+                                    <c:if test="${table.status == 'BUSY'}">
 
                                     <h2><spring:message code="table.table_is"/>
                                         <strong><span style="color: red;"><spring:message
@@ -88,7 +73,7 @@
                                         <input value="3" name="status" type="hidden"/>
                                         <input type="submit"
                                                class="btn btn-default rebeccapurple-color"
-                                               value="<spring:message code="table.cleaning_caps"/>"/>
+                                               value="<spring:message code="table.charge_caps"/>"/>
                                     </form>
 
 

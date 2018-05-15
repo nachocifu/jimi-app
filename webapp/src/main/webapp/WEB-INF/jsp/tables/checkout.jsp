@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
 <html>
@@ -92,8 +93,14 @@
                                     <div class="clearfix"></div>
                                     <hr>
                                     <div class="text-right">
-                                        <button class="btn btn-danger" type="submit"> Proceed to payment </button>
-                                        <button onclick="javascript:window.print();" class="btn btn-default btn-outline" type="button"> <span><i class="fa fa-print"></i> Print</span> </button>
+                                        <form action="<c:url value="/tables/${table.id}/status"/>" method="POST">
+                                            <input value="2" name="status" type="hidden"/>
+                                            <input type="submit"
+                                                   class="btn btn-success"
+                                                   value="<spring:message code="checkout.charged"/>"/>
+                                        </form>
+                                        <button onclick="javascript:window.print();" class="btn btn-info" type="button"> <span><i class="fa fa-print"></i> <spring:message code="checkout.print"/></span> </button>
+                                        <a href="<c:url value="/tables"/>"><button class="btn btn-secondary" type="button"> <span><i class="fa fa-list"></i> <spring:message code="checkout.tables"/></span> </button></a>
                                     </div>
                                 </div>
                             </div>

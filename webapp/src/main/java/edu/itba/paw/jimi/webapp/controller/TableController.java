@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import javax.validation.Valid;
 
 @Controller
@@ -41,8 +42,12 @@ public class TableController {
 	
 	@RequestMapping("/{id}")
 	public ModelAndView index(@PathVariable("id") Integer id, @ModelAttribute("tableSetDinersForm") final TableSetDinersForm form) {
-		final ModelAndView mav = new ModelAndView("tables/index");
 		Table table = ts.findById(id);
+		final ModelAndView mav;
+		if ( table.getStatus().equals(TableStatus.PAYING) )
+			 mav = new ModelAndView("tables/checkout");
+		else
+			mav = new ModelAndView("tables/index");
 		mav.addObject("table", table);
 		mav.addObject("dishes", table.getOrder().getDishes());
 		mav.addObject("diners", table.getOrder().getDiners());
@@ -51,13 +56,14 @@ public class TableController {
 	
 	@RequestMapping(value = "/{tableId}/status", method = {RequestMethod.POST})
 	public ModelAndView statusChange(@PathVariable("tableId") Integer id, @RequestParam(value = "status") final Integer statusId) {
-		
-		//TODO: Cuando pasa de busy a free hay que llevar a una pantalla de cerrar cuenta y despues limpiar (los datos) de la mesa.
-		// Eso deberia ir adentro del servicio.
-		// Y el controler deberia elegir a que pagina ir dependiendo de la transision.
-		ts.changeStatus(ts.findById(id), TableStatus.getTableStatus(statusId));
-		
-		return new ModelAndView("redirect:/tables/" + id);
+
+		Table table = ts.findById(id);
+		ts.changeStatus(table, TableStatus.getTableStatus(statusId));
+
+		if ( table.getStatus().equals(TableStatus.FREE) )
+			return new ModelAndView("redirect:/tables");
+		else
+			return new ModelAndView("redirect:/tables/" + id);
 	}
 	
 	@RequestMapping("/register")

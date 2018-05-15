@@ -32,12 +32,5 @@ public interface TableService {
 	 * @param status The new status of the table.
 	 */
 	void changeStatus(Table table, TableStatus status);
-	
-	//TODO: Implementar.
-//	/**
-//	 * Closes the order and changes the status.
-//	 * A new order object is created with no dishes.
-//	 * @param table
-//	 */
-//	Order closeOrder(Table table);
+
 }
