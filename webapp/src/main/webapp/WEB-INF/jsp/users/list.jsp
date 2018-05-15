@@ -18,8 +18,6 @@
           type="text/css"/>
     <!--bootstrap -->
     <link href="<c:url value="/webjars/bootstrap/4.0.0/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css"/>
-    <!-- animation -->
-    <link href="<c:url value="/resources/css/pages/animate_page.css"/>" rel="stylesheet"/>
     <!-- Template Styles -->
     <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<c:url value="/resources/css/plugins.min.css"/>" rel="stylesheet" type="text/css"/>
