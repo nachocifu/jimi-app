@@ -53,8 +53,6 @@
         <!-- start page content -->
         <div class="page-content-wrapper">
             <div class="page-content">
-                <div class="page-bar">
-                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="white-box">
