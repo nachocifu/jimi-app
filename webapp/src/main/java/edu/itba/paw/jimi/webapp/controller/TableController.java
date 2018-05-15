@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-
 import javax.validation.Valid;
 
 @Controller
@@ -44,8 +43,8 @@ public class TableController {
 	public ModelAndView index(@PathVariable("id") Integer id, @ModelAttribute("tableSetDinersForm") final TableSetDinersForm form) {
 		Table table = ts.findById(id);
 		final ModelAndView mav;
-		if ( table.getStatus().equals(TableStatus.PAYING) )
-			 mav = new ModelAndView("tables/checkout");
+		if (table.getStatus().equals(TableStatus.PAYING))
+			mav = new ModelAndView("tables/checkout");
 		else
 			mav = new ModelAndView("tables/index");
 		mav.addObject("table", table);
@@ -56,11 +55,11 @@ public class TableController {
 	
 	@RequestMapping(value = "/{tableId}/status", method = {RequestMethod.POST})
 	public ModelAndView statusChange(@PathVariable("tableId") Integer id, @RequestParam(value = "status") final Integer statusId) {
-
+		
 		Table table = ts.findById(id);
 		ts.changeStatus(table, TableStatus.getTableStatus(statusId));
-
-		if ( table.getStatus().equals(TableStatus.FREE) )
+		
+		if (table.getStatus().equals(TableStatus.FREE))
 			return new ModelAndView("redirect:/tables");
 		else
 			return new ModelAndView("redirect:/tables/" + id);
@@ -88,7 +87,7 @@ public class TableController {
 		
 		ModelAndView mav = new ModelAndView("tables/add_dish");
 		mav.addObject("table", ts.findById(id));
-		mav.addObject("dishes", ds.findAll());
+		mav.addObject("dishes", ds.findAllAvailable());
 		
 		return mav;
 	}
