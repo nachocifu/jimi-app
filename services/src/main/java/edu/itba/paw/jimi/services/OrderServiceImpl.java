@@ -1,11 +1,11 @@
 package edu.itba.paw.jimi.services;
 
-import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotOpenOrderException;
 import edu.itba.paw.jimi.interfaces.exceptions.DishAddedToInactiveOrderException;
 import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
 import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
+import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
 	private OrderDao orderDao;
 	
 	@Autowired
-	private DishDao dishDao;
+	private DishService dishService;
 
 	/**
 	 * Updates the total value of the object. Does not touch the DB!
@@ -67,8 +67,10 @@ public class OrderServiceImpl implements OrderService {
 		order.setDish(dish, previousAmount + amount);
 		updateTotal(order);
 		orderDao.update(order);
-		dish.setStock(dish.getStock() - amount);
-		dishDao.update(dish);
+
+		// Update dish stock
+		dishService.setStock(dish, dish.getStock() - amount);
+
 		Order dbOrder = orderDao.findById(order.getId());
 		return dbOrder.getDishes().get(dish);
 	}
@@ -90,8 +92,10 @@ public class OrderServiceImpl implements OrderService {
 		order.setDish(dish, previousAmount - 1);
 		updateTotal(order);
 		orderDao.update(order);
-		dish.setStock(dish.getStock() + 1);
-		dishDao.update(dish);
+
+		// Update dish stock
+		dishService.setStock(dish,dish.getStock() + 1);
+
 		Order dbOrder = orderDao.findById(order.getId());
 		if (!dbOrder.getDishes().containsKey(dish))
 			return 0;
@@ -103,7 +107,13 @@ public class OrderServiceImpl implements OrderService {
 		
 		if (!order.getStatus().equals(OrderStatus.OPEN))
 			throw new DishAddedToInactiveOrderException();
-		
+
+		// Update dish stock
+		if (order.getDishes().containsKey(dish)) {
+			int previousValue = order.getDishes().get(dish);
+			dishService.setStock(dish, dish.getStock() + previousValue);
+		}
+
 		order.setDish(dish, 0);
 		updateTotal(order);
 		orderDao.update(order);

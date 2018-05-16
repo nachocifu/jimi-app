@@ -50,7 +50,7 @@ public class UserController {
 			return register(form);
 		}
 		
-		final User u = us.create(form.getUsername(), passwordEncoder.encode(form.getPassword()));
+		us.create(form.getUsername(), passwordEncoder.encode(form.getPassword()));
 		
 		return new ModelAndView("redirect:/admin/users");
 	}
