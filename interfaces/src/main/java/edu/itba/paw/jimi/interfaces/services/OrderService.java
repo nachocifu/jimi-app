@@ -85,9 +85,9 @@ public interface OrderService {
 	int setDiners(Order order, int diners);
 
 	/**
-	 * Finds all dishes.
+	 * Finds all closed orders.
 	 *
-	 * @return A collection of said dishes.
+	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll();
 }

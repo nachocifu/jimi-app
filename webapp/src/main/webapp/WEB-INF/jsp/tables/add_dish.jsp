@@ -111,14 +111,19 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-sm-12 p-t-20 text-center">
-                                    <form action="<c:url value="/tables/${table.id}"/>">
-                                        <input type="submit"
-                                               class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-default"
-                                               value="<spring:message code="dish.cancel"/>"/>
-                                    </form>
-                                </div>
+                                    <div class="col-lg-12 p-t-20 text-center"><form action="<c:url value="/tables/${table.id}"/>">
+                                        <span>
+                                            <input type="submit"
+                                                   class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-default"
+                                                   value="<spring:message code="dish.cancel"/>"/>
 
+                                            <a href="<c:url value="/admin/dishes/create"/>"
+                                               class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color">
+                                                <spring:message code="dish.add_dish_header"/>
+                                            </a>
+                                        </span>
+                                        </form>
+                                    </div>
                             </div>
 
                         </div>
