@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 
 @Service
@@ -161,7 +162,11 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	public Collection<Order> findAll(){
-		return orderDao.findAll();
+		Collection<Order> orders = orderDao.findAll();
+		if (orders != null)
+			return orders;
+		else
+			return new HashSet<Order>();
 	}
 	
 }

@@ -5,10 +5,8 @@ import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
-import edu.itba.paw.jimi.models.Order;
-import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.Table;
-import edu.itba.paw.jimi.models.TableStatus;
+import edu.itba.paw.jimi.models.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TableServiceTestConfig.class)
@@ -141,4 +145,18 @@ public class TableServiceTest {
 		
 		tableService.changeStatus(table, TableStatus.BUSY);
 	}
+
+	@Test
+	public void findAllNotNullEmpty(){
+		Mockito.when(tableService.findAll()).thenReturn(new LinkedList<Table>());
+		Assert.assertNotNull(tableService.findAll());
+	}
+
+	@Test
+	public void findAllNotNull(){
+		Mockito.when(tableService.findAll()).thenReturn(null);
+		Assert.assertNotNull(tableService.findAll());
+	}
+
+
 }

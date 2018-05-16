@@ -597,9 +597,15 @@ public class OrderServiceTest {
 	}
 
 	@Test
+	public void findAllNotNullEmpty(){
+		Mockito.when(orderService.findAll()).thenReturn(new LinkedList<Order>());
+		Assert.assertNotNull(orderService.findAll());
+	}
+
+	@Test
 	public void findAllNotNull(){
-		Mockito.when(orderDao.findAll()).thenReturn(new LinkedList<Order>());
-		Assert.assertNotNull(orderDao.findAll());
+		Mockito.when(orderService.findAll()).thenReturn(null);
+		Assert.assertNotNull(orderService.findAll());
 	}
 
 }

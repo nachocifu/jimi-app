@@ -209,9 +209,17 @@ public class DishServiceTest {
 	}
 	
 	@Test
-	public void findAllNotNullTest() {
+	public void findAllNotNullEmptyTest() {
 		
 		Mockito.when(dishDao.findAll()).thenReturn(new HashSet<Dish>());
+		Collection<Dish> dbDishes = dishService.findAll();
+		assertNotNull(dbDishes);
+	}
+
+	@Test
+	public void findAllNotNullTest() {
+
+		Mockito.when(dishDao.findAll()).thenReturn(null);
 		Collection<Dish> dbDishes = dishService.findAll();
 		assertNotNull(dbDishes);
 	}
@@ -257,9 +265,17 @@ public class DishServiceTest {
 	}
 	
 	@Test
-	public void findAllAvailableNotNullTest() {
+	public void findAllAvailableNotNullEmptyTest() {
 		
 		Mockito.when(dishDao.findAll()).thenReturn(new HashSet<Dish>());
+		Collection<Dish> dbDishes = dishService.findAllAvailable();
+		assertNotNull(dbDishes);
+	}
+
+	@Test
+	public void findAllAvailableNotNullTest() {
+
+		Mockito.when(dishDao.findAll()).thenReturn(null);
 		Collection<Dish> dbDishes = dishService.findAllAvailable();
 		assertNotNull(dbDishes);
 	}

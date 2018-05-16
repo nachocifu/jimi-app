@@ -25,7 +25,11 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public Collection<User> findAll() {
-		return userDao.findAll();
+		Collection<User> users = userDao.findAll();
+		if (users != null)
+			return users;
+		else
+			return new HashSet<User>();
 	}
 	
 	public User create(final String username, String password) {

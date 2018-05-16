@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 @Service
 public class TableServiceImpl implements TableService {
@@ -32,7 +33,11 @@ public class TableServiceImpl implements TableService {
     }
 
     public Collection<Table> findAll() {
-        return tableDao.findAll();
+        Collection<Table> tables = tableDao.findAll();
+        if (tables != null)
+            return tables;
+        else
+            return new HashSet<Table>();
     }
 
     public void changeStatus(Table table, TableStatus status) {
