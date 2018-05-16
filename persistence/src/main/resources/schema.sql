@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS "orders"
   openedAt TIMESTAMP,
   closedAt TIMESTAMP,
   statusid INTEGER,
-  diners   INTEGER
+  diners   INTEGER,
+  total    FLOAT
 );
 
 CREATE TABLE IF NOT EXISTS orders_items

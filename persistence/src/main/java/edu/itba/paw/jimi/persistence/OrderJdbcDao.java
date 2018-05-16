@@ -105,30 +105,40 @@ public class OrderJdbcDao implements OrderDao {
 		args.put("openedAt", openedAt);
 		args.put("closedAt", closedAt);
 		args.put("diners", diners);
+		args.put("total", 0);
 		final Number orderId = jdbcInsert.executeAndReturnKey(args);
 		return new Order(orderId.longValue(), openedAt, closedAt, status, diners);
 	}
 	
 	public void update(Order order) {
-		
-		jdbcTemplate.update("UPDATE orders SET (statusid ,openedAt ,closedAt, diners) = (?, ?, ?, ?) WHERE orderid = ?",
-				order.getStatus().getId(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getId());
-		// If the map shows 0 in amount for a dish then we need to remove it from the DB.
-		for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
-			if (entry.getValue() != 0)
-				orderItemJdbcDao.createOrUpdate(order, entry.getKey(), entry.getValue());
-			else
-				orderItemJdbcDao.delete(order, entry.getKey());
+		switch (order.getStatus()){
+			//Closed orders must save its own total. Dishes prices may change.
+			case CLOSED:
+				jdbcTemplate.update("UPDATE orders SET (statusid ,openedAt ,closedAt, diners, total) = (?, ?, ?, ?, ?) WHERE orderid = ?",
+						order.getStatus().getId(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getId(), order.getTotal());
+				// If the map shows 0 in amount for a dish then we need to remove it from the DB.
+				for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
+					if (entry.getValue() != 0)
+						orderItemJdbcDao.createOrUpdate(order, entry.getKey(), entry.getValue());
+					else
+						orderItemJdbcDao.delete(order, entry.getKey());
+				}
+			default:
+				jdbcTemplate.update("UPDATE orders SET (statusid ,openedAt ,closedAt, diners) = (?, ?, ?, ?) WHERE orderid = ?",
+						order.getStatus().getId(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getId());
+				// If the map shows 0 in amount for a dish then we need to remove it from the DB.
+				for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
+					if (entry.getValue() != 0)
+						orderItemJdbcDao.createOrUpdate(order, entry.getKey(), entry.getValue());
+					else
+						orderItemJdbcDao.delete(order, entry.getKey());
+				}
 		}
-		
 	}
 
 	public Collection<Order> findAll() {
 		final Collection<Order> col = jdbcTemplate.query(
-				"SELECT name, closedat " +
-						"SELECT orderid, closedat FROM orders WHERE statusid = ORDER_STATUS_CLOSED ORDER BY orderid;"
-
-				, ROW_MAPPER);
+				"Select * ", ROW_MAPPER);
 		return col;
 	}
 	

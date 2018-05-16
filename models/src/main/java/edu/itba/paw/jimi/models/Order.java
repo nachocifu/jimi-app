@@ -8,6 +8,7 @@ public class Order {
 
     private long id;
     private int diners;
+    private Float total;
     private Map<Dish, Integer> dishes;
     private Timestamp openedAt;
     private Timestamp closedAt;
@@ -24,6 +25,7 @@ public class Order {
         this.status = status;
         this.dishes = new HashMap<Dish, Integer>();
         this.diners = diners;
+        this.total = Float.valueOf(0);
     }
 
     /**
@@ -106,6 +108,7 @@ public class Order {
         Float total = Float.valueOf(0);
         for (Map.Entry<Dish, Integer> d : dishes.entrySet())
             total += d.getKey().getPrice() * d.getValue();
+        this.total = total;
         return total;
     }
 }
