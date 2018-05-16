@@ -1,7 +1,5 @@
 package edu.itba.paw.jimi.form;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -9,12 +7,9 @@ import javax.validation.constraints.Size;
 public class DishForm {
 	
 	@Size(min = 1, max = 100)
-
 	@Pattern(regexp = "^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$")
 	private String name;
 	
-	@Digits(integer = 3, fraction = 2)
-	@Min(0)
 	private Float price;
 	
 	private int stock;

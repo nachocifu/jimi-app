@@ -20,9 +20,6 @@ import org.springframework.web.servlet.view.JstlView;
 
 import javax.sql.DataSource;
 
-/**
- * Created by ioninielavitzky on 28/03/2018.
- */
 @EnableWebMvc
 @ComponentScan({"edu.itba.paw.jimi.webapp.controller", "edu.itba.paw.jimi.services", "edu.itba.paw.jimi.persistence"})
 @Configuration
@@ -63,7 +60,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename("classpath:i18n/messages");
 		messageSource.setDefaultEncoding("UTF-8");
-//		messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
 		messageSource.setCacheSeconds(5);
 		return messageSource;
 	}

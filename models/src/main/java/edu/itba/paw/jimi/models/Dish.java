@@ -57,12 +57,12 @@ public class Dish {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-
+	
 	public DishStatus getStatus() {
-		if(stock <= 0)
+		if (stock <= 0)
 			return DishStatus.UNAVAILABLE;
 		return DishStatus.AVAILABLE;
-
+		
 	}
-
+	
 }

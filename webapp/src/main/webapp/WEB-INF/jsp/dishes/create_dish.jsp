@@ -2,9 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<!DOCTYPE html>
-<html lang="en">
-<!-- BEGIN HEAD -->
+<html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
@@ -32,16 +30,15 @@
     <link rel="shortcut icon" type="image/x-icon"
           href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
 </head>
-<!-- END HEAD -->
 <body class="page-header-fixed sidemenu-closed-hidelogo page-content-white page-md header-white
              dark-sidebar-color logo-dark">
+
 <div class="page-wrapper">
     <!-- start header -->
     <jsp:include page="/WEB-INF/jsp/header.jsp"/>
     <!-- end header -->
 
     <!-- start page container -->
-    <!-- start page content -->
     <div class="page-container">
         <!-- start sidebar menu -->
         <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
@@ -52,38 +49,38 @@
             <div class="page-content">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="card-box">
+                        <div class="card-box mt-3">
                             <div class="card-head">
                                 <header><spring:message code="dish.add_dish_header"/></header>
                             </div>
                             <c:url value="/admin/dishes/create" var="postPath"/>
                             <form:form modelAttribute="dishCreateForm" action="${postPath}" method="post">
                                 <div class="card-body">
-                                    <div class="col-lg-6 p-t-20">
+                                    <div class="col-lg-12 p-t-20">
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
                                             <form:input class="mdl-textfield__input" type="text" path="name"/>
-                                            <label class="mdl-textfield__label"><spring:message
-                                                    code="dish.name"/></label>
+                                            <form:label class="mdl-textfield__label" path="name"><spring:message
+                                                    code="dish.name"/></form:label>
+                                            <form:errors path="name" element="p" cssClass="formError"/>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 p-t-20">
+                                    <div class="col-lg-12 p-t-20">
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                            <form:input class="mdl-textfield__input" type="text"
-                                                        pattern="[0-9]*(\.[0-9]+)?" path="price"/>
-                                            <label class="mdl-textfield__label"><spring:message
-                                                    code="dish.price"/></label>
-                                            <span class="mdl-textfield__error"><spring:message
-                                                    code="dish.number_required"/></span>
+                                            <form:input class="mdl-textfield__input" type="number" path="price"
+                                                        min="0" step="0.01" required="required"/>
+                                            <form:label class="mdl-textfield__label" path="price">
+                                                <spring:message
+                                                        code="dish.price"/></form:label>
+                                            <form:errors path="price" element="p" cssClass="formError"/>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 p-t-20">
+                                    <div class="col-lg-12 p-t-20">
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                            <form:input class="mdl-textfield__input" type="text" pattern="[0-9]+"
-                                                        path="stock" value="1"/>
-                                            <label class="mdl-textfield__label"><spring:message
-                                                    code="dish.amount"/></label>
-                                            <span class="mdl-textfield__error"><spring:message
-                                                    code="dish.number_required"/></span>
+                                            <form:input class="mdl-textfield__input" type="number"
+                                                        path="stock" min="1" step="0.01"/>
+                                            <form:label class="mdl-textfield__label" path="stock"><spring:message
+                                                    code="dish.stock"/></form:label>
+                                            <form:errors path="stock" element="p" cssClass="formError"/>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 p-t-20 text-center">
@@ -103,17 +100,16 @@
                 </div>
             </div>
         </div>
+        <!-- end page content -->
     </div>
-    <!-- end page content -->
     <!-- end page container -->
 
+    <!-- start footer -->
+    <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
+    <!-- end footer -->
 </div>
 
-<!-- start footer -->
-<jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-<!-- end footer -->
 
-</div>
 <!-- start js include path -->
 <script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
 <script src="<c:url value="/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"/>"></script>
@@ -124,8 +120,7 @@
 <script src="<c:url value="/resources/js/layout.js"/>"></script>
 <!-- Material -->
 <script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
-<!-- animation -->
-<script src="<c:url value="/resources/js/pages/ui/animations.js"/>"></script>
+<script src="<c:url value="/resources/js/pages/material_select/getmdl-select.js"/>"></script>
 <!-- end js include path -->
 </body>
 </html>

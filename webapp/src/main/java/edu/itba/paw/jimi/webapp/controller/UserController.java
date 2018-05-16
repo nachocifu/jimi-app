@@ -7,18 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/admin/users")
 public class UserController {
 	
 	@Autowired
 	private UserService us;
-
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
@@ -35,7 +38,7 @@ public class UserController {
 		if (user != null) {
 			mav.addObject("user", user);
 			return mav;
-		}else{
+		} else {
 			return new ModelAndView("users/list"); //TODO: Aca va un error....
 		}
 	}
@@ -49,14 +52,14 @@ public class UserController {
 		
 		final User u = us.create(form.getUsername(), passwordEncoder.encode(form.getPassword()));
 		
-		return new ModelAndView("redirect:/users/user?userId=" + u.getId());
+		return new ModelAndView("redirect:/admin/users");
 	}
 	
 	@RequestMapping("")
 	public ModelAndView list() {
 		final ModelAndView mav = new ModelAndView("users/list");
 		// TODO , el dia de manana se busca con queryparams
-
+		
 		mav.addObject("users", us.findAll());
 		return mav;
 	}

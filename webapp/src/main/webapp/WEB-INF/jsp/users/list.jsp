@@ -34,11 +34,15 @@
     <!-- end header -->
 
     <!-- start page container -->
-    <div class="dishes-page-container">
+    <div class="page-container">
+
+        <!-- start sidebar menu -->
+        <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
+        <!-- end sidebar menu -->
 
         <!-- start page content -->
         <div class="page-content-wrapper">
-            <div class="dishes-page-content">
+            <div class="page-content">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row">
@@ -53,14 +57,12 @@
                                                 <thead>
                                                 <tr>
                                                     <th><spring:message code="user.username_form_label"/></th>
-                                                    <th><spring:message code="user.id_table_head"/></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <c:forEach items="${users}" var="user">
                                                     <tr>
                                                         <td><c:out value="${user.username}"/></td>
-                                                        <td>$<c:out value="${user.id}"/></td>
                                                     </tr>
                                                 </c:forEach>
                                                 </tbody>

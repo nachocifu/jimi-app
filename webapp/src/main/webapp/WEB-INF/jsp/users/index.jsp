@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html>
 <head>
     <!-- google font -->
@@ -22,7 +23,6 @@
     <!-- start header -->
     <jsp:include page="/WEB-INF/jsp/header.jsp"/>
     <!-- end header -->
-
 
     <!-- start page content -->
     <div class="page-content-wrapper fixed">
