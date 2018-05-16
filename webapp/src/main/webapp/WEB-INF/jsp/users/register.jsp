@@ -130,6 +130,5 @@
 <script src="<c:url value="/resources/js/layout.js"/>"></script>
 <!-- Material -->
 <script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
-<script src="<c:url value="/resources/js/pages/material_select/getmdl-select.js"/>"></script>
 </body>
 </html>
