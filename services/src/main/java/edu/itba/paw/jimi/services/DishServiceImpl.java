@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -53,12 +54,16 @@ public class DishServiceImpl implements DishService {
 	}
 	
 	public Collection<Dish> findAll() {
-		return dishDao.findAll();
+		Collection<Dish> dishes = dishDao.findAll();
+		if (dishes != null)
+			return dishes;
+		else
+			return new HashSet<Dish>();
 	}
 	
 	public Collection<Dish> findAllAvailable() {
 		
-		Collection<Dish> dishes = dishDao.findAll();
+		Collection<Dish> dishes = findAll();
 		
 		Collection<Dish> availableDishes = new ArrayList<Dish>();
 		
