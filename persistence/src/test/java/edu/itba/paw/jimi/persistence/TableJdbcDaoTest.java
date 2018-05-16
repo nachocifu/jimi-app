@@ -71,7 +71,7 @@ public class TableJdbcDaoTest {
 	
 	@Test
 	public void testCreate() {
-		Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 2);
+		Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 2, 0);
 		Table table = tableDao.create(TABLE_NAME, TableStatus.FREE, order);
 		assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, TABLE_TABLE_NAME));
 		cleanDB();
@@ -81,7 +81,7 @@ public class TableJdbcDaoTest {
 	public void testFindById() {
 		
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-		final Order order = orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2);
+		final Order order = orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2, 2);
 		order.setDish(dish, 2);
 		orderDao.update(order);
 		final Table table = tableDao.create(TABLE_NAME, TableStatus.FREE, order);
@@ -105,7 +105,8 @@ public class TableJdbcDaoTest {
 		assertEquals(order.getOpenedAt(), dbOrder.getOpenedAt());
 		assertEquals(order.getClosedAt(), dbOrder.getClosedAt());
 		assertEquals(2, dbOrder.getDiners());
-		
+		assertEquals(2f, dbOrder.getTotal());
+
 		//Assert dishes.
 		Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
 		assertEquals(dish.getId(), dbDish.getId());
@@ -140,7 +141,7 @@ public class TableJdbcDaoTest {
 	public void testUpdate() {
 		
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 2);
+		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 2, 0);
 		order.setDish(dish, 2);
 		orderDao.update(order);
 		final Table table = tableDao.create(TABLE_NAME, TableStatus.FREE, order);
@@ -193,7 +194,7 @@ public class TableJdbcDaoTest {
 		
 		for (int i = 0; i < NUMBER_OF_TABLES; i++) {
 			final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-			final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 1);
+			final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 1, 0);
 			order.setDish(dish, 1);
 			orderDao.update(order);
 			tableDao.create(TABLE_NAME, TableStatus.FREE, order);

@@ -52,7 +52,8 @@ public class OrderJdbcDaoTest {
 	private static final Timestamp CLOSEDAT = new Timestamp(1525467178 + 60 * 60);
 	
 	private static final int DINERS = 2;
-	
+	private static final float TOTAL = 2f;
+
 	
 	@Before
 	public void setUp() {
@@ -69,7 +70,7 @@ public class OrderJdbcDaoTest {
 	
 	@Test
 	public void testCreate() {
-		orderDao.create(OrderStatus.INACTIVE, null, null, 0);
+		orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_TABLE_NAME));
 		assertEquals(0, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE_NAME));
 		
@@ -78,7 +79,7 @@ public class OrderJdbcDaoTest {
 	
 	@Test
 	public void testUpdate() {
-		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0);
+		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, TOTAL);
 		order.setStatus(OrderStatus.OPEN);
 		order.setOpenedAt(OPENEDAT);
 		order.setClosedAt(CLOSEDAT);
@@ -90,13 +91,14 @@ public class OrderJdbcDaoTest {
 		assertEquals(OPENEDAT, dbOrder.getOpenedAt());
 		assertEquals(CLOSEDAT, dbOrder.getClosedAt());
 		assertEquals(DINERS, dbOrder.getDiners());
+		assertEquals(TOTAL, dbOrder.getTotal());
 		
 		cleanDB();
 	}
 	
 	@Test
 	public void testFindByIdEmpty() {
-		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0);
+		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		Order dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
 		cleanDB();
@@ -104,7 +106,7 @@ public class OrderJdbcDaoTest {
 	
 	@Test
 	public void testFindByIdWithValues() {
-		final Order order = orderDao.create(OrderStatus.OPEN, OPENEDAT, CLOSEDAT, DINERS);
+		final Order order = orderDao.create(OrderStatus.OPEN, OPENEDAT, CLOSEDAT, DINERS, 0);
 		Order dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
 		assertEquals(OrderStatus.OPEN.getId(), dbOrder.getStatus().getId());
@@ -116,7 +118,7 @@ public class OrderJdbcDaoTest {
 	
 	@Test
 	public void testFindByIdOneDish() {
-		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0);
+		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		order.setDish(dish, 1);
 		
@@ -142,7 +144,7 @@ public class OrderJdbcDaoTest {
 	
 	@Test
 	public void testFindByIdOneDishThrice() {
-		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0);
+		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		order.setDish(dish, 3);
 		
@@ -168,7 +170,7 @@ public class OrderJdbcDaoTest {
 	
 	@Test
 	public void testFindByIdSeveralDishes() {
-		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0);
+		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		order.setDish(dish, 3);
@@ -228,7 +230,7 @@ public class OrderJdbcDaoTest {
 	
 	@Test
 	public void testFindByIdAddAndRemove() {
-		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0);
+		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		order.setDish(dish, 1);
 		
@@ -265,7 +267,7 @@ public class OrderJdbcDaoTest {
 	
 	@Test
 	public void testFindByIdAddAndRemoveButNoDelete() {
-		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0);
+		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		order.setDish(dish, 2);
 		

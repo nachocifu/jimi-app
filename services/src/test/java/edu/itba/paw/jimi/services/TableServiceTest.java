@@ -48,7 +48,7 @@ public class TableServiceTest {
 	public void createTest() {
 		
 		// Mockito mocking
-		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		
 		Mockito.when(orderService.create(OrderStatus.INACTIVE, null, null, 0)).thenReturn(order);
 		Mockito.when(tableDao.create(TABLE_NAME, TableStatus.FREE, order)).thenReturn(new Table(TABLE_NAME, 1, TableStatus.FREE, order));
@@ -64,7 +64,7 @@ public class TableServiceTest {
 	
 	@Test
 	public void setStatusFromFreeToBusyTest() {
-		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.FREE, order);
 		
 		// Mockito mocking
@@ -78,7 +78,7 @@ public class TableServiceTest {
 	
 	@Test(expected = TableStatusTransitionInvalid.class)
 	public void setStatusFromFreeToNOTBusyTest() {
-		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.FREE, order);
 		
 		// Mockito mocking
@@ -91,7 +91,7 @@ public class TableServiceTest {
 	
 	@Test
 	public void setStatusFromBusyToCleaningTest() {
-		Order order = new Order(1, null, null, OrderStatus.OPEN, 0);
+		Order order = new Order(1, null, null, OrderStatus.OPEN, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.BUSY, order);
 		
 		// Mockito mocking
@@ -105,7 +105,7 @@ public class TableServiceTest {
 	
 	@Test(expected = TableStatusTransitionInvalid.class)
 	public void setStatusFromBusyToNOTCleaningTest() {
-		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.BUSY, order);
 		
 		// Mockito mocking
@@ -118,7 +118,7 @@ public class TableServiceTest {
 	
 	@Test
 	public void setStatusFromCleaningToFreeTest() {
-		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.PAYING, order);
 		
 		// Mockito mocking
@@ -132,7 +132,7 @@ public class TableServiceTest {
 	
 	@Test(expected = TableStatusTransitionInvalid.class)
 	public void setStatusFromCleaningToNOTFreeTest() {
-		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0);
+		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.PAYING, order);
 		
 		// Mockito mocking

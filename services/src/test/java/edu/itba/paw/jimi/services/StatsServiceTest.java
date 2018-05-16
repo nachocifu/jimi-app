@@ -25,7 +25,7 @@ public class StatsServiceTest {
 	
 	private static final int ID = 123;
 	private static final String NAME = "Table221";
-	private static final Order ORDER = new Order(ID, new Timestamp(10000), new Timestamp(100002), OrderStatus.INACTIVE, 0);
+	private static final Order ORDER = new Order(ID, new Timestamp(10000), new Timestamp(100002), OrderStatus.INACTIVE, 0, 0);
 	
 	@InjectMocks
 	@Autowired

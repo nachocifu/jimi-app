@@ -20,7 +20,7 @@ public interface OrderDao {
 	 * Create an order.
 	 * @return An order.
 	 */
-	Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners);
+	Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners, float total);
 	
 	/**
 	 * Updates the order.

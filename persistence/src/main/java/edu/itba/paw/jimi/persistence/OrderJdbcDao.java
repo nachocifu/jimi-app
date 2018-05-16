@@ -49,7 +49,8 @@ public class OrderJdbcDao implements OrderDao {
 					order = new Order(orderid, rs.getTimestamp("openedAt"),
 							rs.getTimestamp("closedAt"),
 							OrderStatus.getTableStatus(rs.getInt("statusid")),
-							rs.getInt("diners"));
+							rs.getInt("diners"),
+							rs.getFloat("total"));
 				
 				// Add the stuff.
 				if (rs.getString("name") != null && !rs.getString("name").equals(""))
@@ -85,7 +86,7 @@ public class OrderJdbcDao implements OrderDao {
 		// The orders table is on the outer side of the join so it returns orders with no dishes inside.
 		final Collection<Order> list = jdbcTemplate.query(
 				"SELECT * " +
-						"FROM (SELECT orders.orderid, dishid, quantity, statusid, openedAt, closedAt, diners " +
+						"FROM (SELECT orders.orderid, dishid, quantity, statusid, openedAt, closedAt, diners, total " +
 						"FROM orders  LEFT OUTER JOIN orders_items " +
 						"ON (orders.orderid = orders_items.orderid))" +
 						"as o LEFT OUTER JOIN dishes " +
@@ -99,40 +100,28 @@ public class OrderJdbcDao implements OrderDao {
 		return list.iterator().next();
 	}
 	
-	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners) {
+	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners, float total) {
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("statusid", status.getId());
 		args.put("openedAt", openedAt);
 		args.put("closedAt", closedAt);
 		args.put("diners", diners);
-		args.put("total", 0);
+		args.put("total", 0f);
 		final Number orderId = jdbcInsert.executeAndReturnKey(args);
-		return new Order(orderId.longValue(), openedAt, closedAt, status, diners);
+		return new Order(orderId.longValue(), openedAt, closedAt, status, diners, total);
 	}
 	
 	public void update(Order order) {
-		switch (order.getStatus()){
-			//Closed orders must save its own total. Dishes prices may change.
-			case CLOSED:
-				jdbcTemplate.update("UPDATE orders SET (statusid ,openedAt ,closedAt, diners, total) = (?, ?, ?, ?, ?) WHERE orderid = ?",
-						order.getStatus().getId(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getTotal(), order.getId());
-				// If the map shows 0 in amount for a dish then we need to remove it from the DB.
-				for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
-					if (entry.getValue() != 0)
-						orderItemJdbcDao.createOrUpdate(order, entry.getKey(), entry.getValue());
-					else
-						orderItemJdbcDao.delete(order, entry.getKey());
-				}
-			default:
-				jdbcTemplate.update("UPDATE orders SET (statusid ,openedAt ,closedAt, diners) = (?, ?, ?, ?) WHERE orderid = ?",
-						order.getStatus().getId(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getId());
-				// If the map shows 0 in amount for a dish then we need to remove it from the DB.
-				for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
-					if (entry.getValue() != 0)
-						orderItemJdbcDao.createOrUpdate(order, entry.getKey(), entry.getValue());
-					else
-						orderItemJdbcDao.delete(order, entry.getKey());
-				}
+
+		jdbcTemplate.update("UPDATE orders SET (statusid ,openedAt ,closedAt, diners, total) = (?, ?, ?, ?, ?) WHERE orderid = ?",
+				order.getStatus().getId(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getTotal(), order.getId());
+
+		// If the map shows 0 in amount for a dish then we need to remove it from the DB.
+		for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
+			if (entry.getValue() != 0)
+				orderItemJdbcDao.createOrUpdate(order, entry.getKey(), entry.getValue());
+			else
+				orderItemJdbcDao.delete(order, entry.getKey());
 		}
 	}
 
@@ -145,7 +134,7 @@ public class OrderJdbcDao implements OrderDao {
 						"as o LEFT OUTER JOIN dishes " +
 						"ON (o.dishid = dishes.dishid) " +
 						"WHERE o.statusid = ? ",
-				ROW_MAPPER, this.ORDER_STATUS_CLOSED);
+				ROW_MAPPER, ORDER_STATUS_CLOSED);
 		return col;
 	}
 	

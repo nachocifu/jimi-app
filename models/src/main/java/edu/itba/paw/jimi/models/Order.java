@@ -18,23 +18,16 @@ public class Order {
         this.dishes = new HashMap<Dish, Integer>();
     }
 
-    public Order(long id, Timestamp openedAt, Timestamp closedAt, OrderStatus status, int diners) {
+    public Order(long id, Timestamp openedAt, Timestamp closedAt, OrderStatus status, int diners, float total) {
         this.id = id;
         this.openedAt = openedAt;
         this.closedAt = closedAt;
         this.status = status;
         this.dishes = new HashMap<Dish, Integer>();
         this.diners = diners;
-        this.total = Float.valueOf(0);
-    }
-
-    public Order(long id, Timestamp closedAt, OrderStatus status, int diners, Float total){
-        this.id = id;
-        this.closedAt = closedAt;
-        this.status = status;
-        this.diners = diners;
         this.total = total;
     }
+
     /**
      * This method sets the dish and amount overwriting the amount.
      *
@@ -112,10 +105,10 @@ public class Order {
     }
 
     public float getTotal() {
-        Float total = Float.valueOf(0);
-        for (Map.Entry<Dish, Integer> d : dishes.entrySet())
-            total += d.getKey().getPrice() * d.getValue();
-        this.total = total;
         return total;
+    }
+
+    public void setTotal(Float total) {
+        this.total = total;
     }
 }

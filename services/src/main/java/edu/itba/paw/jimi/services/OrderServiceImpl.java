@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,13 +26,27 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private DishDao dishDao;
-	
+
+	/**
+	 * Updates the total value of the object. Does not touch the DB!
+	 * @param order The order to update.
+	 */
+	private void updateTotal(Order order){
+
+		float total = 0f;
+        for (Map.Entry<Dish, Integer> d : order.getDishes().entrySet())
+            total += d.getKey().getPrice() * d.getValue();
+
+        order.setTotal(total);
+
+	}
+
 	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners) {
-		return orderDao.create(status, openedAt, closedAt, diners);
+		return orderDao.create(status, openedAt, closedAt, diners, 0f);
 	}
 	
 	public int addDish(Order order, Dish dish) {
-		
+
 		return addDishes(order, dish, 1);
 	}
 	
@@ -50,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
 			previousAmount = 0;
 		
 		order.setDish(dish, previousAmount + amount);
+		updateTotal(order);
 		orderDao.update(order);
 		dish.setStock(dish.getStock() - amount);
 		dishDao.update(dish);
@@ -72,6 +88,7 @@ public class OrderServiceImpl implements OrderService {
 			return 0;
 		
 		order.setDish(dish, previousAmount - 1);
+		updateTotal(order);
 		orderDao.update(order);
 		dish.setStock(dish.getStock() + 1);
 		dishDao.update(dish);
@@ -88,6 +105,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new DishAddedToInactiveOrderException();
 		
 		order.setDish(dish, 0);
+		updateTotal(order);
 		orderDao.update(order);
 		Order dbOrder = orderDao.findById(order.getId());
 		if (!dbOrder.getDishes().containsKey(dish))
