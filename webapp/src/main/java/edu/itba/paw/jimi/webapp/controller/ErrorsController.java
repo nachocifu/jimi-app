@@ -33,10 +33,10 @@ public class ErrorsController {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ModelAndView error401() {
         return getErrorView(
-                messageSource.getMessage("error.401.title",
+                messageSource.getMessage("user.error.not.found.body",
                         null,
                         LocaleContextHolder.getLocale())
-                , messageSource.getMessage("error.401.body",
+                , messageSource.getMessage("user.error.not.found.title",
                         null,
                         LocaleContextHolder.getLocale()));
     }
