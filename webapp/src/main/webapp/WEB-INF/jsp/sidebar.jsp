@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+
 <div class="sidebar-container">
     <div class="sidemenu-container navbar-collapse collapse fixed-menu">
         <div id="remove-scroll">
@@ -16,8 +17,8 @@
                 <li class="sidebar-user-panel">
                     <div class="user-panel">
                         <div class="profile-usertitle">
-                            <div class="sidebar-userpic-name"> John Deo</div>
-                            <div class="profile-usertitle-job"> Manager</div>
+                            <div class="sidebar-userpic-name"> <sec:authentication property="principal.username" /></div>
+                            <div class="profile-usertitle-job"> Working hard or hardly working?</div>
                         </div>
                     </div>
                 </li>
