@@ -43,7 +43,7 @@
         </sec:authorize>
         <sec:authorize access="hasRole('ROLE_USER')">
             <!-- start sidebar menu -->
-            <jsp:include page="/WEB-INF/jsp/sidebar_user.jsp"/>
+            <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
             <!-- end sidebar menu -->
         </sec:authorize>
 
