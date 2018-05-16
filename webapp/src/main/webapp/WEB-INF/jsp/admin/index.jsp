@@ -143,8 +143,6 @@
 <!-- Common js-->
 <script src="<c:url value="/resources/js/app.js"/>"></script>
 <script src="<c:url value="/resources/js/layout.js"/>"></script>
-<!-- animation -->
-<script src="<c:url value="/resources/js/pages/ui/animations.js"/>"></script>
 <!-- end js include path -->
 </body>
 </html>

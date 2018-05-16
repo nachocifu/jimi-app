@@ -144,8 +144,6 @@
     <script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
     <!-- Material -->
     <script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
-    <!-- animation -->
-    <script src="<c:url value="/resources/js/pages/ui/animations.js"/>"></script>
     <!-- jimi-rest -->
     <script src="<c:url value="/resources/js/jimi-rest/set_input_on_select_change.js"/>"></script>
 </body>

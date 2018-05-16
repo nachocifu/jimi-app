@@ -23,8 +23,6 @@
     <!-- Material Design Lite CSS -->
     <link rel="stylesheet" href="<c:url value="/webjars/material-design-lite/1.1.0/material.min.css"/>"/>
     <link rel="stylesheet" href="<c:url value="/resources/css/material_style.css"/>"/>
-    <!-- animation -->
-    <link href="<c:url value="/resources/css/pages/animate_page.css"/>" rel="stylesheet"/>
     <!-- Template Styles -->
     <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<c:url value="/resources/css/plugins.min.css"/>" rel="stylesheet" type="text/css"/>
@@ -154,12 +152,9 @@
 <script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
 <!-- Material -->
 <script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
-<script src="<c:url value="/resources/js/pages/material_select/getmdl-select.js"/>"></script>
 <!-- Common js-->
 <script src="<c:url value="/resources/js/app.js"/>"></script>
 <script src="<c:url value="/resources/js/layout.js"/>"></script>
-<!-- animation -->
-<script src="<c:url value="/resources/js/pages/ui/animations.js"/>"></script>
 <!-- end js include path -->
 </body>
 </html>
