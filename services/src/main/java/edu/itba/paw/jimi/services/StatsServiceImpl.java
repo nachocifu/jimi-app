@@ -1,7 +1,6 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.services.DishService;
-import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.StatsService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Dish;
@@ -20,9 +19,6 @@ public class StatsServiceImpl implements StatsService {
 	
 	@Autowired
 	private TableService tableService;
-	
-	@Autowired
-	private OrderService orderService;
 	
 	
 	public int getBusyTablesUnits() {
@@ -59,15 +55,6 @@ public class StatsServiceImpl implements StatsService {
 		}
 		return (int) ((underBound * 100.0) / dishService.findAll().size());
 	}
-	
-	public int getDinersToday() {
-		//TODO
-		return 0;
-	}
-	
-	public int getDishesSold() {
-		//TODO
-		return 0;
-	}
+
 	
 }

@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 <head>
@@ -9,8 +10,6 @@
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
           type="text/css"/>
     <!-- icons -->
-    <link href="<c:url value="/resources/plugins/simple-line-icons/simple-line-icons.min.css"/>" rel="stylesheet"
-          type="text/css"/>
     <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
           type="text/css"/>
     <!--bootstrap -->
@@ -130,8 +129,9 @@
                                                         <td><c:out value="${dishEntry.key.name}"/></td>
                                                         <td><c:out value="${dishEntry.key.price}"/></td>
                                                         <td><c:out value="${dishEntry.value}"/></td>
-                                                        <td><c:out
-                                                                value="${dishEntry.value * dishEntry.key.price}"/></td>
+                                                        <td><fmt:formatNumber
+                                                                value="${dishEntry.value * dishEntry.key.price}"
+                                                                maxFractionDigits="2"/></td>
                                                         <td>
                                                             <div class="row">
                                                                 <div class="col-md-3">
@@ -225,9 +225,6 @@
     <script src="<c:url value="/resources/js/layout.js"/>"></script>
     <!-- Material -->
     <script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
-    <script src="<c:url value="/resources/js/pages/material_select/getmdl-select.js"/>"></script>
-    <!-- animation -->
-    <script src="<c:url value="/resources/js/pages/ui/animations.js"/>"></script>
     <!-- end js include path -->
 </body>
 </html>

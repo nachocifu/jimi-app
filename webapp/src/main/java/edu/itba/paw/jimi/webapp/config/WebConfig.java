@@ -21,9 +21,6 @@ import org.springframework.web.servlet.view.JstlView;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Created by ioninielavitzky on 28/03/2018.
- */
 @EnableWebMvc
 @ComponentScan({"edu.itba.paw.jimi.webapp.controller", "edu.itba.paw.jimi.services", "edu.itba.paw.jimi.persistence"})
 @Configuration

@@ -11,8 +11,6 @@
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
           type="text/css"/>
     <!-- icons -->
-    <link href="<c:url value="/resources/plugins/simple-line-icons/simple-line-icons.min.css"/>" rel="stylesheet"
-          type="text/css"/>
     <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
           type="text/css"/>
     <!--bootstrap -->
@@ -112,6 +110,5 @@
 <script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
 <!-- Material -->
 <script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
-<script src="<c:url value="/resources/js/pages/material_select/getmdl-select.js"/>"></script>
 </body>
 </html>

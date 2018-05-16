@@ -3,9 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<!DOCTYPE html>
-<html lang="en">
-<!-- BEGIN HEAD -->
+<html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
@@ -15,14 +13,10 @@
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
           type="text/css"/>
     <!-- icons -->
-    <link href="<c:url value="/resources/plugins/simple-line-icons/simple-line-icons.min.css"/>" rel="stylesheet"
-          type="text/css"/>
     <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
           type="text/css"/>
     <!--bootstrap -->
     <link href="<c:url value="/webjars/bootstrap/4.0.0/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css"/>
-    <!-- animation -->
-    <link href="<c:url value="/resources/css/pages/animate_page.css"/>" rel="stylesheet"/>
     <!-- Template Styles -->
     <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<c:url value="/resources/css/plugins.min.css"/>" rel="stylesheet" type="text/css"/>
@@ -32,7 +26,7 @@
     <link rel="shortcut icon" type="image/x-icon"
           href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
 </head>
-<!-- END HEAD -->
+
 <body class="page-header-fixed sidemenu-closed-hidelogo page-content-white page-md header-white
              dark-sidebar-color logo-dark">
 <div class="page-wrapper">
@@ -51,46 +45,43 @@
             <div class="page-content">
                 <!-- start widget -->
                 <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="panel-body">
-                                <h3><spring:message code="admin.free_tables_title"/> <c:out
-                                        value="${freeTablesPercentage}"/>%</h3>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+
+                        <div class="card card-box">
+                            <div class="card-head">
+                                <header><spring:message code="admin.free_tables_title"/> <c:out
+                                        value="${freeTablesPercentage}"/>%
+                                </header>
+                            </div>
+                            <div class="card-body ">
                                 <div class="progress">
                                     <div class="progress-bar bg-success"
                                          style="width:<c:out value="${freeTablesPercentage}"/>%"></div>
                                 </div>
 
                                 <span class="text-small margin-top-10 full-width">
-                                    <spring:message code="admin.busy_tables"
-                                                    arguments="${busyTables}, ${totalTables}"/></span></div>
-
+                                <spring:message code="admin.busy_tables"
+                                                arguments="${busyTables}, ${totalTables}"/></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="panel-body">
-                                <h3><spring:message code="admin.stock_status"/> <c:out value="${stockStatePercentage}"/>%</h3>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+
+                        <div class="card card-box">
+                            <div class="card-head">
+                                <header><spring:message code="admin.stock_status"/> <c:out
+                                        value="${stockStatePercentage}"/>%
+                                </header>
+                            </div>
+                            <div class="card-body ">
                                 <div class="progress">
                                     <div class="progress-bar bg-danger"
                                          style="width:<c:out value="${stockStatePercentage}"/>%"></div>
                                 </div>
-                                <span class="text-small margin-top-10 full-width"><spring:message code="admin.stock_under_50"/></span></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="panel-body">
-                                <h3><spring:message code="admin.dishes_sold_today"/></h3>
-                                <h2><c:out value="${dishesSold}"/></h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="panel-body">
-                                <h3><spring:message code="admin.diners_today"/></h3>
-                                <h2><c:out value="${dinersToday}"/></h2>
+
+                                <span class="text-small margin-top-10 full-width"><spring:message
+                                        code="admin.stock_under_50"/></span>
                             </div>
                         </div>
                     </div>
@@ -115,7 +106,6 @@
                                                     <th><spring:message code="bill.ammount"/></th>
                                                     <th><spring:message code="bill.transaction_id"/></th>
                                                 </tr>
-                                                <c:forEach items=""
                                                 <tr>
                                                     <td>Table 1</td>
                                                     <td>05-01-2017</td>
@@ -151,8 +141,6 @@
 <!-- Common js-->
 <script src="<c:url value="/resources/js/app.js"/>"></script>
 <script src="<c:url value="/resources/js/layout.js"/>"></script>
-<!-- animation -->
-<script src="<c:url value="/resources/js/pages/ui/animations.js"/>"></script>
 <!-- end js include path -->
 </body>
 </html>

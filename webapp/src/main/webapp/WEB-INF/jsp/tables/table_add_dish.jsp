@@ -12,8 +12,6 @@
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
           type="text/css"/>
     <!-- icons -->
-    <link href="<c:url value="/resources/plugins/simple-line-icons/simple-line-icons.min.css"/>" rel="stylesheet"
-          type="text/css"/>
     <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
           type="text/css"/>
     <!--bootstrap -->
@@ -21,8 +19,6 @@
     <!-- Material Design Lite CSS -->
     <link rel="stylesheet" href="<c:url value="/webjars/material-design-lite/1.1.0/material.min.css"/>"/>
     <link rel="stylesheet" href="<c:url value="/resources/css/material_style.css"/>"/>
-    <!-- animation -->
-    <link href="<c:url value="/resources/css/pages/animate_page.css"/>" rel="stylesheet"/>
     <!-- Template Styles -->
     <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<c:url value="/resources/css/plugins.min.css"/>" rel="stylesheet" type="text/css"/>
@@ -70,7 +66,7 @@
                                                         <form class="form-inline well">
                                                             <div class="row">
 
-                                                                <div class="form-group col-sm-5 display-4">
+                                                                <div class="form-group col-sm-5">
                                                                     <form:select cssClass="control-label" id="dishid"
                                                                                  name="dishid" path="dishid">
                                                                         <c:forEach items="${dishes}" var="dish">
@@ -146,9 +142,6 @@
     <script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
     <!-- Material -->
     <script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
-    <script src="<c:url value="/resources/js/pages/material_select/getmdl-select.js"/>"></script>
-    <!-- animation -->
-    <script src="<c:url value="/resources/js/pages/ui/animations.js"/>"></script>
     <!-- jimi-rest -->
     <script src="<c:url value="/resources/js/jimi-rest/set_input_on_select_change.js"/>"></script>
 </body>

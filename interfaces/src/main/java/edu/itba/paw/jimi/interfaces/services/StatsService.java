@@ -26,18 +26,6 @@ public interface StatsService {
     int getFreeTablesUnits();
 
     /**
-     * Calculates number of diners of the last 24hs.
-     * @return amount of diners.
-     */
-    int getDinersToday();
-
-    /**
-     * Calculates number of diners sold today.
-     * @return number of dishes.
-     */
-    int getDishesSold();
-
-    /**
      * Calculates percentage of dishes under bounded limit.
      * @return percentage.
      */

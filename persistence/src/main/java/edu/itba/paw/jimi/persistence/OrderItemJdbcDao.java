@@ -28,7 +28,6 @@ public class OrderItemJdbcDao implements OrderItemDao {
 	
 	private SimpleJdbcInsert jdbcInsert;
 	
-	/* es la herramienta que me extrae las entidades (no va row por row) */
 	private static ResultSetExtractor<Integer> SCALAR_MAPPER = new ResultSetExtractor<Integer>() {
 		public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
 			
@@ -50,17 +49,17 @@ public class OrderItemJdbcDao implements OrderItemDao {
 	}
 	
 	public void createOrUpdate(Order order, Dish dish, int quantity) {
-
+		
 		if (orderItemExists(order, dish))
 			update(order, dish, quantity);
-		 else
+		else
 			create(order, dish, quantity);
 	}
-
+	
 	public void delete(Order order, Dish dish) {
 		jdbcTemplate.update("DELETE FROM orders_items WHERE orderid = ? AND dishid = ?", order.getId(), dish.getId());
 	}
-
+	
 	private Boolean orderItemExists(Order order, Dish dish) {
 		final Integer count = jdbcTemplate.query("SELECT * FROM orders_items WHERE orderid = ? AND dishid = ?", SCALAR_MAPPER, order.getId(), dish.getId());
 		

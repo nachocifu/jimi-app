@@ -1,8 +1,8 @@
 package edu.itba.paw.jimi.persistence;
 
 
+import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,15 +14,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
-
 import java.util.List;
-import java.util.Set;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static org.junit.Assert.assertNotEquals;
-import static org.postgresql.shaded.com.ongres.scram.common.ScramAttributes.USERNAME;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -42,7 +38,7 @@ public class DishJdbcDaoTest {
 	@Autowired
 	private DataSource ds;
 	
-	private DishJdbcDao dishDao;
+	private DishDao dishDao;
 	
 	private JdbcTemplate jdbcTemplate;
 	
