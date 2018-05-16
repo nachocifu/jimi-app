@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 
 <html>
 <head>
@@ -15,8 +16,11 @@
     <!-- icons -->
     <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
           type="text/css"/>
-    <!--bootstrap -->
+     <!--bootstrap -->
     <link href="<c:url value="/webjars/bootstrap/4.0.0/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css"/>
+    <!-- Material Design Lite CSS -->
+    <link rel="stylesheet" href="<c:url value="/webjars/material-design-lite/1.1.0/material.min.css"/>"/>
+    <link rel="stylesheet" href="<c:url value="/resources/css/material_style.css"/>"/>
     <!-- Template Styles -->
     <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet" type="text/css"/>
     <link href="<c:url value="/resources/css/plugins.min.css"/>" rel="stylesheet" type="text/css"/>
@@ -94,29 +98,27 @@
                                 <header><spring:message code="admin.latest_bills"/></header>
                             </div>
                             <div class="card-body ">
-                                <div class="mdl-tabs mdl-js-tabs">
-                                    <div class="mdl-tabs__panel is-active p-t-20" id="tab4-panel">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <tbody>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th><spring:message code="bill.transaction_id"/></th>
+                                                <th><spring:message code="bill.date"/></th>
+                                                <th><spring:message code="admin.status"/></th>
+                                                <th><spring:message code="bill.ammount"/></th>
+                                                <th><spring:message code="bill.diners"/></th>
+                                            </tr>
+                                            <c:forEach begin="0" end="9" items="${lastOrders}" var="order">
                                                 <tr>
-                                                    <th><spring:message code="table.name"/></th>
-                                                    <th><spring:message code="bill.date"/></th>
-                                                    <th><spring:message code="admin.status"/></th>
-                                                    <th><spring:message code="bill.ammount"/></th>
-                                                    <th><spring:message code="bill.transaction_id"/></th>
-                                                </tr>
-                                                <tr>
-                                                    <td>Table 1</td>
-                                                    <td>05-01-2017</td>
+                                                    <td>${order.id}</td>
+                                                    <td>${order.closedAt}</td>
                                                     <td><span class="label label-danger">Unpaid</span></td>
-                                                    <td>1200$</td>
-                                                    <td>#7234486</td>
+                                                    <td>$${order.total}</td>
+                                                    <td>$${order.diners}</td>
                                                 </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -138,6 +140,8 @@
 <script src="<c:url value="/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"/>"></script>
 <!-- bootstrap -->
 <script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
+<!-- Material -->
+<script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
 <!-- Common js-->
 <script src="<c:url value="/resources/js/app.js"/>"></script>
 <script src="<c:url value="/resources/js/layout.js"/>"></script>

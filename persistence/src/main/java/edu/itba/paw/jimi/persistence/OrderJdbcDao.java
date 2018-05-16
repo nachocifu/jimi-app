@@ -22,7 +22,6 @@ public class OrderJdbcDao implements OrderDao {
 	
 	private static final String ORDER_TABLE_NAME = "orders";
 	private static final String ORDER_ITEM_TABLE_NAME = "orders_items";
-	private static final int ORDER_STATUS_CLOSED = 2;
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -115,7 +114,7 @@ public class OrderJdbcDao implements OrderDao {
 			//Closed orders must save its own total. Dishes prices may change.
 			case CLOSED:
 				jdbcTemplate.update("UPDATE orders SET (statusid ,openedAt ,closedAt, diners, total) = (?, ?, ?, ?, ?) WHERE orderid = ?",
-						order.getStatus().getId(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getId(), order.getTotal());
+						order.getStatus().getId(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getTotal(), order.getId());
 				// If the map shows 0 in amount for a dish then we need to remove it from the DB.
 				for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
 					if (entry.getValue() != 0)
@@ -138,7 +137,11 @@ public class OrderJdbcDao implements OrderDao {
 
 	public Collection<Order> findAll() {
 		final Collection<Order> col = jdbcTemplate.query(
-				"Select * ", ROW_MAPPER);
+				"SELECT orders.orderid, orders.closedat, orders.total, orders.diners " +
+					"FROM orders " +
+					"WHERE statusid = 2 " +
+					"ORDER BY orderid DESC;"
+				, ROW_MAPPER);
 		return col;
 	}
 	
