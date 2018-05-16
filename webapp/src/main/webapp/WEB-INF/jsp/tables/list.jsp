@@ -40,16 +40,10 @@
     <!-- start page container -->
 
     <div class="page-container">
-        <sec:authorize access="hasRole('ROLE_ADMIN')">
-            <!-- start sidebar menu -->
-            <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
-            <!-- end sidebar menu -->
-        </sec:authorize>
-        <sec:authorize access="hasRole('ROLE_USER')">
-            <!-- start sidebar menu -->
-            <jsp:include page="/WEB-INF/jsp/sidebar_user.jsp"/>
-            <!-- end sidebar menu -->
-        </sec:authorize>
+
+        <!-- start sidebar menu -->
+        <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
+        <!-- end sidebar menu -->
         <div class="page-content-wrapper">
             <div class="page-content">
                 <div class="row">
