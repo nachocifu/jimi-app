@@ -28,6 +28,13 @@ public class Order {
         this.total = Float.valueOf(0);
     }
 
+    public Order(long id, Timestamp closedAt, OrderStatus status, int diners, Float total){
+        this.id = id;
+        this.closedAt = closedAt;
+        this.status = status;
+        this.diners = diners;
+        this.total = total;
+    }
     /**
      * This method sets the dish and amount overwriting the amount.
      *

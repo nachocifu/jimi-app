@@ -22,6 +22,7 @@ public class OrderJdbcDao implements OrderDao {
 	
 	private static final String ORDER_TABLE_NAME = "orders";
 	private static final String ORDER_ITEM_TABLE_NAME = "orders_items";
+	private static final int ORDER_STATUS_CLOSED = 2;
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -137,11 +138,14 @@ public class OrderJdbcDao implements OrderDao {
 
 	public Collection<Order> findAll() {
 		final Collection<Order> col = jdbcTemplate.query(
-				"SELECT orders.orderid, orders.closedat, orders.total, orders.diners " +
-					"FROM orders " +
-					"WHERE statusid = 2 " +
-					"ORDER BY orderid DESC;"
-				, ROW_MAPPER);
+				"SELECT * " +
+						"FROM (SELECT orders.orderid, dishid, quantity, statusid, openedAt, closedAt, diners, total " +
+						"FROM orders  LEFT OUTER JOIN orders_items " +
+						"ON (orders.orderid = orders_items.orderid))" +
+						"as o LEFT OUTER JOIN dishes " +
+						"ON (o.dishid = dishes.dishid) " +
+						"WHERE o.statusid = ? ",
+				ROW_MAPPER, this.ORDER_STATUS_CLOSED);
 		return col;
 	}
 	

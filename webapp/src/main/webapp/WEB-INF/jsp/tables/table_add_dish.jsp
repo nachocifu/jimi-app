@@ -116,16 +116,16 @@
                                             <input type="submit"
                                                    class="mdl-button mdl-button--raised mdl-js-ripple-effect btn-default"
                                                    value="<spring:message code="dish.cancel"/>"/>
-
-                                            <a href="<c:url value="/admin/dishes/create"/>"
-                                               class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color">
-                                                <spring:message code="dish.add_dish_header"/>
-                                            </a>
+                                            <c:if test="${dishes.size() = 0}">
+                                                <a href="<c:url value="/admin/dishes/create"/>"
+                                                    class="mdl-button mdl-button--raised mdl-js-ripple-effect rebeccapurple-color">
+                                                    <spring:message code="dish.add_dish_header"/>
+                                                </a>
+                                            </c:if>
                                         </span>
                                         </form>
                                     </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

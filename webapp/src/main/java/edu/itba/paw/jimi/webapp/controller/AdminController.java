@@ -27,13 +27,11 @@ public class AdminController {
 	public ModelAndView index() {
 		final ModelAndView mav = new ModelAndView("admin/dashboard");
 
-		//final ArrayList<Order> list = new ArrayList(orderService.findAll());
-
 		mav.addObject("busyTables", statsService.getBusyTablesUnits());
 		mav.addObject("totalTables", tableService.findAll().size());
 		mav.addObject("freeTablesPercentage", statsService.getFreeTables());
 		mav.addObject("stockStatePercentage", statsService.getStockState());
-		//mav.addObject("lastOrders", list);
+		mav.addObject("lastOrders", orderService.findAll());
 		
 		return mav;
 	}
