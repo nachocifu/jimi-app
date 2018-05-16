@@ -50,7 +50,7 @@ public class TableController {
         Table table = ts.findById(id);
 
         if (table == null) {
-            response.setStatus(404);
+            response.setStatus(404); // TODO use web.xml and ErrorController
             return (new ModelAndView("error"))
                     .addObject("body",
                             messageSource.getMessage("table.error.not.found.body",

@@ -17,31 +17,33 @@
                 <li class="sidebar-user-panel">
                     <div class="user-panel">
                         <div class="profile-usertitle">
-                            <div class="sidebar-userpic-name"> <sec:authentication property="principal.username" /></div>
+                            <div class="sidebar-userpic-name"><sec:authentication property="principal.username"/></div>
                             <div class="profile-usertitle-job"> Working hard or hardly working?</div>
                         </div>
                     </div>
                 </li>
-<sec:authorize access="hasRole('ROLE_ADMIN')">
-                <li class="nav-item">
-                    <a href="<c:url value="/admin/"/>" class="nav-link nav-toggle">
-                        <i class="fa fa-columns"></i>
-                        <span class="title"><spring:message code="sidebar.dashboard"/></span>
-                    </a>
-                </li>
-</sec:authorize>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <li class="nav-item">
+                        <a href="<c:url value="/admin/"/>" class="nav-link nav-toggle">
+                            <i class="fa fa-columns"></i>
+                            <span class="title"><spring:message code="sidebar.dashboard"/></span>
+                        </a>
+                    </li>
+                </sec:authorize>
                 <li class="nav-item">
                     <a href="#" class="nav-link nav-toggle">
                         <i class="fa fa-home"></i>
                         <span class="title"><spring:message code="sidebar.tables"/></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="nav-item">
-                            <a href="<c:url value="/tables/register"/>" class="nav-link ">
-                                <i class="fa fa-plus"></i>
-                                <span class="title"><spring:message code="sidebar.new_table"/></span>
-                            </a>
-                        </li>
+                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+                            <li class="nav-item">
+                                <a href="<c:url value="/tables/register"/>" class="nav-link ">
+                                    <i class="fa fa-plus"></i>
+                                    <span class="title"><spring:message code="sidebar.new_table"/></span>
+                                </a>
+                            </li>
+                        </sec:authorize>
                         <li class="nav-item">
                             <a href="<c:url value="/tables/"/>" class="nav-link ">
                                 <i class="fa fa-list"></i>
@@ -50,50 +52,50 @@
                         </li>
                     </ul>
                 </li>
-<sec:authorize access="hasRole('ROLE_ADMIN')">
-                <li class="nav-item">
-                    <a href="#" class="nav-link nav-toggle">
-                        <i class="fa fa-bars"></i>
-                        <span class="title"><spring:message code="sidebar.dishes"/></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li class="nav-item">
-                            <a href="<c:url value="/admin/dishes/create"/>" class="nav-link ">
-                                <i class="fa fa-plus"></i>
-                                <span class="title"><spring:message code="sidebar.new_dish"/></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<c:url value="/admin/dishes/"/>" class="nav-link ">
-                                <i class="fa fa-list"></i>
-                                <span class="title"><spring:message code="sidebar.dish_list"/></span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-</sec:authorize>
-<sec:authorize access="hasRole('ROLE_ADMIN')">
-                <li class="nav-item">
-                    <a href="#" class="nav-link nav-toggle">
-                        <i class="fa fa-users"></i>
-                        <span class="title"><spring:message code="sidebar.users"/></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li class="nav-item">
-                            <a href="<c:url value="/admin/users/register/"/>" class="nav-link ">
-                                <i class="fa fa-plus"></i>
-                                <span class="title"><spring:message code="sidebar.new_user"/></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<c:url value="/admin/users/"/>" class="nav-link ">
-                                <i class="fa fa-list"></i>
-                                <span class="title"><spring:message code="sidebar.user_list"/></span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-</sec:authorize>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link nav-toggle">
+                            <i class="fa fa-bars"></i>
+                            <span class="title"><spring:message code="sidebar.dishes"/></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="<c:url value="/admin/dishes/create"/>" class="nav-link ">
+                                    <i class="fa fa-plus"></i>
+                                    <span class="title"><spring:message code="sidebar.new_dish"/></span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<c:url value="/admin/dishes/"/>" class="nav-link ">
+                                    <i class="fa fa-list"></i>
+                                    <span class="title"><spring:message code="sidebar.dish_list"/></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link nav-toggle">
+                            <i class="fa fa-users"></i>
+                            <span class="title"><spring:message code="sidebar.users"/></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="<c:url value="/admin/users/register/"/>" class="nav-link ">
+                                    <i class="fa fa-plus"></i>
+                                    <span class="title"><spring:message code="sidebar.new_user"/></span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<c:url value="/admin/users/"/>" class="nav-link ">
+                                    <i class="fa fa-list"></i>
+                                    <span class="title"><spring:message code="sidebar.user_list"/></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </sec:authorize>
                 <li class="nav-item">
                     <a href="<c:url value="/logout"/>" class="nav-link">
                         <i class="fa fa-sign-out"></i>

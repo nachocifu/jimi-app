@@ -46,7 +46,7 @@ public class UserController {
             mav.addObject("user", user);
             return mav;
         } else {
-            response.setStatus(404);
+            response.setStatus(404); // TODO use web.xml and ErrorController
             return (new ModelAndView("error"))
                     .addObject("body",
                             messageSource.getMessage("user.error.not.found.body",
