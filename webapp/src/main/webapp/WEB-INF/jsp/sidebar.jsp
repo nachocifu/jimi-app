@@ -67,6 +67,26 @@
                     </ul>
                 </li>
                 <li class="nav-item">
+                    <a href="#" class="nav-link nav-toggle">
+                        <i class="fa fa-users"></i>
+                        <span class="title"><spring:message code="sidebar.users"/></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item">
+                            <a href="<c:url value="/admin/users/register/"/>" class="nav-link ">
+                                <i class="fa fa-plus"></i>
+                                <span class="title"><spring:message code="sidebar.new_user"/></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<c:url value="/admin/users/"/>" class="nav-link ">
+                                <i class="fa fa-list"></i>
+                                <span class="title"><spring:message code="sidebar.user_list"/></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
                     <a href="<c:url value="/logout"/>" class="nav-link">
                         <i class="fa fa-sign-out"></i>
                         <span class="title"><spring:message code="sidebar.logout"/></span>

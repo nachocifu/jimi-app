@@ -3,9 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<!DOCTYPE html>
-<html lang="en">
-<!-- BEGIN HEAD -->
+<html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
@@ -32,7 +30,7 @@
     <link rel="shortcut icon" type="image/x-icon"
           href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
 </head>
-<!-- END HEAD -->
+
 <body class="page-header-fixed sidemenu-closed-hidelogo page-content-white page-md header-white
              dark-sidebar-color logo-dark">
 <div class="page-wrapper">

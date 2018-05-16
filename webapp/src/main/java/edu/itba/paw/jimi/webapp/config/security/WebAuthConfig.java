@@ -20,9 +20,9 @@ import java.util.concurrent.TimeUnit;
 @EnableWebSecurity
 @ComponentScan("edu.itba.paw.jimi.webapp.config")
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
+	
 	@Autowired
 	private PawUserDetailsService userDetailsService;
-	
 	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
