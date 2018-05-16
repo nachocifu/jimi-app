@@ -33,7 +33,7 @@ public class TableController {
 	
 	@RequestMapping("")
 	public ModelAndView list() {
-		final ModelAndView mav = new ModelAndView("tables/table_list");
+		final ModelAndView mav = new ModelAndView("tables/list");
 		// TODO , el dia de manana se busca con queryparams
 		mav.addObject("tables", ts.findAll());
 		return mav;
@@ -44,9 +44,9 @@ public class TableController {
 		Table table = ts.findById(id);
 		final ModelAndView mav;
 		if (table.getStatus().equals(TableStatus.PAYING))
-			mav = new ModelAndView("tables/table_checkout");
+			mav = new ModelAndView("tables/checkout");
 		else
-			mav = new ModelAndView("tables/tables_change_status");
+			mav = new ModelAndView("tables/index");
 
 		mav.addObject("table", table);
 		mav.addObject("dishes", table.getOrder().getDishes());
@@ -69,7 +69,7 @@ public class TableController {
 	
 	@RequestMapping("/register")
 	public ModelAndView register(@ModelAttribute("registerForm") final TableForm form) {
-		return new ModelAndView("tables/table_create");
+		return new ModelAndView("tables/create");
 	}
 	
 	@RequestMapping(value = "/create", method = {RequestMethod.POST})
@@ -87,7 +87,7 @@ public class TableController {
 	@RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.GET})
 	public ModelAndView addDish(@PathVariable("tableId") Integer id, @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
 		
-		ModelAndView mav = new ModelAndView("tables/table_add_dish");
+		ModelAndView mav = new ModelAndView("tables/add_dish");
 		mav.addObject("table", ts.findById(id));
 		mav.addObject("dishes", ds.findAllAvailable());
 		
@@ -154,7 +154,7 @@ public class TableController {
 	@RequestMapping(value = "/{tableId}/checkout")
 	public ModelAndView getCheckoutBill(@PathVariable("tableId") Integer id) {
 		
-		ModelAndView mav = new ModelAndView("tables/table_checkout");
+		ModelAndView mav = new ModelAndView("tables/checkout");
 		mav.addObject("order", ts.findById(id).getOrder());
 		
 		return mav;
