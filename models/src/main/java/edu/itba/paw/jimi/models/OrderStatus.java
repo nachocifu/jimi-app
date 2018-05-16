@@ -20,10 +20,10 @@ public enum OrderStatus {
 		for (OrderStatus t : OrderStatus.values()) {
 			if (t.id == statusId) return t;
 		}
-		throw new IllegalArgumentException("OrderStatus not found."); //TODO
+		throw new IllegalArgumentException("OrderStatus not found.");
 	}
 
-	@Override //TODO pasar al diccionario.
+	@Override
 	public String toString() {
 		switch (OrderStatus.getTableStatus(id)){
 			case OPEN:

@@ -41,5 +41,4 @@ public class UserServiceImpl implements UserService {
 		return userDao.create(username, password, roles);
 	}
 	
-	//TODO: makeAdmin(user), makeUser(user).
 }

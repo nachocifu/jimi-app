@@ -34,7 +34,6 @@ public class TableController {
 	@RequestMapping("")
 	public ModelAndView list() {
 		final ModelAndView mav = new ModelAndView("tables/list");
-		// TODO , el dia de manana se busca con queryparams
 		mav.addObject("tables", ts.findAll());
 		return mav;
 	}
@@ -103,7 +102,7 @@ public class TableController {
 		
 		Table table = ts.findById(id);
 		Dish dish = ds.findById(form.getDishid());
-		os.addDishes(table.getOrder(), dish, form.getAmount()); // TODO handle StockHandlingException
+		os.addDishes(table.getOrder(), dish, form.getAmount());
 		
 		return new ModelAndView("redirect:/tables/" + table.getId());
 	}

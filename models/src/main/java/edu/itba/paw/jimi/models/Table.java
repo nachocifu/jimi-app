@@ -14,19 +14,7 @@ public class Table {
 		this.status = status;
 		this.order = order;
 	}
-	
-	/**
-	 * See implementation of Order.setDish(Dish dish, int n);
-	 *
-	 * @param dish The dish to be set.
-	 * @return The resulting quantity of this dish in this order.
-	 */
 
-	//TODO: Me parece que hay que sacar esto. Se puede hacer table.getOrder.setDish();
-	public Integer setDish(Dish dish, int n) {
-		return order.setDish(dish, n);
-	}
-	
 	@Override
 	public String toString() {
 		return "Table{" +

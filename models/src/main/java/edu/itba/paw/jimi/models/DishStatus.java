@@ -15,10 +15,10 @@ public enum DishStatus {
             if (d.id == id)
                 return d;
         }
-        throw new IllegalArgumentException(); //TODO linkear con InvalidDishStatusException.
+        throw new IllegalArgumentException();
     }
 
-    @Override //TODO linkear a diccionario.
+    @Override
     public String toString(){
         switch(getStatus(this.id)){
             case AVAILABLE:
