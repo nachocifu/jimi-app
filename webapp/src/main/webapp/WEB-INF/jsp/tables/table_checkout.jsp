@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 <head>
@@ -56,17 +57,23 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="white-box">
-                            <h3><b><spring:message code="checkout.receipt"/></b> ${table.order.diners} <spring:message code="checkout.diners"/> <span class="pull-right"><fmt:formatDate value="${table.order.closedAt}" pattern="yyyy-MM-dd HH:mm" /></span></h3
+                            <h3><b><spring:message code="checkout.receipt"/></b> ${table.order.diners} <spring:message
+                                    code="checkout.diners"/> <span class="pull-right"><fmt:formatDate
+                                    value="${table.order.closedAt}" pattern="yyyy-MM-dd HH:mm"/></span></h3
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-responsive m-t-40">
                                         <table class="table table-hover">
                                             <thead>
                                             <tr>
-                                                <th class="text-center"><spring:message code="checkout.table.description"/></th>
-                                                <th class="text-center"><spring:message code="checkout.table.charges"/></th>
-                                                <th class="text-center"><spring:message code="checkout.table.items"/></th>
-                                                <th class="text-right"><spring:message code="checkout.table.amount"/></th>
+                                                <th class="text-center"><spring:message
+                                                        code="checkout.table.description"/></th>
+                                                <th class="text-center"><spring:message
+                                                        code="checkout.table.charges"/></th>
+                                                <th class="text-center"><spring:message
+                                                        code="checkout.table.items"/></th>
+                                                <th class="text-right"><spring:message
+                                                        code="checkout.table.amount"/></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -75,7 +82,9 @@
                                                     <td class="text-center">${dish.key.name}</td>
                                                     <td class="text-center">${dish.key.price}</td>
                                                     <td class="text-center">${dish.value}</td>
-                                                    <td class="text-right">${dish.value * dish.key.price}</td>
+                                                    <td class="text-right"><fmt:formatNumber
+                                                            value="${dish.value * dish.key.price}"
+                                                            maxFractionDigits="2"/></td>
                                                 </tr>
                                             </c:forEach>
                                             </tbody>
@@ -85,7 +94,7 @@
                                 <div class="col-md-12">
                                     <div class="pull-right m-t-30 text-right">
                                         <hr>
-                                        <h3><b><spring:message code="checkout.table.total"/> :</b> $${total}</h3> </div>
+                                        <h3><b><spring:message code="checkout.table.total"/> :</b> $${total}</h3></div>
                                     <div class="clearfix"></div>
                                     <hr>
                                     <div class="text-right">
@@ -95,12 +104,14 @@
                                                    class="btn btn-success"
                                                    value="<spring:message code="checkout.charged"/>"/>
                                         </form>
-                                        <button onclick="javascript:window.print();" class="btn btn-info" type="button">
-                                            <span><i class="fa fa-print"></i> <spring:message code="checkout.print"/></span>
+                                        <button onclick="window.print();" class="btn btn-info" type="button">
+                                            <span><i class="fa fa-print"></i> <spring:message
+                                                    code="checkout.print"/></span>
                                         </button>
                                         <a href="<c:url value="/tables/"/>">
                                             <button class="btn btn-secondary" type="button">
-                                                <span><i class="fa fa-list"></i> <spring:message code="checkout.tables"/></span>
+                                                <span><i class="fa fa-list"></i> <spring:message
+                                                        code="checkout.tables"/></span>
                                             </button>
                                         </a>
                                     </div>

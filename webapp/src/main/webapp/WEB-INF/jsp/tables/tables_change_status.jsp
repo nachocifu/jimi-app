@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 <head>
@@ -130,8 +131,9 @@
                                                         <td><c:out value="${dishEntry.key.name}"/></td>
                                                         <td><c:out value="${dishEntry.key.price}"/></td>
                                                         <td><c:out value="${dishEntry.value}"/></td>
-                                                        <td><c:out
-                                                                value="${dishEntry.value * dishEntry.key.price}"/></td>
+                                                        <td><fmt:formatNumber
+                                                                value="${dishEntry.value * dishEntry.key.price}"
+                                                                maxFractionDigits="2"/></td>
                                                         <td>
                                                             <div class="row">
                                                                 <div class="col-md-3">
