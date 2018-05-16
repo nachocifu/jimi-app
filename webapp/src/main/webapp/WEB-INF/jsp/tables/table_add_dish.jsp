@@ -70,7 +70,7 @@
                                                         <form class="form-inline well">
                                                             <div class="row">
 
-                                                                <div class="form-group col-sm-5 display-4">
+                                                                <div class="form-group col-sm-5">
                                                                     <form:select cssClass="control-label" id="dishid"
                                                                                  name="dishid" path="dishid">
                                                                         <c:forEach items="${dishes}" var="dish">
