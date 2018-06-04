@@ -21,6 +21,9 @@ import java.util.concurrent.TimeUnit;
 @ComponentScan("edu.itba.paw.jimi.webapp.config")
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	
+	private static final String KEY = "ZmpzaGdiZHZxdXJ5Ym9laWxub3Eyd2xlcmdkZnNoamtoZmtncWVpYjJkcnc3O" +
+			"GthZGhzdW53ZXJkb3RxcndlZmFkZ3MgbnlveXRxcndlYWRzZ2hu";
+	
 	@Autowired
 	private PawUserDetailsService userDetailsService;
 	
@@ -32,7 +35,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/admin/**").hasRole(User.ADMIN)
 				.antMatchers("/**").authenticated().and()
 				.formLogin().usernameParameter("j_username").passwordParameter("j_password").defaultSuccessUrl("/", false).loginPage("/login").and()
-				.rememberMe().rememberMeParameter("j_rememberme").userDetailsService(userDetailsService).key("estakeyestanbuenaquenuncalavanaadivinar")
+				.rememberMe().rememberMeParameter("j_rememberme").userDetailsService(userDetailsService).key(KEY)
 				.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)).and()
 				.logout().logoutUrl("/logout").logoutSuccessUrl("/login").and()
 				.exceptionHandling().accessDeniedPage("/error/403").and()
