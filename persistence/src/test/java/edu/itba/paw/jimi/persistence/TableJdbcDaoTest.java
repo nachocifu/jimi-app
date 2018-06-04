@@ -48,8 +48,13 @@ public class TableJdbcDaoTest {
 	@Autowired
 	private DataSource ds;
 	
+	@Autowired
 	private TableDao tableDao;
+	
+	@Autowired
 	private DishDao dishDao;
+	
+	@Autowired
 	private OrderDao orderDao;
 	
 	private JdbcTemplate jdbcTemplate;
@@ -57,9 +62,6 @@ public class TableJdbcDaoTest {
 	@Before
 	public void setUp() {
 		jdbcTemplate = new JdbcTemplate(ds);
-		tableDao = new TableJdbcDao(ds);
-		dishDao = new DishJdbcDao(ds);
-		orderDao = new OrderJdbcDao(ds);
 		cleanDB();
 	}
 	

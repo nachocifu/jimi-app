@@ -38,6 +38,7 @@ public class DishJdbcDaoTest {
 	@Autowired
 	private DataSource ds;
 	
+	@Autowired
 	private DishDao dishDao;
 	
 	private JdbcTemplate jdbcTemplate;
@@ -46,7 +47,6 @@ public class DishJdbcDaoTest {
 	@Before
 	public void setUp() {
 		jdbcTemplate = new JdbcTemplate(ds);
-		dishDao = new DishJdbcDao(ds);
 		JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
 	}
 	

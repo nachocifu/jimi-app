@@ -28,7 +28,10 @@ public class OrderJdbcDaoTest {
 	@Autowired
 	private DataSource ds;
 	
+	@Autowired
 	private OrderDao orderDao;
+	
+	@Autowired
 	private DishDao dishDao;
 	
 	private JdbcTemplate jdbcTemplate;
@@ -58,8 +61,6 @@ public class OrderJdbcDaoTest {
 	@Before
 	public void setUp() {
 		jdbcTemplate = new JdbcTemplate(ds);
-		orderDao = new OrderJdbcDao(ds);
-		dishDao = new DishJdbcDao(ds);
 		cleanDB();
 	}
 	

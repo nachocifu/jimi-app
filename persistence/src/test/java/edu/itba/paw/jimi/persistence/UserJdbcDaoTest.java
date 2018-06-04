@@ -34,6 +34,7 @@ public class UserJdbcDaoTest {
 	@Autowired
 	private DataSource ds;
 	
+	@Autowired
 	private UserDao userDao;
 	
 	private JdbcTemplate jdbcTemplate;
@@ -41,7 +42,6 @@ public class UserJdbcDaoTest {
 	@Before
 	public void setUp() {
 		jdbcTemplate = new JdbcTemplate(ds);
-		userDao = new UserJdbcDao(ds);
 		cleanUp();
 	}
 	
