@@ -8,15 +8,15 @@ Restaurant table management web application.
 
 _Admin:_
 
-*User: admin
+* User: _admin_
 
-*Password: admin
+* Password: _admin_
 
 _Waiter:_
 
-*User: user
+* User: _user_
 
-*Password: user
+* Password: _user_
 
 
 ## Authors
