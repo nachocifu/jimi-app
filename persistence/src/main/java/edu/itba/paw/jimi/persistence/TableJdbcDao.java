@@ -74,7 +74,7 @@ public class TableJdbcDao implements TableDao {
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("name", name);
-		args.put("statusid", ts.getId());
+		args.put("statusid", ts.ordinal());
 		args.put("orderid", order.getId());
 		final Number tableId = jdbcInsert.executeAndReturnKey(args);
 		return findById(tableId.intValue());
@@ -96,7 +96,7 @@ public class TableJdbcDao implements TableDao {
 		orderJdbcDao.update(table.getOrder());
 		
 		jdbcTemplate.update("UPDATE tables SET (statusid, orderid, name) = (?, ?, ?) WHERE tableid = ?",
-				table.getStatus().getId(),
+				table.getStatus().ordinal(),
 				table.getOrder().getId(),
 				table.getName(),
 				table.getId());

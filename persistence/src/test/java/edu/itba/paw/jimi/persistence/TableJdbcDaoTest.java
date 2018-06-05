@@ -96,7 +96,7 @@ public class TableJdbcDaoTest {
 		
 		//Assert table.
 		assertEquals(TABLE_NAME, dbTable.getName());
-		assertEquals(TableStatus.FREE.getId(), dbTable.getStatus().getId());
+		assertEquals(TableStatus.FREE.ordinal(), dbTable.getStatus().ordinal());
 		assertEquals(order.getId(), dbTable.getOrder().getId());
 		
 		//Assert order.
@@ -156,7 +156,7 @@ public class TableJdbcDaoTest {
 		
 		//Assert table.
 		assertEquals(TABLE_NAME, dbTable.getName());
-		assertEquals(TableStatus.FREE.getId(), dbTable.getStatus().getId());
+		assertEquals(TableStatus.FREE.ordinal(), dbTable.getStatus().ordinal());
 		assertEquals(order.getId(), dbTable.getOrder().getId());
 		
 		//Assert order.
@@ -185,7 +185,7 @@ public class TableJdbcDaoTest {
 		assertNotNull(dbTableUpdated);
 		assertEquals(5, dbTableUpdated.getOrder().getDishes().get(dish).intValue());
 		assertEquals(TABLE_NAME2, dbTableUpdated.getName());
-		assertEquals(dbTableUpdated.getStatus().getId(), TableStatus.BUSY.getId());
+		assertEquals(dbTableUpdated.getStatus().ordinal(), TableStatus.BUSY.ordinal());
 		assertEquals(5, dbTableUpdated.getOrder().getDiners());
 		
 		cleanDB();
@@ -207,7 +207,7 @@ public class TableJdbcDaoTest {
 		
 		for (Table table : tables) {
 			assertEquals(TABLE_NAME, table.getName());
-			assertEquals(TableStatus.FREE.getId(), table.getStatus().getId());
+			assertEquals(TableStatus.FREE.ordinal(), table.getStatus().ordinal());
 			assertEquals(1, table.getOrder().getDiners());
 			assertEquals(DISH_NAME, table.getOrder().getDishes().keySet().iterator().next().getName());
 			assertEquals(DISH_PRICE, table.getOrder().getDishes().keySet().iterator().next().getPrice());
