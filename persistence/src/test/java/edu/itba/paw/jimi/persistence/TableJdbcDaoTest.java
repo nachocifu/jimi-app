@@ -102,7 +102,7 @@ public class TableJdbcDaoTest {
 		//Assert order.
 		Order dbOrder = dbTable.getOrder();
 		assertEquals(2, dbOrder.getDishes().get(dish).intValue());
-		assertEquals(order.getStatus().getId(), dbOrder.getStatus().getId());
+		assertEquals(order.getStatus().ordinal(), dbOrder.getStatus().ordinal());
 		assertEquals(order.getId(), dbOrder.getId());
 		assertEquals(order.getOpenedAt(), dbOrder.getOpenedAt());
 		assertEquals(order.getClosedAt(), dbOrder.getClosedAt());

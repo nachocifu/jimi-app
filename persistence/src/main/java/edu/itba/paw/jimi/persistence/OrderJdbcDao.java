@@ -15,14 +15,14 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class OrderJdbcDao implements OrderDao {
 	
 	private static final String ORDER_TABLE_NAME = "orders";
-	private static final String ORDER_ITEM_TABLE_NAME = "orders_items";
-	private static final int ORDER_STATUS_CLOSED = 2;
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -48,7 +48,7 @@ public class OrderJdbcDao implements OrderDao {
 				else
 					order = new Order(orderid, rs.getTimestamp("openedAt"),
 							rs.getTimestamp("closedAt"),
-							OrderStatus.getTableStatus(rs.getInt("statusid")),
+							OrderStatus.getOrderStatus(rs.getInt("statusid")),
 							rs.getInt("diners"),
 							rs.getFloat("total"));
 				
@@ -102,7 +102,7 @@ public class OrderJdbcDao implements OrderDao {
 	
 	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners, float total) {
 		final Map<String, Object> args = new HashMap<String, Object>();
-		args.put("statusid", status.getId());
+		args.put("statusid", status.ordinal());
 		args.put("openedAt", openedAt);
 		args.put("closedAt", closedAt);
 		args.put("diners", diners);
@@ -114,7 +114,7 @@ public class OrderJdbcDao implements OrderDao {
 	public void update(Order order) {
 
 		jdbcTemplate.update("UPDATE orders SET (statusid ,openedAt ,closedAt, diners, total) = (?, ?, ?, ?, ?) WHERE orderid = ?",
-				order.getStatus().getId(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getTotal(), order.getId());
+				order.getStatus().ordinal(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getTotal(), order.getId());
 
 		// If the map shows 0 in amount for a dish then we need to remove it from the DB.
 		for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
@@ -134,7 +134,7 @@ public class OrderJdbcDao implements OrderDao {
 						"as o LEFT OUTER JOIN dishes " +
 						"ON (o.dishid = dishes.dishid) " +
 						"WHERE o.statusid = ? ",
-				ROW_MAPPER, ORDER_STATUS_CLOSED);
+				ROW_MAPPER, OrderStatus.CLOSED.ordinal());
 		return col;
 	}
 	

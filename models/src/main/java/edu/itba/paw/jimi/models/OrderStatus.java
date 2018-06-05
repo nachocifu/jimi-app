@@ -1,31 +1,21 @@
 package edu.itba.paw.jimi.models;
 
 public enum OrderStatus {
-	OPEN(1),
-	CLOSED(2),
-	INACTIVE(3);
-
-
-	private int id;
-
-	OrderStatus(int id) {
-		this.id = id;
-	}
+	OPEN,
+	CLOSED,
+	INACTIVE;
 	
-	public int getId() {
-		return id;
-	}
 	
-	public static OrderStatus getTableStatus(int statusId) {
+	public static OrderStatus getOrderStatus(int statusId) {
 		for (OrderStatus t : OrderStatus.values()) {
-			if (t.id == statusId) return t;
+			if (t.ordinal() == statusId) return t;
 		}
 		throw new IllegalArgumentException("OrderStatus not found.");
 	}
-
+	
 	@Override
 	public String toString() {
-		switch (OrderStatus.getTableStatus(id)){
+		switch (this) {
 			case OPEN:
 				return "Open";
 			case CLOSED:

@@ -110,7 +110,7 @@ public class OrderJdbcDaoTest {
 		final Order order = orderDao.create(OrderStatus.OPEN, OPENEDAT, CLOSEDAT, DINERS, 0);
 		Order dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
-		assertEquals(OrderStatus.OPEN.getId(), dbOrder.getStatus().getId());
+		assertEquals(OrderStatus.OPEN.ordinal(), dbOrder.getStatus().ordinal());
 		assertEquals(OPENEDAT, dbOrder.getOpenedAt());
 		assertEquals(CLOSEDAT, dbOrder.getClosedAt());
 		assertEquals(DINERS, dbOrder.getDiners());
