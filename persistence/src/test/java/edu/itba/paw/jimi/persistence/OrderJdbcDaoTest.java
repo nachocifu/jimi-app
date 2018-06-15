@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -27,12 +28,14 @@ public class OrderJdbcDaoTest {
 	
 	@Autowired
 	private DataSource ds;
-	
+
+	@Qualifier("orderJdbcDao")
 	@Autowired
 	private OrderDao orderDao;
-	
+
+	@Qualifier("dishJdbcDao")
 	@Autowired
-	private DishDao dishDao;
+	private DishDao dishDao; //Here we are not using a mocked dao because orderDao uses a union on DB to get the dishes, so mocking it would break the union.
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -57,7 +60,7 @@ public class OrderJdbcDaoTest {
 	private static final int DINERS = 2;
 	private static final float TOTAL = 2f;
 
-	
+
 	@Before
 	public void setUp() {
 		jdbcTemplate = new JdbcTemplate(ds);
@@ -74,10 +77,10 @@ public class OrderJdbcDaoTest {
 		orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_TABLE_NAME));
 		assertEquals(0, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE_NAME));
-		
+
 		cleanDB();
 	}
-	
+
 	@Test
 	public void testUpdate() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, TOTAL);
@@ -93,10 +96,10 @@ public class OrderJdbcDaoTest {
 		assertEquals(CLOSEDAT, dbOrder.getClosedAt());
 		assertEquals(DINERS, dbOrder.getDiners());
 		assertEquals(TOTAL, dbOrder.getTotal());
-		
+
 		cleanDB();
 	}
-	
+
 	@Test
 	public void testFindByIdEmpty() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
@@ -104,7 +107,7 @@ public class OrderJdbcDaoTest {
 		assertNotNull(dbOrder);
 		cleanDB();
 	}
-	
+
 	@Test
 	public void testFindByIdWithValues() {
 		final Order order = orderDao.create(OrderStatus.OPEN, OPENEDAT, CLOSEDAT, DINERS, 0);
@@ -116,94 +119,94 @@ public class OrderJdbcDaoTest {
 		assertEquals(DINERS, dbOrder.getDiners());
 		cleanDB();
 	}
-	
+
 	@Test
 	public void testFindByIdOneDish() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		order.setDish(dish, 1);
-		
+
 		orderDao.update(order);
-		
+
 		Order dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
-		
+
 		assertNotNull(dbOrder.getDishes().get(dish));
-		
-		
+
+
 		int amount = dbOrder.getDishes().get(dish);
 		assertEquals(1, amount);
-		
+
 		Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
 		assertEquals(dish.getName(), dbDish.getName());
 		assertEquals(dish.getPrice(), dbDish.getPrice());
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
-		
+
 		cleanDB();
 	}
-	
+
 	@Test
 	public void testFindByIdOneDishThrice() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		order.setDish(dish, 3);
-		
+
 		orderDao.update(order);
-		
+
 		Order dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
-		
+
 		assertNotNull(dbOrder.getDishes().get(dish));
-		
-		
+
+
 		int amount = dbOrder.getDishes().get(dish);
 		assertEquals(3, amount);
-		
+
 		Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
 		assertEquals(dish.getName(), dbDish.getName());
 		assertEquals(dish.getPrice(), dbDish.getPrice());
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
-		
+
 		cleanDB();
 	}
-	
+
 	@Test
 	public void testFindByIdSeveralDishes() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
-		
+
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		order.setDish(dish, 3);
-		
+
 		final Dish dish2 = dishDao.create(DISH_NAME2, DISH_PRICE2, DISH_STOCK2);
 		order.setDish(dish2, 5);
-		
+
 		final Dish dish3 = dishDao.create(DISH_NAME3, DISH_PRICE3, DISH_STOCK3);
 		order.setDish(dish3, 1);
-		
-		
+
+
 		orderDao.update(order);
-		
-		
+
+
 		Order dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
-		
+
 		assertNotNull(dbOrder.getDishes().get(dish));
 		assertNotNull(dbOrder.getDishes().get(dish2));
 		assertNotNull(dbOrder.getDishes().get(dish3));
-		
-		
+
+
 		int amount = dbOrder.getDishes().get(dish);
 		assertEquals(3, amount);
-		
+
 		int amount2 = dbOrder.getDishes().get(dish2);
 		assertEquals(5, amount2);
-		
+
 		int amount3 = dbOrder.getDishes().get(dish3);
 		assertEquals(1, amount3);
-		
-		
+
+
 		for (Dish dbDish : dbOrder.getDishes().keySet()) {
 			if (dbDish.getId() == dish.getId()) {
 				assertEquals(dish.getName(), dbDish.getName());
@@ -223,93 +226,93 @@ public class OrderJdbcDaoTest {
 			} else {
 				assertEquals(0, 1);
 			}
-			
+
 		}
-		
+
 		cleanDB();
 	}
-	
+
 	@Test
 	public void testFindByIdAddAndRemove() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		order.setDish(dish, 1);
-		
-		
+
+
 		orderDao.update(order);
-		
+
 		Order dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
-		
+
 		assertNotNull(dbOrder.getDishes().get(dish));
-		
-		
+
+
 		int amount = dbOrder.getDishes().get(dish);
 		assertEquals(1, amount);
-		
+
 		Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
 		assertEquals(dish.getName(), dbDish.getName());
 		assertEquals(dish.getPrice(), dbDish.getPrice());
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
-		
+
 		order.setDish(dish, 0);
-		
+
 		orderDao.update(order);
-		
-		
+
+
 		dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
-		
+
 		assertNull(dbOrder.getDishes().get(dish));
-		
+
 		cleanDB();
 	}
-	
+
 	@Test
 	public void testFindByIdAddAndRemoveButNoDelete() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		order.setDish(dish, 2);
-		
-		
+
+
 		orderDao.update(order);
-		
+
 		Order dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
-		
+
 		assertNotNull(dbOrder.getDishes().get(dish));
-		
-		
+
+
 		int amount = dbOrder.getDishes().get(dish);
 		assertEquals(2, amount);
-		
+
 		Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
 		assertEquals(dish.getName(), dbDish.getName());
 		assertEquals(dish.getPrice(), dbDish.getPrice());
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
-		
+
 		order.setDish(dish, 1);
-		
+
 		orderDao.update(order);
-		
-		
+
+
 		dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
-		
+
 		assertNotNull(dbOrder.getDishes().get(dish));
-		
-		
+
+
 		amount = dbOrder.getDishes().get(dish);
 		assertEquals(1, amount);
-		
+
 		dbDish = dbOrder.getDishes().keySet().iterator().next();
 		assertEquals(dish.getName(), dbDish.getName());
 		assertEquals(dish.getPrice(), dbDish.getPrice());
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
-		
+
 		cleanDB();
 	}
 	

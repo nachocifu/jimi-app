@@ -14,15 +14,17 @@ import javax.sql.DataSource;
 
 @ComponentScan({ "edu.itba.paw.jimi.persistence" })
 @Configuration
-public class  TestConfig {
+public class  MockConfig {
 
     @Bean
-    public DataSource dataSource() {
-        final SimpleDriverDataSource ds = new SimpleDriverDataSource();
-        ds.setDriverClass(JDBCDriver.class);
-        ds.setUrl("jdbc:hsqldb:mem:paw");
-        ds.setUsername("ha");
-        ds.setPassword("");
-        return ds;
+    @Primary
+    public OrderDao orderDao() {
+        return Mockito.mock(OrderDao.class);
     }
+    @Bean
+    @Primary
+    public DishDao dishDao() {
+        return Mockito.mock(DishDao.class);
+    }
+
 }

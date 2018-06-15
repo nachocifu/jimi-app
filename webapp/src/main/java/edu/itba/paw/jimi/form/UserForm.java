@@ -1,5 +1,6 @@
 package edu.itba.paw.jimi.form;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -14,6 +15,11 @@ public class UserForm {
 
     @Size(min = 6, max = 100)
     private String repeatPassword;
+
+    @AssertTrue(message = "Password.notequals")
+    private boolean isValid() {
+        return this.password.equals(this.repeatPassword);
+    }
 
     public String getUsername() {
         return username;
