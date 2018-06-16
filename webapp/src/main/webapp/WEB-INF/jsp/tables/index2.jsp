@@ -58,47 +58,46 @@
                 <h2>
                     <strong><span>${table.name}</span></strong>
                 </h2>
-                <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
-                    <thead>
-                    <tr>
-                        <th><spring:message code="dish.name"/></th>
-                        <th><spring:message code="dish.price"/></th>
-                        <th><spring:message code="dish.amount"/></th>
-                        <th><spring:message code="dish.total"/></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${dishes}" var="dishEntry">
-                        <tr>
-                            <td><c:out value="${dishEntry.key.name}"/></td>
-                            <td><c:out value="${dishEntry.key.price}"/></td>
-                            <td><c:out value="${dishEntry.value}"/></td>
-                            <td>
-                                <fmt:formatNumber value="${dishEntry.value * dishEntry.key.price}"
-                                                  maxFractionDigits="2"/>
-                            </td>
-
-                            <td>
-                                <div class="row">
-                                    <div class="col s3">
-                                        <c:choose>
-                                            <c:when test="${dishEntry.key.stock != 0}">
-                                                <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
-                                                      method="post"
-                                                      class="form-with-buttons">
-                                                    <button type="submit"
-                                                            class="btn btn-success btn-xs">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                    <input type="hidden"
-                                                           value="${dishEntry.key.id}"
-                                                           name="dishid"/>
-                                                </form>
-                                            </c:when>
-                                        </c:choose>
-                                    </div>
-                                    <div class="col s3">
+                <c:choose>
+                    <c:when test="${table.order.dishes.size() > 0}">
+                        <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                            <thead>
+                            <tr>
+                                <th><spring:message code="dish.name"/></th>
+                                <th><spring:message code="dish.price"/></th>
+                                <th><spring:message code="dish.amount"/></th>
+                                <th><spring:message code="dish.total"/></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${dishes}" var="dishEntry">
+                                <tr>
+                                    <td><c:out value="${dishEntry.key.name}"/></td>
+                                    <td><c:out value="${dishEntry.key.price}"/></td>
+                                    <td><c:out value="${dishEntry.value}"/></td>
+                                    <td>
+                                        <fmt:formatNumber value="${dishEntry.value * dishEntry.key.price}"
+                                                          maxFractionDigits="2"/>
+                                    </td>
+                                    <td>
+                                        <c:if test="${dishEntry.key.stock != 0}">
+                                            <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
+                                                  method="post"
+                                                  class="form-with-buttons">
+                                                <button type="submit"
+                                                        class="btn btn-success btn-xs">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                                <input type="hidden"
+                                                       value="${dishEntry.key.id}"
+                                                       name="dishid"/>
+                                            </form>
+                                        </c:if>
+                                    </td>
+                                    <td>
                                         <form action="<c:url value="/tables/${table.id}/remove_one_dish"/>"
                                               method="post" class="form-with-buttons">
                                             <button type="submit"
@@ -108,8 +107,8 @@
                                             <input type="hidden" value="${dishEntry.key.id}"
                                                    name="dishid"/>
                                         </form>
-                                    </div>
-                                    <div class="col s3">
+                                    </td>
+                                    <td>
                                         <form action="<c:url value="/tables/${table.id}/remove_all_dish"/>"
                                               method="post" class="form-with-buttons">
                                             <button type="submit"
@@ -119,30 +118,47 @@
                                             <input type="hidden" value="${dishEntry.key.id}"
                                                    name="dishid"/>
                                         </form>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="alert alert-info text-center">
+                            <spring:message code="table.no_dishes"/>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
                 <div class="card-action">
-                    <form action="<c:url value="/tables/${table.id}/add_dish"/>">
-                        <input type="submit" value="<spring:message code="table.add_dish"/>"
-                               class="btn btn-default"/>
-                    </form>
-                    <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                        <input value="3" name="status" type="hidden"/>
-                        <input type="submit"
-                               class="btn btn-default rebeccapurple-color"
-                               value="<spring:message code="table.charge_caps"/>"/>
-                    </form>
-                    <%-- TODO manejo de diners --%>
+                    <div class="row">
+                        <div class="col s3">
+                            <form action="<c:url value="/tables/${table.id}/add_dish"/>">
+                                <input type="submit" value="<spring:message code="table.add_dish"/>"
+                                       class="btn btn-default"/>
+                            </form>
+                        </div>
+                        <div class="col s3">
+                            <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
+                                <input value="3" name="status" type="hidden"/>
+                                <input type="submit"
+                                       class="btn blue-gray"
+                                       value="<spring:message code="table.charge_caps"/>"/>
+                            </form>
+                        </div>
+                        <div class="col s5">
+                            <a href="<c:url value="/tables/"/>"
+                               class="btn blue-gray"><spring:message
+                                    code="table.return_to_table_list"/>
+                            </a>
+                        </div>
+                        <div class="col s3"></div>
+                        <div class="col s3"></div>
+                    </div>
+                        <%-- TODO manejo de diners --%>
                     <button>add diner</button>
                     <button>rest diner</button>
-                    <a href="<c:url value="/tables/"/>"
-                       class="btn blue-gray waves-effect"><spring:message
-                            code="table.return_to_table_list"/></a>
+
                 </div>
             </c:if>
         </div>
