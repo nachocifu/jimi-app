@@ -64,7 +64,7 @@ public class TableController {
         if (table.getStatus().equals(TableStatus.PAYING))
             mav = new ModelAndView("tables/checkout");
         else
-            mav = new ModelAndView("tables/index");
+            mav = new ModelAndView("tables/index2");
 
         mav.addObject("table", table);
         mav.addObject("dishes", table.getOrder().getDishes());
