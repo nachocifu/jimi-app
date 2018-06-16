@@ -38,7 +38,7 @@ public class TableController {
 
     @RequestMapping("")
     public ModelAndView list() {
-        final ModelAndView mav = new ModelAndView("tables/list");
+        final ModelAndView mav = new ModelAndView("tables/list2");
         mav.addObject("tables", ts.findAll());
         return mav;
     }
