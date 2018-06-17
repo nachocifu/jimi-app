@@ -87,7 +87,7 @@ public class TableController {
 
     @RequestMapping("/register")
     public ModelAndView register(@ModelAttribute("registerForm") final TableForm form) {
-        return new ModelAndView("tables/create");
+        return new ModelAndView("tables/create2");
     }
 
     @RequestMapping(value = "/create", method = {RequestMethod.POST})
