@@ -3,10 +3,10 @@ package edu.itba.paw.jimi.webapp.controller;
 import edu.itba.paw.jimi.form.UserForm;
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
+import edu.itba.paw.jimi.webapp.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,59 +22,62 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/admin/users")
 public class UserController {
-
-    @Autowired
-    private UserService us;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private MessageSource messageSource;
-
-    @RequestMapping("/register")
-    public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
-        return new ModelAndView("users/register");
-    }
-
-
-    @RequestMapping("/{userId}")
-    public ModelAndView index(@PathVariable("userId") final int id, HttpServletResponse response) {
-        final ModelAndView mav = new ModelAndView("users/index");
-        User user = us.findById(id);
-        if (user != null) {
-            mav.addObject("user", user);
-            return mav;
-        } else {
-            response.setStatus(404); // TODO use web.xml and ErrorController
-            return (new ModelAndView("error"))
-                    .addObject("body",
-                            messageSource.getMessage("user.error.not.found.body",
-                                    null, LocaleContextHolder.getLocale()))
-                    .addObject("title",
-                            messageSource.getMessage("user.error.not.found.title",
-                                    null, LocaleContextHolder.getLocale()));
-        }
-    }
-
-    @RequestMapping(value = "/create", method = {RequestMethod.POST})
-    public ModelAndView create(@Valid @ModelAttribute("registerForm") final UserForm form, final BindingResult errors) {
-
-        if (errors.hasErrors()) {
-            return register(form);
-        }
-
-        us.create(form.getUsername(), passwordEncoder.encode(form.getPassword()));
-
-        return new ModelAndView("redirect:/admin/users");
-    }
-
-    @RequestMapping("")
-    public ModelAndView list() {
-        final ModelAndView mav = new ModelAndView("users/list");
-        mav.addObject("users", us.findAll());
-        return mav;
-    }
-
-
+	
+	@Autowired
+	private UserService us;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private MessageSource messageSource;
+	
+	@RequestMapping("/register")
+	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
+		return new ModelAndView("users/register");
+	}
+	
+	
+	@RequestMapping("/{userId}")
+	public ModelAndView index(@PathVariable("userId") final int id, HttpServletResponse response) {
+		final ModelAndView mav = new ModelAndView("users/index");
+		User user = us.findById(id);
+		if (user != null) {
+			mav.addObject("user", user);
+			return mav;
+		} else {
+			response.setStatus(404); // TODO use web.xml and ErrorController
+			return (new ModelAndView("error"))
+					.addObject("body",
+							messageSource.getMessage("user.error.not.found.body",
+									null, LocaleContextHolder.getLocale()))
+					.addObject("title",
+							messageSource.getMessage("user.error.not.found.title",
+									null, LocaleContextHolder.getLocale()));
+		}
+	}
+	
+	@RequestMapping(value = "/create", method = {RequestMethod.POST})
+	public ModelAndView create(@Valid @ModelAttribute("registerForm") final UserForm form, final BindingResult errors) {
+		
+		UserValidator userValidator = new UserValidator();
+		userValidator.validate(form, errors);
+		
+		if (errors.hasErrors()) {
+			return register(form);
+		}
+		
+		us.create(form.getUsername(), passwordEncoder.encode(form.getPassword()));
+		
+		return new ModelAndView("redirect:/admin/users");
+	}
+	
+	@RequestMapping("")
+	public ModelAndView list() {
+		final ModelAndView mav = new ModelAndView("users/list");
+		mav.addObject("users", us.findAll());
+		return mav;
+	}
+	
+	
 }

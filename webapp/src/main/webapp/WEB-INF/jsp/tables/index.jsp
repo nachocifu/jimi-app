@@ -66,7 +66,7 @@
                                                 </strong>
                                             </h2>
                                             <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                                <input value="1" name="status" type="hidden"/>
+                                                <input value="0" name="status" type="hidden"/>
                                                 <input type="submit"
                                                        class="btn btn-default rebeccapurple-color"
                                                        value="<spring:message code="table.occupy"/>"/>
@@ -78,7 +78,7 @@
                                                     code="table.busy"/></span></strong>.
                                         </h2>
                                         <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                            <input value="3" name="status" type="hidden"/>
+                                            <input value="2" name="status" type="hidden"/>
                                             <input type="submit"
                                                    class="btn btn-default rebeccapurple-color"
                                                    value="<spring:message code="table.charge_caps"/>"/>

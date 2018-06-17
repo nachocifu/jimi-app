@@ -1,5 +1,6 @@
 package edu.itba.paw.jimi.persistence;
 
+import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import edu.itba.paw.jimi.models.Order;
@@ -25,8 +26,9 @@ public class TableJdbcDao implements TableDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	private SimpleJdbcInsert jdbcInsert;
-	
-	private OrderJdbcDao orderJdbcDao;
+
+	@Autowired
+	private OrderDao orderJdbcDao;
 	
 	private static final String TABLE_TABLE_NAME = "tables";
 	
@@ -57,7 +59,7 @@ public class TableJdbcDao implements TableDao {
 	@Autowired
 	public TableJdbcDao(final DataSource ds) {
 		
-		orderJdbcDao = new OrderJdbcDao(ds);
+//		orderJdbcDao = new OrderJdbcDao(ds);
 		jdbcTemplate = new JdbcTemplate(ds);
 		
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
@@ -74,7 +76,7 @@ public class TableJdbcDao implements TableDao {
 		
 		final Map<String, Object> args = new HashMap<String, Object>();
 		args.put("name", name);
-		args.put("statusid", ts.getId());
+		args.put("statusid", ts.ordinal());
 		args.put("orderid", order.getId());
 		final Number tableId = jdbcInsert.executeAndReturnKey(args);
 		return findById(tableId.intValue());
@@ -96,7 +98,7 @@ public class TableJdbcDao implements TableDao {
 		orderJdbcDao.update(table.getOrder());
 		
 		jdbcTemplate.update("UPDATE tables SET (statusid, orderid, name) = (?, ?, ?) WHERE tableid = ?",
-				table.getStatus().getId(),
+				table.getStatus().ordinal(),
 				table.getOrder().getId(),
 				table.getName(),
 				table.getId());

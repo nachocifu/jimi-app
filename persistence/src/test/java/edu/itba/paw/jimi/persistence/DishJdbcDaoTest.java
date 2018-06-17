@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -38,7 +39,9 @@ public class DishJdbcDaoTest {
 	@Autowired
 	private DataSource ds;
 	
-	private DishDao dishDao;
+	@Autowired
+	@Qualifier("dishJdbcDao")
+	private DishDao dishDao; //Here we are not using a mocked dao because orderDao uses a union on DB to get the dishes, so mocking it would break the union.
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -46,7 +49,6 @@ public class DishJdbcDaoTest {
 	@Before
 	public void setUp() {
 		jdbcTemplate = new JdbcTemplate(ds);
-		dishDao = new DishJdbcDao(ds);
 		JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
 	}
 	

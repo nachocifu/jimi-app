@@ -95,7 +95,7 @@
                                     <hr>
                                     <div class="text-right">
                                         <form action="<c:url value="/tables/${table.id}/status"/>" method="POST">
-                                            <input value="2" name="status" type="hidden"/>
+                                            <input value="1" name="status" type="hidden"/>
                                             <input type="submit"
                                                    class="btn btn-success"
                                                    value="<spring:message code="checkout.charged"/>"/>
