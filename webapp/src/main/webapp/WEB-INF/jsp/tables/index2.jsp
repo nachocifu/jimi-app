@@ -1,9 +1,12 @@
+<%@ page import="edu.itba.paw.jimi.models.TableStatus" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="BusyCode" value="<%=TableStatus.BUSY.ordinal()%>"/>
+<c:set var="PayingCode" value="<%=TableStatus.PAYING.ordinal()%>"/>
 
 
 <html>
@@ -48,7 +51,8 @@
                     </strong>
                 </h2>
                 <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                    <input value="1" name="status" type="hidden"/>
+                    <%--TODO deberiamos sacar estos hardcodeos de numeros en value--%>
+                    <input value="${BusyCode}" name="status" type="hidden"/>
                     <input type="submit"
                            class="btn btn-default rebeccapurple-color"
                            value="<spring:message code="table.occupy"/>"/>
@@ -140,7 +144,7 @@
                         </div>
                         <div class="col s3">
                             <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                <input value="3" name="status" type="hidden"/>
+                                <input value="${PayingCode}" name="status" type="hidden"/>
                                 <input type="submit"
                                        class="btn blue-gray"
                                        value="<spring:message code="table.charge_caps"/>"/>
