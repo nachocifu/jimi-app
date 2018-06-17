@@ -105,7 +105,7 @@ public class TableController {
     @RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.GET})
     public ModelAndView addDish(@PathVariable("tableId") Integer id, @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
 
-        ModelAndView mav = new ModelAndView("tables/add_dish");
+        ModelAndView mav = new ModelAndView("tables/add_dish2");
         mav.addObject("table", ts.findById(id));
         mav.addObject("dishes", ds.findAllAvailable());
 

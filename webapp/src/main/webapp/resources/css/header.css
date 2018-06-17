@@ -13,6 +13,7 @@ body {
 }
 
 header {
+    z-index: 1;
     width: 100%;
     height: 50px;
     background-color: #f44355;
@@ -20,6 +21,7 @@ header {
 }
 
 header > nav > div {
+    z-index: 1;
     float: left;
     width: 16.6666%;
     height: 100%;
@@ -27,6 +29,7 @@ header > nav > div {
 }
 
 header > nav > div > a {
+    z-index: 1;
     text-align: center;
     width: 100%;
     height: 100%;
@@ -38,11 +41,13 @@ header > nav > div > a {
 }
 
 header > nav > div:hover > a {
+    z-index: 1;
     background-color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
 header > nav > div > div {
+    z-index: 1;
     display: none;
     overflow: hidden;
     background-color: white;
