@@ -28,10 +28,6 @@ $(document).ready(function () {
         inputFormat.value = values[handle];
     });
 
-    // inputFormat.addEventListener('change', function(){
-    //     sliderFormat.noUiSlider.set(this.value);
-    // });
-
     $('select').formSelect();
     $('select').change(function () {
         slider.noUiSlider.updateOptions(
@@ -40,11 +36,9 @@ $(document).ready(function () {
                     'min': 1,
                     'max': $(this).find(":selected").data('max')
                 }
-            }, // Object
-            true // Boolean 'fireSetEvent'
+            },
+            true
         );
-        // $("#amount").attr({
-        //     "max": $(this).find(":selected").data('max')
-        // }).val(1);
+
     }).change();
 });
