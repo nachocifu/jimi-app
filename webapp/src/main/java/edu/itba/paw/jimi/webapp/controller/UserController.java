@@ -74,7 +74,7 @@ public class UserController {
 	
 	@RequestMapping("")
 	public ModelAndView list() {
-		final ModelAndView mav = new ModelAndView("users/list");
+        final ModelAndView mav = new ModelAndView("users/list2");
 		mav.addObject("users", us.findAll());
 		return mav;
 	}

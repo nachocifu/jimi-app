@@ -1,0 +1,20 @@
+.table-container table {
+    width: 100%;
+}
+
+body {
+    /*z-index: -3; TODO usar los z index para manejar el tema de lista super llena*/
+}
+
+.table-container {
+    /*z-index: -1;*/
+    width: 100%;
+    max-width: 75%;
+    max-height: 90%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
