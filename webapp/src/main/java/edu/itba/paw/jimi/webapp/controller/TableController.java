@@ -62,7 +62,7 @@ public class TableController {
 
         final ModelAndView mav;
         if (table.getStatus().equals(TableStatus.PAYING))
-            mav = new ModelAndView("tables/checkout");
+            mav = new ModelAndView("tables/checkout2");
         else
             mav = new ModelAndView("tables/index2");
 
