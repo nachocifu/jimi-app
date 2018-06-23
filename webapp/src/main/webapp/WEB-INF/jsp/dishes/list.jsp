@@ -78,12 +78,12 @@
                                                             <td>
                                                                 <c:choose>
                                                                     <c:when test="${dish.stock > 0}">
-                                                                <span class="label label-success label-mini"><spring:message
-                                                                        code="dish.available"/></span>
+                                                                    <span class="label label-success label-mini"><spring:message
+                                                                            code="dish.available"/></span>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                <span class="label label-danger label-mini"><spring:message
-                                                                        code="dish.unavailable"/></span>
+                                                                    <span class="label label-danger label-mini"><spring:message
+                                                                            code="dish.unavailable"/></span>
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </td>

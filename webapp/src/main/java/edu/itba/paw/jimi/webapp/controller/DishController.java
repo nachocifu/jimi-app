@@ -43,7 +43,7 @@ public class DishController {
 
     @RequestMapping("")
     public ModelAndView list() {
-        final ModelAndView mav = new ModelAndView("dishes/list");
+        final ModelAndView mav = new ModelAndView("dishes/list2");
 
         List<Dish> dishes = (List<Dish>) dishService.findAll();
 
