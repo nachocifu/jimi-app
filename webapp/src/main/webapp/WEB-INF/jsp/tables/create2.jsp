@@ -28,6 +28,7 @@
           integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous"/>
 
     <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/tables/create.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon"

@@ -30,6 +30,7 @@
           integrity="sha256-tkYpq+Xdq4PQNNGRDPtH3G55auZB4+kh/RA80Abngaw=" crossorigin="anonymous"/>
 
     <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/tables/add_dish.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon"
