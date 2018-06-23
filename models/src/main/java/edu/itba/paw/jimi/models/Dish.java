@@ -1,13 +1,40 @@
 package edu.itba.paw.jimi.models;
 
+
+import org.springframework.context.annotation.Import;
+
+import javax.persistence.*;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "dishes")
 public class Dish {
-	
-	
-	private long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dishes_dishid_seq")
+    @SequenceGenerator(sequenceName = "dishes_dishid_seq", name = "dishes_dishid_seq", allocationSize = 1)
+    @Column(name = "dishid")
+    private long id;
+
+    @Column(length = 100, nullable = false)
 	private String name;
+
+    @Column(precision = 10, scale = 2, nullable = false)
 	private float price;
+
+    @Column(precision = 10, nullable = false)
 	private int stock;
-	
+
+    /* package */ Dish() {
+    // Just for Hibernate, we love you!
+    }
+
+	public Dish(String name, float price, int stock) {
+		this.name = name;
+		this.price = price;
+		this.stock = stock;
+	}
+
 	public Dish(String name, float price, long id, int stock) {
 		this.name = name;
 		this.price = price;

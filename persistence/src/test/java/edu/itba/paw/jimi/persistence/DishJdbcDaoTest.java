@@ -9,10 +9,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -24,6 +27,7 @@ import static junit.framework.TestCase.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
+@Rollback
 public class DishJdbcDaoTest {
 	
 	private static final String NAME = "Cambuchá";
@@ -40,7 +44,7 @@ public class DishJdbcDaoTest {
 	private DataSource ds;
 	
 	@Autowired
-	@Qualifier("dishJdbcDao")
+	@Qualifier("dishHibernateDao")
 	private DishDao dishDao; //Here we are not using a mocked dao because orderDao uses a union on DB to get the dishes, so mocking it would break the union.
 	
 	private JdbcTemplate jdbcTemplate;
@@ -53,6 +57,7 @@ public class DishJdbcDaoTest {
 	}
 	
 	@Test
+    @Rollback
 	public void testCreate() {
 		final Dish dish = dishDao.create(NAME, PRICE, 1);
 		assertNotNull(dish);

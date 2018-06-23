@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
+//@Repository
 public class DishJdbcDao implements DishDao {
 	
 	private JdbcTemplate jdbcTemplate;
@@ -29,7 +29,8 @@ public class DishJdbcDao implements DishDao {
 			return new Dish(rs.getString("name"), rs.getFloat("price"), rs.getInt("dishid"), rs.getInt("stock"));
 		}
 	};
-	
+
+	//TODO: Hay que quitar?
 	@Autowired
 	public DishJdbcDao(final DataSource ds) {
 		jdbcTemplate = new JdbcTemplate(ds);
