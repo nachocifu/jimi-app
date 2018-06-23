@@ -1,3 +1,4 @@
+/*
 package edu.itba.paw.jimi.persistence;
 
 
@@ -146,3 +147,4 @@ public class DishJdbcDaoTest {
 		JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
 	}
 }
+*/

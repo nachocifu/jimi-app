@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.persistence;
 
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.models.Dish;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ import java.util.Collection;
 @Repository
 public class DishHibernateDao implements DishDao {
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "testName")
     private EntityManager em;
 
 
