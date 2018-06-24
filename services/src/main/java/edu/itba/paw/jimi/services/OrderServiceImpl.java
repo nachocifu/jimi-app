@@ -10,6 +10,8 @@ import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
 	
 	@Autowired
 	private OrderDao orderDao;
@@ -43,11 +47,12 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners) {
+		LOGGER.info("Create order: {} | {} | {} | {}", status, openedAt, closedAt, diners);
 		return orderDao.create(status, openedAt, closedAt, diners, 0f);
 	}
 	
 	public int addDish(Order order, Dish dish) {
-
+		LOGGER.info("Add dish: {} | {}", order, dish);
 		return addDishes(order, dish, 1);
 	}
 	
@@ -68,6 +73,8 @@ public class OrderServiceImpl implements OrderService {
 		order.setDish(dish, previousAmount + amount);
 		updateTotal(order);
 		orderDao.update(order);
+		
+		LOGGER.info("Updated order (add dishes): {}", order);
 
 		// Update dish stock
 		dishService.setStock(dish, dish.getStock() - amount);
@@ -93,7 +100,9 @@ public class OrderServiceImpl implements OrderService {
 		order.setDish(dish, previousAmount - 1);
 		updateTotal(order);
 		orderDao.update(order);
-
+		
+		LOGGER.info("Updated order (remove one dish): {}", order);
+		
 		// Update dish stock
 		dishService.setStock(dish,dish.getStock() + 1);
 
@@ -118,6 +127,9 @@ public class OrderServiceImpl implements OrderService {
 		order.setDish(dish, 0);
 		updateTotal(order);
 		orderDao.update(order);
+		
+		LOGGER.info("Updated order (remove all dish): {}", order);
+		
 		Order dbOrder = orderDao.findById(order.getId());
 		if (!dbOrder.getDishes().containsKey(dish))
 			return 0;
@@ -135,6 +147,9 @@ public class OrderServiceImpl implements OrderService {
 			o.setDiners(diners);
 			order.setDiners(diners);
 			orderDao.update(o);
+			
+			LOGGER.info("Updated order (set diners): {}", order);
+			
 			return diners;
 		}
 		return 0;
@@ -149,6 +164,8 @@ public class OrderServiceImpl implements OrderService {
 		order.setOpenedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 		order.setStatus(OrderStatus.OPEN);
 		orderDao.update(order);
+		
+		LOGGER.info("Opened order {}", order);
 	}
 	
 	public void close(Order order) {
@@ -159,6 +176,8 @@ public class OrderServiceImpl implements OrderService {
 		order.setStatus(OrderStatus.CLOSED);
 		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 		orderDao.update(order);
+		
+		LOGGER.info("Closed order {}", order);
 	}
 
 	public Collection<Order> findAll(){

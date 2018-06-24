@@ -4,6 +4,8 @@ import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.interfaces.exceptions.MaxStockException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import java.util.HashSet;
 
 @Service
 public class DishServiceImpl implements DishService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DishServiceImpl.class);
 	
 	@Autowired
 	private DishDao dishDao;
@@ -24,6 +28,7 @@ public class DishServiceImpl implements DishService {
 	}
 	
 	public Dish create(String name, float price) {
+		LOGGER.info("Create dish {} {}", name, price);
 		return dishDao.create(name, price, 0);
 	}
 	
@@ -38,6 +43,7 @@ public class DishServiceImpl implements DishService {
 		
 		dish.setStock(stock);
 		dishDao.update(dish);
+		LOGGER.info("Updated dish stock {}", dish);
 		return dish.getStock();
 	}
 	
