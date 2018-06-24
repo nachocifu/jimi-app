@@ -31,16 +31,6 @@ public class  TestConfig {
         return ds;
     }
 
-//    @Bean
-//    public DataSource dataSource() {
-//        final SimpleDriverDataSource ds = new SimpleDriverDataSource();
-//        ds.setDriverClass(org.postgresql.Driver.class);
-//        ds.setUrl("jdbc:postgresql://localhost/paw");
-//        ds.setUsername("root");
-//        ds.setPassword("root");
-//        return ds;
-//    }
-
     @Bean(name="testName")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 

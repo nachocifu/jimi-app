@@ -29,7 +29,9 @@ public class DishHibernateDao implements DishDao {
     }
 
     public int update(Dish dish) {
-        return 0;
+        //TODO: Falta tests de esto.
+        em.persist(dish);
+        return 1;
     }
 
     public Dish findById(long id) {

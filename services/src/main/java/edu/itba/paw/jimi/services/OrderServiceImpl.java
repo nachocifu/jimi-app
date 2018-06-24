@@ -73,7 +73,11 @@ public class OrderServiceImpl implements OrderService {
 		dishService.setStock(dish, dish.getStock() - amount);
 
 		Order dbOrder = orderDao.findById(order.getId());
-		return dbOrder.getDishes().get(dish);
+
+		if (dbOrder.getDishes().containsKey(dish))
+			return dbOrder.getDishes().get(dish);
+		else
+			return 0;
 	}
 	
 	public int removeOneDish(Order order, Dish dish) {

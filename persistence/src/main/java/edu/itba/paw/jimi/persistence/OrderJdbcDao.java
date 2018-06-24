@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@Repository
+//@Repository
 public class OrderJdbcDao implements OrderDao {
 	
 	private static final String ORDER_TABLE_NAME = "orders";

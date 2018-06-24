@@ -1,4 +1,3 @@
-/*
 package edu.itba.paw.jimi.persistence;
 
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
@@ -15,7 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
@@ -25,39 +24,40 @@ import static junit.framework.TestCase.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
+@Transactional
 public class OrderJdbcDaoTest {
-	
+
 	@Autowired
 	private DataSource ds;
 
-	@Qualifier("orderJdbcDao")
+	@Qualifier("orderHibernateDao")
 	@Autowired
 	private OrderDao orderDao;
 
-	@Qualifier("dishJdbcDao")
+	@Qualifier("dishHibernateDao")
 	@Autowired
 	private DishDao dishDao; //Here we are not using a mocked dao because orderDao uses a union on DB to get the dishes, so mocking it would break the union.
-	
+
 	private JdbcTemplate jdbcTemplate;
-	
+
 	private static final String ORDER_TABLE_NAME = "orders";
 	private static final String ORDER_ITEM_TABLE_NAME = "orders_items";
-	
+
 	private static final String DISH_NAME = "Cambuchá";
 	private static final Float DISH_PRICE = 5.25F;
 	private static final int DISH_STOCK = 5;
-	
+
 	private static final String DISH_NAME2 = "Hamburguesa";
 	private static final Float DISH_PRICE2 = 92.6F;
 	private static final int DISH_STOCK2 = 19;
-	
+
 	private static final String DISH_NAME3 = "Milanesa";
 	private static final Float DISH_PRICE3 = 0.6F;
 	private static final int DISH_STOCK3 = 1;
-	
+
 	private static final Timestamp OPENEDAT = new Timestamp(1525467178);
 	private static final Timestamp CLOSEDAT = new Timestamp(1525467178 + 60 * 60);
-	
+
 	private static final int DINERS = 2;
 	private static final float TOTAL = 2f;
 
@@ -65,21 +65,21 @@ public class OrderJdbcDaoTest {
 	@Before
 	public void setUp() {
 		jdbcTemplate = new JdbcTemplate(ds);
-		cleanDB();
+//		cleanDB();
 	}
-	
+
 	private void cleanDB() {
-		JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_TABLE_NAME);
-		JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE_NAME);
+//		JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_TABLE_NAME);
+//		JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE_NAME);
 	}
-	
+
 	@Test
 	public void testCreate() {
 		orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
-		assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_TABLE_NAME));
-		assertEquals(0, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE_NAME));
-
-		cleanDB();
+//		assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_TABLE_NAME));
+//		assertEquals(0, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE_NAME));
+//
+//		cleanDB();
 	}
 
 	@Test
@@ -316,6 +316,5 @@ public class OrderJdbcDaoTest {
 
 		cleanDB();
 	}
-	
+
 }
-*/

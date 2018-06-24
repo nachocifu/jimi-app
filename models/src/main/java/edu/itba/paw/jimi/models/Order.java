@@ -1,17 +1,39 @@
 package edu.itba.paw.jimi.models;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
+@Entity
+@SecondaryTable(name = "orders_items")
+@javax.persistence.Table(name = "orders")
 public class Order {
-	
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_orders_seq")
+    @SequenceGenerator(sequenceName = "orders_orders_seq", name = "orders_orders_seq", allocationSize = 1)
+    @Column(name = "orderid")
 	private long id;
+
+    @Column(precision = 10, nullable = false)
 	private int diners;
+
+    @Column(precision = 10, scale = 2, nullable = false)
 	private Float total;
+
+    @Column(name="dishid", table="order_items")
+    @OneToMany(targetEntity = Dish.class)
 	private Map<Dish, Integer> dishes;
+
+    @Temporal(TemporalType.DATE)
 	private Date openedAt;
+
+    @Temporal(TemporalType.DATE)
 	private Date closedAt;
+
+    @Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	
 	public Order() {
@@ -27,8 +49,20 @@ public class Order {
 		this.diners = diners;
 		this.total = total;
 	}
-	
-	/**
+    public Order(Date openedAt, Date closedAt, OrderStatus status, int diners, float total) {
+        this.openedAt = openedAt;
+        this.closedAt = closedAt;
+        this.status = status;
+        this.dishes = new HashMap<Dish, Integer>();
+        this.diners = diners;
+        this.total = total;
+    }
+
+    public void setDishes(Map<Dish, Integer> dishes) {
+        this.dishes = dishes;
+    }
+
+    /**
 	 * This method sets the dish and amount overwriting the amount.
 	 *
 	 * @param dish   the dish to add.
@@ -36,7 +70,14 @@ public class Order {
 	 * @return the resulting quantity of this dish in this order.
 	 */
 	public Integer setDish(Dish dish, int amount) {
-		return this.dishes.put(dish, amount);
+//		return this.dishes.put(dish, amount);
+        if (amount > 0) {
+            this.dishes.put(dish, amount);
+            return amount;
+        }else {
+            this.dishes.remove(dish);
+            return 0;
+        }
 	}
 	
 	

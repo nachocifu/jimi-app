@@ -25,6 +25,7 @@ import static junit.framework.TestCase.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
+@Transactional
 public class DishJdbcDaoTest {
 
 	private static final String NAME = "Cambuchá";

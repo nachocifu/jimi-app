@@ -132,7 +132,7 @@ public class OrderServiceTest {
 		orderService.addDish(order, dish);
 		orderService.removeOneDish(order, dish);
 
-		assertEquals(DISH_STOCK, order.getDishes().keySet().iterator().next().getStock());
+		assertEquals(DISH_STOCK, dish.getStock());
 	}
 
 	@Test
@@ -174,7 +174,7 @@ public class OrderServiceTest {
 		orderService.addDish(order, dish);
 		orderService.removeAllDish(order, dish);
 
-		assertEquals(DISH_STOCK, order.getDishes().keySet().iterator().next().getStock());
+		assertEquals(DISH_STOCK, dish.getStock());
 	}
 
 	@Test
@@ -195,7 +195,7 @@ public class OrderServiceTest {
 		orderService.addDishes(order, dish, 4);
 		orderService.removeAllDish(order, dish);
 
-		assertEquals(DISH_STOCK, order.getDishes().keySet().iterator().next().getStock());
+		assertEquals(DISH_STOCK, dish.getStock());
 	}
 
 	@Test(expected = DishAddedToInactiveOrderException.class)
@@ -448,7 +448,7 @@ public class OrderServiceTest {
 		orderService.addDish(order, dish);
 		int retValue = orderService.removeAllDish(order, dish);
 
-		assertEquals(retValue, 0);
+		assertEquals(0, retValue);
 	}
 
 	@Test
