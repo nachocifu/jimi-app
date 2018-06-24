@@ -9,20 +9,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import javax.persistence.TypedQuery;
 import java.util.Collection;
+import java.util.List;
 
 
 @Repository
 public class DishHibernateDao implements DishDao {
 
-    @PersistenceContext(unitName = "testName")
+    @PersistenceContext(unitName = "testName", type = PersistenceContextType.EXTENDED)
     private EntityManager em;
 
 
     public Dish create(String name, float price, int stock) {
-//        final Dish dish = new Dish(name, price, stock);
-//        em.persist(dish);
-        return new Dish(name, price, 1, stock);
+        final Dish dish = new Dish(name, price, stock);
+        em.persist(dish);
+        return dish;
     }
 
     public int update(Dish dish) {
@@ -30,11 +33,11 @@ public class DishHibernateDao implements DishDao {
     }
 
     public Dish findById(long id) {
-//        return em.find(Dish.class, id);
-        return null;
+        return em.find(Dish.class, id);
     }
 
     public Collection<Dish> findAll() {
-        return null;
+        final TypedQuery<Dish> query = em.createQuery("from Dish", Dish.class);
+        return query.getResultList();
     }
 }

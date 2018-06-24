@@ -21,23 +21,25 @@ import java.util.Properties;
 @Configuration
 public class  TestConfig {
 
-//    @Bean
-//    public DataSource dataSource() {
-//        final SimpleDriverDataSource ds = new SimpleDriverDataSource();
-  /////// ds.setUsername("ha");
-        //ds.setPassword("");
-        //return ds;
-   // }
-
     @Bean
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
-        ds.setDriverClass(org.postgresql.Driver.class);
-        ds.setUrl("jdbc:postgresql://localhost/paw");
-        ds.setUsername("root");
-        ds.setPassword("root");
+        ds.setDriverClass(JDBCDriver.class);
+        ds.setUrl("jdbc:hsqldb:mem:paw");
+        ds.setUsername("ha");
+        ds.setPassword("");
         return ds;
     }
+
+//    @Bean
+//    public DataSource dataSource() {
+//        final SimpleDriverDataSource ds = new SimpleDriverDataSource();
+//        ds.setDriverClass(org.postgresql.Driver.class);
+//        ds.setUrl("jdbc:postgresql://localhost/paw");
+//        ds.setUsername("root");
+//        ds.setPassword("root");
+//        return ds;
+//    }
 
     @Bean(name="testName")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -51,8 +53,8 @@ public class  TestConfig {
         factoryBean.setJpaVendorAdapter(vendorAdapter);
 
         final Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto","update");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
+        properties.setProperty("hibernate.hbm2ddl.auto","create");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 
         // TODO: Si ponen esto en prod, hay tabla!!!
         properties.setProperty("hibernate.show_sql", "true");
