@@ -25,7 +25,7 @@ public class AdminController {
 	
 	@RequestMapping("")
 	public ModelAndView index() {
-		final ModelAndView mav = new ModelAndView("admin/dashboard");
+		final ModelAndView mav = new ModelAndView("admin/dashboard2");
 
 		mav.addObject("busyTables", statsService.getBusyTablesUnits());
 		mav.addObject("totalTables", tableService.findAll().size());
