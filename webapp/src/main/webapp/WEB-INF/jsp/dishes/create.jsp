@@ -29,7 +29,7 @@
 
     <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/tables/create.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/dishes/create.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon"
           href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
@@ -37,25 +37,40 @@
 
 <body>
 
-<jsp:include page="/WEB-INF/jsp/header2.jsp"/>
+<jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
 <%-- TODO hay que hacer responsive esta tabla --%>
 <div class="table-container">
     <div class="card">
         <div class="card-content">
-            <c:url value="/tables/create" var="postPath"/>
-            <form:form modelAttribute="registerForm" action="${postPath}" method="post">
-                <form:label path="name"
-                            cssClass="mdl-textfield__label"><spring:message
-                        code="table.name"/></form:label>
-                <form:input type="text" path="name"
-                            cssClass="mdl-textfield__input"/>
-                <form:errors path="name" cssClass="formError" element="p"/>
+            <c:url value="/admin/dishes/create" var="postPath"/>
+            <form:form modelAttribute="dishCreateForm" action="${postPath}" method="post">
+                <div class="input-field">
+                    <form:input class="mdl-textfield__input" type="text" path="name"/>
+                    <form:label class="mdl-textfield__label" path="name"><spring:message
+                            code="dish.name"/></form:label>
+                    <form:errors path="name" element="p" cssClass="formError"/>
+                </div>
+                <div class="input-field">
+                    <form:input class="validate" type="number" path="price"
+                                min="0" step="0.01" required="required"/>
+                    <form:label class="mdl-textfield__label" path="price">
+                        <spring:message
+                                code="dish.price"/></form:label>
+                    <form:errors path="price" element="p" cssClass="formError"/>
+                </div>
+                <div class="input-field">
+                    <form:input class="validate" type="number"
+                                path="stock" min="1" step="0.01"/>
+                    <form:label class="mdl-textfield__label" path="stock"><spring:message
+                            code="dish.stock"/></form:label>
+                    <form:errors path="stock" element="p" cssClass="formError"/>
+                </div>
                 <button type="submit"
                         class="waves-effect waves-light btn">
-                    <spring:message code="table.register"/>
+                    <spring:message code="dish.add"/>
                 </button>
-                <a href="<c:url value="/tables/"/>"
+                <a href="<c:url value="/admin/dishes/"/>"
                    class="waves-effect waves-light btn">
                     <spring:message code="dish.cancel"/>
                 </a>

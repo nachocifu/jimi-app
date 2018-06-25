@@ -34,7 +34,7 @@ public class UserController {
 	
 	@RequestMapping("/register")
 	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
-        return new ModelAndView("users/create2");
+		return new ModelAndView("users/create");
     }
 
 	@RequestMapping("/{userId}")
@@ -73,7 +73,7 @@ public class UserController {
 	
 	@RequestMapping("")
 	public ModelAndView list() {
-        final ModelAndView mav = new ModelAndView("users/list2");
+		final ModelAndView mav = new ModelAndView("users/list");
 		mav.addObject("users", us.findAll());
 		return mav;
 	}
