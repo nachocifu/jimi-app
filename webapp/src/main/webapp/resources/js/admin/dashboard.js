@@ -7,8 +7,8 @@ $(document).ready(function () {
     Plotly.newPlot('table-status-pie',
         [
             {
-                values: [tableStatusPie['free']['count'], tableStatusPie['paying']['count'], tableStatusPie['ocuppied']['count']],
-                labels: [tableStatusPie['free']['title'], tableStatusPie['paying']['title'], tableStatusPie['ocuppied']['title']],
+                values: [tableStatusPie['free']['count'], tableStatusPie['paying']['count'], tableStatusPie['busy']['count']],
+                labels: [tableStatusPie['free']['title'], tableStatusPie['paying']['title'], tableStatusPie['busy']['title']],
                 type: 'pie',
                 domain: {
                     x: [0, .48]

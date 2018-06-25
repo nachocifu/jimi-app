@@ -12,6 +12,12 @@ public interface StatsService {
      * @return percentage.
      */
     int getBusyTables();
+    
+    /**
+     * Calculates percentage of paying tables.
+     * @return percentage.
+     */
+    int getPayingTables();
 
     /**
      * Calculates number of busy tables.
@@ -24,6 +30,12 @@ public interface StatsService {
      * @return percentage.
      */
     int getFreeTablesUnits();
+    
+    /**
+     * Calculates number of paying tables.
+     * @return percentage.
+     */
+    int getPayingTablesUnits();
 
     /**
      * Calculates percentage of dishes under bounded limit.

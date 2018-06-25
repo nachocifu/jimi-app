@@ -56,12 +56,21 @@
 
 <!-- start js include path -->
 <script>
+
     //variables used by dashboard.js TODO change hardcoded values
+
     var tableStatusPie = {
-        free: {title: 'Libre', count: 14},
-        paying: {title: 'paying', count: 27},
-        ocuppied: {title: 'ocupado', count: 5}
+        free: {
+            title: "<spring:message code="table.free"/>",
+            count: "${freeTables}"},
+        paying: {
+            title: "<spring:message code="table.paying"/>",
+            count: 27},
+        busy: {
+            title: "<spring:message code="table.busy"/>",
+            count: "${busyTables}"}
     };
+
 </script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
