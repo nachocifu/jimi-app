@@ -27,6 +27,7 @@ public class AdminController {
 
 		mav.addObject("busyTables", statsService.getBusyTablesUnits());
 		mav.addObject("freeTables", statsService.getFreeTablesUnits());
+		mav.addObject("payingTables", statsService.getPayingTablesUnits());
 		mav.addObject("totalTables", tableService.findAll().size());
 		mav.addObject("freeTablesPercentage", statsService.getFreeTables());
 		mav.addObject("stockStatePercentage", statsService.getStockState());

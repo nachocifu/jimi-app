@@ -57,18 +57,19 @@
 <!-- start js include path -->
 <script>
 
-    //variables used by dashboard.js TODO change hardcoded values
-
     var tableStatusPie = {
         free: {
             title: "<spring:message code="table.free"/>",
-            count: "${freeTables}"},
+            count: "${freeTables}"
+        },
         paying: {
             title: "<spring:message code="table.paying"/>",
-            count: 27},
+            count: "${payingTables}"
+        },
         busy: {
             title: "<spring:message code="table.busy"/>",
-            count: "${busyTables}"}
+            count: "${busyTables}"
+        }
     };
 
 </script>
