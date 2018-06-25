@@ -6,12 +6,14 @@ import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
 @Service
+@Transactional
 public class DishServiceImpl implements DishService {
 	
 	@Autowired

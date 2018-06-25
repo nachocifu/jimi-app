@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 public class DishHibernateDao implements DishDao {
 
-    @PersistenceContext(unitName = "testName", type = PersistenceContextType.EXTENDED)
+    @PersistenceContext(unitName = "testName")
     private EntityManager em;
 
 
@@ -30,7 +30,7 @@ public class DishHibernateDao implements DishDao {
 
     public int update(Dish dish) {
         //TODO: Falta tests de esto.
-        em.persist(dish);
+        em.merge(dish);
         return 1;
     }
 
