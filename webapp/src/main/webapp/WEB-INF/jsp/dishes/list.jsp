@@ -35,73 +35,80 @@
 
 <%-- TODO hay que hacer responsive esta tabla --%>
 <div class="table-container">
-    <c:choose>
-        <c:when test="${dishes.size() > 0}">
-            <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
-                <thead>
-                <tr>
-                    <th><spring:message code="dish.name"/></th>
-                    <th><spring:message code="dish.price"/></th>
-                    <th><spring:message code="dish.stock"/></th>
-                    <th><spring:message code="dish.status"/></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${dishes}" var="dish">
-                    <tr>
-                        <td><c:out value="${dish.name}"/></td>
-                        <td>$<c:out value="${dish.price}"/></td>
-                        <td><c:out value="${dish.stock}"/></td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${dish.stock > 0}">
-                                                                    <span class="label label-success label-mini"><spring:message
-                                                                            code="dish.available"/></span>
-                                </c:when>
-                                <c:otherwise>
-                                                                    <span class="label label-danger label-mini"><spring:message
-                                                                            code="dish.unavailable"/></span>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td>
-                            <form method="POST"
-                                  action="<c:url value="/admin/dishes/stock/increase"/>">
-                                <input type="hidden" value="${dish.id}"
-                                       name="dishid">
-                                <button type="submit"
-                                        class="btn btn-success btn-xs">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </form>
-                        </td>
-                        <td>
-                            <c:if test="${dish.stock > 0}">
-                                <form method="POST"
-                                      action="<c:url value="/admin/dishes/stock/decrease"/>">
-                                    <input type="hidden" value="${dish.id}"
-                                           name="dishid">
-                                    <button type="submit"
-                                            class="btn btn-primary btn-xs">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </form>
-                            </c:if>
-                        </td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </c:when>
-        <c:otherwise>
-            <div class="alert alert-danger text-center">
-                <strong><spring:message code="ouch"/></strong> <spring:message
-                    code="table.no_tables"/>
-            </div>
-        </c:otherwise>
-    </c:choose>
+    <div class="card">
+
+        <div class="card-content">
+            <%--TODO estos titulos se ven raros--%>
+            <span class="card-title"><spring:message code="dishes"/></span>
+            <c:choose>
+                <c:when test="${dishes.size() > 0}">
+                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                        <thead>
+                        <tr>
+                            <th><spring:message code="dish.name"/></th>
+                            <th><spring:message code="dish.price"/></th>
+                            <th><spring:message code="dish.stock"/></th>
+                            <th><spring:message code="dish.status"/></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${dishes}" var="dish">
+                            <tr>
+                                <td><c:out value="${dish.name}"/></td>
+                                <td>$<c:out value="${dish.price}"/></td>
+                                <td><c:out value="${dish.stock}"/></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${dish.stock > 0}">
+                                                                        <span class="label label-success label-mini"><spring:message
+                                                                                code="dish.available"/></span>
+                                        </c:when>
+                                        <c:otherwise>
+                                                                        <span class="label label-danger label-mini"><spring:message
+                                                                                code="dish.unavailable"/></span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>
+                                    <form method="POST"
+                                          action="<c:url value="/admin/dishes/stock/increase"/>">
+                                        <input type="hidden" value="${dish.id}"
+                                               name="dishid">
+                                        <button type="submit"
+                                                class="btn btn-success btn-xs">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <c:if test="${dish.stock > 0}">
+                                        <form method="POST"
+                                              action="<c:url value="/admin/dishes/stock/decrease"/>">
+                                            <input type="hidden" value="${dish.id}"
+                                                   name="dishid">
+                                            <button type="submit"
+                                                    class="btn btn-primary btn-xs">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </form>
+                                    </c:if>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </c:when>
+                <c:otherwise>
+                    <div class="alert alert-danger text-center">
+                        <strong><spring:message code="ouch"/></strong> <spring:message
+                            code="table.no_tables"/>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
 </div>
 
 <!-- start js include path -->
