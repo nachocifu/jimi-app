@@ -14,8 +14,7 @@
     <link href="<c:url value="/resources/css/responsive.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/jimi-rest/jimi-rest.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon"
-          href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
 </head>
 <body class="page-header-fixed page-content-white page-md header-white logo-dark">
 
