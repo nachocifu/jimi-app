@@ -17,7 +17,6 @@ public class UserRolesJdbcDao implements UserRolesDao {
     private SimpleJdbcInsert jdbcInsert;
 
 
-
     @Autowired
     public UserRolesJdbcDao(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
