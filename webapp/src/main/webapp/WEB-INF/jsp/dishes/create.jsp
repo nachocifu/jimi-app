@@ -43,6 +43,7 @@
 <div class="table-container">
     <div class="card">
         <div class="card-content">
+            <span class="card-title"><spring:message code="table.add_dish"/></span>
             <c:url value="/admin/dishes/create" var="postPath"/>
             <form:form modelAttribute="dishCreateForm" action="${postPath}" method="post">
 

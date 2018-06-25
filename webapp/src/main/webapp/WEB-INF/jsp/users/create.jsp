@@ -43,7 +43,7 @@
 <div class="table-container">
     <div class="card">
         <div class="card-content">
-            <header><spring:message code="user.register_header"/></header>
+            <span class="card-title"><spring:message code="user.register_header"/></span>
             <c:url value="/admin/users/create" var="postPath"/>
             <form:form modelAttribute="registerForm" action="${postPath}" method="post">
 

@@ -172,6 +172,20 @@ public class TableController {
         return new ModelAndView("redirect:/tables/" + table.getId());
     }
 
+    @RequestMapping(value = "/{tableId}/add_diner", method = {RequestMethod.POST})
+    public ModelAndView addDinerPost(@PathVariable("tableId") Integer id) {
+        Table table = ts.findById(id);
+        os.setDiners(table.getOrder(), table.getOrder().getDiners() + 1);
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
+
+    @RequestMapping(value = "/{tableId}/subtract_diner", method = {RequestMethod.POST})
+    public ModelAndView subtractDinerPost(@PathVariable("tableId") Integer id) {
+        Table table = ts.findById(id);
+        os.setDiners(table.getOrder(), table.getOrder().getDiners() - 1);
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
+
     @RequestMapping(value = "/{tableId}/checkout")
     public ModelAndView getCheckoutBill(@PathVariable("tableId") Integer id) {
 

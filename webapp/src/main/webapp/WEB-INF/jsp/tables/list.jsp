@@ -29,24 +29,27 @@
           href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
 </head>
 
-<body >
+<body>
 
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-    <%-- TODO hay que hacer responsive esta tabla --%>
-    <div class="table-container">
-        <c:choose>
-            <c:when test="${tables.size() > 0}">
-                <table  class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
-                    <thead>
-                    <tr>
-                        <th><spring:message code="table.name"/></th>
-                        <th><spring:message code="table.diners"/></th>
-                        <th><spring:message code="table.status"/></th>
-                        <th class=""></th>
-                    </tr>
-                    </thead>
-                    <tbody>
+<%-- TODO hay que hacer responsive esta tabla --%>
+<div class="table-container">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title"><spring:message code="table.tables_header"/></span>
+            <c:choose>
+                <c:when test="${tables.size() > 0}">
+                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                        <thead>
+                        <tr>
+                            <th><spring:message code="table.name"/></th>
+                            <th><spring:message code="table.diners"/></th>
+                            <th><spring:message code="table.status"/></th>
+                            <th class=""></th>
+                        </tr>
+                        </thead>
+                        <tbody>
                         <c:forEach items="${tables}" var="table">
                             <tr>
                                 <td><c:out value="${table.name}"/></td>
@@ -80,18 +83,19 @@
                                 </td>
                             </tr>
                         </c:forEach>
-                    </tbody>
-                </table>
-            </c:when>
-            <c:otherwise>
-                <div class="alert alert-danger text-center">
-                    <strong><spring:message code="ouch"/></strong> <spring:message
-                        code="table.no_tables"/>
-                </div>
-            </c:otherwise>
-        </c:choose>
+                        </tbody>
+                    </table>
+                </c:when>
+                <c:otherwise>
+                    <div class="alert alert-danger text-center">
+                        <strong><spring:message code="ouch"/></strong> <spring:message
+                            code="table.no_tables"/>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
-
+</div>
 
 
 <!-- start js include path -->

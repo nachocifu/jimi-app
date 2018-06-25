@@ -35,22 +35,25 @@
 
 <%-- TODO hay que hacer responsive esta tabla --%>
 <div class="table-container">
-
-
-    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
-        <thead>
-        <tr>
-            <th><spring:message code="user.username_form_label"/></th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${users}" var="user">
-            <tr>
-                <td><c:out value="${user.username}"/></td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title"><spring:message code="user.list_header"/></span>
+            <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th><spring:message code="user.username_form_label"/></th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${users}" var="user">
+                    <tr>
+                        <td><c:out value="${user.username}"/></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <!-- start js include path -->

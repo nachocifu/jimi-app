@@ -43,6 +43,7 @@
 <div class="table-container">
     <div class="card">
         <div class="card-content">
+            <span class="card-title"><spring:message code="table.register_header"/></span>
             <c:url value="/tables/create" var="postPath"/>
             <form:form modelAttribute="registerForm" action="${postPath}" method="post">
                 <form:label path="name"
