@@ -46,29 +46,27 @@
             <header><spring:message code="user.register_header"/></header>
             <c:url value="/admin/users/create" var="postPath"/>
             <form:form modelAttribute="registerForm" action="${postPath}" method="post">
-                <div class="input-field">
-                    <form:input type="text" path="username" cssClass="validate"/>
-                    <form:label type="text" path="username"
-                                cssClass="mdl-textfield__label"><spring:message
-                            code="user.username_form_label"/></form:label>
-                    <form:errors path="username" cssClass="formError" element="p"/>
-                </div>
-                <div class="input-field">
-                        <%--TODO mirar si la class se pone con class o con cssClass?--%>
-                    <form:input type="password" path="password" cssClass="validate"/>
-                    <form:label path="password"
-                                cssClass="mdl-textfield__label"><spring:message
-                            code="user.password_form_label"/></form:label>
-                    <form:errors path="password" cssClass="formError" element="p"/>
-                </div>
-                <div class="input-field">
-                    <form:label path="repeatPassword"
-                                cssClass="mdl-textfield__label"><spring:message
-                            code="user.repeat_password_form_label"/></form:label>
-                    <form:input type="password" path="repeatPassword"
-                                cssClass="validate"/>
-                    <form:errors path="repeatPassword" cssClass="formError" element="p"/>
-                </div>
+
+                <form:label type="text" path="username"
+                            cssClass="mdl-textfield__label"><spring:message
+                        code="user.username_form_label"/></form:label>
+                <form:input type="text" path="username" cssClass="validate"/>
+                <form:errors path="username" cssClass="formError" element="p"/>
+
+                <%--TODO mirar si la class se pone con class o con cssClass?--%>
+                <form:label path="password"
+                            cssClass="mdl-textfield__label"><spring:message
+                        code="user.password_form_label"/></form:label>
+                <form:input type="password" path="password" cssClass="validate"/>
+                <form:errors path="password" cssClass="formError" element="p"/>
+
+                <form:label path="repeatPassword"
+                            cssClass="mdl-textfield__label"><spring:message
+                        code="user.repeat_password_form_label"/></form:label>
+                <form:input type="password" path="repeatPassword"
+                            cssClass="validate"/>
+                <form:errors path="repeatPassword" cssClass="formError" element="p"/>
+
                 <button type="submit"
                         class="waves-effect waves-light btn">
                     <spring:message code="dish.add"/>

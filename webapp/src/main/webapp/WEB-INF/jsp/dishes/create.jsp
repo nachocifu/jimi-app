@@ -45,27 +45,25 @@
         <div class="card-content">
             <c:url value="/admin/dishes/create" var="postPath"/>
             <form:form modelAttribute="dishCreateForm" action="${postPath}" method="post">
-                <div class="input-field">
-                    <form:input class="mdl-textfield__input" type="text" path="name"/>
-                    <form:label class="mdl-textfield__label" path="name"><spring:message
-                            code="dish.name"/></form:label>
-                    <form:errors path="name" element="p" cssClass="formError"/>
-                </div>
-                <div class="input-field">
-                    <form:input class="validate" type="number" path="price"
-                                min="0" step="0.01" required="required"/>
-                    <form:label class="mdl-textfield__label" path="price">
-                        <spring:message
-                                code="dish.price"/></form:label>
-                    <form:errors path="price" element="p" cssClass="formError"/>
-                </div>
-                <div class="input-field">
-                    <form:input class="validate" type="number"
-                                path="stock" min="1" step="0.01"/>
-                    <form:label class="mdl-textfield__label" path="stock"><spring:message
-                            code="dish.stock"/></form:label>
-                    <form:errors path="stock" element="p" cssClass="formError"/>
-                </div>
+
+                <form:label class="mdl-textfield__label" path="name"><spring:message
+                        code="dish.name"/></form:label>
+                <form:input class="mdl-textfield__input" type="text" path="name"/>
+                <form:errors path="name" element="p" cssClass="formError"/>
+
+
+                <form:label class="mdl-textfield__label" path="price">
+                    <spring:message code="dish.price"/></form:label>
+                <form:input class="validate" type="number" path="price"
+                            min="0" step="0.01" required="required"/>
+                <form:errors path="price" element="p" cssClass="formError"/>
+
+                <form:label class="mdl-textfield__label" path="stock"><spring:message
+                        code="dish.stock"/></form:label>
+                <form:input class="validate" type="number"
+                            path="stock" min="1" step="1"/>
+                <form:errors path="stock" element="p" cssClass="formError"/>
+
                 <button type="submit"
                         class="waves-effect waves-light btn">
                     <spring:message code="dish.add"/>
