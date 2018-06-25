@@ -51,7 +51,7 @@ public class DishJdbcDaoTest {
 	@Before
 	public void setUp() {
 		jdbcTemplate = new JdbcTemplate(ds);
-//		JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
+		//JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
 	}
 
 	@Test
