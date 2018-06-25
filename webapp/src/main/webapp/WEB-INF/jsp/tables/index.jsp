@@ -61,8 +61,46 @@
             </c:if>
             <c:if test="${table.status == 'BUSY'}">
                 <h2>
-                    <strong><span>${table.name}</span></strong>
+                    <strong><span>${table.name}</span></strong><h4>(${diners} <spring:message
+                        code="table.diners"/>)</h4>
                 </h2>
+                <div class="card-action">
+                    <div class="row">
+                        <div class="col s2">
+                            <form action="<c:url value="/tables/${table.id}/add_dish"/>">
+                                <input type="submit" value="<spring:message code="table.add_dish"/>"
+                                       class="btn btn-default"/>
+                            </form>
+                        </div>
+                        <div class="col s2">
+                            <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
+                                <input value="${PayingCode}" name="status" type="hidden"/>
+                                <input type="submit"
+                                       class="btn blue-gray"
+                                       value="<spring:message code="table.charge_caps"/>"/>
+                            </form>
+                        </div>
+                        <div class="col s4">
+                            <a href="<c:url value="/tables/"/>"
+                               class="btn blue-gray"><spring:message
+                                    code="table.return_to_table_list"/>
+                            </a>
+                        </div>
+                        <div class="col s2">
+                            <form action="<c:url value="/tables/${table.id}/add_diner"/>" method="post">
+                                <input type="submit" value="+ diNers"
+                                       class="btn btn-default"/>
+                            </form>
+                        </div>
+                        <div class="col s2">
+                            <form action="<c:url value="/tables/${table.id}/subtract_diner"/>" method="post">
+                                    <%--TODO sacar hardcoded valude del input--%>
+                                <input type="submit" value="- diNers"
+                                       class="btn btn-default <c:if test="${diners == 0}">disabled</c:if>">
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <c:choose>
                     <c:when test="${table.order.dishes.size() > 0}">
                         <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
@@ -135,36 +173,6 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
-                <div class="card-action">
-                    <div class="row">
-                        <div class="col s3">
-                            <form action="<c:url value="/tables/${table.id}/add_dish"/>">
-                                <input type="submit" value="<spring:message code="table.add_dish"/>"
-                                       class="btn btn-default"/>
-                            </form>
-                        </div>
-                        <div class="col s3">
-                            <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                <input value="${PayingCode}" name="status" type="hidden"/>
-                                <input type="submit"
-                                       class="btn blue-gray"
-                                       value="<spring:message code="table.charge_caps"/>"/>
-                            </form>
-                        </div>
-                        <div class="col s5">
-                            <a href="<c:url value="/tables/"/>"
-                               class="btn blue-gray"><spring:message
-                                    code="table.return_to_table_list"/>
-                            </a>
-                        </div>
-                        <div class="col s3"></div>
-                        <div class="col s3"></div>
-                    </div>
-                        <%-- TODO manejo de diners --%>
-                    <button>add diner</button>
-                    <button>rest diner</button>
-
-                </div>
             </c:if>
         </div>
     </div>
