@@ -6,6 +6,7 @@ import edu.itba.paw.jimi.models.OrderStatus;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Map;
 
 
 public interface OrderService {
@@ -90,4 +91,11 @@ public interface OrderService {
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll();
+	
+	/**
+	 * Finds all closed orders' total by month.
+	 *
+	 * @return A collection of said orders.TODO
+	 */
+	Map getMonthlyOrderTotal();
 }

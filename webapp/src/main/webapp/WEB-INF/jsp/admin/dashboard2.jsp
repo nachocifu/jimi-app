@@ -47,7 +47,9 @@
                 <div class="col s6">
                     <div id="table-status-pie"></div>
                 </div>
-                <div class="col s6"></div>
+                <div class="col s6">
+                    <div id="monthly-order-total-time-series"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -69,7 +71,20 @@
         busy: {
             title: "<spring:message code="table.busy"/>",
             count: "${busyTables}"
-        }
+        },
+        plotTitle: "<spring:message code="dashboard.current_table_report"/>"
+    };
+
+    var monthlyOrderTotalTimeSeries = {
+        values: {
+            x: [<c:forEach items="${monthOrderTotals}" var="v" varStatus="loop">
+                '${v.key}'${!loop.last ? ',' : ''}
+                </c:forEach>],
+            y: [<c:forEach items="${monthOrderTotals}" var="v" varStatus="loop">
+                '${v.value}'${!loop.last ? ',' : ''}
+                </c:forEach>]
+        },
+        plotTitle: "<spring:message code="dashboard.monthly_order_total_time_series"/>"
     };
 
 </script>

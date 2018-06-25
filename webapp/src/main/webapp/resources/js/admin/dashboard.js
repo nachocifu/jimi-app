@@ -4,30 +4,24 @@ $(document).ready(function () {
      * Handle Pie Chart for table status
      *
      */
-    Plotly.newPlot('table-status-pie',
-        [
-            {
-                values: [tableStatusPie['free']['count'], tableStatusPie['paying']['count'], tableStatusPie['busy']['count']],
-                labels: [tableStatusPie['free']['title'], tableStatusPie['paying']['title'], tableStatusPie['busy']['title']],
-                type: 'pie',
-                domain: {
-                    x: [0, .48]
-                },
-                hole: .7
-            }
-        ],
-        {
-            title: 'Table Report Live', //TODO hardcoded text
-            annotations: [
-                {
-                    font: {
-                        size: 14
-                    },
-                    showarrow: false,
-                    text: 'TABLES', //TODO hardcoed
-                    x: 0.17,
-                    y: 0.5
-                }]
-        }, {displayModeBar: false});
+    var data = [{
+        values: [tableStatusPie['free']['count'], tableStatusPie['paying']['count'], tableStatusPie['busy']['count']],
+        labels: [tableStatusPie['free']['title'], tableStatusPie['paying']['title'], tableStatusPie['busy']['title']],
+        type: 'pie'
+    }];
+
+    var layout = {
+        title: tableStatusPie['plotTitle']
+    };
+
+    Plotly.newPlot('table-status-pie', data, layout, {displayModeBar: false});
+
+    var data_2 = [monthlyOrderTotalTimeSeries['values']];
+
+    var layout_2 = {
+        title: monthlyOrderTotalTimeSeries['plotTitle'],
+    };
+
+    Plotly.newPlot('monthly-order-total-time-series', data_2, layout_2, {displayModeBar: false});
 
 });

@@ -11,26 +11,36 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/admin")
 @Controller
 public class AdminController {
-
+	
 	@Autowired
 	StatsService statsService;
 	
 	@Autowired
 	TableService tableService;
-
+	
 	@Autowired
 	OrderService orderService;
 	
 	@RequestMapping("")
 	public ModelAndView index() {
 		final ModelAndView mav = new ModelAndView("admin/dashboard2");
-
+		
 		mav.addObject("busyTables", statsService.getBusyTablesUnits());
 		mav.addObject("freeTables", statsService.getFreeTablesUnits());
 		mav.addObject("payingTables", statsService.getPayingTablesUnits());
 		mav.addObject("totalTables", tableService.findAll().size());
 		mav.addObject("freeTablesPercentage", statsService.getFreeTables());
 		mav.addObject("stockStatePercentage", statsService.getStockState());
+//		mav.addObject("lastOrders", orderService.findAll());
+		mav.addObject("monthOrderTotals", statsService.getMonthlyOrderTotal());
+		
+		return mav;
+	}
+	
+	@RequestMapping("/bills")
+	public ModelAndView bills() {
+		final ModelAndView mav = new ModelAndView("admin/dashboard2_bills");
+		
 		mav.addObject("lastOrders", orderService.findAll());
 		
 		return mav;

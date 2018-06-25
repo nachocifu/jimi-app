@@ -31,21 +31,22 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private DishService dishService;
-
+	
 	/**
 	 * Updates the total value of the object. Does not touch the DB!
+	 *
 	 * @param order The order to update.
 	 */
-	private void updateTotal(Order order){
-
+	private void updateTotal(Order order) {
+		
 		float total = 0f;
-        for (Map.Entry<Dish, Integer> d : order.getDishes().entrySet())
-            total += d.getKey().getPrice() * d.getValue();
-
-        order.setTotal(total);
-
+		for (Map.Entry<Dish, Integer> d : order.getDishes().entrySet())
+			total += d.getKey().getPrice() * d.getValue();
+		
+		order.setTotal(total);
+		
 	}
-
+	
 	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners) {
 		LOGGER.info("Create order: {} | {} | {} | {}", status, openedAt, closedAt, diners);
 		return orderDao.create(status, openedAt, closedAt, diners, 0f);
@@ -75,10 +76,10 @@ public class OrderServiceImpl implements OrderService {
 		orderDao.update(order);
 		
 		LOGGER.info("Updated order (add dishes): {}", order);
-
+		
 		// Update dish stock
 		dishService.setStock(dish, dish.getStock() - amount);
-
+		
 		Order dbOrder = orderDao.findById(order.getId());
 		return dbOrder.getDishes().get(dish);
 	}
@@ -104,8 +105,8 @@ public class OrderServiceImpl implements OrderService {
 		LOGGER.info("Updated order (remove one dish): {}", order);
 		
 		// Update dish stock
-		dishService.setStock(dish,dish.getStock() + 1);
-
+		dishService.setStock(dish, dish.getStock() + 1);
+		
 		Order dbOrder = orderDao.findById(order.getId());
 		if (!dbOrder.getDishes().containsKey(dish))
 			return 0;
@@ -117,13 +118,13 @@ public class OrderServiceImpl implements OrderService {
 		
 		if (!order.getStatus().equals(OrderStatus.OPEN))
 			throw new DishAddedToInactiveOrderException();
-
+		
 		// Update dish stock
 		if (order.getDishes().containsKey(dish)) {
 			int previousValue = order.getDishes().get(dish);
 			dishService.setStock(dish, dish.getStock() + previousValue);
 		}
-
+		
 		order.setDish(dish, 0);
 		updateTotal(order);
 		orderDao.update(order);
@@ -172,20 +173,24 @@ public class OrderServiceImpl implements OrderService {
 		
 		if (!order.getStatus().equals(OrderStatus.OPEN))
 			throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
-
+		
 		order.setStatus(OrderStatus.CLOSED);
 		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 		orderDao.update(order);
 		
 		LOGGER.info("Closed order {}", order);
 	}
-
-	public Collection<Order> findAll(){
+	
+	public Collection<Order> findAll() {
 		Collection<Order> orders = orderDao.findAll();
 		if (orders != null)
 			return orders;
 		else
 			return new HashSet<Order>();
+	}
+	
+	public Map getMonthlyOrderTotal() {
+		return orderDao.getMonthlyOrderTotal();
 	}
 	
 }

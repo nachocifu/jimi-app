@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.YearMonth;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,10 +113,10 @@ public class OrderJdbcDao implements OrderDao {
 	}
 	
 	public void update(Order order) {
-
+		
 		jdbcTemplate.update("UPDATE orders SET (statusid ,openedAt ,closedAt, diners, total) = (?, ?, ?, ?, ?) WHERE orderid = ?",
 				order.getStatus().ordinal(), order.getOpenedAt(), order.getClosedAt(), order.getDiners(), order.getTotal(), order.getId());
-
+		
 		// If the map shows 0 in amount for a dish then we need to remove it from the DB.
 		for (Map.Entry<Dish, Integer> entry : order.getDishes().entrySet()) {
 			if (entry.getValue() != 0)
@@ -124,7 +125,7 @@ public class OrderJdbcDao implements OrderDao {
 				orderItemJdbcDao.delete(order, entry.getKey());
 		}
 	}
-
+	
 	public Collection<Order> findAll() {
 		final Collection<Order> col = jdbcTemplate.query(
 				"SELECT * " +
@@ -136,6 +137,38 @@ public class OrderJdbcDao implements OrderDao {
 						"WHERE o.statusid = ? ",
 				ROW_MAPPER, OrderStatus.CLOSED.ordinal());
 		return col;
+	}
+	
+	public Map getMonthlyOrderTotal() {
+	
+//		final Map<YearMonth, Double> m = jdbcTemplate.query(
+//				"SELECT EXTRACT(year from closedat) as yr, EXTRACT(month from closedat) as mon, SUM(total) as monthtotal " +
+//						"FROM orders " +
+//						"GROUP BY EXTRACT(year from closedat), EXTRACT(month from closedat)" +
+//						"ORDER BY yr, mon",
+//				rs -> {
+//					Map<YearMonth, Double> mapRet = new HashMap<>();
+//					while (rs.next()) {
+//
+//						System.out.println("monthtotal: \n" + rs.getDouble("monthtotal"));
+//
+//						System.out.println("rs: \n" + rs.);
+//
+//						mapRet.put(YearMonth.of(rs.getInt("yr"), rs.getInt("mon") + 1), rs.getDouble("monthtotal"));
+//					}
+//
+//					System.out.println("mapRet: \n" + mapRet);
+//
+//					return mapRet;
+//				});
+//		return m;
+
+		Map<YearMonth, Double> hardcodeado = new HashMap<>();
+		hardcodeado.put(YearMonth.of(2018, 1), 100.0);
+		hardcodeado.put(YearMonth.of(2018, 2), 150.0);
+		hardcodeado.put(YearMonth.of(2018, 3), 130.0);
+
+		return hardcodeado;
 	}
 	
 }

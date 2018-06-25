@@ -5,7 +5,7 @@ import edu.itba.paw.jimi.models.OrderStatus;
 
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 
 public interface OrderDao {
 	
@@ -33,4 +33,10 @@ public interface OrderDao {
 	 * @return List of said orders.
 	 */
 	Collection<Order> findAll();
+	
+	/**
+	 * Find all closed orders' total by month, ordered decreased by closed timestamp.
+	 * @return List of said orders.TODO
+	 */
+	Map getMonthlyOrderTotal();
 }
