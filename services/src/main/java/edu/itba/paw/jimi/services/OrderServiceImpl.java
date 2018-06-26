@@ -10,6 +10,7 @@ import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -189,6 +190,14 @@ public class OrderServiceImpl implements OrderService {
 	public Collection<Order> findAll() {
 		
 		Collection<Order> orders = orderDao.findAll();
+		if (orders != null)
+			return orders;
+		else
+			return new HashSet<Order>();
+	}
+
+	public Collection<Order> findAll(QueryParams qp) {
+		Collection<Order> orders = orderDao.findAll(qp);
 		if (orders != null)
 			return orders;
 		else

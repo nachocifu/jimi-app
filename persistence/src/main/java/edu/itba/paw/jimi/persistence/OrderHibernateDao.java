@@ -4,14 +4,12 @@ import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.YearMonth;
 import java.util.Collection;
@@ -40,6 +38,27 @@ public class OrderHibernateDao implements OrderDao{
     public Collection<Order> findAll() {
         final TypedQuery<Order> query = em.createQuery("from Order", Order.class);
         return query.getResultList();
+    }
+
+    public Collection<Order> findAll(QueryParams qp) {
+
+        String ordering = "";
+        if (qp.getOrderBy() != null)
+            ordering += "order by " + qp.getOrderBy();
+
+        if (qp.isAscending())
+            ordering += " ASC";
+        else
+            ordering += " DESC";
+
+        final Query query = em.createQuery("from Order " + ordering, Order.class);
+
+        if (qp.getStartAt() != QueryParams.NO_VALUE) {
+            query.setFirstResult(qp.getStartAt());
+            query.setMaxResults(qp.getPageSize());
+        }
+
+        return (Collection<Order>) query.getResultList();
     }
 
     public Map getMonthlyOrderTotal() {

@@ -3,6 +3,7 @@ package edu.itba.paw.jimi.webapp.controller;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.StatsService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class AdminController {
 	public ModelAndView bills() {
 		final ModelAndView mav = new ModelAndView("admin/bills");
 
-		mav.addObject("lastOrders", orderService.findAll());
+		mav.addObject("lastOrders", orderService.findAll(new QueryParams("id", false)));
 
 		return mav;
 	}
