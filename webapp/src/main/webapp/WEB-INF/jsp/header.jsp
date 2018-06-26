@@ -23,10 +23,12 @@
         <div>
             <a><span><spring:message code="sidebar.tables"/></span></a>
             <div>
-                <a href="<c:url value="/tables/register"/>" class="nav-link ">
-                    <i class="fa fa-plus"></i>
-                    <span class="title"><spring:message code="sidebar.new_table"/></span>
-                </a>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <a href="<c:url value="/tables/register"/>" class="nav-link ">
+                        <i class="fa fa-plus"></i>
+                        <span class="title"><spring:message code="sidebar.new_table"/></span>
+                    </a>
+                </sec:authorize>
                 <a href="<c:url value="/tables/"/>" class="nav-link ">
                     <i class="fa fa-list"></i>
                     <span class="title"><spring:message code="sidebar.table_list"/></span>
