@@ -57,7 +57,7 @@ public class DishServiceTest {
 		Dish testDish = dishService.findById(1);
 		Assert.assertEquals(NAME, testDish.getName());
 		Assert.assertEquals(PRICE, testDish.getPrice(), e);
-		Assert.assertEquals(1, testDish.getId());
+		Assert.assertEquals(1, (long)testDish.getId());
 		Assert.assertEquals(DEFAULT_STOCK, testDish.getStock());
 	}
 	

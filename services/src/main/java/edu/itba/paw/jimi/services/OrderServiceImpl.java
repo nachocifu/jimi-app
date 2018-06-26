@@ -12,6 +12,7 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -20,6 +21,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
@@ -41,16 +43,13 @@ public class OrderServiceImpl implements OrderService {
         order.setTotal(total);
 
 	}
-
 	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners) {
 		return orderDao.create(status, openedAt, closedAt, diners, 0f);
 	}
-	
 	public int addDish(Order order, Dish dish) {
 
 		return addDishes(order, dish, 1);
 	}
-	
 	public int addDishes(Order order, Dish dish, int amount) {
 		
 		if (!order.getStatus().equals(OrderStatus.OPEN))
@@ -79,7 +78,6 @@ public class OrderServiceImpl implements OrderService {
 		else
 			return 0;
 	}
-	
 	public int removeOneDish(Order order, Dish dish) {
 		
 		if (!order.getStatus().equals(OrderStatus.OPEN))
@@ -107,7 +105,6 @@ public class OrderServiceImpl implements OrderService {
 		else
 			return dbOrder.getDishes().get(dish);
 	}
-	
 	public int removeAllDish(Order order, Dish dish) {
 		
 		if (!order.getStatus().equals(OrderStatus.OPEN))
@@ -128,7 +125,6 @@ public class OrderServiceImpl implements OrderService {
 		else
 			return dbOrder.getDishes().get(dish);
 	}
-	
 	public int setDiners(Order order, int diners) {
 		Order o = orderDao.findById(order.getId());
 		
@@ -143,18 +139,15 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return 0;
 	}
-	
 	public void open(Order order) {
 		
 		if (!order.getStatus().equals(OrderStatus.INACTIVE))
 			throw new OrderStatusException(OrderStatus.INACTIVE, order.getStatus());
-		
-		
+
 		order.setOpenedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 		order.setStatus(OrderStatus.OPEN);
 		orderDao.update(order);
 	}
-	
 	public void close(Order order) {
 		
 		if (!order.getStatus().equals(OrderStatus.OPEN))
@@ -164,7 +157,6 @@ public class OrderServiceImpl implements OrderService {
 		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 		orderDao.update(order);
 	}
-
 	public Collection<Order> findAll(){
 		Collection<Order> orders = orderDao.findAll();
 		if (orders != null)

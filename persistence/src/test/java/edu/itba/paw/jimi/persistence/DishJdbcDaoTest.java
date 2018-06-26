@@ -64,6 +64,32 @@ public class DishJdbcDaoTest {
 		assertEquals(PRICE, dish.getPrice());
     }
 
+
+//    private Dish find(int id){
+//		return dishDao.findById(id);
+//	}
+//	@Transactional
+//	private Dish create(){
+//    	Dish dish = dishDao.create(NAME, PRICE, 1);
+//    	dish.setName("Tu vieja en tanga.");
+//		return dish;
+//	}
+//
+//	@Test
+//	public void testUpdate() {
+//		final Dish dish = create();
+//
+//		assertNotNull(dish);
+//		assertNotNull(dish.getId());
+//		assertEquals(NAME, dish.getName());
+//		assertEquals(PRICE, dish.getPrice());
+//
+//		dish.setName("Tu vieja");
+//		Dish dbDish = find(dish.getId());
+//		assertEquals("Tu vieja en tanga.", dbDish.getName());
+//
+//	}
+
 	@Test
     @Transactional
 	public void testCreateWithPi() {
@@ -126,24 +152,5 @@ public class DishJdbcDaoTest {
 		List<Dish> dishes = (List<Dish>) dishDao.findAll();
 		assertNotNull(dishes);
 		assertEquals(dishes.size(), 0);
-	}
-
-
-	@Test
-    @Transactional
-	public void testUpdate() {
-
-		final Dish dish = dishDao.create(NAME, PRICE, 1);
-		dish.setName(NAME + " Virgen");
-		dishDao.update(dish);
-
-
-		final Dish dish2 = dishDao.findById(dish.getId());
-		assertEquals(dish.getId(), dish2.getId());
-		assertEquals(dish.getStock(), dish2.getStock());
-		assertEquals(dish.getPrice(), dish2.getPrice());
-
-		assertEquals(dish.getName(), dish2.getName());
-
 	}
 }

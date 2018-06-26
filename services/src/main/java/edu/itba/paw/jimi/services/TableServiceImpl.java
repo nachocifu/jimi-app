@@ -10,11 +10,13 @@ import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 @Service
+@Transactional
 public class TableServiceImpl implements TableService {
 
     @Autowired

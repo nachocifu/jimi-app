@@ -43,8 +43,9 @@ public class  TestConfig {
         factoryBean.setJpaVendorAdapter(vendorAdapter);
 
         final Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto","create");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+
 
         // TODO: Si ponen esto en prod, hay tabla!!!
         properties.setProperty("hibernate.show_sql", "true");

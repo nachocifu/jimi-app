@@ -1,5 +1,8 @@
 package edu.itba.paw.jimi.models;
 
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,14 +10,14 @@ import java.util.Map;
 
 
 @Entity
-@SecondaryTable(name = "orders_items")
+//@SecondaryTable(name = "orders_items")
 @javax.persistence.Table(name = "orders")
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_orders_seq")
-    @SequenceGenerator(sequenceName = "orders_orders_seq", name = "orders_orders_seq", allocationSize = 1)
-    @Column(name = "orderid")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_orderid_seq")
+    @SequenceGenerator(sequenceName = "orders_orderid_seq", name = "orders_orderid_seq", allocationSize = 1)
+//    @Column(name = "orderid")
 	private long id;
 
     @Column(precision = 10, nullable = false)
@@ -23,8 +26,10 @@ public class Order {
     @Column(precision = 10, scale = 2, nullable = false)
 	private Float total;
 
-    @Column(name="dishid", table="order_items")
-    @OneToMany(targetEntity = Dish.class)
+//    @Column(name="dishid")
+    @ElementCollection
+//    @OneToMany(targetEntity = Dish.class)
+//    @Transient
 	private Map<Dish, Integer> dishes;
 
     @Temporal(TemporalType.DATE)
@@ -33,7 +38,7 @@ public class Order {
     @Temporal(TemporalType.DATE)
 	private Date closedAt;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL) //TODO: Esto no esta bien, guardamos en la base el id, no el string.
 	private OrderStatus status;
 	
 	public Order() {

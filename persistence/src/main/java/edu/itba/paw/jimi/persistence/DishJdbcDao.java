@@ -54,7 +54,7 @@ public class DishJdbcDao implements DishDao {
 		args.put("price", price);
 		args.put("stock", stock);
 		final Number userId = jdbcInsert.executeAndReturnKey(args);
-		return new Dish(name, price, userId.longValue(), stock);
+		return new Dish(name, price, (int)userId.longValue(), stock);
 	}
 	
 	public int update(Dish dish) {

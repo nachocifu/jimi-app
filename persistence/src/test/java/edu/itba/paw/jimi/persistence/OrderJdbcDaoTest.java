@@ -11,9 +11,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
@@ -24,7 +26,6 @@ import static junit.framework.TestCase.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
-@Transactional
 public class OrderJdbcDaoTest {
 
 	@Autowired
@@ -74,6 +75,7 @@ public class OrderJdbcDaoTest {
 	}
 
 	@Test
+    @Transactional
 	public void testCreate() {
 		orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 //		assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_TABLE_NAME));
@@ -83,6 +85,7 @@ public class OrderJdbcDaoTest {
 	}
 
 	@Test
+    @Transactional
 	public void testUpdate() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, TOTAL);
 		order.setStatus(OrderStatus.OPEN);
@@ -102,6 +105,7 @@ public class OrderJdbcDaoTest {
 	}
 
 	@Test
+    @Transactional
 	public void testFindByIdEmpty() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		Order dbOrder = orderDao.findById(order.getId());
@@ -110,6 +114,7 @@ public class OrderJdbcDaoTest {
 	}
 
 	@Test
+    @Transactional
 	public void testFindByIdWithValues() {
 		final Order order = orderDao.create(OrderStatus.OPEN, OPENEDAT, CLOSEDAT, DINERS, 0);
 		Order dbOrder = orderDao.findById(order.getId());
@@ -122,10 +127,15 @@ public class OrderJdbcDaoTest {
 	}
 
 	@Test
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public void testFindByIdOneDish() {
-		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
-		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+
+        final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+        final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
+
 		order.setDish(dish, 1);
+
+		System.out.println("DISH: " + dishDao.findById(dish.getId()).getId());
 
 		orderDao.update(order);
 
@@ -148,6 +158,7 @@ public class OrderJdbcDaoTest {
 	}
 
 	@Test
+    @Transactional
 	public void testFindByIdOneDishThrice() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
@@ -174,6 +185,7 @@ public class OrderJdbcDaoTest {
 	}
 
 	@Test
+    @Transactional
 	public void testFindByIdSeveralDishes() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 
@@ -234,6 +246,7 @@ public class OrderJdbcDaoTest {
 	}
 
 	@Test
+    @Transactional
 	public void testFindByIdAddAndRemove() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
@@ -271,6 +284,7 @@ public class OrderJdbcDaoTest {
 	}
 
 	@Test
+    @Transactional
 	public void testFindByIdAddAndRemoveButNoDelete() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);

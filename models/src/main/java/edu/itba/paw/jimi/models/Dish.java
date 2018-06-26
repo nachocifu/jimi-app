@@ -1,8 +1,6 @@
 package edu.itba.paw.jimi.models;
 
 
-import org.springframework.context.annotation.Import;
-
 import javax.persistence.*;
 import javax.persistence.Table;
 
@@ -14,7 +12,7 @@ public class Dish {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dishes_dishid_seq")
     @SequenceGenerator(sequenceName = "dishes_dishid_seq", name = "dishes_dishid_seq", allocationSize = 1)
     @Column(name = "dishid")
-    private long id;
+    private Integer id;
 
     @Column(length = 100, nullable = false)
 	private String name;
@@ -35,32 +33,36 @@ public class Dish {
 		this.stock = stock;
 	}
 
-	public Dish(String name, float price, long id, int stock) {
+	public Dish(String name, float price, int id, int stock) {
 		this.name = name;
 		this.price = price;
 		this.id = id;
 		this.stock = stock;
 	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		
-		Dish dish = (Dish) o;
-		
-		return id == dish.id;
-	}
-	
-	@Override
-	public int hashCode() {
-		return (int) (id ^ (id >>> 32));
-	}
-	
-	public long getId() {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Dish dish = (Dish) o;
+
+        return id != null ? id.equals(dish.id) : dish.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    public int getId() {
 		return id;
 	}
-	
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -91,5 +93,4 @@ public class Dish {
 		return DishStatus.AVAILABLE;
 		
 	}
-	
 }
