@@ -76,11 +76,10 @@
                                         <form:input type="text" path="repeatPassword" class="form-control"/>
                                         <form:errors path="repeatPassword" cssClass="formError" element="p"/>
 
-                                        <button type="submit"
-                                                class="waves-effect waves-light btn">
+                                        <button type="submit" class="btn btn-primary pull-right">
                                             <spring:message code="dish.add"/>
                                         </button>
-                                        <a href="<c:url value="/admin/dishes/"/>"
+                                        <a href="<c:url value="/admin/users/"/>"
                                            class="waves-effect waves-light btn">
                                             <spring:message code="dish.cancel"/>
                                         </a>

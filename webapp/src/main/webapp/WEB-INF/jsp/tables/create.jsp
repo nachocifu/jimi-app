@@ -52,15 +52,15 @@
                             <div class="card-header card-header-primary">
                                 <h4 class="card-title "><spring:message code="table.register_header"/></h4>
                             </div>
-                            <c:url value="/tables/" var="postPath"/>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <form:form modelAttribute="registerForm" action="${postPath}" method="post">
+                                    <c:url value="/tables/create" var="postPath"/>
+                                    <form:form modelAttribute="registerForm" action="${postPath}" method="POST">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <form:label path="name" class="bmd-label-floating"><spring:message code="table.name"/></form:label>
-                                                    <form:input type="text" path="name" class="form-control"/>
+                                                    <form:label class="bmd-label-floating" path="name"><spring:message code="table.name"/></form:label>
+                                                    <form:input type="text" class="form-control" path="name"/>
                                                     <form:errors path="name" cssClass="formError" element="p"/>
                                                 </div>
                                             </div>

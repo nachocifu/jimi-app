@@ -99,7 +99,7 @@ public class TableController {
 
         final Table tb = ts.create(form.getName());
 
-        return new ModelAndView("redirect:/tables/" + tb.getId());
+        return new ModelAndView("redirect:/tables/");
     }
 
     @RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.GET})
