@@ -147,15 +147,19 @@
                                     </td>
                                     <td>
                                         <form action="<c:url value="/tables/${table.id}/remove_one_dish"/>"
-                                              method="post" class="form-with-buttons">
+                                              method="post" class="form-with-buttons" id="remove-dish-form">
                                                 <%--<button type="submit"--%>
                                                 <%--class="btn btn-primary btn-xs">--%>
                                                 <%--<i class="fa fa-minus"></i>--%>
                                                 <%--</button>--%>
-                                            <a class="btn btn-success btn-xs"
-                                               onclick="M.toast({html: '<spring:message code="table.removed"/> ${dishEntry.key.name}'})">
-                                                <i class="fa fa-minus"></i>
-                                            </a>
+                                            <%--<button class="btn btn-success btn-xs"--%>
+                                               <%--onclick="myFunction()">--%>
+                                                <%--<i class="fa fa-minus"></i>--%>
+                                            <%--</button>--%>
+                                                    <a id="removed-dish-a" class="btn btn-success btn-xs"
+                                                       onclick="M.toast({html: '<spring:message code="table.removed"/> ${dishEntry.key.name}'})">
+                                                        <i class="fa fa-minus"></i>
+                                                    </a>
                                             <input type="hidden" value="${dishEntry.key.id}"
                                                    name="dishid"/>
                                         </form>
@@ -188,7 +192,13 @@
 </div>
 
 <!-- start js include path -->
+<script>
+    document.getElementById("removed-dish-a").onclick = function() {
+        M.toast({html: '<spring:message code="table.removed"/> ${dishEntry.key.name}'})
+        document.getElementById("remove-dish-form").submit();
+    }
 
+</script>
 <!-- Compiled and minified JavaScript -->
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
