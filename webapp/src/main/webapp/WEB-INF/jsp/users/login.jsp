@@ -37,12 +37,16 @@
             </div>
 
             <div class="input">
-                <label for="password">Password</label>
+                <label for="password"><spring:message code="user.password_form_label"/></label>
                 <input id="password" name="j_password" type="password"/>
                 <span class="spin"></span>
             </div>
+            <div class="input">
+                <label for="checkbox_remember_me"><spring:message code="user.ask_remember_me"/></label>
+                <input name="j_rememberme" type="checkbox" id="checkbox_remember_me">
+            </div>
             <div class="button login">
-                <button><span>GO</span> <i class="fa fa-check"></i></button>
+                <button><span><spring:message code="login.button_label"/></span> <i class="fa fa-check"></i></button>
             </div>
         </form>
 

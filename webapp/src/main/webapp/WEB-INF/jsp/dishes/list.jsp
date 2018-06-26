@@ -19,6 +19,7 @@
 
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     <!-- Compiled and minified CSS -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
@@ -46,7 +47,7 @@
             <span class="card-title"><spring:message code="dishes"/></span>
             <c:choose>
                 <c:when test="${dishes.size() > 0}">
-                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp highlight">
                         <thead>
                         <tr>
                             <th><spring:message code="dish.name"/></th>

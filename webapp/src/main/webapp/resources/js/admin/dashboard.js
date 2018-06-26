@@ -22,6 +22,10 @@ $(document).ready(function () {
         title: monthlyOrderTotalTimeSeries['plotTitle'],
     };
 
-    Plotly.newPlot('monthly-order-total-time-series', data_2, layout_2, {displayModeBar: false});
+
+    if (monthlyOrderTotalTimeSeries['length'] > 0) {
+        Plotly.newPlot('monthly-order-total-time-series', data_2, layout_2, {displayModeBar: false});
+    }
+
 
 });

@@ -15,7 +15,7 @@ public class Table {
     @Column(name = "tableid")
 	private long id;
 
-    @Column(length = 100, nullable = false) //TODO: De donde sacamos estos valores? Hay que fijarnos en otro lado?
+    @Column(length = 20, nullable = false) //TODO: De donde sacamos estos valores? Hay que fijarnos en otro lado?
 	private String name;
 
     @Enumerated(EnumType.ORDINAL)
