@@ -5,6 +5,7 @@ import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -31,13 +32,15 @@ public class UserServiceImpl implements UserService {
 		else
 			return new HashSet<User>();
 	}
-	
+
+    @Transactional
 	public User create(final String username, String password) {
 		Set<String> roles = new HashSet<String>();
 		roles.add(User.ROLE_USER);
 		return userDao.create(username, password, roles);
 	}
-	
+
+    @Transactional
 	public User createAdmin(String username, String password) {
 		Set<String> roles = new HashSet<String>();
 		roles.add(User.ROLE_USER);

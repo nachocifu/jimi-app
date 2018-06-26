@@ -1,23 +1,47 @@
 package edu.itba.paw.jimi.models;
 
+import javax.persistence.*;
+import javax.persistence.Table;
 import java.util.Set;
 
+@Entity
+@Table(name="users")
 public class User {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_userid_seq")
+	@SequenceGenerator(sequenceName = "users_userid_seq", name = "users_userid_seq", allocationSize = 1)
+	@Column(name = "userid")
+	private Long id;
+
+	@Column(length = 100, nullable = false)
+	private String username;
+
+	@Column(length = 100, nullable = false)
+	private String password;
 
 	public final static String ROLE_ADMIN = "ROLE_ADMIN";
 	public final static String ROLE_USER = "ROLE_USER";
-
 	public final static String ADMIN = "ADMIN";
 	public final static String USER = "USER";
-	
-	private long id;
-	private String username;
-	private String password;
 
+	@ElementCollection(targetClass=String.class)
+	@JoinTable(name="user_roles",
+			joinColumns = {@JoinColumn(name="userid")}
+			)
 	private Set<String> roles;
+
+	/* package */ User() {
+		// Just for Hibernate, we love you!
+	}
 	
 	public User(String name, long id, String password) {
 		this.id = id;
+		this.username = name;
+		this.password = password;
+	}
+
+	public User(String name, String password) {
 		this.username = name;
 		this.password = password;
 	}
@@ -47,7 +71,8 @@ public class User {
 	}
 
 	public void setRoles(Set<String> roles) {
-		this.roles = roles;
+		if(roles != null)
+			this.roles = roles;
 	}
 
 	@Override

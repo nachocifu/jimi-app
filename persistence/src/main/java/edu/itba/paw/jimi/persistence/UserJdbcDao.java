@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-@Repository
+//@Repository
 public class UserJdbcDao implements UserDao {
 	
 	private JdbcTemplate jdbcTemplate;
