@@ -27,23 +27,24 @@ public interface DishDao {
 	int update(Dish dish);
 
 
-	/**
+    /**
 	 * Returns all the dishes.
 	 *
 	 * @return all the dishes.
 	 */
 	Collection<Dish> findAll();
 
-	/**
-	 * Returns all the dishes.
-	 *
-	 * @return all the dishes.
-	 */
-	Collection<Dish> findAll(QueryParams qp);
+    /**
+     * Returns all the dishes.
+     *
+     * @return all the dishes.
+     */
+    Collection<Dish> findAll(QueryParams qp);
 
     /**
      * Retruns the amount of dishes in the DB.
+     *
      * @return a positive integer.
      */
-	int getTotalDishes();
+    int getTotalDishes();
 }

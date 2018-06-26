@@ -38,7 +38,7 @@ public class DishHibernateDao implements DishDao {
     }
 
     public Dish findById(long id) {
-        return em.find(Dish.class, (int)id);
+        return em.find(Dish.class, (int) id);
     }
 
     public Collection<Dish> findAll(QueryParams qp) {

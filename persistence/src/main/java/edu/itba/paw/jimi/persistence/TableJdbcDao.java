@@ -110,13 +110,13 @@ public class TableJdbcDao implements TableDao {
 		return jdbcTemplate.query("SELECT * FROM tables", ROW_MAPPER);
 	}
 
-	@Override
-	public Collection<Table> findAll(QueryParams qp) {
-		return null;
-	}
+    @Override
+    public Collection<Table> findAll(QueryParams qp) {
+        return null;
+    }
 
-	@Override
-	public int getTotalTables() {
-		return 0;
-	}
+    @Override
+    public int getTotalTables() {
+        return 0;
+    }
 }

@@ -46,6 +46,7 @@ public interface DishService {
 
     /**
      * Returns all the dishes.
+     *
      * @param qp the QueryParams.
      * @return all the dishes.
      */

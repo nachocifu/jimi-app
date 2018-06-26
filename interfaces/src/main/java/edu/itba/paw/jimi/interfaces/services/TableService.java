@@ -25,14 +25,14 @@ public interface TableService {
 	 */
 	Collection<Table> findAll();
 
-	/**
-	 * Returns all the tables.
-	 *
-	 * @return all the tables.
-	 */
-	Collection<Table> findAll(QueryParams qp);
+    /**
+     * Returns all the tables.
+     *
+     * @return all the tables.
+     */
+    Collection<Table> findAll(QueryParams qp);
 
-	int getTotalTables();
+    int getTotalTables();
 	
 	
 	/**

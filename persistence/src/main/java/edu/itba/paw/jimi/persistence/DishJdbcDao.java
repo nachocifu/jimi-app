@@ -67,13 +67,13 @@ public class DishJdbcDao implements DishDao {
 		return jdbcTemplate.query("SELECT * FROM dishes", ROW_MAPPER);
 	}
 
-	@Override
-	public Collection<Dish> findAll(QueryParams qp) {
-		return null;
-	}
+    @Override
+    public Collection<Dish> findAll(QueryParams qp) {
+        return null;
+    }
 
-	@Override
-	public int getTotalDishes() {
-		return 0;
-	}
+    @Override
+    public int getTotalDishes() {
+        return 0;
+    }
 }

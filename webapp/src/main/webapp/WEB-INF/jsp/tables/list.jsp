@@ -90,12 +90,14 @@
                         </tbody>
                     </table>
                     <ul class="pagination paginator">
-                        <c:forEach var = "i" begin = "1" end = "${qp.pageCount}">
+                        <c:forEach var="i" begin="1" end="${qp.pageCount}">
                             <c:if test="${qp.currentPage +1 == i}">
-                                <li class="active"><a href="<c:url value="/tables/page/${i}"/>"><c:out value = "${i}"/></a></li>
+                                <li class="active"><a href="<c:url value="/tables/page/${i}"/>"><c:out
+                                        value="${i}"/></a></li>
                             </c:if>
                             <c:if test="${qp.currentPage +1 != i}">
-                                <li class="waves-effect"><a href="<c:url value="/tables/page/${i}"/>"><c:out value = "${i}"/></a></li>
+                                <li class="waves-effect"><a href="<c:url value="/tables/page/${i}"/>"><c:out
+                                        value="${i}"/></a></li>
                             </c:if>
                         </c:forEach>
                     </ul>

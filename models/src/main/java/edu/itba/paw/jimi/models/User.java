@@ -26,7 +26,7 @@ public class User {
 	public final static String USER = "USER";
 
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-	@JoinTable(name="user_role",
+    @JoinTable(name = "user_role",
 			joinColumns = {@JoinColumn(name="userid")}
 			)
 	private Set<String> roles;

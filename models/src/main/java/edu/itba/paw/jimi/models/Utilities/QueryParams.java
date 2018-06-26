@@ -40,7 +40,7 @@ public class QueryParams {
 
     public void setTotal(int total) {
         this.total = total;
-        this.pageCount = (int) Math.ceil(total / (double)pageSize);
+        this.pageCount = (int) Math.ceil(total / (double) pageSize);
         this.currentPage = startAt / pageSize;
     }
 

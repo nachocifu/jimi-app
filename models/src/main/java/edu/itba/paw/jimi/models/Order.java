@@ -24,7 +24,7 @@ public class Order {
 	private Float total;
 
 //    @Column(name="dishid")
-    @ElementCollection(fetch = FetchType.EAGER)
+@ElementCollection(fetch = FetchType.EAGER)
 //    @OneToMany(targetEntity = Dish.class)
 //    @Transient
 	private Map<Dish, Integer> dishes;
