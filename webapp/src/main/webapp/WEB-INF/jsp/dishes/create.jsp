@@ -60,7 +60,7 @@
                 <form:label class="mdl-textfield__label" path="stock"><spring:message
                         code="dish.stock"/></form:label>
                 <form:input class="validate" type="number"
-                            path="stock" min="1" step="1"/>
+                            path="stock" min="0" step="1"/>
                 <form:errors path="stock" element="p" cssClass="formError"/>
 
                 <button type="submit"
