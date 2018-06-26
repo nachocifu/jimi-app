@@ -12,7 +12,7 @@ public class Dish {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dishes_dishid_seq")
     @SequenceGenerator(sequenceName = "dishes_dishid_seq", name = "dishes_dishid_seq", allocationSize = 1)
     @Column(name = "dishid")
-    private Integer id;
+    private int id;
 
     @Column(length = 100, nullable = false)
 	private String name;
@@ -47,12 +47,12 @@ public class Dish {
 
         Dish dish = (Dish) o;
 
-        return id != null ? id.equals(dish.id) : dish.id == null;
+        return id == dish.id;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return id;
     }
 
     public int getId() {
