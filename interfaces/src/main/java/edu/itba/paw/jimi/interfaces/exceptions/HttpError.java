@@ -1,6 +1,6 @@
 package edu.itba.paw.jimi.interfaces.exceptions;
 
-public class HttpError extends Exception {
+public class HttpError extends RuntimeException {
 
     protected String title;
     protected String body;

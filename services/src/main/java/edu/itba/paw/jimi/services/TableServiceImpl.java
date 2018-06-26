@@ -32,7 +32,6 @@ public class TableServiceImpl implements TableService {
     @Transactional
     public Table findById(final long id) {
         Table t = tableDao.findById(id);
-        System.out.println(t.getOrder().getId());
         return t;
     }
 

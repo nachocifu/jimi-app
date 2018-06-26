@@ -3,6 +3,7 @@ package edu.itba.paw.jimi.webapp.controller;
 import edu.itba.paw.jimi.form.TableAddDishForm;
 import edu.itba.paw.jimi.form.TableForm;
 import edu.itba.paw.jimi.form.TableSetDinersForm;
+import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
@@ -51,14 +52,9 @@ public class TableController {
 		Table table = ts.findById(id);
 
 		if (table == null) {
-			response.setStatus(404); // TODO use web.xml and ErrorController
-			return (new ModelAndView("error"))
-					.addObject("body",
-							messageSource.getMessage("table.error.not.found.body",
-									null, LocaleContextHolder.getLocale()))
-					.addObject("title",
-							messageSource.getMessage("table.error.not.found.title",
-									null, LocaleContextHolder.getLocale()));
+			throw new Http404Error(messageSource.getMessage("table.error.not.found.title",
+					null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+					null, LocaleContextHolder.getLocale()));
 		}
 
 		final ModelAndView mav;
