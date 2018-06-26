@@ -4,6 +4,7 @@ package edu.itba.paw.jimi.persistence;
 
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.models.Dish;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -117,7 +118,7 @@ public class DishDaoTest {
 		final Dish dish2 = dishDao.create(NAME + " Virgen", PRICE, 4);
 		final Dish dish3 = dishDao.create(NAME + " Organica", PRICE * 0.5f, 1);
 
-		List<Dish> dishes = (List<Dish>) dishDao.findAll();
+		List<Dish> dishes = (List<Dish>) dishDao.findAll(new QueryParams(0, 10));
 		assertEquals(3, dishes.size());
 
 		assertEquals(dish1.getName(), NAME + " Colorada");
@@ -138,7 +139,7 @@ public class DishDaoTest {
 	@Test
     @Transactional
 	public void testFindAllNull() {
-		List<Dish> dishes = (List<Dish>) dishDao.findAll();
+		List<Dish> dishes = (List<Dish>) dishDao.findAll(new QueryParams(0, 10));
 		assertNotNull(dishes);
 		assertEquals(dishes.size(), 0);
 	}
