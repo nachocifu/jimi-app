@@ -91,6 +91,14 @@ public interface OrderService {
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll();
+
+
+	/**
+	 * Finds all open orders.
+	 *
+	 * @return A collection of said orders.
+	 */
+	Collection<Order> findAllOpen();
 	
 	/**
 	 * Finds all closed orders' total by month.

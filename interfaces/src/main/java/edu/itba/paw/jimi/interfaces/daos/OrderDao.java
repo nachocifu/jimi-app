@@ -33,6 +33,12 @@ public interface OrderDao {
 	 * @return List of said orders.
 	 */
 	Collection<Order> findAll();
+
+	/**
+	 * Find all Open.
+	 * @return List of said orders.
+	 */
+	Collection<Order> findAllOpen();
 	
 	/**
 	 * Find all closed orders' total by month, ordered decreased by closed timestamp.

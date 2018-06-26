@@ -17,7 +17,7 @@ public class KitchenController {
     public ModelAndView index() {
         final ModelAndView mav = new ModelAndView("/kitchen/kitchen");
 
-        //mav.addObject("busyTables", statsService.getBusyTablesUnits());
+        mav.addObject("lastOrders", orderService.findAllOpen());
 
         return mav;
     }
