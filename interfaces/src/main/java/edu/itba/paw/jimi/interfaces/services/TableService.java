@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 
 import java.util.Collection;
 
@@ -23,6 +24,15 @@ public interface TableService {
 	 * @return all the tables.
 	 */
 	Collection<Table> findAll();
+
+	/**
+	 * Returns all the tables.
+	 *
+	 * @return all the tables.
+	 */
+	Collection<Table> findAll(QueryParams qp);
+
+	int getTotalTables();
 	
 	
 	/**

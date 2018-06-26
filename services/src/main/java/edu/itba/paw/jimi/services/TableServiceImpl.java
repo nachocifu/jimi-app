@@ -8,6 +8,7 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,18 @@ public class TableServiceImpl implements TableService {
             return tables;
         else
             return new HashSet<Table>();
+    }
+
+    public Collection<Table> findAll(QueryParams qp) {
+        Collection<Table> tables = tableDao.findAll(qp);
+        if (tables != null)
+            return tables;
+        else
+            return new HashSet<Table>();
+    }
+
+    public int getTotalTables() {
+        return tableDao.getTotalTables();
     }
 
     @Transactional
