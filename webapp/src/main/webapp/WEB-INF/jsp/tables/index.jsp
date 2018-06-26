@@ -90,10 +90,10 @@
                                             <h4><spring:message code="table.sure_charge"/></h4>
                                             <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                                 <div class="modal-footer">
-
                                                     <input value="${PayingCode}" name="status" type="hidden"/>
+                                                    <a class="modal-close btn blue-gray"><spring:message code="table.back"/></a>
                                                     <input type="submit"
-                                                           class="btn blue-gray center-block"
+                                                           class="btn blue-gray"
                                                            value="<spring:message code="table.charge_caps"/>"/>
                                                 </div>
                                             </form>
@@ -112,11 +112,11 @@
                                     <h4><spring:message code="table.sure_cancel"/></h4>
                                     <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                         <div class="modal-footer">
-
                                             <input value="${FreeCode}" name="status" type="hidden"/>
+                                            <a class="modal-close btn blue-gray"><spring:message code="table.back"/></a>
                                             <input type="submit"
-                                                   class="btn blue-gray center-block"
-                                                   value="<spring:message code="table.cancel_caps"/>"/>
+                                                   class="btn blue-gray"
+                                                   value="<spring:message code="table.cancel_caps_confirm"/>"/>
                                         </div>
                                     </form>
                                 </div>
