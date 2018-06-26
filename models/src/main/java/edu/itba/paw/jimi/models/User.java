@@ -25,7 +25,7 @@ public class User {
 	public final static String ADMIN = "ADMIN";
 	public final static String USER = "USER";
 
-	@ElementCollection(targetClass=String.class)
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
 	@JoinTable(name="user_roles",
 			joinColumns = {@JoinColumn(name="userid")}
 			)
