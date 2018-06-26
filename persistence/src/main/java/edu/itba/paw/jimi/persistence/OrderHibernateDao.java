@@ -18,7 +18,7 @@ import java.util.Collection;
 @Repository
 public class OrderHibernateDao implements OrderDao{
 
-    @PersistenceContext(unitName = "testName", type = PersistenceContextType.TRANSACTION)
+    @PersistenceContext(unitName = "testName")
     private EntityManager em;
 
     public Order findById(long id) {
@@ -31,14 +31,7 @@ public class OrderHibernateDao implements OrderDao{
         return order;
     }
     public void update(Order order) {
-
-//        final Dish d = em.find(Dish.class, 1);
-////        for (Dish d : query.getResultList())
-//            System.out.println("Dish: " + d.getName());
-
         em.merge(order);
-//        em.flush();
-//        em.merge(order);
     }
 
     public Collection<Order> findAll() {

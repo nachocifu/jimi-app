@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Service
-@Transactional
 public class TableServiceImpl implements TableService {
 
     @Autowired
@@ -29,6 +28,7 @@ public class TableServiceImpl implements TableService {
         return tableDao.findById(id);
     }
 
+    @Transactional
     public Table create(String name) {
         Order order = orderService.create(OrderStatus.INACTIVE, null, null, 0);
         return tableDao.create(name, TableStatus.FREE, order);
@@ -42,6 +42,7 @@ public class TableServiceImpl implements TableService {
             return new HashSet<Table>();
     }
 
+    @Transactional
     public void changeStatus(Table table, TableStatus status) {
 
         if (table.getStatus().equals(TableStatus.BUSY) && !status.equals(TableStatus.PAYING))

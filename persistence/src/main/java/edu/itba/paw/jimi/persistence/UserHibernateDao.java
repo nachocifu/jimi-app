@@ -16,7 +16,7 @@ import java.util.Set;
 @Repository
 public class UserHibernateDao implements UserDao {
 
-    @PersistenceContext(unitName = "testName", type = PersistenceContextType.TRANSACTION)
+    @PersistenceContext(unitName = "testName")
     private EntityManager em;
 
     public User findById(long id) {

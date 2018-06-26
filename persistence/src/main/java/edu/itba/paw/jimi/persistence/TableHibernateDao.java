@@ -18,7 +18,7 @@ import java.util.Collection;
 @Repository
 public class TableHibernateDao implements TableDao{
 
-    @PersistenceContext(unitName = "testName", type = PersistenceContextType.EXTENDED)
+    @PersistenceContext(unitName = "testName")
     private EntityManager em;
 
     @Autowired
