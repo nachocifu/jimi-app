@@ -1,8 +1,5 @@
 package edu.itba.paw.jimi.models;
 
-import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,7 +24,7 @@ public class Order {
 	private Float total;
 
 //    @Column(name="dishid")
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
 //    @OneToMany(targetEntity = Dish.class)
 //    @Transient
 	private Map<Dish, Integer> dishes;
