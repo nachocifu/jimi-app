@@ -23,9 +23,12 @@
 
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <%--<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">--%>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
-          integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous"/>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
     <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
@@ -53,16 +56,8 @@
                 </c:when>
                 <c:otherwise>
                     <span><spring:message code="admin.latest_bills"/></span>
-                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp highlight">
                         <thead>
-                        <tr>
-                            <th><spring:message code="table.name"/></th>
-                            <th><spring:message code="table.diners"/></th>
-                            <th><spring:message code="table.status"/></th>
-                            <th class=""></th>
-                        </tr>
-                        </thead>
-                        <tbody>
                         <tr>
                             <td><strong><spring:message code="bill.transaction_id"/></strong></td>
                             <td><strong><spring:message code="bill.date"/></strong></td>
@@ -70,6 +65,8 @@
                             <td><strong><spring:message code="bill.ammount"/></strong></td>
                             <td><strong><spring:message code="bill.diners"/></strong></td>
                         </tr>
+                        </thead>
+                        <tbody>
                         <c:forEach begin="0" end="9" items="${lastOrders}" var="order">
                             <tr>
                                 <td>${order.id}</td>
@@ -105,7 +102,6 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 <script defer src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script defer src="<c:url value="/resources/js/admin/dashboard.js"/>"></script>
 <!-- end js include path -->
 </body>
 </html>

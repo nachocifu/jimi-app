@@ -19,7 +19,12 @@
 
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
     <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
@@ -39,7 +44,7 @@
             <span class="card-title"><spring:message code="table.tables_header"/></span>
             <c:choose>
                 <c:when test="${tables.size() > 0}">
-                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp highlight">
                         <thead>
                         <tr>
                             <th><spring:message code="table.name"/></th>

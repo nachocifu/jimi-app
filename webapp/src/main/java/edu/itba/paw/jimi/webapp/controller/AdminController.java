@@ -31,7 +31,6 @@ public class AdminController {
 		mav.addObject("totalTables", tableService.findAll().size());
 		mav.addObject("freeTablesPercentage", statsService.getFreeTables());
 		mav.addObject("stockStatePercentage", statsService.getStockState());
-//		mav.addObject("lastOrders", orderService.findAll());
 		mav.addObject("monthOrderTotals", statsService.getMonthlyOrderTotal());
 		
 		return mav;
@@ -39,7 +38,7 @@ public class AdminController {
 	
 	@RequestMapping("/bills")
 	public ModelAndView bills() {
-		final ModelAndView mav = new ModelAndView("admin/dashboard2_bills");
+		final ModelAndView mav = new ModelAndView("admin/bills");
 		
 		mav.addObject("lastOrders", orderService.findAll());
 		

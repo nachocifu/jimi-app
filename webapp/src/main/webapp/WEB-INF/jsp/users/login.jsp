@@ -16,7 +16,6 @@
           type="text/css"/>
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
 
     <link href="<c:url value="/resources/css/users/login.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
