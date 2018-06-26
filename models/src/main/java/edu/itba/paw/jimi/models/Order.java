@@ -14,7 +14,6 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_orderid_seq")
     @SequenceGenerator(sequenceName = "orders_orderid_seq", name = "orders_orderid_seq", allocationSize = 1)
-//    @Column(name = "orderid")
 	private long id;
 
     @Column(precision = 10, nullable = false)
@@ -23,10 +22,7 @@ public class Order {
     @Column(precision = 10, scale = 2, nullable = false)
 	private Float total;
 
-//    @Column(name="dishid")
-@ElementCollection(fetch = FetchType.EAGER)
-//    @OneToMany(targetEntity = Dish.class)
-//    @Transient
+    @ElementCollection(fetch = FetchType.EAGER)
 	private Map<Dish, Integer> dishes;
 
     @Temporal(TemporalType.DATE)
