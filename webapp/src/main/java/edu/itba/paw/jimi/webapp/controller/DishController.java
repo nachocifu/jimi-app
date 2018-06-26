@@ -66,19 +66,19 @@ public class DishController {
     }
 
     @RequestMapping(value = "/stock/increase", method = { RequestMethod.POST })
-    public ModelAndView increaseStock(@RequestParam(value = "dishid") final long dishid) {
+    public ModelAndView increaseStock(@RequestParam(value = "dishid") final long dishid, @RequestParam(value = "page", defaultValue = "1") final int page) {
         Dish dish = dishService.findById(dishid);
         dishService.increaseStock(dish);
 
-        return new ModelAndView("redirect:/admin/dishes");
+        return new ModelAndView("redirect:/admin/dishes/page/" + page);
     }
 
     @RequestMapping(value = "/stock/decrease", method = { RequestMethod.POST })
-    public ModelAndView decreaseStock(@RequestParam(value = "dishid") final long dishid) {
+    public ModelAndView decreaseStock(@RequestParam(value = "dishid") final long dishid, @RequestParam(value = "page", defaultValue = "1") final int page) {
         Dish dish = dishService.findById(dishid);
         dishService.decreaseStock(dish);
 
-        return new ModelAndView("redirect:/admin/dishes");
+        return new ModelAndView("redirect:/admin/dishes/page/" + page);
     }
 
 }
