@@ -1,106 +1,131 @@
+<%@ page import="edu.itba.paw.jimi.models.TableStatus" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-<html>
+<!DOCTYPE html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title>Jimi Rest</title>
-    <!-- google font -->
-    <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
-          type="text/css"/>
-    <!-- icons -->
-    <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
-          type="text/css"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Jimi Restaurant
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <!-- CSS Files -->
+    <link href="<c:url value="/resources/css/Final/material-dashboard.css?v=2.1.0"/>" rel="stylesheet"/>
 
-    <!--Material-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-
-    <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/tables/list.css"/>" rel="stylesheet" type="text/css">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
 </head>
 
-<body>
+<body class="">
+<div class="wrapper ">
+    <div class="sidebar" data-color="purple" data-background-color="white">
 
-<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+        <div class="logo">
+            <a href="#" class="simple-text logo-normal">
+                JIMI RESTAURANT APP
+            </a>
+        </div>
 
-<%-- TODO hay que hacer responsive esta tabla --%>
-<div class="table-container">
-    <div class="card">
-        <div class="card-content">
-            <span class="card-title"><spring:message code="table.tables_header"/></span>
-            <c:choose>
-                <c:when test="${tables.size() > 0}">
-                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
-                        <thead>
-                        <tr>
-                            <th><spring:message code="table.name"/></th>
-                            <th><spring:message code="table.diners"/></th>
-                            <th><spring:message code="table.status"/></th>
-                            <th class=""></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${tables}" var="table">
-                            <tr>
-                                <td><c:out value="${table.name}"/></td>
-                                <td><c:out value="${table.order.diners}"/></td>
+        <jsp:include page="/WEB-INF/UTILS/sidbar.jsp"/>
 
+    </div>
+    <div class="main-panel">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <a class="navbar-brand"><spring:message code="table.tables_header"/></a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title "><spring:message code="table.tables_header"/></h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
                                 <c:choose>
-                                    <c:when test="${table.status.toString() == 'FREE'}">
-                                        <td><span
-                                                class="label label-success label-mini"><spring:message
-                                                code="table.free"/></span>
-                                        </td>
-                                    </c:when>
-                                    <c:when test="${table.status.toString() == 'BUSY'}">
-                                        <td><span
-                                                class="label label-danger label-mini"><spring:message
-                                                code="table.busy"/></span>
-                                        </td>
+                                    <c:when test="${tables.size() <= 0}">
+                                        <div class="alert alert-info text-center">
+                                            <strong><spring:message code="ouch"/></strong>
+                                            <spring:message code="table.no_tables"/>
+                                        </div>
                                     </c:when>
                                     <c:otherwise>
-                                        <td> <span
-                                                class="label label-warning label-mini"><spring:message
-                                                code="table.paying"/></span>
-                                        </td>
+                                    <table class="table">
+                                        <thead class=" text-primary">
+                                        <th><spring:message code="table.name"/></th>
+                                        <th><spring:message code="table.status"/></th>
+                                        <th>Actions</th>
+                                        </thead>
+
+                                        <tbody>
+                                        <c:forEach items="${tables}" var="table">
+                                            <tr>
+                                                <th>${table.name}</th>
+                                                <th>${table.status}</th>
+                                                <th>
+                                                    <form>
+                                                        <c:choose>
+                                                            <c:when test="${table.status == TableStatus.FREE}">
+                                                                <button action="<c:url value="/tables/${table.id}/status"/>" class="btn btn-success btn-xs">
+                                                                    <i class="material-icons">unarchive</i>
+                                                                </button>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <button action="<c:url value="/tables/${table.id}/status"/>" class="btn btn-success btn-xs">
+                                                                    <i class="material-icons">edit</i>
+                                                                </button>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                                            <button class="btn btn-danger btn-xs" type="submit">
+                                                                <i class="material-icons">delete</i>
+                                                            </button>
+                                                        </sec:authorize>
+                                                    </form>
+                                                </th>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
                                     </c:otherwise>
                                 </c:choose>
-                                <td>
-                                    <a href=<c:url
-                                            value="/tables/${table.id}"/>>
-                                        <i class="fa fa-edit fa-lg"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </c:when>
-                <c:otherwise>
-                    <div class="alert alert-danger text-center">
-                        <strong><spring:message code="ouch"/></strong> <spring:message
-                            code="table.no_tables"/>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </c:otherwise>
-            </c:choose>
+                </div>
+            </div>
         </div>
     </div>
+
+
 </div>
 
+<!--   Core JS Files   -->
+<script src="<c:url value="/resources/js/core/jquery.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/core/popper.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/core/bootstrap-material-design.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/plugins/perfect-scrollbar.jquery.min.js"/>"></script>
 
-<!-- start js include path -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-<!-- end js include path -->
+<!-- Chartist JS -->
+<script src="<c:url value="/resources/js/plugins/chartist.min.js"/>"></script>
+<!--  Notifications Plugin    -->
+<script src="<c:url value="/resources/js/plugins/bootstrap-notify.js"/>"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="<c:url value="/resources/js/material-dashboard.min.js?v=2.1.0"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/jimi-charts.js"/>" type="text/javascript"></script>
+
 </body>
 </html>
-

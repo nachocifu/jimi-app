@@ -5,93 +5,226 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="BusyCode" value="<%=TableStatus.BUSY.ordinal()%>"/>
-<c:set var="PayingCode" value="<%=TableStatus.PAYING.ordinal()%>"/>
 
-
-<html>
+<!DOCTYPE html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title>Jimi Rest</title>
-    <!-- google font -->
-    <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
-          type="text/css"/>
-    <!-- icons -->
-    <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
-          type="text/css"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Jimi Restaurant
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <!-- CSS Files -->
+    <link href="<c:url value="/resources/css/Final/material-dashboard.css?v=2.1.0"/>" rel="stylesheet"/>
 
-    <!--Material-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <%--<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">--%>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
-          integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous"/>
-
-    <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/admin/dashboard.css"/>" rel="stylesheet" type="text/css">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>">
 </head>
 
-<body>
+<body class="">
+<div class="wrapper ">
+    <div class="sidebar" data-color="purple" data-background-color="white">
 
-<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+        <div class="logo">
+            <a href="#" class="simple-text logo-normal">
+                JIMI RESTAURANT APP
+            </a>
+        </div>
 
-<%-- TODO hay que hacer responsive esta tabla --%>
-<div class="table-container">
-    <div class="card">
-        <div class="card-content">
-            <div class="row">
-                <div class="col s6">
-                    <div id="table-status-pie"></div>
+        <jsp:include page="/WEB-INF/UTILS/sidbar.jsp"/>
+
+    </div>
+    <div class="main-panel">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <a class="navbar-brand">Dashboard</a>
                 </div>
-                <div class="col s6">
-                    <div id="monthly-order-total-time-series"></div>
+            </div>
+        </nav>
+        <!-- End Navbar -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-warning card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">content_copy</i>
+                                </div>
+                                <p class="card-category">Used Space</p>
+                                <h3 class="card-title">${busyTables}/${totalTables}</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">local_offer</i> Tracked from Github
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-success card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">store</i>
+                                </div>
+                                <p class="card-category">Revenue</p>
+                                <h3 class="card-title">$34,245</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">date_range</i> Last 24 Hours
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-danger card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">info_outline</i>
+                                </div>
+                                <p class="card-category">Fixed Issues</p>
+                                <h3 class="card-title">75</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">local_offer</i> Tracked from Github
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-info card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">info_outline</i>
+                                </div>
+                                <p class="card-category">Followers</p>
+                                <h3 class="card-title">+245</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">update</i> Just Updated
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHARTS -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card card-chart">
+                            <div class="card-header card-header-success">
+                                <div class="ct-chart" id="chart-1"></div>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Daily Sales</h4>
+                                <p class="card-category">
+                                    <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">access_time</i> updated 4 minutes ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-chart">
+                            <div class="card-header card-header-warning">
+                                <div class="ct-chart" id="chart-2"></div>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Email Subscriptions</h4>
+                                <p class="card-category">Last Campaign Performance</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">access_time</i> campaign sent 2 days ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-chart">
+                            <div class="card-header card-header-danger">
+                                <div class="ct-chart" id="chart-3"></div>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Completed Tasks</h4>
+                                <p class="card-category">Last Campaign Performance</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">access_time</i> campaign sent 2 days ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END CHART -->
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-warning">
+                                <h4 class="card-title"><spring:message code="admin.latest_bills"/></h4>
+                            </div>
+                            <c:choose>
+                                <c:when test="${lastOrders.size() <= 0}">
+                                    <div class="alert alert-info text-center">
+                                        <strong><spring:message code="ouch"/></strong>
+                                        <spring:message code="order.no_order"/>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="card-body table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="text-warning">
+                                            <th>ID</th>
+                                            <th>Diners</th>
+                                            <th>Total</th>
+                                            <th>Closed At</th>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach items="${lastOrders}" var="order">
+                                                <tr>
+                                                    <td>${order.id}</td>
+                                                    <td>${order.diners}</td>
+                                                    <td>$${order.total}</td>
+                                                    <th>${order.closedAt}</th>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 
+<!--   Core JS Files   -->
+<script src="<c:url value="/resources/js/core/jquery.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/core/popper.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/core/bootstrap-material-design.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/plugins/perfect-scrollbar.jquery.min.js"/>"></script>
 
-<!-- start js include path -->
-<script>
+<!-- Chartist JS -->
+<script src="<c:url value="/resources/js/plugins/chartist.min.js"/>"></script>
+<!--  Notifications Plugin    -->
+<script src="<c:url value="/resources/js/plugins/bootstrap-notify.js"/>"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="<c:url value="/resources/js/material-dashboard.min.js?v=2.1.0"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/jimi-charts.js"/>" type="text/javascript"></script>
 
-    var tableStatusPie = {
-        free: {
-            title: "<spring:message code="table.free"/>",
-            count: "${freeTables}"
-        },
-        paying: {
-            title: "<spring:message code="table.paying"/>",
-            count: "${payingTables}"
-        },
-        busy: {
-            title: "<spring:message code="table.busy"/>",
-            count: "${busyTables}"
-        },
-        plotTitle: "<spring:message code="dashboard.current_table_report"/>"
-    };
-
-    var monthlyOrderTotalTimeSeries = {
-        values: {
-            x: [<c:forEach items="${monthOrderTotals}" var="v" varStatus="loop">
-                '${v.key}'${!loop.last ? ',' : ''}
-                </c:forEach>],
-            y: [<c:forEach items="${monthOrderTotals}" var="v" varStatus="loop">
-                '${v.value}'${!loop.last ? ',' : ''}
-                </c:forEach>]
-        },
-        plotTitle: "<spring:message code="dashboard.monthly_order_total_time_series"/>"
-    };
-
-</script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-<script defer src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script defer src="<c:url value="/resources/js/admin/dashboard.js"/>"></script>
-<!-- end js include path -->
 </body>
 </html>
-

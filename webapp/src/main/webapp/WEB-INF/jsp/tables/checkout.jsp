@@ -31,7 +31,7 @@
     <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/tables/checkout.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>n
 </head>
 
 <body>
