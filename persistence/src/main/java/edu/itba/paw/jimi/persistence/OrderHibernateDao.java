@@ -47,7 +47,7 @@ public class OrderHibernateDao implements OrderDao{
         hardcodeado.put(YearMonth.of(2018, 1), 100.0);
         hardcodeado.put(YearMonth.of(2018, 2), 150.0);
         hardcodeado.put(YearMonth.of(2018, 3), 130.0);
-
+        // TODO remove this hardcoded
         return hardcodeado;
     }
 }
