@@ -135,10 +135,10 @@
                                             <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
                                                   method="post"
                                                   class="form-with-buttons">
-                                                <a class="btn btn-success btn-xs"
-                                                   onclick="M.toast({html: '<spring:message code="table.added"/> ${dishEntry.key.name}'})">
+                                                <button type="submit"
+                                                        class="btn btn-primary btn-xs">
                                                     <i class="fa fa-plus"></i>
-                                                </a>
+                                                </button>
                                                 <input type="hidden"
                                                        value="${dishEntry.key.id}"
                                                        name="dishid"/>
@@ -147,19 +147,11 @@
                                     </td>
                                     <td>
                                         <form action="<c:url value="/tables/${table.id}/remove_one_dish"/>"
-                                              method="post" class="form-with-buttons" id="remove-dish-form">
-                                                <%--<button type="submit"--%>
-                                                <%--class="btn btn-primary btn-xs">--%>
-                                                <%--<i class="fa fa-minus"></i>--%>
-                                                <%--</button>--%>
-                                            <%--<button class="btn btn-success btn-xs"--%>
-                                               <%--onclick="myFunction()">--%>
-                                                <%--<i class="fa fa-minus"></i>--%>
-                                            <%--</button>--%>
-                                                    <a id="removed-dish-a" class="btn btn-success btn-xs"
-                                                       onclick="M.toast({html: '<spring:message code="table.removed"/> ${dishEntry.key.name}'})">
-                                                        <i class="fa fa-minus"></i>
-                                                    </a>
+                                              method="post" class="form-with-buttons">
+                                                <button type="submit"
+                                                class="btn btn-primary btn-xs">
+                                                <i class="fa fa-minus"></i>
+                                                </button>
                                             <input type="hidden" value="${dishEntry.key.id}"
                                                    name="dishid"/>
                                         </form>
