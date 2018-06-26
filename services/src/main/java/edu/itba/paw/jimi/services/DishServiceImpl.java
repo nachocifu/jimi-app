@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Service
-@Transactional
 public class DishServiceImpl implements DishService {
 	
 	@Autowired
@@ -25,33 +24,37 @@ public class DishServiceImpl implements DishService {
 		return dishDao.findById(id);
 	}
 
+	@Transactional
 	public Dish create(String name, float price) {
 		return dishDao.create(name, price, 0);
 	}
 
+	@Transactional
 	public int setStock(Dish dish, int stock) {
 		if (stock < 0) {
 			return 0;
 		}
-		
+
 		if (stock >= MAX_STOCK) {
 			throw new MaxStockException();
 		}
-		
+
 		dish.setStock(stock);
 		dishDao.update(dish);
 		return dish.getStock();
 	}
 
+	@Transactional
 	public int increaseStock(Dish dish) {
 		return setStock(dish, dish.getStock() + 1);
 	}
 
+	@Transactional
 	public int decreaseStock(Dish dish) {
 		if (dish.getStock() <= 0) {
 			return 0;
 		}
-		
+
 		return setStock(dish, dish.getStock() - 1);
 	}
 

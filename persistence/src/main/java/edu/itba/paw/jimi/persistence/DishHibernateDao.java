@@ -24,7 +24,6 @@ public class DishHibernateDao implements DishDao {
     }
 
     public int update(Dish dish) {
-        //TODO: Falta tests de esto.
         em.merge(dish);
         return 1;
     }

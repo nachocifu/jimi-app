@@ -18,7 +18,7 @@ import java.util.Collection;
 @Repository
 public class OrderHibernateDao implements OrderDao{
 
-    @PersistenceContext(unitName = "testName", type = PersistenceContextType.TRANSACTION)
+    @PersistenceContext(unitName = "testName")
     private EntityManager em;
 
     public Order findById(long id) {
