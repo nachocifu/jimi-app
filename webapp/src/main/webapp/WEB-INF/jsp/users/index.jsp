@@ -51,11 +51,6 @@
             </div>
             <!-- end page content -->
 
-
-            <!-- start footer -->
-            <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-            <!-- end footer -->
-
         </div>
 
     </div>

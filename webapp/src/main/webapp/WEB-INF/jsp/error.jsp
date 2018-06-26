@@ -71,10 +71,6 @@
     </div>
     <!-- end page container -->
 
-    <!-- start footer -->
-    <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-    <!-- end footer -->
-
 </div>
 <!-- start js include path -->
 <script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
