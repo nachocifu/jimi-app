@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Service
+@Transactional
 public class DishServiceImpl implements DishService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DishServiceImpl.class);

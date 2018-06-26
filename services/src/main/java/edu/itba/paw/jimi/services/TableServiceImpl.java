@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.HashSet;
 
+@Transactional
 @Service
 public class TableServiceImpl implements TableService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TableServiceImpl.class);
@@ -26,9 +27,12 @@ public class TableServiceImpl implements TableService {
 
     @Autowired
     private OrderService orderService;
-
+	
+	@Transactional
     public Table findById(final long id) {
-        return tableDao.findById(id);
+        Table t =  tableDao.findById(id);
+		System.out.println(t.getOrder().getId());
+        return t;
     }
 
     @Transactional
