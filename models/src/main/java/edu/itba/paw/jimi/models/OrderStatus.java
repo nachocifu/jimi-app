@@ -3,7 +3,8 @@ package edu.itba.paw.jimi.models;
 public enum OrderStatus {
 	OPEN,
 	CLOSED,
-	INACTIVE;
+	INACTIVE,
+	CANCELED;
 	
 	
 	public static OrderStatus getOrderStatus(int statusId) {
@@ -22,6 +23,8 @@ public enum OrderStatus {
 				return "Closed";
 			case INACTIVE:
 				return "Inactive";
+            case CANCELED:
+                return "Canceled";
 			default:
 				return "No status found";
 		}

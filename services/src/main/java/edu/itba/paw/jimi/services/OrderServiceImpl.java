@@ -187,6 +187,17 @@ public class OrderServiceImpl implements OrderService {
 		LOGGER.info("Closed order {}", order);
 	}
 
+	public void cancel(Order order) {
+		if (!order.getStatus().equals(OrderStatus.OPEN))
+			throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
+
+		order.setStatus(OrderStatus.CANCELED);
+		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+		orderDao.update(order);
+
+		LOGGER.info("Canceled order {}", order);
+	}
+
 	public Collection<Order> findAll() {
 		
 		Collection<Order> orders = orderDao.findAll();

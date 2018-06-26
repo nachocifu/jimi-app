@@ -76,6 +76,13 @@ public interface OrderService {
 	 * @param order
 	 */
 	void close(Order order);
+
+	/**
+	 * Sets the timestamp for closedAt and changes the status to canceled.
+	 *
+	 * @param order
+	 */
+	void cancel(Order order);
 	
 	/**
 	 * Sets the amount of dinners.

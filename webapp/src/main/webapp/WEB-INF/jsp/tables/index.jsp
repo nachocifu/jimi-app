@@ -7,6 +7,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="BusyCode" value="<%=TableStatus.BUSY.ordinal()%>"/>
 <c:set var="PayingCode" value="<%=TableStatus.PAYING.ordinal()%>"/>
+<c:set var="FreeCode" value="<%=TableStatus.FREE.ordinal()%>"/>
 
 
 <html>
@@ -48,8 +49,8 @@
             <c:if test="${table.status == 'FREE'}">
                 <h2><spring:message code="table.table_is"/>
                     <strong>
-                                                    <span style="color: green;"><spring:message
-                                                            code="table.free"/>.</span>
+                        <span style="color: green;"><spring:message
+                                code="table.free"/>.</span>
                     </strong>
                 </h2>
                 <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
@@ -77,14 +78,28 @@
                                        class="btn btn-default"/>
                             </form>
                         </div>
-                        <div class="col s2">
-                            <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                <input value="${PayingCode}" name="status" type="hidden"/>
-                                <input type="submit"
-                                       class="btn blue-gray"
-                                       value="<spring:message code="table.charge_caps"/>"/>
-                            </form>
-                        </div>
+                        <c:choose>
+                            <c:when test="${table.order.dishes.size() > 0}">
+                                <div class="col s2">
+                                    <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
+                                        <input value="${PayingCode}" name="status" type="hidden"/>
+                                        <input type="submit"
+                                               class="btn blue-gray"
+                                               value="<spring:message code="table.charge_caps"/>"/>
+                                    </form>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="col s2">
+                                    <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
+                                        <input value="${FreeCode}" name="status" type="hidden"/>
+                                        <input type="submit"
+                                               class="btn blue-gray"
+                                               value="<spring:message code="table.cancel_caps"/>"/>
+                                    </form>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                         <div class="col s4">
                             <a href="<c:url value="/tables/"/>"
                                class="btn blue-gray"><spring:message code="table.return_to_table_list"/>
