@@ -78,12 +78,31 @@
                             </form>
                         </div>
                         <div class="col s2">
-                            <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                <input value="${PayingCode}" name="status" type="hidden"/>
-                                <input type="submit"
-                                       class="btn blue-gray"
-                                       value="<spring:message code="table.charge_caps"/>"/>
-                            </form>
+
+
+                            <!-- Modal Trigger -->
+                            <button data-target="modal1" class="btn modal-trigger"><spring:message code="table.charge_caps"/></button>
+
+                            <!-- Modal Structure -->
+                            <div id="modal1" class="modal">
+                                <div class="modal-content">
+                                    <h4><spring:message code="table.sure_charge"/></h4>
+                                    <form action="<c:url value="/tables/${table.id}/status"/>" method="post"
+                                          id="charge-form">
+                                        <div class="modal-footer">
+
+                                            <input value="${PayingCode}" name="status" type="hidden"/>
+                                            <input type="submit"
+                                                   class="btn blue-gray center-block"
+                                                   value="<spring:message code="table.charge_caps"/>"
+                                                   id="charge-btn"/>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
                         </div>
                         <div class="col s4">
                             <a href="<c:url value="/tables/"/>"
@@ -148,10 +167,10 @@
                                     <td>
                                         <form action="<c:url value="/tables/${table.id}/remove_one_dish"/>"
                                               method="post" class="form-with-buttons">
-                                                <button type="submit"
-                                                class="btn btn-primary btn-xs">
+                                            <button type="submit"
+                                                    class="btn btn-primary btn-xs">
                                                 <i class="fa fa-minus"></i>
-                                                </button>
+                                            </button>
                                             <input type="hidden" value="${dishEntry.key.id}"
                                                    name="dishid"/>
                                         </form>
@@ -183,7 +202,16 @@
     </div>
 </div>
 
+
 <!-- start js include path -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.modal').modal();
+    });
+</script>
+
 <!-- Compiled and minified JavaScript -->
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
