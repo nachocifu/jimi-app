@@ -23,7 +23,7 @@ public class AdminController {
 	
 	@RequestMapping("")
 	public ModelAndView index() {
-		final ModelAndView mav = new ModelAndView("admin/dashboard2");
+		final ModelAndView mav = new ModelAndView("admin/dashboard");
 		
 		mav.addObject("busyTables", statsService.getBusyTablesUnits());
 		mav.addObject("freeTables", statsService.getFreeTablesUnits());
@@ -31,15 +31,6 @@ public class AdminController {
 		mav.addObject("totalTables", tableService.findAll().size());
 		mav.addObject("lastOrders", orderService.findAll());
 		mav.addObject("monthOrderTotals", statsService.getMonthlyOrderTotal());
-		
-		return mav;
-	}
-	
-	@RequestMapping("/bills")
-	public ModelAndView bills() {
-		final ModelAndView mav = new ModelAndView("admin/dashboard2_bills");
-		
-		mav.addObject("lastOrders", orderService.findAll());
 		
 		return mav;
 	}

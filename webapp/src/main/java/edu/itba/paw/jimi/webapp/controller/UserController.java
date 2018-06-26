@@ -36,25 +36,6 @@ public class UserController {
 	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
 		return new ModelAndView("users/create");
     }
-
-	@RequestMapping("/{userId}")
-	public ModelAndView index(@PathVariable("userId") final int id, HttpServletResponse response) {
-		final ModelAndView mav = new ModelAndView("users/index");
-		User user = us.findById(id);
-		if (user != null) {
-			mav.addObject("user", user);
-			return mav;
-		} else {
-			response.setStatus(404); // TODO use web.xml and ErrorController
-			return (new ModelAndView("error"))
-					.addObject("body",
-							messageSource.getMessage("user.error.not.found.body",
-									null, LocaleContextHolder.getLocale()))
-					.addObject("title",
-							messageSource.getMessage("user.error.not.found.title",
-									null, LocaleContextHolder.getLocale()));
-		}
-	}
 	
 	@RequestMapping(value = "/create", method = {RequestMethod.POST})
 	public ModelAndView create(@Valid @ModelAttribute("registerForm") final UserForm form, final BindingResult errors) {

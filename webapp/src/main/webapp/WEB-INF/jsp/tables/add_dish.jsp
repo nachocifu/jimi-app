@@ -54,47 +54,40 @@
                                 <h4 class="card-title "><spring:message code="table.add_dish"/></h4>
                             </div>
                             <c:url value="/tables/create" var="postPath"/>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <div class="form-group">
-                                        <c:choose>
-                                            <c:when test="${dishes.size() > 0}">
-                                                <form:form modelAttribute="tableAddDishForm" action="${postPath}" method="post">
-                                                <c:url value="/tables/${table.id}/add_dish" var="postPath"/>
-                                                <div class="row">
-                                                    <div class="input-field col s12">
-                                                        <form:select id="dishid" name="dishid" path="dishid">
-                                                            <c:forEach items="${dishes}" var="dish">
-                                                                <option value="${dish.id}"
-                                                                        data-max="${dish.stock}">${dish.name}</option>
-                                                            </c:forEach>
-                                                        </form:select>
-                                                    </div>
+                            <div class="table-responsive">
+                                <c:choose>
+                                    <c:when test="${dishes.size() > 0}">
+                                        <form:form modelAttribute="tableAddDishForm" action="${postPath}" method="post">
+                                            <c:url value="/tables/${table.id}/add_dish" var="postPath"/>
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <form:select style="float:left; padding-right:10px" id="dishid" name="dishid" path="dishid">
+                                                        <c:forEach items="${dishes}" var="dish">
+                                                            <option value="${dish.id}"
+                                                                    data-max="${dish.stock}">${dish.name}</option>
+                                                        </c:forEach>
+                                                    </form:select>
+                                                    <form:input type="number" id="amount" path="amount" step="1" min="1"
+                                                                max="100" value="1" class="hide"/>
+                                                    <form:errors path="amount" element="p"/>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="input-field col s12">
-                                                        <div id="range-input-container"></div>
-                                                        <form:input type="number" id="amount" path="amount"
-                                                                    step="1" min="1"
-                                                                    max="100"
-                                                                    value="1" class="hide"/>
-                                                        <form:errors path="amount" cssClass="formError" element="p"/>
-                                                    </div>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary pull-right"><spring:message code="dish.add"/></button>
-                                                <a href="<c:url value="/tables/${table.id}"/>" class="waves-effect waves-light btn"><spring:message code="dish.cancel"/> </a>
-                                                </form:form>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <div class="alert alert-info text-center">
-                                                    <strong><spring:message code="ouch"/></strong>
-                                                    <spring:message
-                                                            code="dishes.no_dishes"/>
-                                                </div>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                </div>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary pull-right"><spring:message
+                                                    code="dish.add"/></button>
+                                            <a href="<c:url value="/tables/${table.id}"/>"
+                                               class="waves-effect waves-light btn"><spring:message
+                                                    code="dish.cancel"/> </a>
+                                        </form:form>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert alert-info text-center">
+                                            <strong><spring:message code="ouch"/></strong>
+                                            <spring:message
+                                                    code="dishes.no_dishes"/>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>
@@ -102,7 +95,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 </div>
 
