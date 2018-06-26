@@ -90,8 +90,11 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <input type="submit" value="<spring:message code="dish.add"/>"
-                                           class="waves-effect waves-light btn"/>
+                                        <%--<input type="submit" value=""--%>
+                                        <%--class="waves-effect waves-light btn"/>--%>
+                                    <button type="submit" class="waves-effect waves-light btn">
+                                        <spring:message code="dish.add"/>
+                                    </button>
                                 </div>
 
                             </form:form>
