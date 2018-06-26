@@ -285,3 +285,8 @@ html {
     list-style-type: none;
     outline: none;
 }
+
+#checkbox_remember_me {
+    position: absolute;
+    left: 50%;
+}
