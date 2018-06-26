@@ -23,8 +23,11 @@
 
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
-          integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous"/>
+    <%--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"--%>
+    <%--integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous"/>--%>
+
+    <%--<!-- Compiled and minified CSS -->--%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
 
     <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
@@ -50,7 +53,7 @@
                     </strong>
                 </h2>
                 <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                    <%--TODO deberiamos sacar estos hardcodeos de numeros en value--%>
+                        <%--TODO deberiamos sacar estos hardcodeos de numeros en value--%>
                     <input value="${BusyCode}" name="status" type="hidden"/>
                     <input type="submit"
                            class="btn btn-default rebeccapurple-color"
@@ -130,18 +133,19 @@
                                     <td><c:out value="${dishEntry.key.price}"/></td>
                                     <td><c:out value="${dishEntry.value}"/></td>
                                     <td>
-                                        <fmt:formatNumber value="${dishEntry.value * dishEntry.key.price}"
-                                                          maxFractionDigits="2"/>
+                                        $<fmt:formatNumber value="${dishEntry.value * dishEntry.key.price}"
+                                                           maxFractionDigits="2"/>
                                     </td>
                                     <td>
                                         <c:if test="${dishEntry.key.stock != 0}">
                                             <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
                                                   method="post"
                                                   class="form-with-buttons">
-                                                <button type="submit"
-                                                        class="btn btn-success btn-xs">
+                                                <a class="btn btn-success btn-xs"
+                                                   onclick="M.toast({html: '<spring:message
+                                                           code="table.added"/> ${dishEntry.key.name}'})">
                                                     <i class="fa fa-plus"></i>
-                                                </button>
+                                                </a>
                                                 <input type="hidden"
                                                        value="${dishEntry.key.id}"
                                                        name="dishid"/>
@@ -186,10 +190,13 @@
     </div>
 </div>
 
-
 <!-- start js include path -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<%--<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>--%>
+
+<!-- Compiled and minified JavaScript -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+
 <!-- end js include path -->
 </body>
 </html>
