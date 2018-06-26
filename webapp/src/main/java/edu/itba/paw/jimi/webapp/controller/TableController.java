@@ -12,6 +12,7 @@ import edu.itba.paw.jimi.models.TableStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -87,11 +88,13 @@ public class TableController {
     }
 
     @RequestMapping("/register")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView register(@ModelAttribute("registerForm") final TableForm form) {
         return new ModelAndView("tables/create");
     }
 
     @RequestMapping(value = "/create", method = {RequestMethod.POST})
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView create(@Valid @ModelAttribute("registerForm") final TableForm form, final BindingResult errors) {
 
         if (errors.hasErrors()) {
