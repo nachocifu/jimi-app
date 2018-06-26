@@ -184,13 +184,6 @@
 </div>
 
 <!-- start js include path -->
-<script>
-    document.getElementById("removed-dish-a").onclick = function() {
-        M.toast({html: '<spring:message code="table.removed"/> ${dishEntry.key.name}'})
-        document.getElementById("remove-dish-form").submit();
-    }
-
-</script>
 <!-- Compiled and minified JavaScript -->
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
