@@ -8,6 +8,7 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.HashSet;
 
+@Transactional
 @Service
 public class TableServiceImpl implements TableService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TableServiceImpl.class);
@@ -26,9 +28,12 @@ public class TableServiceImpl implements TableService {
 
     @Autowired
     private OrderService orderService;
-
+	
+	@Transactional
     public Table findById(final long id) {
-        return tableDao.findById(id);
+        Table t =  tableDao.findById(id);
+		System.out.println(t.getOrder().getId());
+        return t;
     }
 
     @Transactional
@@ -44,6 +49,18 @@ public class TableServiceImpl implements TableService {
             return tables;
         else
             return new HashSet<Table>();
+    }
+
+    public Collection<Table> findAll(QueryParams qp) {
+        Collection<Table> tables = tableDao.findAll(qp);
+        if (tables != null)
+            return tables;
+        else
+            return new HashSet<Table>();
+    }
+
+    public int getTotalTables() {
+        return tableDao.getTotalTables();
     }
 
     @Transactional

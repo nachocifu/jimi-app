@@ -67,12 +67,12 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${dish.stock > 0}">
-                                                                        <span class="label label-success label-mini"><spring:message
-                                                                                code="dish.available"/></span>
+                                            <span class="label label-success label-mini"><spring:message
+                                                    code="dish.available"/></span>
                                         </c:when>
                                         <c:otherwise>
-                                                                        <span class="label label-danger label-mini"><spring:message
-                                                                                code="dish.unavailable"/></span>
+                                            <span class="label label-danger label-mini"><spring:message
+                                                    code="dish.unavailable"/></span>
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
@@ -81,6 +81,7 @@
                                           action="<c:url value="/admin/dishes/stock/increase"/>">
                                         <input type="hidden" value="${dish.id}"
                                                name="dishid">
+                                        <input type="hidden" value="${qp.currentPage + 1}" name="page">
                                         <button type="submit"
                                                 class="btn btn-success btn-xs">
                                             <i class="fa fa-plus"></i>
@@ -93,6 +94,7 @@
                                               action="<c:url value="/admin/dishes/stock/decrease"/>">
                                             <input type="hidden" value="${dish.id}"
                                                    name="dishid">
+                                            <input type="hidden" value="${qp.currentPage + 1}" name="page">
                                             <button type="submit"
                                                     class="btn btn-primary btn-xs">
                                                 <i class="fa fa-minus"></i>
@@ -104,6 +106,16 @@
                         </c:forEach>
                         </tbody>
                     </table>
+                    <ul class="pagination paginator">
+                        <c:forEach var = "i" begin = "1" end = "${qp.pageCount}">
+                            <c:if test="${qp.currentPage +1 == i}">
+                                <li class="active"><a href="<c:url value="/admin/dishes/page/${i}"/>"><c:out value = "${i}"/></a></li>
+                            </c:if>
+                            <c:if test="${qp.currentPage +1 != i}">
+                                <li class="waves-effect"><a href="<c:url value="/admin/dishes/page/${i}"/>"><c:out value = "${i}"/></a></li>
+                            </c:if>
+                        </c:forEach>
+                    </ul>
                 </c:when>
                 <c:otherwise>
                     <div class="alert alert-danger text-center">

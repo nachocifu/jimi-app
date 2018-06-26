@@ -6,6 +6,7 @@ import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -107,5 +108,15 @@ public class TableJdbcDao implements TableDao {
 	
 	public Collection<Table> findAll() {
 		return jdbcTemplate.query("SELECT * FROM tables", ROW_MAPPER);
+	}
+
+	@Override
+	public Collection<Table> findAll(QueryParams qp) {
+		return null;
+	}
+
+	@Override
+	public int getTotalTables() {
+		return 0;
 	}
 }

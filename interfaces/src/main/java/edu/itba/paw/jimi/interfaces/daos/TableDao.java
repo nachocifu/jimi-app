@@ -4,6 +4,7 @@ import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 
 import java.util.Collection;
 
@@ -31,6 +32,14 @@ public interface TableDao {
 	 */
 	Collection<Table> findAll();
 
+	/**
+	 * Returns all the tables.
+	 *
+	 * @return all the tables.
+	 */
+	Collection<Table> findAll(QueryParams qp);
+
+	int getTotalTables();
 
 	/**
 	 * Creates a Table.
