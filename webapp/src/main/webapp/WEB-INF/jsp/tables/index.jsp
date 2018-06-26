@@ -194,15 +194,24 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="<c:url value="/tables/${table.id}/remove_all_dish"/>"
-                                              method="post" class="form-with-buttons">
-                                            <button type="submit"
-                                                    class="btn btn-danger btn-xs">
-                                                <i class="fa fa-trash-o "></i>
-                                            </button>
-                                            <input type="hidden" value="${dishEntry.key.id}"
-                                                   name="dishid"/>
-                                        </form>
+                                        <!-- Modal Trigger -->
+                                        <button data-target="modal3" class="btn modal-trigger"><i class="fa fa-trash-o"></i></button>
+
+                                        <!-- Modal Structure -->
+                                        <div id="modal3" class="modal">
+                                            <div class="modal-content">
+                                                <h4><spring:message code="table.sure_remove_all_dishes"/></h4>
+                                                <form action="<c:url value="/tables/${table.id}/remove_all_dish"/>"
+                                                      method="post" class="form-with-buttons">
+                                                    <input type="hidden" value="${dishEntry.key.id}"
+                                                           name="dishid"/>
+                                                    <a class="modal-close btn blue-gray"><spring:message code="table.back"/></a>
+                                                    <input type="submit"
+                                                           class="btn blue-gray"
+                                                           value="<spring:message code="table.sure_remove_all_dishes_confirm"/>"/>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
