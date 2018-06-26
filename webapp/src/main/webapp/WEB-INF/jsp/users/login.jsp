@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<c:url value="/login" var="loginUrl"/>
 
 <html>
 <head>
@@ -13,102 +14,49 @@
     <!-- icons -->
     <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
           type="text/css"/>
-    <!--bootstrap -->
-    <link href="<c:url value="/webjars/bootstrap/4.0.0/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css"/>
-    <!-- Material Design Lite CSS -->
-    <link rel="stylesheet" href="<c:url value="/webjars/material-design-lite/1.1.0/material.min.css"/>"/>
-    <link rel="stylesheet" href="<c:url value="/resources/css/material_style.css"/>"/>
-    <!-- Template Styles -->
-    <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet" type="text/css"/>
-    <link href="<c:url value="/resources/css/plugins.min.css"/>" rel="stylesheet" type="text/css"/>
-    <link href="<c:url value="/resources/css/responsive.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/jimi-rest/jimi-rest.css"/>" rel="stylesheet" type="text/css">
+    <!--Material-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link href="<c:url value="/resources/css/users/login.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon"
-          href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
 </head>
-<body class="page-header-fixed page-content-white page-md header-white logo-dark">
+<body>
 
-<div class="page-wrapper">
-    <!-- start header -->
-    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-    <!-- end header -->
+<div class="materialContainer">
 
 
-    <!-- start page content -->
-    <div class="page-content-wrapper fixed">
-        <div class="page-content-register-user">
-            <div class="row justify-content-center">
-                <div class="col-sm-12">
-                    <div class="card-box card-box-user mx-auto mt-3">
-                        <div class="card-head">
-                            <header><spring:message code="login.header"/></header>
-                        </div>
+    <div class="box">
 
-                        <div class="card-body">
-
-                            <c:url value="/login" var="loginUrl"/>
-                            <form action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded">
-                                <div class="col-lg-15 p-t-20">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                        <label for="username" class="mdl-textfield__label"><spring:message
-                                                code="user.username_form_label"/>: </label>
-                                        <input id="username" name="j_username" type="text"
-                                               class="mdl-textfield__input"/>
-                                    </div>
-                                </div>
-                                <div class="col-lg-15 p-t-20">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
-                                        <label for="password" class="mdl-textfield__label"><spring:message
-                                                code="user.password_form_label"/>: </label>
-                                        <input id="password" name="j_password" type="password"
-                                               class="mdl-textfield__input"/>
-                                    </div>
-                                </div>
-                                <div class="col-lg-15 p-t-20">
-
-                                    <div class="centeritems mdl-grid">
-                                        <div class="mdl-layout-spacer"></div>
-                                        <div class="col-md-6">
-
-                                            <label class="mdl-checkbox mdl-js-checkbox" for="checkbox_remember_me">
-                                                <input name="j_rememberme" type="checkbox" id="checkbox_remember_me"
-                                                       class="mdl-checkbox__input">
-                                                <span class="mdl-checkbox__label"><spring:message
-                                                        code="user.ask_remember_me"/></span>
-                                            </label>
-
-                                        </div>
-                                        <div class="mdl-layout-spacer"></div>
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-12 p-t-20 text-center">
-                                    <input type="submit" value="<spring:message
-                code="login.button_label"/>" class="mdl-button mdl-button--raised rebeccapurple-color">
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
+        <div class="title">JIMI</div>
+        <form id="login-form" action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="input">
+                <label for="username"><spring:message code="user.username_form_label"/></label>
+                <input id="username" name="j_username" type="text"/>
+                <span class="spin"></span>
             </div>
-        </div>
+
+            <div class="input">
+                <label for="password">Password</label>
+                <input id="password" name="j_password" type="password"/>
+                <span class="spin"></span>
+            </div>
+            <div class="button login">
+                <button><span>GO</span> <i class="fa fa-check"></i></button>
+            </div>
+        </form>
+
     </div>
-    <!-- end page content -->
 
-
-    <!-- start footer -->
-    <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-    <!-- end footer -->
 </div>
 
 
-<!-- start js include path -->
-<script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
-<!-- bootstrap -->
-<script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
+
+
 <!-- Material -->
-<script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<script defer src="<c:url value="/resources/js/login.js"/>"></script>
+
 </body>
 </html>

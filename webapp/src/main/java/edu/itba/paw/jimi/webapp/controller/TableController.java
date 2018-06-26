@@ -39,7 +39,7 @@ public class TableController {
 
     @RequestMapping("")
     public ModelAndView list() {
-        final ModelAndView mav = new ModelAndView("tables/list2");
+        final ModelAndView mav = new ModelAndView("tables/list");
         mav.addObject("tables", ts.findAll());
         return mav;
     }
@@ -65,7 +65,7 @@ public class TableController {
         if (table.getStatus().equals(TableStatus.PAYING))
             mav = new ModelAndView("tables/checkout");
         else
-            mav = new ModelAndView("tables/index2");
+            mav = new ModelAndView("tables/index");
 
         mav.addObject("table", table);
         mav.addObject("dishes", table.getOrder().getDishes());
@@ -88,7 +88,7 @@ public class TableController {
 
     @RequestMapping("/register")
     public ModelAndView register(@ModelAttribute("registerForm") final TableForm form) {
-        return new ModelAndView("tables/create2");
+        return new ModelAndView("tables/create");
     }
 
     @RequestMapping(value = "/create", method = {RequestMethod.POST})
@@ -106,7 +106,7 @@ public class TableController {
     @RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.GET})
     public ModelAndView addDish(@PathVariable("tableId") Integer id, @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
 
-        ModelAndView mav = new ModelAndView("tables/add_dish2");
+        ModelAndView mav = new ModelAndView("tables/add_dish");
         mav.addObject("table", ts.findById(id));
         mav.addObject("dishes", ds.findAllAvailable());
 
@@ -170,6 +170,20 @@ public class TableController {
         Table table = ts.findById(id);
         os.setDiners(table.getOrder(), form.getDiners());
 
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
+
+    @RequestMapping(value = "/{tableId}/add_diner", method = {RequestMethod.POST})
+    public ModelAndView addDinerPost(@PathVariable("tableId") Integer id) {
+        Table table = ts.findById(id);
+        os.setDiners(table.getOrder(), table.getOrder().getDiners() + 1);
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
+
+    @RequestMapping(value = "/{tableId}/subtract_diner", method = {RequestMethod.POST})
+    public ModelAndView subtractDinerPost(@PathVariable("tableId") Integer id) {
+        Table table = ts.findById(id);
+        os.setDiners(table.getOrder(), table.getOrder().getDiners() - 1);
         return new ModelAndView("redirect:/tables/" + table.getId());
     }
 

@@ -16,137 +16,95 @@
     <!-- icons -->
     <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
           type="text/css"/>
-    <!--bootstrap -->
-    <link href="<c:url value="/webjars/bootstrap/4.0.0/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css"/>
-    <!-- Material Design Lite CSS -->
-    <link rel="stylesheet" href="<c:url value="/webjars/material-design-lite/1.1.0/material.min.css"/>"/>
-    <link rel="stylesheet" href="<c:url value="/resources/css/material_style.css"/>"/>
-    <!-- Template Styles -->
-    <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet" type="text/css"/>
-    <link href="<c:url value="/resources/css/plugins.min.css"/>" rel="stylesheet" type="text/css"/>
-    <link href="<c:url value="/resources/css/responsive.css"/>" rel="stylesheet" type="text/css"/>
-    <link href="<c:url value="/resources/css/jimi-rest/jimi-rest.css"/>" rel="stylesheet" type="text/css">
+
+    <!--Material-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+    <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/tables/list.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon"
-          href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
 </head>
 
-<body class="page-header-fixed page-content-white page-md header-white logo-dark">
-<div class="page-wrapper">
-    <!-- start header -->
-    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-    <!-- end header -->
+<body>
 
-    <!-- start page container -->
+<jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-    <div class="page-container">
+<%-- TODO hay que hacer responsive esta tabla --%>
+<div class="table-container">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title"><spring:message code="table.tables_header"/></span>
+            <c:choose>
+                <c:when test="${tables.size() > 0}">
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp highlight">
+                        <thead>
+                        <tr>
+                            <th><spring:message code="table.name"/></th>
+                            <th><spring:message code="table.diners"/></th>
+                            <th><spring:message code="table.status"/></th>
+                            <th class=""></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${tables}" var="table">
+                            <tr>
+                                <td><c:out value="${table.name}"/></td>
+                                <td><c:out value="${table.order.diners}"/></td>
 
-        <!-- start sidebar menu -->
-        <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
-        <!-- end sidebar menu -->
-        <div class="page-content-wrapper">
-            <div class="page-content">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card-box">
-                            <div class="card-head">
-                                <header><spring:message code="table.tables_header"/></header>
-                            </div>
-                            <div class="card-body">
                                 <c:choose>
-                                    <c:when test="${tables.size() > 0}">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped custom-table">
-                                                <thead class="text-left">
-                                                <tr>
-                                                    <th><spring:message code="table.name"/></th>
-                                                    <th><spring:message code="table.diners"/></th>
-                                                    <th><spring:message code="table.status"/></th>
-                                                    <th></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <c:forEach items="${tables}" var="table">
-                                                    <tr>
-                                                    <tr>
-                                                        <td><c:out value="${table.name}"/></td>
-                                                        <td><c:out value="${table.order.diners}"/></td>
-
-                                                        <c:choose>
-                                                            <c:when test="${table.status.toString() == 'FREE'}">
-                                                                <td><span
-                                                                        class="label label-success label-mini"><spring:message
-                                                                        code="table.free"/></span>
-                                                                </td>
-                                                            </c:when>
-                                                            <c:when test="${table.status.toString() == 'BUSY'}">
-                                                                <td><span
-                                                                        class="label label-danger label-mini"><spring:message
-                                                                        code="table.busy"/></span>
-                                                                </td>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <td> <span
-                                                                        class="label label-warning label-mini"><spring:message
-                                                                        code="table.paying"/></span>
-                                                                </td>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        <td>
-                                                            <a href=<c:url
-                                                                    value="/tables/${table.id}"/>>
-                                                                <i class="fa fa-edit fa-lg"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                    </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                    <c:when test="${table.status.toString() == 'FREE'}">
+                                        <td><span
+                                                class="label label-success label-mini"><spring:message
+                                                code="table.free"/></span>
+                                        </td>
+                                    </c:when>
+                                    <c:when test="${table.status.toString() == 'BUSY'}">
+                                        <td><span
+                                                class="label label-danger label-mini"><spring:message
+                                                code="table.busy"/></span>
+                                        </td>
                                     </c:when>
                                     <c:otherwise>
-                                        <div class="alert alert-danger text-center">
-                                            <strong><spring:message code="ouch"/></strong> <spring:message
-                                                code="table.no_tables"/>
-                                        </div>
+                                        <td> <span
+                                                class="label label-warning label-mini"><spring:message
+                                                code="table.paying"/></span>
+                                        </td>
                                     </c:otherwise>
                                 </c:choose>
-                                <sec:authorize access="hasRole('ROLE_ADMIN')">
-                                    <div>
-                                        <form action="<c:url value="/tables/register"/>">
-                                            <button type="submit" class="btn btn-success"><i
-                                                    class="fa fa-plus"></i><spring:message code="table.add"/>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </sec:authorize>
-                            </div>
-                        </div>
+                                <td>
+                                    <a href=<c:url
+                                            value="/tables/${table.id}"/>>
+                                        <i class="fa fa-edit fa-lg"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </c:when>
+                <c:otherwise>
+                    <div class="alert alert-danger text-center">
+                        <strong><spring:message code="ouch"/></strong> <spring:message
+                            code="table.no_tables"/>
                     </div>
-                </div>
-            </div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
-    <!-- end page container -->
-
-    <!-- start footer -->
-    <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-    <!-- end footer -->
 </div>
-<!-- end page container -->
 
 
 <!-- start js include path -->
-<script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
-<script src="<c:url value="/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"/>"></script>
-<!-- bootstrap -->
-<script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
-<!-- Material -->
-<script src="<c:url value="/webjars/material-design-lite/1.1.0/material.min.js"/>"></script>
-<!-- Common js-->
-<script src="<c:url value="/resources/js/app.js"/>"></script>
-<script src="<c:url value="/resources/js/layout.js"/>"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 <!-- end js include path -->
 </body>
 </html>

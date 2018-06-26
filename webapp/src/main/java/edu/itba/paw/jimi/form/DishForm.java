@@ -5,8 +5,8 @@ import javax.validation.constraints.Size;
 
 
 public class DishForm {
-	
-	@Size(min = 1, max = 100)
+
+    @Size(min = 1, max = 80)
 	@Pattern(regexp = "^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$")
 	private String name;
 	

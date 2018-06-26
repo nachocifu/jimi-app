@@ -13,7 +13,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
+import java.time.YearMonth;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class OrderHibernateDao implements OrderDao{
@@ -37,5 +40,14 @@ public class OrderHibernateDao implements OrderDao{
     public Collection<Order> findAll() {
         final TypedQuery<Order> query = em.createQuery("from Order", Order.class);
         return query.getResultList();
+    }
+
+    public Map getMonthlyOrderTotal() {
+        Map<YearMonth, Double> hardcodeado = new HashMap<>();
+        hardcodeado.put(YearMonth.of(2018, 1), 100.0);
+        hardcodeado.put(YearMonth.of(2018, 2), 150.0);
+        hardcodeado.put(YearMonth.of(2018, 3), 130.0);
+
+        return hardcodeado;
     }
 }

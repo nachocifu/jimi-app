@@ -20,7 +20,7 @@ public enum TableStatus {
 			case FREE:
 				return "FREE";
 			case PAYING:
-				return "Cleaning required";
+                return "PAYING";
 			default:
 				return "Not found";
 		}

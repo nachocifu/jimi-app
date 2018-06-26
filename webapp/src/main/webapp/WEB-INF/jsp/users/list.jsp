@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 
 <html>
 <head>
@@ -14,83 +16,54 @@
     <!-- icons -->
     <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
           type="text/css"/>
-    <!--bootstrap -->
-    <link href="<c:url value="/webjars/bootstrap/4.0.0/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css"/>
-    <!-- Template Styles -->
-    <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet" type="text/css"/>
-    <link href="<c:url value="/resources/css/plugins.min.css"/>" rel="stylesheet" type="text/css"/>
-    <link href="<c:url value="/resources/css/responsive.css"/>" rel="stylesheet" type="text/css"/>
-    <link href="<c:url value="/resources/css/jimi-rest/jimi-rest.css"/>" rel="stylesheet" type="text/css">
+
+    <!--Material-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+    <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/users/list.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon"
-          href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
 </head>
-<body class="page-header-fixed page-content-white page-md header-white logo-dark">
-<div class="page-wrapper">
-    <!-- start header -->
-    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-    <!-- end header -->
 
-    <!-- start page container -->
-    <div class="page-container">
+<body>
 
-        <!-- start sidebar menu -->
-        <jsp:include page="/WEB-INF/jsp/sidebar.jsp"/>
-        <!-- end sidebar menu -->
+<jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-        <!-- start page content -->
-        <div class="page-content-wrapper">
-            <div class="page-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-10 mx-auto mt-5">
-                                <div class="card card-topline-purple">
-                                    <div class="card-head">
-                                        <header><spring:message code="user.list_header"/></header>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped custom-table">
-                                                <thead>
-                                                <tr>
-                                                    <th><spring:message code="user.username_form_label"/></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <c:forEach items="${users}" var="user">
-                                                    <tr>
-                                                        <td><c:out value="${user.username}"/></td>
-                                                    </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<%-- TODO hay que hacer responsive esta tabla --%>
+<div class="table-container">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title"><spring:message code="user.list_header"/></span>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th><spring:message code="user.username_form_label"/></th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${users}" var="user">
+                    <tr>
+                        <td><c:out value="${user.username}"/></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
-        <!-- end page content -->
     </div>
-    <!-- end page container -->
-
-    <!-- start footer -->
-    <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-    <!-- end footer -->
-
 </div>
+
 <!-- start js include path -->
-<script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
-<script src="<c:url value="/webjars/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"/>"></script>
-<!-- bootstrap -->
-<script src="<c:url value="/webjars/bootstrap/4.0.0/js/bootstrap.js"/>"></script>
-<!-- Common js-->
-<script src="<c:url value="/resources/js/app.js"/>"></script>
-<script src="<c:url value="/resources/js/layout.js"/>"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 <!-- end js include path -->
 </body>
 </html>
+

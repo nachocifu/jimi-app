@@ -8,6 +8,8 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import java.util.HashSet;
 
 @Service
 public class TableServiceImpl implements TableService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TableServiceImpl.class);
 
     @Autowired
     private TableDao tableDao;
@@ -31,6 +34,7 @@ public class TableServiceImpl implements TableService {
     @Transactional
     public Table create(String name) {
         Order order = orderService.create(OrderStatus.INACTIVE, null, null, 0);
+        LOGGER.info("Created table {}", name);
         return tableDao.create(name, TableStatus.FREE, order);
     }
 
@@ -74,6 +78,7 @@ public class TableServiceImpl implements TableService {
         table.setStatus(status);
         table.setStatus(status);
         tableDao.update(table);
+        LOGGER.info("Updated table {}", table);
     }
 
 }

@@ -34,10 +34,9 @@ public class UserController {
 	
 	@RequestMapping("/register")
 	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
-		return new ModelAndView("users/register");
+		return new ModelAndView("users/create");
 	}
-	
-	
+
 	@RequestMapping("/{userId}")
 	public ModelAndView index(@PathVariable("userId") final int id, HttpServletResponse response) {
 		final ModelAndView mav = new ModelAndView("users/index");

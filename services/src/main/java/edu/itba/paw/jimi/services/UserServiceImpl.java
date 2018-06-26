@@ -3,6 +3,8 @@ package edu.itba.paw.jimi.services;
 import edu.itba.paw.jimi.interfaces.daos.UserDao;
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,8 @@ import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
 	@Autowired
 	private UserDao userDao;
@@ -37,6 +41,7 @@ public class UserServiceImpl implements UserService {
 	public User create(final String username, String password) {
 		Set<String> roles = new HashSet<String>();
 		roles.add(User.ROLE_USER);
+		LOGGER.info("Created user {}", username);
 		return userDao.create(username, password, roles);
 	}
 
@@ -45,6 +50,7 @@ public class UserServiceImpl implements UserService {
 		Set<String> roles = new HashSet<String>();
 		roles.add(User.ROLE_USER);
 		roles.add(User.ROLE_ADMIN);
+		LOGGER.info("Created admin user {}", username);
 		return userDao.create(username, password, roles);
 	}
 	

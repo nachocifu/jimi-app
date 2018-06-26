@@ -23,50 +23,73 @@
 
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <%--<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">--%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
           integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous"/>
 
     <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/tables/create.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/admin/dashboard.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon"
-          href="${pageContext.request.contextPath}/resources/img/jimi-rest/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>">
 </head>
 
 <body>
 
-<jsp:include page="/WEB-INF/jsp/header2.jsp"/>
+<jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
 <%-- TODO hay que hacer responsive esta tabla --%>
 <div class="table-container">
     <div class="card">
         <div class="card-content">
-            <c:url value="/tables/create" var="postPath"/>
-            <form:form modelAttribute="registerForm" action="${postPath}" method="post">
-                <form:label path="name"
-                            cssClass="mdl-textfield__label"><spring:message
-                        code="table.name"/></form:label>
-                <form:input type="text" path="name"
-                            cssClass="mdl-textfield__input"/>
-                <form:errors path="name" cssClass="formError" element="p"/>
-                <button type="submit"
-                        class="waves-effect waves-light btn">
-                    <spring:message code="table.register"/>
-                </button>
-                <a href="<c:url value="/tables/"/>"
-                   class="waves-effect waves-light btn">
-                    <spring:message code="dish.cancel"/>
-                </a>
-            </form:form>
+            <div class="row">
+                <div class="col s6">
+                    <div id="table-status-pie"></div>
+                </div>
+                <div class="col s6">
+                    <div id="monthly-order-total-time-series"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 
 <!-- start js include path -->
+<script>
+
+    var tableStatusPie = {
+        free: {
+            title: "<spring:message code="table.free"/>",
+            count: "${freeTables}"
+        },
+        paying: {
+            title: "<spring:message code="table.paying"/>",
+            count: "${payingTables}"
+        },
+        busy: {
+            title: "<spring:message code="table.busy"/>",
+            count: "${busyTables}"
+        },
+        plotTitle: "<spring:message code="dashboard.current_table_report"/>"
+    };
+
+    var monthlyOrderTotalTimeSeries = {
+        values: {
+            x: [<c:forEach items="${monthOrderTotals}" var="v" varStatus="loop">
+                '${v.key}'${!loop.last ? ',' : ''}
+                </c:forEach>],
+            y: [<c:forEach items="${monthOrderTotals}" var="v" varStatus="loop">
+                '${v.value}'${!loop.last ? ',' : ''}
+                </c:forEach>]
+        },
+        plotTitle: "<spring:message code="dashboard.monthly_order_total_time_series"/>"
+    };
+
+</script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<script defer src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script defer src="<c:url value="/resources/js/admin/dashboard.js"/>"></script>
 <!-- end js include path -->
 </body>
 </html>

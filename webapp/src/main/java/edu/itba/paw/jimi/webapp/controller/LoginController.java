@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
 	@RequestMapping("/login")
 	public ModelAndView login() {
-		return new ModelAndView("users/login2");
+        return new ModelAndView("users/login");
 	}
 
 	@RequestMapping("/")
