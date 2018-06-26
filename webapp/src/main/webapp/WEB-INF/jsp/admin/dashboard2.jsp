@@ -190,7 +190,7 @@
                                             <th>Closed At</th>
                                             </thead>
                                             <tbody>
-                                            <c:forEach items="${lastOrders}" var="order">
+                                            <c:forEach items="${lastOrders}" var="order" end="9">
                                                 <tr>
                                                     <td>${order.id}</td>
                                                     <td>${order.diners}</td>

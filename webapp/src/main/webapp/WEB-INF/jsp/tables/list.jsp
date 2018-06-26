@@ -5,6 +5,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="BusyCode" value="<%=TableStatus.BUSY.ordinal()%>"/>
+<c:set var="PayingCode" value="<%=TableStatus.PAYING.ordinal()%>"/>
 
 <!DOCTYPE html>
 <head>
@@ -68,33 +70,35 @@
                                         <th><spring:message code="table.status"/></th>
                                         <th>Actions</th>
                                         </thead>
-
                                         <tbody>
                                         <c:forEach items="${tables}" var="table">
                                             <tr>
                                                 <th>${table.name}</th>
                                                 <th>${table.status}</th>
-                                                <th>
-                                                    <form>
-                                                        <c:choose>
-                                                            <c:when test="${table.status == TableStatus.FREE}">
-                                                                <button action="<c:url value="/tables/${table.id}/status"/>" class="btn btn-success btn-xs">
-                                                                    <i class="material-icons">unarchive</i>
-                                                                </button>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <button action="<c:url value="/tables/${table.id}/status"/>" class="btn btn-success btn-xs">
-                                                                    <i class="material-icons">edit</i>
-                                                                </button>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        <sec:authorize access="hasRole('ROLE_ADMIN')">
-                                                            <button class="btn btn-danger btn-xs" type="submit">
-                                                                <i class="material-icons">delete</i>
-                                                            </button>
-                                                        </sec:authorize>
-                                                    </form>
-                                                </th>
+                                                <div class="center-align">
+                                                    <th>
+                                                    <c:choose>
+                                                        <c:when test="${table.status == 'FREE'}">
+                                                            <form style="float:left; padding-right:10px" action="<c:url value="/tables/${table.id}/status"/>" method="POST">
+                                                                <input value="${BusyCode}" name="status" type="hidden"/>
+                                                                <button type="submit" class="btn btn-success btn-xs"><i class="material-icons">unarchive</i></button>
+                                                            </form>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <form style="float:left; padding-right:10px" action="<c:url value="/tables/${table.id}/"/>" method="POST">
+                                                                <button type="submit" class="btn btn-success btn-xs"><i class="material-icons">edit</i></button>
+                                                            </form>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                                        <c:if test="${table.status == 'FREE'}">
+                                                        <button class="btn btn-danger btn-xs" type="submit">
+                                                            <i class="material-icons">delete</i>
+                                                        </button>
+                                                        </c:if>
+                                                    </sec:authorize>
+                                                    </th>
+                                                </div>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
