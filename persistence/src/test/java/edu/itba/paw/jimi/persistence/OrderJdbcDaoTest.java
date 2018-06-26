@@ -39,8 +39,6 @@ public class OrderJdbcDaoTest {
 	@Autowired
 	private DishDao dishDao; //Here we are not using a mocked dao because orderDao uses a union on DB to get the dishes, so mocking it would break the union.
 
-	private JdbcTemplate jdbcTemplate;
-
 	private static final String ORDER_TABLE_NAME = "orders";
 	private static final String ORDER_ITEM_TABLE_NAME = "orders_items";
 
@@ -65,23 +63,14 @@ public class OrderJdbcDaoTest {
 
 	@Before
 	public void setUp() {
-		jdbcTemplate = new JdbcTemplate(ds);
-//		cleanDB();
-	}
-
-	private void cleanDB() {
-//		JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_TABLE_NAME);
-//		JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE_NAME);
 	}
 
 	@Test
     @Transactional
 	public void testCreate() {
-		orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
-//		assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_TABLE_NAME));
-//		assertEquals(0, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE_NAME));
-//
-//		cleanDB();
+		Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
+		assertNotNull(order);
+        assertNotNull(order.getId());
 	}
 
 	@Test
@@ -92,7 +81,9 @@ public class OrderJdbcDaoTest {
 		order.setOpenedAt(OPENEDAT);
 		order.setClosedAt(CLOSEDAT);
 		order.setDiners(DINERS);
+
 		orderDao.update(order);
+
 		Order dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
 		assertEquals(OrderStatus.OPEN, dbOrder.getStatus());
@@ -101,7 +92,6 @@ public class OrderJdbcDaoTest {
 		assertEquals(DINERS, dbOrder.getDiners());
 		assertEquals(TOTAL, dbOrder.getTotal());
 
-		cleanDB();
 	}
 
 	@Test
@@ -110,7 +100,6 @@ public class OrderJdbcDaoTest {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		Order dbOrder = orderDao.findById(order.getId());
 		assertNotNull(dbOrder);
-		cleanDB();
 	}
 
 	@Test
@@ -123,7 +112,6 @@ public class OrderJdbcDaoTest {
 		assertEquals(OPENEDAT, dbOrder.getOpenedAt());
 		assertEquals(CLOSEDAT, dbOrder.getClosedAt());
 		assertEquals(DINERS, dbOrder.getDiners());
-		cleanDB();
 	}
 
 	@Test
@@ -154,7 +142,6 @@ public class OrderJdbcDaoTest {
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
 
-		cleanDB();
 	}
 
 	@Test
@@ -181,7 +168,6 @@ public class OrderJdbcDaoTest {
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
 
-		cleanDB();
 	}
 
 	@Test
@@ -242,7 +228,6 @@ public class OrderJdbcDaoTest {
 
 		}
 
-		cleanDB();
 	}
 
 	@Test
@@ -280,7 +265,6 @@ public class OrderJdbcDaoTest {
 
 		assertNull(dbOrder.getDishes().get(dish));
 
-		cleanDB();
 	}
 
 	@Test
@@ -328,7 +312,6 @@ public class OrderJdbcDaoTest {
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
 
-		cleanDB();
 	}
 
 }

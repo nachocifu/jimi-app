@@ -45,13 +45,9 @@ public class DishJdbcDaoTest {
 	@Qualifier("dishHibernateDao")
 	private DishDao dishDao; //Here we are not using a mocked dao because orderDao uses a union on DB to get the dishes, so mocking it would break the union.
 
-	private JdbcTemplate jdbcTemplate;
-
 
 	@Before
 	public void setUp() {
-		jdbcTemplate = new JdbcTemplate(ds);
-		//JdbcTestUtils.deleteFromTables(jdbcTemplate, "dishes");
 	}
 
 	@Test
@@ -65,30 +61,23 @@ public class DishJdbcDaoTest {
     }
 
 
-//    private Dish find(int id){
-//		return dishDao.findById(id);
-//	}
-//	@Transactional
-//	private Dish create(){
-//    	Dish dish = dishDao.create(NAME, PRICE, 1);
-//    	dish.setName("Tu vieja en tanga.");
-//		return dish;
-//	}
-//
-//	@Test
-//	public void testUpdate() {
-//		final Dish dish = create();
-//
-//		assertNotNull(dish);
-//		assertNotNull(dish.getId());
-//		assertEquals(NAME, dish.getName());
-//		assertEquals(PRICE, dish.getPrice());
-//
-//		dish.setName("Tu vieja");
-//		Dish dbDish = find(dish.getId());
-//		assertEquals("Tu vieja en tanga.", dbDish.getName());
-//
-//	}
+	@Test
+	public void testUpdate() {
+		final Dish dish = dishDao.create(NAME, PRICE, 1);
+
+		assertNotNull(dish);
+		assertNotNull(dish.getId());
+		assertEquals(NAME, dish.getName());
+		assertEquals(PRICE, dish.getPrice());
+
+		dish.setName("Test Name");
+
+		dishDao.update(dish);
+
+		Dish dbDish = dishDao.findById(dish.getId());
+
+		assertEquals("Test Name", dbDish.getName());
+	}
 
 	@Test
     @Transactional
