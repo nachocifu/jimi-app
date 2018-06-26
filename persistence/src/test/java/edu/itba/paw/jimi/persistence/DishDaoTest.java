@@ -26,7 +26,7 @@ import static junit.framework.TestCase.assertNotNull;
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
 @Transactional
-public class DishJdbcDaoTest {
+public class DishDaoTest {
 
 	private static final String NAME = "Cambuchá";
 

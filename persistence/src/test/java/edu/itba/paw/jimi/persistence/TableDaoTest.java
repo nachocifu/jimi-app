@@ -35,7 +35,7 @@ import static junit.framework.TestCase.assertNotNull;
 @ContextConfiguration(classes = {TestConfig.class, MockConfig.class})
 @Sql("classpath:schema.sql")
 @Transactional
-public class TableJdbcDaoTest {
+public class TableDaoTest {
 	
 	private static final String ORDER_TABLE_NAME = "orders";
 	private static final String ORDER_ITEM_TABLE_NAME = "orders_items";
