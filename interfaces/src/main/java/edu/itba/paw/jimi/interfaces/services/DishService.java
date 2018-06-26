@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Dish;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 
 import java.util.Collection;
 
@@ -42,10 +43,19 @@ public interface DishService {
      * @return all the dishes.
      */
     Collection<Dish> findAll();
+
+    /**
+     * Returns all the dishes.
+     * @param qp the QueryParams.
+     * @return all the dishes.
+     */
+    Collection<Dish> findAll(QueryParams qp);
     
     /**
      * Returns all available, that is, stock greater than 0, dishes.
      * @return all the dishes.
      */
     Collection<Dish> findAllAvailable();
+
+    int getTotalDishes();
 }

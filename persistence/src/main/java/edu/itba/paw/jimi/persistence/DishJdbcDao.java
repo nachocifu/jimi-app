@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.persistence;
 
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.models.Dish;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -64,5 +65,15 @@ public class DishJdbcDao implements DishDao {
 	
 	public Collection<Dish> findAll() {
 		return jdbcTemplate.query("SELECT * FROM dishes", ROW_MAPPER);
+	}
+
+	@Override
+	public Collection<Dish> findAll(QueryParams qp) {
+		return null;
+	}
+
+	@Override
+	public int getTotalDishes() {
+		return 0;
 	}
 }

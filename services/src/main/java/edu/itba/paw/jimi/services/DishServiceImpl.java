@@ -4,6 +4,7 @@ import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.interfaces.exceptions.MaxStockException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,14 @@ public class DishServiceImpl implements DishService {
 			return new HashSet<Dish>();
 	}
 
+	public Collection<Dish> findAll(QueryParams qp) {
+		Collection<Dish> dishes = dishDao.findAll(qp);
+		if (dishes != null)
+			return dishes;
+		else
+			return new HashSet<Dish>();
+	}
+
 	public Collection<Dish> findAllAvailable() {
 		
 		Collection<Dish> dishes = findAll();
@@ -87,4 +96,8 @@ public class DishServiceImpl implements DishService {
 		return availableDishes;
 		
 	}
+
+    public int getTotalDishes() {
+        return dishDao.getTotalDishes();
+    }
 }

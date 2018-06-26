@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.interfaces.daos;
 
 import edu.itba.paw.jimi.models.Dish;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 
 import java.util.Collection;
 
@@ -24,11 +25,25 @@ public interface DishDao {
 	 * @return The number of dishes modified.
 	 */
 	int update(Dish dish);
-	
+
+
 	/**
 	 * Returns all the dishes.
 	 *
 	 * @return all the dishes.
 	 */
 	Collection<Dish> findAll();
+
+	/**
+	 * Returns all the dishes.
+	 *
+	 * @return all the dishes.
+	 */
+	Collection<Dish> findAll(QueryParams qp);
+
+    /**
+     * Retruns the amount of dishes in the DB.
+     * @return a positive integer.
+     */
+	int getTotalDishes();
 }
