@@ -79,51 +79,49 @@
                             </form>
                         </div>
                         <c:choose>
-                        <c:when test="${table.order.dishes.size() > 0}">
+                            <c:when test="${table.order.dishes.size() > 0}">
+                                <div class="col s2">
+                                    <!-- Modal Trigger -->
+                                    <button data-target="modal1" class="btn modal-trigger"><spring:message code="table.charge_caps"/></button>
+
+                                    <!-- Modal Structure -->
+                                    <div id="modal1" class="modal">
+                                        <div class="modal-content">
+                                            <h4><spring:message code="table.sure_charge"/></h4>
+                                            <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
+                                                <div class="modal-footer">
+
+                                                    <input value="${PayingCode}" name="status" type="hidden"/>
+                                                    <input type="submit"
+                                                           class="btn blue-gray center-block"
+                                                           value="<spring:message code="table.charge_caps"/>"/>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:when>
+                        </c:choose>
                         <div class="col s2">
                             <!-- Modal Trigger -->
-                            <button data-target="modal1" class="btn modal-trigger"><spring:message code="table.charge_caps"/></button>
+                            <button data-target="modal2" class="btn modal-trigger"><spring:message code="table.cancel_caps"/></button>
 
                             <!-- Modal Structure -->
-                            <div id="modal1" class="modal">
+                            <div id="modal2" class="modal">
                                 <div class="modal-content">
-                                    <h4><spring:message code="table.sure_charge"/></h4>
+                                    <h4><spring:message code="table.sure_cancel"/></h4>
                                     <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                         <div class="modal-footer">
 
-                                            <input value="${PayingCode}" name="status" type="hidden"/>
+                                            <input value="${FreeCode}" name="status" type="hidden"/>
                                             <input type="submit"
                                                    class="btn blue-gray center-block"
-                                                   value="<spring:message code="table.charge_caps"/>"/>
+                                                   value="<spring:message code="table.cancel_caps"/>"/>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="col s2">
-                                <!-- Modal Trigger -->
-                                <button data-target="modal2" class="btn modal-trigger"><spring:message code="table.cancel_caps"/></button>
-
-                                <!-- Modal Structure -->
-                                <div id="modal2" class="modal">
-                                    <div class="modal-content">
-                                        <h4><spring:message code="table.sure_cancel"/></h4>
-                                        <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                            <div class="modal-footer">
-
-                                                <input value="${FreeCode}" name="status" type="hidden"/>
-                                                <input type="submit"
-                                                       class="btn blue-gray center-block"
-                                                       value="<spring:message code="table.cancel_caps"/>"/>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:otherwise>
-                        </c:choose>
                         <div class="col s4">
                             <a href="<c:url value="/tables/"/>"
                                class="btn blue-gray"><spring:message code="table.return_to_table_list"/>
