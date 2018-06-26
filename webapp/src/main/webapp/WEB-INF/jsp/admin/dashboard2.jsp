@@ -42,12 +42,33 @@
     <div class="card">
         <div class="card-content">
             <div class="row">
-                <div class="col s6">
-                    <div id="table-status-pie"></div>
-                </div>
-                <div class="col s6">
-                    <div id="monthly-order-total-time-series"></div>
-                </div>
+
+                <c:choose>
+                    <c:when test="${totalTables <= 0}">
+                        <div class="alert alert-info text-center">
+                            <strong><spring:message code="ouch"/></strong>
+                            <spring:message code="table.no_tables"/>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="col s6">
+                            <div id="table-status-pie"></div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+
+                <c:choose>
+                    <c:when test="${monthOrderTotals.size() <= 0}">
+                        <div class="alert alert-info text-center">
+                            <spring:message code="order.no_order"/>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="col s6">
+                            <div id="monthly-order-total-time-series"></div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
@@ -82,6 +103,7 @@
                 '${v.value}'${!loop.last ? ',' : ''}
                 </c:forEach>]
         },
+        length: ${monthOrderTotals.size()},
         plotTitle: "<spring:message code="dashboard.monthly_order_total_time_series"/>"
     };
 
