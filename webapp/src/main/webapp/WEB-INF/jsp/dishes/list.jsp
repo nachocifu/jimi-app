@@ -56,6 +56,17 @@
                             <th></th>
                         </tr>
                         </thead>
+                        <div class="row">
+                            <div class="col s12">
+                                <form method="POST"
+                                      action="<c:url value="/admin/dishes/csvStockWarning"/>">
+                                    <button type="submit"
+                                            class="btn btn-success btn-xs">
+                                        <spring:message code="dish.download"/>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                         <tbody>
                         <c:forEach items="${dishes}" var="dish">
                             <tr>

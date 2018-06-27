@@ -141,7 +141,7 @@ public class DishController {
         return new ModelAndView("redirect:/dishes/" + dish.getId());
     }
 
-    @RequestMapping(value = "csvStockWarning", method = RequestMethod.POST)
+    @RequestMapping(value = "/csvStockWarning", method = RequestMethod.POST)
     public void downloadCsv(HttpServletResponse response) throws IOException {
 
         response.setContentType("text/csv");
