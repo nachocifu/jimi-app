@@ -60,7 +60,8 @@ public class OrderHibernateDao implements OrderDao{
     }
 
     public Map getMonthlyOrderTotal() { //TODO test
-        Map<YearMonth, Double> hardcodeado = new HashMap<>();
+        Map<YearMonth, Double> response = new TreeMap<YearMonth, Double>() {
+        };
         Query query = em.createNativeQuery(
                 "SELECT CAST(extract(year FROM closedat) as INT) as year, CAST(extract(month FROM closedat) as INT) as month, CAST(SUM(total) AS FLOAT) " +
                         "FROM orders " +
@@ -71,9 +72,9 @@ public class OrderHibernateDao implements OrderDao{
         for (Object[] row : res) {
             if (Arrays.asList(row).contains(null)) continue;
             if ((double) row[2] == 0) continue;
-            hardcodeado.put(YearMonth.of(Integer.valueOf(row[0].toString()), Integer.valueOf(row[1].toString())), (double) row[2]);
+            response.put(YearMonth.of(Integer.valueOf(row[0].toString()), Integer.valueOf(row[1].toString())), (double) row[2]);
         }
-        return hardcodeado;
+        return response;
     }
 
     @Override

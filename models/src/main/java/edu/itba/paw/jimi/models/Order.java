@@ -34,7 +34,7 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
 	private Date closedAt;
 
-    @Enumerated(EnumType.ORDINAL) //TODO: Esto no esta bien, guardamos en la base el id, no el string.
+	@Enumerated(EnumType.ORDINAL)
 	private OrderStatus status;
 	
 	public Order() {
