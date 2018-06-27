@@ -9,7 +9,6 @@ import edu.itba.paw.jimi.interfaces.services.StatsService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
-import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -93,9 +92,8 @@ public class AdminController {
 
 
         if (order == null) {
-            //TODO: Cambiar los textos.
-            throw new Http404Error(messageSource.getMessage("table.error.not.found.title",
-                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+            throw new Http404Error(messageSource.getMessage("order.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("order.error.not.found.body",
                     null, LocaleContextHolder.getLocale()));
         }
 
