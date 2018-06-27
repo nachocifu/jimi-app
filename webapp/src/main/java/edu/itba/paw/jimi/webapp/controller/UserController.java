@@ -35,7 +35,7 @@ public class UserController {
 	@Autowired
 	private MessageSource messageSource;
 	
-	private static final int PAGE_SIZE = 3;
+	private static final int PAGE_SIZE = 10;
 	
 	@RequestMapping("/register")
 	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {

@@ -3,6 +3,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+
+<script>
+    document.addEventListener("touchstart", function() {},false);
+</script>
+
 <div class="navbar-fixed">
     <header>
         <nav>
