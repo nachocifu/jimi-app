@@ -114,7 +114,6 @@
                 </div>
 
                 <div class="col s4">
-                    <%--TODO hay que mejorar lo que imprime esto, es algo menor, pero todo puede restar--%>
                     <button onclick="window.print();" class="waves-effect waves-light btn" type="button">
                                             <span><i class="fa fa-print"></i> <spring:message
                                                     code="checkout.print"/></span>

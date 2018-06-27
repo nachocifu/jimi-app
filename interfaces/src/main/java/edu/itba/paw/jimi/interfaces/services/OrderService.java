@@ -125,7 +125,7 @@ public interface OrderService {
     /**
      * Finds all closed orders' total by month.
      *
-     * @return A collection of said orders.TODO
+	 * @return A collection of said orders.
      */
     Map getMonthlyOrderTotal();
 

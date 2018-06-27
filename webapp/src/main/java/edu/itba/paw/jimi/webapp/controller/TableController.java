@@ -3,6 +3,7 @@ package edu.itba.paw.jimi.webapp.controller;
 import edu.itba.paw.jimi.form.TableAddDishForm;
 import edu.itba.paw.jimi.form.TableForm;
 import edu.itba.paw.jimi.form.TableSetDinersForm;
+import edu.itba.paw.jimi.interfaces.exceptions.Http400Error;
 import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
@@ -92,6 +93,11 @@ public class TableController {
 	public ModelAndView statusChange(@PathVariable("tableId") Integer id, @RequestParam(value = "status") final Integer statusId) {
 
 		Table table = ts.findById(id);
+        if (table == null) {
+            throw new Http404Error(messageSource.getMessage("table.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
 		ts.changeStatus(table, TableStatus.getTableStatus(statusId));
 
 		if (table.getStatus().equals(TableStatus.FREE))
@@ -122,8 +128,14 @@ public class TableController {
 	@RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.GET})
 	public ModelAndView addDish(@PathVariable("tableId") Integer id, @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
 
+        Table table = ts.findById(id);
+        if (table == null) {
+            throw new Http400Error(messageSource.getMessage("table.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
 		ModelAndView mav = new ModelAndView("tables/add_dish");
-		mav.addObject("table", ts.findById(id));
+        mav.addObject("table", table);
 		mav.addObject("dishes", ds.findAllAvailable());
 
 		return mav;
@@ -137,6 +149,11 @@ public class TableController {
 		}
 
 		Table table = ts.findById(id);
+        if (table == null) {
+            throw new Http400Error(messageSource.getMessage("table.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
 		Dish dish = ds.findById(form.getDishid());
 		os.addDishes(table.getOrder(), dish, form.getAmount());
 
@@ -147,6 +164,11 @@ public class TableController {
 	public ModelAndView addOneDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
 
 		Table table = ts.findById(id);
+        if (table == null) {
+            throw new Http400Error(messageSource.getMessage("table.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
 		Dish dish = ds.findById(dishid);
 		os.addDish(table.getOrder(), dish);
 //		os.setDishAsDone(table.getOrder(), dish);
@@ -158,6 +180,11 @@ public class TableController {
 	public ModelAndView removeOneDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
 
 		Table table = ts.findById(id);
+        if (table == null) {
+            throw new Http400Error(messageSource.getMessage("table.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
 		Dish dish = ds.findById(dishid);
 		os.removeOneDish(table.getOrder(), dish);
 
@@ -168,6 +195,11 @@ public class TableController {
 	public ModelAndView removeAllDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
 
 		Table table = ts.findById(id);
+        if (table == null) {
+            throw new Http400Error(messageSource.getMessage("table.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
 		Dish dish = ds.findById(dishid);
 		os.removeAllDish(table.getOrder(), dish);
 
@@ -185,6 +217,11 @@ public class TableController {
 		}
 
 		Table table = ts.findById(id);
+        if (table == null) {
+            throw new Http400Error(messageSource.getMessage("table.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
 		os.setDiners(table.getOrder(), form.getDiners());
 
 		return new ModelAndView("redirect:/tables/" + table.getId());
@@ -193,6 +230,11 @@ public class TableController {
 	@RequestMapping(value = "/{tableId}/add_diner", method = {RequestMethod.POST})
 	public ModelAndView addDinerPost(@PathVariable("tableId") Integer id) {
 		Table table = ts.findById(id);
+        if (table == null) {
+            throw new Http400Error(messageSource.getMessage("table.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
 		os.setDiners(table.getOrder(), table.getOrder().getDiners() + 1);
 		return new ModelAndView("redirect:/tables/" + table.getId());
 	}
@@ -200,6 +242,11 @@ public class TableController {
 	@RequestMapping(value = "/{tableId}/subtract_diner", method = {RequestMethod.POST})
 	public ModelAndView subtractDinerPost(@PathVariable("tableId") Integer id) {
 		Table table = ts.findById(id);
+        if (table == null) {
+            throw new Http400Error(messageSource.getMessage("table.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
 		os.setDiners(table.getOrder(), table.getOrder().getDiners() - 1);
 		return new ModelAndView("redirect:/tables/" + table.getId());
 	}
@@ -207,8 +254,14 @@ public class TableController {
 	@RequestMapping(value = "/{tableId}/checkout")
 	public ModelAndView getCheckoutBill(@PathVariable("tableId") Integer id) {
 
+        Table table = ts.findById(id);
+        if (table == null) {
+            throw new Http400Error(messageSource.getMessage("table.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
 		ModelAndView mav = new ModelAndView("tables/checkout");
-		mav.addObject("order", ts.findById(id).getOrder());
+        mav.addObject("order", table.getOrder());
 
 		return mav;
 	}

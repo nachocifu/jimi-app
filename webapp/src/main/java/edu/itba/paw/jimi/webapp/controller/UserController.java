@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.webapp.controller;
 
 import edu.itba.paw.jimi.form.UserForm;
 import edu.itba.paw.jimi.interfaces.exceptions.Http400Error;
+import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
@@ -49,16 +50,12 @@ public class UserController {
 		if (user != null) {
 			mav.addObject("user", user);
 			return mav;
-		} else {
-			response.setStatus(404); // TODO use web.xml and ErrorController
-			return (new ModelAndView("error"))
-					.addObject("body",
-							messageSource.getMessage("user.error.not.found.body",
-									null, LocaleContextHolder.getLocale()))
-					.addObject("title",
-							messageSource.getMessage("user.error.not.found.title",
-									null, LocaleContextHolder.getLocale()));
-		}
+        } else
+            throw new Http404Error(messageSource.getMessage("user.error.not.found.title",
+                    null, LocaleContextHolder.getLocale()),
+                    messageSource.getMessage("user.error.not.found.body",
+                            null, LocaleContextHolder.getLocale()));
+
 	}
 	
 	@RequestMapping(value = "/create", method = {RequestMethod.POST})
