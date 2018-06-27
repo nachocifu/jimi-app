@@ -67,6 +67,12 @@
                     </div>
                 </div>
             </sec:authorize>
+            <div class="pull-right">
+                <a href="<c:url value="/logout"/>" class="nav-link">
+                    <i class="fa fa-sign-out"></i>
+                    <span class="title"><spring:message code="sidebar.logout"/></span>
+                </a>
+            </div>
         </nav>
     </header>
 </div>
