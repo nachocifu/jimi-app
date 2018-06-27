@@ -61,5 +61,12 @@
                 <p><spring:message code="sidebar.kitchen"/></p>
             </a>
         </li>
+
+        <li class="nav-item ">
+            <a class="nav-link" href="<c:url value="/logout"/>">
+                <i class="material-icons">exit_to_app</i>
+                <p>Log Out</p>
+            </a>
+        </li>
     </ul>
 </div>
