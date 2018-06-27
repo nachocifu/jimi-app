@@ -8,7 +8,7 @@
         <nav>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <div>
-                    <a><span><spring:message code="menu.admin"/></span>1</a>
+                    <a><span><spring:message code="menu.admin"/></span></a>
                     <div>
                         <a href="<c:url value="/admin/"/>" class="nav-link nav-toggle">
                             <i class="fa fa-columns"></i>
@@ -36,25 +36,25 @@
                     </a>
                 </div>
             </div>
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <div>
                     <a><span class="title"><spring:message code="sidebar.dishes"/></span></a>
                     <div>
-                        <a href="<c:url value="/admin/dishes/create"/>" class="nav-link ">
-                            <i class="fa fa-plus"></i>
-                            <span class="title"><spring:message code="sidebar.new_dish"/></span>
-                        </a>
-                        <a href="<c:url value="/admin/dishes/"/>" class="nav-link ">
-                            <i class="fa fa-list"></i>
-                            <span class="title"><spring:message code="sidebar.dish_list"/></span>
-                        </a>
+                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+                            <a href="<c:url value="/admin/dishes/create"/>" class="nav-link ">
+                                <i class="fa fa-plus"></i>
+                                <span class="title"><spring:message code="sidebar.new_dish"/></span>
+                            </a>
+                            <a href="<c:url value="/admin/dishes/"/>" class="nav-link ">
+                                <i class="fa fa-list"></i>
+                                <span class="title"><spring:message code="sidebar.dish_list"/></span>
+                            </a>
+                        </sec:authorize>
                         <a href="<c:url value="/kitchen/"/>" class="nav-link ">
                             <i class="fa fa-cutlery"></i>
                             <span class="title"><spring:message code="sidebar.kitchen"/></span>
                         </a>
                     </div>
                 </div>
-            </sec:authorize>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <div>
                     <a><span class="title"><spring:message code="sidebar.users"/></span></a>
