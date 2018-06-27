@@ -85,7 +85,6 @@ public class StatsServiceImpl implements StatsService {
 
 	public Double average() {
 		Collection<Order> orders = orderService.findAll(new QueryParams("id", false));
-		long minSecs = 0;
 		long totalSec = 0;
 		int number = 0;
 		Double total = 0.0;
@@ -93,16 +92,12 @@ public class StatsServiceImpl implements StatsService {
 
 		for(Order o : orders){
 			if(o.getClosedAt() != null && o.getOpenedAt() != null){
-				if(minSecs == 0)
-					minSecs = o.getOpenedAt().getTime();
-				if(o.getOpenedAt().getTime() <= minSecs)
-					minSecs = o.getOpenedAt().getTime();
-				totalSec += o.getOpenedAt().getTime();
+				totalSec += (o.getClosedAt().getTime() - o.getOpenedAt().getTime());
 				number++;
 			}
 		}
 		if(number > 0)
-			total =  ((totalSec - (minSecs * number)) / number) / 60000.0;
+			total =  (totalSec / number) / 60000.0;
 
 		return Double.valueOf(df.format(total));
 	}

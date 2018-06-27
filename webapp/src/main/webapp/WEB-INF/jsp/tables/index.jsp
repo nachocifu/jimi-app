@@ -25,15 +25,6 @@
 
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <%--<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">--%>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
-          integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous"/>
-
-    <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/tables/index.css"/>" rel="stylesheet" type="text/css">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
 </head>
 
 <body class="">
@@ -78,7 +69,7 @@
                                                     <th><spring:message code="dish.price"/></th>
                                                     <th><spring:message code="dish.amount"/></th>
                                                     <th><spring:message code="dish.total"/></th>
-                                                    <th></th>
+                                                    <th>Actions</th>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
@@ -89,46 +80,28 @@
                                                         <td><c:out value="${dishEntry.key.name}"/></td>
                                                         <td><c:out value="${dishEntry.key.price}"/></td>
                                                         <td><c:out value="${dishEntry.value}"/></td>
-                                                        <td>
-                                                            <fmt:formatNumber
-                                                                    value="${dishEntry.value * dishEntry.key.price}"
-                                                                    maxFractionDigits="2"/>
-                                                        </td>
+                                                        <td><fmt:formatNumber value="${dishEntry.value * dishEntry.key.price}" maxFractionDigits="2"/></td>
                                                         <td>
                                                             <c:if test="${dishEntry.key.stock != 0}">
                                                                 <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
                                                                       method="post"
                                                                       class="form-with-buttons">
-                                                                    <button type="submit"
-                                                                            class="btn btn-success btn-xs">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </button>
-                                                                    <input type="hidden"
-                                                                           value="${dishEntry.key.id}"
-                                                                           name="dishid"/>
+                                                                    <button type="submit" class="btn btn-success btn-xs"><i class="material-icons">add</i></button>
+                                                                    <input type="hidden" value="${dishEntry.key.id}" name="dishid"/>
                                                                 </form>
                                                             </c:if>
                                                         </td>
                                                         <td>
                                                             <form action="<c:url value="/tables/${table.id}/remove_one_dish"/>"
                                                                   method="post" class="form-with-buttons">
-                                                                <button type="submit"
-                                                                        class="btn btn-primary btn-xs">
-                                                                    <i class="fa fa-minus"></i>
-                                                                </button>
-                                                                <input type="hidden" value="${dishEntry.key.id}"
-                                                                       name="dishid"/>
+                                                                <button type="submit" class="btn btn-warning btn-xs"><i class="material-icons">remove</i></button>
+                                                                <input type="hidden" value="${dishEntry.key.id}" name="dishid"/>
                                                             </form>
                                                         </td>
                                                         <td>
-                                                            <form action="<c:url value="/tables/${table.id}/remove_all_dish"/>"
-                                                                  method="post" class="form-with-buttons">
-                                                                <button type="submit"
-                                                                        class="btn btn-danger btn-xs">
-                                                                    <i class="fa fa-trash-o "></i>
-                                                                </button>
-                                                                <input type="hidden" value="${dishEntry.key.id}"
-                                                                       name="dishid"/>
+                                                            <form action="<c:url value="/tables/${table.id}/remove_all_dish"/>" method="post" class="form-with-buttons">
+                                                                <button type="submit" class="btn btn-danger btn-xs"><i class="material-icons">delete</i></button>
+                                                                <input type="hidden" value="${dishEntry.key.id}" name="dishid"/>
                                                             </form>
                                                         </td>
                                                     </tr>

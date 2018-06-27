@@ -58,7 +58,7 @@
                             <div class="card-header card-header-primary">
                                 <h4 class="card-title "><spring:message code="table.add_dish"/></h4>
                             </div>
-                            <c:url value="/tables/create" var="postPath"/>
+                            <c:url value="/tables/${table.id}/add_dish" var="postPath"/>
                             <div class="table">
                                 <c:choose>
                                     <c:when test="${dishes.size() > 0}">
@@ -77,18 +77,14 @@
                                                 </div>
                                             </div>
 
-                                            <button type="submit" class="btn btn-primary pull-right"><spring:message
-                                                    code="dish.add"/></button>
-                                            <a href="<c:url value="/tables/${table.id}"/>"
-                                               class="waves-effect waves-light btn"><spring:message
-                                                    code="dish.cancel"/> </a>
+                                            <button type="submit" class="btn btn-primary pull-right"><spring:message code="dish.add"/></button>
+                                            <a href="<c:url value="/tables/${table.id}"/>" class="waves-effect waves-light btn"><spring:message code="dish.cancel"/> </a>
                                         </form:form>
                                     </c:when>
                                     <c:otherwise>
                                         <div class="alert alert-info text-center">
                                             <strong><spring:message code="ouch"/></strong>
-                                            <spring:message
-                                                    code="dishes.no_dishes"/>
+                                            <spring:message code="dishes.no_dishes"/>
                                         </div>
                                     </c:otherwise>
                                 </c:choose>

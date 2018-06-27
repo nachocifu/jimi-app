@@ -103,7 +103,6 @@ public class TableController {
         }
 
         final Table tb = ts.create(form.getName());
-
         return new ModelAndView("redirect:/tables/");
     }
 

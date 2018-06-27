@@ -117,7 +117,7 @@
 
                 <!-- CHARTS -->
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="card card-chart">
                             <div class="card-header card-header-success">
                                 <div class="ct-chart" id="chart-1"></div>
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="card card-chart">
                             <div class="card-header card-header-warning">
                                 <div class="ct-chart" id="chart-2"></div>
@@ -151,22 +151,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card card-chart">
-                            <div class="card-header card-header-danger">
-                                <div class="ct-chart" id="chart-3"></div>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Completed Tasks</h4>
-                                <p class="card-category">Last Campaign Performance</p>
-                            </div>
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <i class="material-icons">access_time</i> campaign sent 2 days ago
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 <!-- END CHART -->
 
