@@ -41,7 +41,7 @@ public class TableController {
 	@Autowired
 	private MessageSource messageSource;
 
-    private static final int PAGE_SIZE = 3;
+    private static final int PAGE_SIZE = 10;
 
     @RequestMapping("")
     public ModelAndView list() {
