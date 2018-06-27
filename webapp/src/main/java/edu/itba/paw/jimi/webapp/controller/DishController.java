@@ -47,6 +47,7 @@ public class DishController {
         dishService.setMinStock(d, form.getMinStock());
 
 
+
         return new ModelAndView("redirect:/admin/dishes");
     }
 
