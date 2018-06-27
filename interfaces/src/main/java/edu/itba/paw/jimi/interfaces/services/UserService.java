@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.User;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 
 import java.util.Collection;
 
@@ -24,6 +25,14 @@ public interface UserService {
 	Collection<User> findAll();
 	
 	/**
+	 * Returns all the users.
+	 *
+	 * @param qp the QueryParams.
+	 * @return all the users.
+	 */
+	Collection<User> findAll(QueryParams qp);
+	
+	/**
 	 * Create a new user.
 	 *
 	 * @param username The name of the user.
@@ -41,4 +50,7 @@ public interface UserService {
 	 * @return the created user.
 	 */
 	User createAdmin(String username, String password);
+	
+	int getTotalUsers();
+	
 }

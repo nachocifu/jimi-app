@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.interfaces.daos;
 
 import edu.itba.paw.jimi.models.User;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 
 import java.util.Collection;
 import java.util.Set;
@@ -37,4 +38,13 @@ public interface UserDao {
 	 * @param user The user to be updated.
 	 */
 	void update(User user);
+	
+	int getTotalUsers();
+	
+	/**
+	 * Returns all the users.
+	 *
+	 * @return all the users.
+	 */
+	Collection<User> findAll(QueryParams qp);
 }

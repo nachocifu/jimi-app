@@ -39,7 +39,9 @@
     <div class="card">
         <div class="card-content">
             <span class="card-title"><spring:message code="user.list_header"/></span>
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <c:choose>
+            <c:when test="${users.size() > 0}">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp highlight">
                 <thead>
                 <tr>
                     <th><spring:message code="user.username_form_label"/></th>
@@ -53,6 +55,26 @@
                 </c:forEach>
                 </tbody>
             </table>
+                <ul class="pagination paginator">
+                <c:forEach var="i" begin="1" end="${qp.pageCount}">
+                    <c:if test="${qp.currentPage +1 == i}">
+                        <li class="active"><a href="<c:url value="/admin/users/page/${i}"/>"><c:out
+                                value="${i}"/></a></li>
+                    </c:if>
+                    <c:if test="${qp.currentPage +1 != i}">
+                        <li class="waves-effect"><a href="<c:url value="/admin/users/page/${i}"/>"><c:out
+                                value="${i}"/></a></li>
+                    </c:if>
+                </c:forEach>
+                </ul>
+            </c:when>
+            <c:otherwise>
+                <div class="alert alert-danger text-center">
+                    <strong><spring:message code="ouch"/></strong> <spring:message
+                        code="user.error.not.found.title"/>
+                </div>
+            </c:otherwise>
+        </c:choose>
         </div>
     </div>
 </div>
