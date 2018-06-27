@@ -68,8 +68,8 @@ public class OrderServiceBaseImpl implements OrderService {
             throw new StockHandlingException("Amount of dishes exceeds available dish stock.");
 
         int previousAmount;
-        if (order.getDishes().containsKey(dish))
-            previousAmount = order.getDishes().get(dish);
+        if (order.getUnDoneDishes().containsKey(dish))
+            previousAmount = order.getUnDoneDishes().get(dish);
         else
             previousAmount = 0;
 
@@ -94,22 +94,26 @@ public class OrderServiceBaseImpl implements OrderService {
 
 
         int previousAmount;
-        if (order.getDishes().containsKey(dish))
-            previousAmount = order.getDishes().get(dish);
-        else
-            return 0;
+        if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish) != 0) {
+            //Here logic to remove undone dishes.
+            previousAmount = order.getUnDoneDishes().get(dish);
+            order.setDish(dish, previousAmount - 1);
+            updateTotal(order);
+            orderDao.update(order);
 
-        if (previousAmount == 0)
-            return 0;
-
-        order.setDish(dish, previousAmount - 1);
-        updateTotal(order);
-        orderDao.update(order);
+            // Update dish stock
+            dishService.setStock(dish, dish.getStock() + 1);
+        }else{
+            //Here logic to remove doneDishes.
+            if (order.getDoneDishes().containsKey(dish) && order.getDoneDishes().get(dish) != 0) {
+                previousAmount = order.getDoneDishes().get(dish);
+                order.setDoneDish(dish, previousAmount - 1);
+                updateTotal(order);
+                orderDao.update(order); //TODO: Aca hace falta poner tests de que stock queda igual si sacas dishes done. y este caso y demas. pensa.
+            }
+        }
 
         LOGGER.info("Updated order (remove one dish): {}", order);
-
-        // Update dish stock
-        dishService.setStock(dish, dish.getStock() + 1);
 
         Order dbOrder = orderDao.findById(order.getId());
         if (!dbOrder.getDishes().containsKey(dish))
@@ -128,6 +132,7 @@ public class OrderServiceBaseImpl implements OrderService {
         }
 
         order.setDish(dish, 0);
+        order.setDoneDish(dish, 0);
         updateTotal(order);
         orderDao.update(order);
 
@@ -215,4 +220,12 @@ public class OrderServiceBaseImpl implements OrderService {
         return orderDao.getMonthlyOrderTotal();
     }
 
+    public void setDishAsDone(Order order, Dish dish) {
+        if (order.getUnDoneDishes().containsKey(dish)) {
+            int amount = order.getDishes().get(dish);
+            order.setDish(dish, 0);
+            order.setDoneDish(dish, amount);
+            orderDao.update(order);
+        }
+    }
 }
