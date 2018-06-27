@@ -44,7 +44,7 @@ public interface OrderDao {
 	/**
 	 * Find all closed orders' total by month, ordered decreased by closed timestamp.
 	 *
-	 * @return List of said orders.TODO
+     * @return List of said orders.
 	 */
 	Map getMonthlyOrderTotal();
 
