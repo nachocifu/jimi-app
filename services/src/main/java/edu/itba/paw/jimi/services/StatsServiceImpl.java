@@ -69,6 +69,7 @@ public class StatsServiceImpl implements StatsService {
 
 		int count = 0;
 
+		//TODO: Hacer una llamada a SQL solo para esto.
 		for (Table t : tableService.findAll()) {
 			if (t.getStatus() == status)
 				count += 1;

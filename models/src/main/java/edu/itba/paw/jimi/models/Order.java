@@ -23,7 +23,10 @@ public class Order {
 	private Float total;
 
     @ElementCollection(fetch = FetchType.EAGER)
-	private Map<Dish, Integer> dishes;
+	private Map<Dish, Integer> unDoneDishes;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Map<Dish, Integer> doneDishes;
 
     @Temporal(TemporalType.DATE)
 	private Date openedAt;
@@ -35,7 +38,8 @@ public class Order {
 	private OrderStatus status;
 	
 	public Order() {
-		this.dishes = new HashMap<Dish, Integer>();
+		this.unDoneDishes = new HashMap<Dish, Integer>();
+		this.doneDishes = new HashMap<Dish, Integer>();
 	}
 	
 	public Order(long id, Date openedAt, Date closedAt, OrderStatus status, int diners, float total) {
@@ -43,7 +47,8 @@ public class Order {
 		this.openedAt = openedAt;
 		this.closedAt = closedAt;
 		this.status = status;
-		this.dishes = new HashMap<Dish, Integer>();
+		this.unDoneDishes = new HashMap<Dish, Integer>();
+		this.doneDishes = new HashMap<Dish, Integer>();
 		this.diners = diners;
 		this.total = total;
 	}
@@ -51,13 +56,14 @@ public class Order {
         this.openedAt = openedAt;
         this.closedAt = closedAt;
         this.status = status;
-        this.dishes = new HashMap<Dish, Integer>();
+        this.unDoneDishes = new HashMap<Dish, Integer>();
+        this.doneDishes = new HashMap<Dish, Integer>();
         this.diners = diners;
         this.total = total;
     }
 
     public void setDishes(Map<Dish, Integer> dishes) {
-        this.dishes = dishes;
+        this.unDoneDishes = dishes;
     }
 
     /**
@@ -68,22 +74,33 @@ public class Order {
 	 * @return the resulting quantity of this dish in this order.
 	 */
 	public Integer setDish(Dish dish, int amount) {
-//		return this.dishes.put(dish, amount);
         if (amount > 0) {
-            this.dishes.put(dish, amount);
+            this.unDoneDishes.put(dish, amount);
             return amount;
         }else {
-            this.dishes.remove(dish);
+            this.unDoneDishes.remove(dish);
             return 0;
         }
 	}
-	
+
+	public Integer setDoneDish(Dish dish, int amount) {
+		if (amount > 0) {
+			this.doneDishes.put(dish, amount);
+			return amount;
+		}else {
+			this.doneDishes.remove(dish);
+			return 0;
+		}
+	}
 	
 	@Override
 	public String toString() {
 		StringBuilder toPrint = new StringBuilder();
-		for (Dish d : dishes.keySet()) {
-			toPrint.append("dish: ").append(d.toString()).append(" * ").append(dishes.get(d)).append("; ");
+		for (Dish d : unDoneDishes.keySet()) {
+			toPrint.append("dish: ").append(d.toString()).append(" * ").append(unDoneDishes.get(d)).append("; ");
+		}
+		for (Dish d : doneDishes.keySet()) {
+			toPrint.append("done dish: ").append(d.toString()).append(" * ").append(doneDishes.get(d)).append("; ");
 		}
 		return toPrint.toString();
 	}
@@ -93,9 +110,21 @@ public class Order {
 	}
 	
 	public Map<Dish, Integer> getDishes() {
-		return dishes;
+		Map<Dish, Integer> undone = new HashMap<Dish, Integer>(this.unDoneDishes);
+		Map<Dish, Integer> done = new HashMap<Dish, Integer>(this.doneDishes);
+		for (Dish d : done.keySet()) {
+			if (undone.containsKey(d))
+				undone.put(d, undone.get(d) + done.get(d));
+			else
+				undone.put(d, done.get(d));
+		}
+		return undone;
 	}
-	
+
+	public Map<Dish, Integer> getUnDoneDishes() {
+		return unDoneDishes;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -149,5 +178,13 @@ public class Order {
 	
 	public void setTotal(Float total) {
 		this.total = total;
+	}
+
+	public void setDoneDishes(Map<Dish, Integer> doneDishes) {
+		this.doneDishes = doneDishes;
+	}
+
+	public Map<Dish, Integer> getDoneDishes() {
+		return doneDishes;
 	}
 }
