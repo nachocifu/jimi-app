@@ -34,7 +34,7 @@ _Waiter:_
 * Views with JSP 
 * Persistence with JDBC
  
-### V2 (?)
+### V2 (80e2d61f9a570613b4a8ca4f41cc8b3c3284f8d7)
 
 * Changed Persistence to Hibernate
 * Change DB structure (@see migrations note)
