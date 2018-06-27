@@ -121,4 +121,6 @@ public interface OrderService {
      * @return A collection of said orders.TODO
      */
     Map getMonthlyOrderTotal();
+
+    void setDishAsDone(Order order, Dish dish);
 }

@@ -149,6 +149,7 @@ public class TableController {
 		Table table = ts.findById(id);
 		Dish dish = ds.findById(dishid);
 		os.addDish(table.getOrder(), dish);
+//		os.setDishAsDone(table.getOrder(), dish);
 
 		return new ModelAndView("redirect:/tables/" + table.getId());
 	}
