@@ -72,7 +72,7 @@
                                         <form:select id="dishid" name="dishid" path="dishid">
                                             <c:forEach items="${dishes}" var="dish">
                                                 <option value="${dish.id}"
-                                                        data-max="${dish.stock}">${dish.name}</option>
+                                                        data-max="${(dish.stock < 100) ? dish.stock : 100}">${dish.name}</option>
                                             </c:forEach>
                                         </form:select>
                                     </div>

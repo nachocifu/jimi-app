@@ -5,7 +5,7 @@ import javax.validation.constraints.*;
 
 public class DishForm {
 
-    @Size(min = 1, max = 40)
+    @Size(min = 1, max = 25)
 	@Pattern(regexp = "^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$")
 	private String name;
 
@@ -13,11 +13,11 @@ public class DishForm {
 	private Float price;
 
     @DecimalMin(value = "1")
-    @DecimalMax(value = "100000")
+    @DecimalMax(value = "10000")
 	private int stock;
 
     @DecimalMin(value = "0")
-    @DecimalMax(value = "100000")
+    @DecimalMax(value = "10000")
     private int minStock;
 	
 	public String getName() {

@@ -6,14 +6,14 @@ import javax.validation.constraints.Size;
 
 public class UserForm {
 
-    @Size(min = 6, max = 100)
+    @Size(min = 6, max = 40)
     @Pattern(regexp = "[a-zA-Z0-9]+")
     private String username;
 
-    @Size(min = 6, max = 100)
+    @Size(min = 6, max = 40)
     private String password;
 
-    @Size(min = 6, max = 100)
+    @Size(min = 6, max = 40)
     private String repeatPassword;
 
     @AssertTrue(message = "Password.notequals")
