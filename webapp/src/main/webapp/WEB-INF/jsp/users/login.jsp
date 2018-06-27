@@ -29,6 +29,7 @@
     <div class="box">
 
         <div class="title">JIMI</div>
+        <span id="error-warning"><p><spring:message code="user.error.login"/></p></span>
         <form id="login-form" action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded">
             <div class="input">
                 <label for="username"><spring:message code="user.username_form_label"/></label>

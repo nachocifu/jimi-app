@@ -48,6 +48,8 @@ $(function() {
         $("#login-form").submit();
     });
 
-
+    if (window.location.href.indexOf('error') < 0) {
+        $("#error-warning").remove()
+    }
 
 });
