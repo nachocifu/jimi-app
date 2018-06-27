@@ -3,12 +3,12 @@ package edu.itba.paw.jimi.persistence;
 import edu.itba.paw.jimi.interfaces.daos.UserDao;
 import edu.itba.paw.jimi.interfaces.daos.UserRolesDao;
 import edu.itba.paw.jimi.models.User;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -107,6 +107,16 @@ public class UserJdbcDao implements UserDao {
 			}
 		}
 		
+	}
+	
+	@Override
+	public int getTotalUsers() {
+		return 0;
+	}
+	
+	@Override
+	public Collection<User> findAll(QueryParams qp) {
+		return null;
 	}
 	
 	public User findByUsername(String username) {
