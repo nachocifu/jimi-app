@@ -54,24 +54,24 @@
             </div>
             <div class="card-action">
                 <div class="row">
-                    <div class="col s2">
+                    <div class="col s3">
                         <form action="<c:url value="/admin/order_edit/${order.id}/add_dish"/>">
                             <input type="submit" value="<spring:message code="table.add_dish"/>"
                                    class="btn btn-default"/>
                         </form>
                     </div>
-                    <div class="col s4">
+                    <div class="col s3">
                         <a href="<c:url value="/admin/bills"/>"
                            class="btn blue-gray"><spring:message code="admin.return_to_order_list"/>
                         </a>
                     </div>
-                    <div class="col s2">
+                    <div class="col s3">
                         <form action="<c:url value="/admin/order_edit/${order.id}/subtract_diner"/>" method="post">
                             <input type="submit" value="- <spring:message code="table.diners"/>"
                                    class="btn btn-default pull-right <c:if test="${diners == 0}">disabled</c:if>">
                         </form>
                     </div>
-                    <div class="col s2">
+                    <div class="col s3">
                         <form action="<c:url value="/admin/order_edit/${order.id}/add_diner"/>" method="post">
                             <input type="submit" value="+ <spring:message code="table.diners"/>"
                                    class="btn btn-default pull-right">
@@ -104,6 +104,17 @@
                                                        maxFractionDigits="2"/>
                                 </td>
                                 <td>
+                                    <form action="<c:url value="/admin/order_edit/${order.id}//remove_one_dish"/>"
+                                          method="post" class="form-with-buttons">
+                                        <button type="submit"
+                                                class="btn btn-primary btn-xs">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <input type="hidden" value="${dishEntry.key.id}"
+                                               name="dishid"/>
+                                    </form>
+                                </td>
+                                <td>
                                     <c:if test="${dishEntry.key.stock != 0}">
                                         <form action="<c:url value="/admin/order_edit/${order.id}/add_one_dish"/>"
                                               method="post"
@@ -117,17 +128,6 @@
                                                    name="dishid"/>
                                         </form>
                                     </c:if>
-                                </td>
-                                <td>
-                                    <form action="<c:url value="/admin/order_edit/${order.id}//remove_one_dish"/>"
-                                          method="post" class="form-with-buttons">
-                                        <button type="submit"
-                                                class="btn btn-primary btn-xs">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                        <input type="hidden" value="${dishEntry.key.id}"
-                                               name="dishid"/>
-                                    </form>
                                 </td>
                                 <td>
                                     <form action="<c:url value="/admin/order_edit/${order.id}//remove_all_dish"/>"
