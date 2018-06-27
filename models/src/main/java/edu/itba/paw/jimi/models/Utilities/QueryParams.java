@@ -29,6 +29,16 @@ public class QueryParams {
         this.ascending = ascending;
         this.startAt = NO_VALUE;
         this.pageSize = NO_VALUE;
+
+    }
+
+    public QueryParams(int startAt, int pageSize, int total, String orderBy, boolean ascending) {
+        this.startAt = startAt;
+        this.pageSize = pageSize;
+        this.total = total;
+        this.orderBy = orderBy;
+        this.ascending = ascending;
+        setTotal(total);
     }
 
     public String getOrderBy() {

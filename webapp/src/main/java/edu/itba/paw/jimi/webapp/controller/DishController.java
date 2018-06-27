@@ -8,7 +8,6 @@ import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +43,40 @@ public class DishController {
         if (errors.hasErrors()) { return register(form); }
 
         final Dish d = dishService.create(form.getName(), form.getPrice());
-        final int i = dishService.setStock(d, form.getStock());
+        dishService.setStock(d, form.getStock());
+        dishService.setMinStock(d, form.getMinStock());
+
+
+
+        return new ModelAndView("redirect:/admin/dishes");
+    }
+
+    @RequestMapping(value = {"/edit/{dishid}"}, method = { RequestMethod.GET })
+    public ModelAndView update(@ModelAttribute("dishCreateForm") final DishForm form, @PathVariable("dishid") long dishid) {
+
+        Dish dish = dishService.findById(dishid);
+
+        form.setName(dish.getName());
+        form.setPrice(dish.getPrice());
+        form.setStock(dish.getStock());
+        form.setMinStock(dish.getMinStock());
+
+        ModelAndView mv = new ModelAndView("dishes/edit");
+        mv.addObject("dish", dish);
+
+        return mv;
+    }
+
+    @RequestMapping(value = "/edit/{dishid}", method = { RequestMethod.POST })
+    public ModelAndView updateP(@Valid @ModelAttribute("dishCreateForm") final DishForm form, final BindingResult errors, @PathVariable("dishid") long dishid) {
+
+        if (errors.hasErrors()) { return register(form); }
+
+        Dish dish = dishService.findById(dishid);
+
+        dishService.setStock(dish, form.getStock());
+        dishService.setPrice(dish, form.getPrice());
+        dishService.setMinStock(dish, form.getMinStock());
 
         return new ModelAndView("redirect:/admin/dishes");
     }

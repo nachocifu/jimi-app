@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
+import edu.itba.paw.jimi.interfaces.exceptions.MaxPriceException;
 import edu.itba.paw.jimi.interfaces.exceptions.MaxStockException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
@@ -21,7 +22,8 @@ import java.util.HashSet;
 public class DishServiceImpl implements DishService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DishServiceImpl.class);
-	
+	private static final float MAX_PRICE = 10000f;
+
 	@Autowired
 	private DishDao dishDao;
 	
@@ -50,6 +52,22 @@ public class DishServiceImpl implements DishService {
 		dish.setStock(stock);
 		dishDao.update(dish);
 		LOGGER.info("Updated dish stock {}", dish);
+		return dish.getStock();
+	}
+
+	@Transactional
+	public int setPrice(Dish dish, float price) {
+		if (price < 0) {
+			return 0;
+		}
+
+		if (price >= MAX_PRICE) {
+			throw new MaxPriceException();
+		}
+
+		dish.setPrice(price);
+		dishDao.update(dish);
+		LOGGER.info("Updated dish price {}", dish);
 		return dish.getStock();
 	}
 

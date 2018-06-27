@@ -50,10 +50,10 @@
     <div class="card">
         <div class="card-head">
             <div class="row">
-                <div class="col s6">
-                    <span>
-                        <spring:message code="table.please_select_dish"/>${table.name}
-                    </span>
+                <div class="col s12">
+                    <h5>
+                        <spring:message code="table.please_select_dish"/> ${table.name}
+                    </h5>
                 </div>
             </div>
         </div>

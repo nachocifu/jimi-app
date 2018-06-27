@@ -176,5 +176,25 @@ public class OrderJdbcDao implements OrderDao {
 
 		return hardcodeado;
 	}
-	
+
+	@Override
+	public Collection<Order> findAllRelevant(QueryParams qp) {
+		return null;
+	}
+
+	@Override
+	public int getTotalRelevantOrders() {
+		return 0;
+	}
+
+	@Override
+	public Collection<Order> getActiveOrders(QueryParams qp) {
+		return null;
+	}
+
+	@Override
+	public int getTotalActiveOrders() {
+		return 0;
+	}
+
 }

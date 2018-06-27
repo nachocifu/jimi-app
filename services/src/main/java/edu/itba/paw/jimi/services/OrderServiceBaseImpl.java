@@ -216,6 +216,10 @@ public class OrderServiceBaseImpl implements OrderService {
             return new HashSet<Order>();
     }
 
+    public Collection<Order> findAllRelevant(QueryParams qp) {
+        return orderDao.findAllRelevant(qp);
+    }
+
     public Map getMonthlyOrderTotal() {
         return orderDao.getMonthlyOrderTotal();
     }
@@ -227,5 +231,17 @@ public class OrderServiceBaseImpl implements OrderService {
             order.setDoneDish(dish, amount);
             orderDao.update(order);
         }
+    }
+
+    public int getTotalRelevantOrders() {
+        return orderDao.getTotalRelevantOrders();
+    }
+
+    public Collection<Order> getActiveOrders(QueryParams qp) {
+        return orderDao.getActiveOrders(qp);
+    }
+
+    public int getTotalActiveOrders() {
+        return orderDao.getTotalActiveOrders();
     }
 }

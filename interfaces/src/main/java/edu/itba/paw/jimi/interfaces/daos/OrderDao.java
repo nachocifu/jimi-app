@@ -47,4 +47,12 @@ public interface OrderDao {
 	 * @return List of said orders.TODO
 	 */
 	Map getMonthlyOrderTotal();
+
+    Collection<Order> findAllRelevant(QueryParams qp);
+
+    int getTotalRelevantOrders();
+
+	Collection<Order> getActiveOrders(QueryParams qp);
+
+	int getTotalActiveOrders();
 }
