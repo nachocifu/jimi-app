@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.webapp.controller;
 
 import com.sun.media.jfxmedia.logging.Logger;
+import edu.itba.paw.jimi.interfaces.exceptions.Http400Error;
 import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.exceptions.HttpError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +94,7 @@ public class ErrorsController {
                 .addObject("title", title);
     }
 
-    @ExceptionHandler({Http404Error.class})
+    @ExceptionHandler({Http404Error.class, Http400Error.class})
     public ModelAndView handleErrorException(HttpError e, HttpServletResponse response) {
         response.setStatus(e.getStatus());
         return (new ModelAndView("error"))

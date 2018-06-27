@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.webapp.controller;
 
 import edu.itba.paw.jimi.form.UserForm;
+import edu.itba.paw.jimi.interfaces.exceptions.Http400Error;
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
 import edu.itba.paw.jimi.webapp.validator.UserValidator;
@@ -65,6 +66,14 @@ public class UserController {
 		if (errors.hasErrors()) {
 			return register(form);
 		}
+
+		if (us.findByUsername(form.getUsername()) != null)
+			throw new Http400Error(
+					messageSource.getMessage("user.error.repeated.title",
+							null, LocaleContextHolder.getLocale()),
+					messageSource.getMessage("user.error.repeated.body",
+							null, LocaleContextHolder.getLocale())
+			);
 		
 		us.create(form.getUsername(), passwordEncoder.encode(form.getPassword()));
 		
