@@ -126,6 +126,12 @@
             <groupId>org.logback-extensions</groupId>
             <artifactId>logback-ext-spring</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>net.sf.supercsv</groupId>
+            <artifactId>super-csv</artifactId>
+            <version>2.3.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>webapp</finalName>

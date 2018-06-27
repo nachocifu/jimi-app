@@ -8,12 +8,18 @@ import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -101,6 +107,33 @@ public class DishController {
         dishService.setMinStock(dish, minStock);
 
         return new ModelAndView("redirect:/dishes/" + dish.getId());
+    }
+
+    @RequestMapping(value = "csvStockWarning", method = RequestMethod.POST)
+    public void downloadCsv(HttpServletResponse response) throws IOException {
+
+        response.setContentType("text/csv");
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"", messageSource.getMessage("csv.file", null, LocaleContextHolder.getLocale()));
+        response.setHeader(headerKey, headerValue);
+
+        ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+
+        String[] headerT = {
+                messageSource.getMessage("csv.name", null, LocaleContextHolder.getLocale()),
+                messageSource.getMessage("csv.price", null, LocaleContextHolder.getLocale()),
+                messageSource.getMessage("csv.stock", null, LocaleContextHolder.getLocale()),
+                messageSource.getMessage("csv.minStock", null, LocaleContextHolder.getLocale()),
+        };
+        csvWriter.writeHeader(headerT);
+
+
+        String[] header = {"name", "price", "stock", "minStock"};
+        for (Dish dish : dishService.findAll()) //TODO bring only does where stock<minStock
+            csvWriter.write(dish, header);
+
+        csvWriter.close();
+
     }
 
 }
