@@ -16,7 +16,7 @@ public class LoginController {
 	@RequestMapping("/")
 	public ModelAndView onLoginSuccess(HttpServletRequest request) {
 		if (request.isUserInRole("ROLE_ADMIN"))
-			return new ModelAndView("redirect:/admin");
+			return new ModelAndView("redirect:/dashboard2");
 		else
 			return new ModelAndView("redirect:/tables");
 	}

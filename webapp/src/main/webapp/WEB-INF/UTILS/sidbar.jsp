@@ -5,33 +5,35 @@
 
 <div class="sidebar-wrapper">
     <ul class="nav">
-        <li class="nav-item  ">
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+        <li class="nav-item">
             <a class="nav-link" href="<c:url value="/admin/"/>">
                 <i class="material-icons">dashboard</i>
                 <p><spring:message code="sidebar.dashboard"/></p>
             </a>
         </li>
-        <li class="nav-item ">
+        </sec:authorize>
+
+        <li class="nav-item">
             <a class="nav-link" href="<c:url value="/tables/"/>">
                 <i class="material-icons">widgets</i>
                 <p><spring:message code="sidebar.table_list"/></p>
             </a>
         </li>
+
         <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <li class="nav-item ">
+        <li class="nav-item">
             <a class="nav-link" href="<c:url value="/tables/register"/>">
                 <i class="material-icons">library_add</i>
                 <p><spring:message code="sidebar.new_table"/></p>
             </a>
         </li>
-        </sec:authorize>
         <li class="nav-item ">
             <a class="nav-link" href="<c:url value="/admin/dishes/"/>">
                 <i class="material-icons">fastfood</i>
                 <p><spring:message code="sidebar.dish_list"/></p>
             </a>
         </li>
-        <sec:authorize access="hasRole('ROLE_ADMIN')">
         <li class="nav-item ">
             <a class="nav-link" href="<c:url value="/admin/dishes/create"/>">
                 <i class="material-icons">playlist_add</i>
@@ -52,6 +54,7 @@
             </a>
         </li>
         </sec:authorize>
+
         <li class="nav-item ">
             <a class="nav-link" href="<c:url value="/kitchen/"/>">
                 <i class="material-icons">kitchen</i>

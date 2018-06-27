@@ -176,5 +176,19 @@ public class OrderJdbcDao implements OrderDao {
 
 		return hardcodeado;
 	}
+
+	public Collection<Order> findAllOpen(){
+		final Collection<Order> col = jdbcTemplate.query(
+				"SELECT * " +
+						"FROM (SELECT orders.orderid, dishid, quantity, statusid, openedAt, closedAt, diners, total " +
+						"FROM orders  LEFT OUTER JOIN orders_items " +
+						"ON (orders.orderid = orders_items.orderid))" +
+						"as o LEFT OUTER JOIN dishes " +
+						"ON (o.dishid = dishes.dishid) " +
+						"WHERE o.closedAt = NULL " +
+						"ORDER BY orderid",
+				ROW_MAPPER);
+		return col;
+	}
 	
 }

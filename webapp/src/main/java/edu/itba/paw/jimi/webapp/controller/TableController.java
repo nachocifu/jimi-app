@@ -27,186 +27,175 @@ import javax.validation.Valid;
 @RequestMapping("/tables")
 public class TableController {
 
-	@Autowired
-	private TableService ts;
+    @Autowired
+    private TableService ts;
 
-	@Autowired
-	private OrderService os;
+    @Autowired
+    private OrderService os;
 
-	@Autowired
-	private DishService ds;
+    @Autowired
+    private DishService ds;
 
-	@Autowired
-	private MessageSource messageSource;
+    @Autowired
+    private MessageSource messageSource;
 
     private static final int PAGE_SIZE = 3;
 
     @RequestMapping("")
     public ModelAndView list() {
         final ModelAndView mav = new ModelAndView("tables/list");
-        QueryParams qp = new QueryParams(0, PAGE_SIZE, ts.getTotalTables());
-        mav.addObject("qp", qp);
-        mav.addObject("tables", ts.findAll(qp));
+        mav.addObject("tables", ts.findAll());
         return mav;
     }
 
-    @RequestMapping("/page/{page}")
-    public ModelAndView listPage(@PathVariable("page") Integer page) {
-        final ModelAndView mav = new ModelAndView("tables/list");
+    @RequestMapping("/{id}")
+    public ModelAndView index(@PathVariable("id") Integer id,
+                              @ModelAttribute("tableSetDinersForm") final TableSetDinersForm form,
+                              HttpServletResponse response) {
+        Table table = ts.findById(id);
 
-        QueryParams qp = new QueryParams((page - 1) * PAGE_SIZE, PAGE_SIZE, ts.getTotalTables());
+        if (table == null) {
+            response.setStatus(404); // TODO use web.xml and ErrorController
+            return (new ModelAndView("error"))
+                    .addObject("body",
+                            messageSource.getMessage("table.error.not.found.body",
+                                    null, LocaleContextHolder.getLocale()))
+                    .addObject("title",
+                            messageSource.getMessage("table.error.not.found.title",
+                                    null, LocaleContextHolder.getLocale()));
+        }
 
-        mav.addObject("tables", ts.findAll(qp));
-        mav.addObject("qp", qp);
+        final ModelAndView mav;
+        if (table.getStatus().equals(TableStatus.PAYING))
+            mav = new ModelAndView("tables/checkout");
+        else
+            mav = new ModelAndView("tables/index");
+
+        mav.addObject("table", table);
+        mav.addObject("dishes", table.getOrder().getDishes());
+        mav.addObject("diners", table.getOrder().getDiners());
+        mav.addObject("total", table.getOrder().getTotal());
         return mav;
     }
-	
-	@RequestMapping("/{id}")
-	public ModelAndView index(@PathVariable("id") Integer id,
-							  @ModelAttribute("tableSetDinersForm") final TableSetDinersForm form,
-							  HttpServletResponse response) {
-		Table table = ts.findById(id);
 
-		if (table == null) {
-			throw new Http404Error(messageSource.getMessage("table.error.not.found.title",
-					null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
-					null, LocaleContextHolder.getLocale()));
-		}
+    @RequestMapping(value = "/{tableId}/status", method = {RequestMethod.POST})
+    public ModelAndView statusChange(@PathVariable("tableId") Integer id, @RequestParam(value = "status") final Integer statusId) {
 
-		final ModelAndView mav;
-		if (table.getStatus().equals(TableStatus.PAYING))
-			mav = new ModelAndView("tables/checkout");
-		else
-			mav = new ModelAndView("tables/index");
+        Table table = ts.findById(id);
+        ts.changeStatus(table, TableStatus.getTableStatus(statusId));
 
-		mav.addObject("table", table);
-		mav.addObject("dishes", table.getOrder().getDishes());
-		mav.addObject("diners", table.getOrder().getDiners());
-		mav.addObject("total", table.getOrder().getTotal());
-		return mav;
-	}
+        if (table.getStatus().equals(TableStatus.FREE))
+            return new ModelAndView("redirect:/tables");
+        else
+            return new ModelAndView("redirect:/tables/" + id);
+    }
 
-	@RequestMapping(value = "/{tableId}/status", method = {RequestMethod.POST})
-	public ModelAndView statusChange(@PathVariable("tableId") Integer id, @RequestParam(value = "status") final Integer statusId) {
+    @RequestMapping("/register")
+    public ModelAndView register(@ModelAttribute("registerForm") final TableForm form) {
+        return new ModelAndView("tables/create");
+    }
 
-		Table table = ts.findById(id);
-		ts.changeStatus(table, TableStatus.getTableStatus(statusId));
+    @RequestMapping(value = "/create", method = {RequestMethod.POST})
+    public ModelAndView create(@Valid @ModelAttribute("registerForm") final TableForm form, final BindingResult errors) {
 
-		if (table.getStatus().equals(TableStatus.FREE))
-			return new ModelAndView("redirect:/tables");
-		else
-			return new ModelAndView("redirect:/tables/" + id);
-	}
+        if (errors.hasErrors()) {
+            return register(form);
+        }
 
-	@RequestMapping("/register")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ModelAndView register(@ModelAttribute("registerForm") final TableForm form) {
-		return new ModelAndView("tables/create");
-	}
+        final Table tb = ts.create(form.getName());
 
-	@RequestMapping(value = "/create", method = {RequestMethod.POST})
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ModelAndView create(@Valid @ModelAttribute("registerForm") final TableForm form, final BindingResult errors) {
+        return new ModelAndView("redirect:/tables/");
+    }
 
-		if (errors.hasErrors()) {
-			return register(form);
-		}
+    @RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.GET})
+    public ModelAndView addDish(@PathVariable("tableId") Integer id, @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
 
-		final Table tb = ts.create(form.getName());
+        ModelAndView mav = new ModelAndView("tables/add_dish");
+        mav.addObject("table", ts.findById(id));
+        mav.addObject("dishes", ds.findAllAvailable());
 
-		return new ModelAndView("redirect:/tables/" + tb.getId());
-	}
+        return mav;
+    }
 
-	@RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.GET})
-	public ModelAndView addDish(@PathVariable("tableId") Integer id, @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
+    @RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.POST})
+    public ModelAndView addDishPost(@PathVariable("tableId") Integer id, @Valid @ModelAttribute("tableAddDishForm") final TableAddDishForm form, final BindingResult errors) {
 
-		ModelAndView mav = new ModelAndView("tables/add_dish");
-		mav.addObject("table", ts.findById(id));
-		mav.addObject("dishes", ds.findAllAvailable());
+        if (errors.hasErrors()) {
+            return addDish(id, form);
+        }
 
-		return mav;
-	}
+        Table table = ts.findById(id);
+        Dish dish = ds.findById(form.getDishid());
+        os.addDishes(table.getOrder(), dish, form.getAmount());
 
-	@RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.POST})
-	public ModelAndView addDishPost(@PathVariable("tableId") Integer id, @Valid @ModelAttribute("tableAddDishForm") final TableAddDishForm form, final BindingResult errors) {
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
 
-		if (errors.hasErrors()) {
-			return addDish(id, form);
-		}
+    @RequestMapping(value = "/{tableId}/add_one_dish", method = {RequestMethod.POST})
+    public ModelAndView addOneDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
 
-		Table table = ts.findById(id);
-		Dish dish = ds.findById(form.getDishid());
-		os.addDishes(table.getOrder(), dish, form.getAmount());
+        Table table = ts.findById(id);
+        Dish dish = ds.findById(dishid);
+        os.addDish(table.getOrder(), dish);
 
-		return new ModelAndView("redirect:/tables/" + table.getId());
-	}
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
 
-	@RequestMapping(value = "/{tableId}/add_one_dish", method = {RequestMethod.POST})
-	public ModelAndView addOneDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
+    @RequestMapping(value = "/{tableId}/remove_one_dish", method = {RequestMethod.POST})
+    public ModelAndView removeOneDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
 
-		Table table = ts.findById(id);
-		Dish dish = ds.findById(dishid);
-		os.addDish(table.getOrder(), dish);
+        Table table = ts.findById(id);
+        Dish dish = ds.findById(dishid);
+        os.removeOneDish(table.getOrder(), dish);
 
-		return new ModelAndView("redirect:/tables/" + table.getId());
-	}
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
 
-	@RequestMapping(value = "/{tableId}/remove_one_dish", method = {RequestMethod.POST})
-	public ModelAndView removeOneDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
+    @RequestMapping(value = "/{tableId}/remove_all_dish", method = {RequestMethod.POST})
+    public ModelAndView removeAllDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
 
-		Table table = ts.findById(id);
-		Dish dish = ds.findById(dishid);
-		os.removeOneDish(table.getOrder(), dish);
+        Table table = ts.findById(id);
+        Dish dish = ds.findById(dishid);
+        os.removeAllDish(table.getOrder(), dish);
 
-		return new ModelAndView("redirect:/tables/" + table.getId());
-	}
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
 
-	@RequestMapping(value = "/{tableId}/remove_all_dish", method = {RequestMethod.POST})
-	public ModelAndView removeAllDishPost(@PathVariable("tableId") Integer id, @RequestParam(value = "dishid") final Integer dishid) {
+    @RequestMapping(value = "/{tableId}/set_diners", method = {RequestMethod.POST})
+    public ModelAndView setDinersPost(@PathVariable("tableId") Integer id,
+                                      @Valid @ModelAttribute("tableSetDinersForm") final TableSetDinersForm form,
+                                      final BindingResult errors,
+                                      HttpServletResponse response) {
 
-		Table table = ts.findById(id);
-		Dish dish = ds.findById(dishid);
-		os.removeAllDish(table.getOrder(), dish);
+        if (errors.hasErrors()) {
+            return index(id, form, response);
+        }
 
-		return new ModelAndView("redirect:/tables/" + table.getId());
-	}
+        Table table = ts.findById(id);
+        os.setDiners(table.getOrder(), form.getDiners());
 
-	@RequestMapping(value = "/{tableId}/set_diners", method = {RequestMethod.POST})
-	public ModelAndView setDinersPost(@PathVariable("tableId") Integer id,
-									  @Valid @ModelAttribute("tableSetDinersForm") final TableSetDinersForm form,
-									  final BindingResult errors,
-									  HttpServletResponse response) {
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
 
-		if (errors.hasErrors()) {
-			return index(id, form, response);
-		}
+    @RequestMapping(value = "/{tableId}/add_diner", method = {RequestMethod.POST})
+    public ModelAndView addDinerPost(@PathVariable("tableId") Integer id) {
+        Table table = ts.findById(id);
+        os.setDiners(table.getOrder(), table.getOrder().getDiners() + 1);
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
 
-		Table table = ts.findById(id);
-		os.setDiners(table.getOrder(), form.getDiners());
+    @RequestMapping(value = "/{tableId}/subtract_diner", method = {RequestMethod.POST})
+    public ModelAndView subtractDinerPost(@PathVariable("tableId") Integer id) {
+        Table table = ts.findById(id);
+        os.setDiners(table.getOrder(), table.getOrder().getDiners() - 1);
+        return new ModelAndView("redirect:/tables/" + table.getId());
+    }
 
-		return new ModelAndView("redirect:/tables/" + table.getId());
-	}
+    @RequestMapping(value = "/{tableId}/checkout")
+    public ModelAndView getCheckoutBill(@PathVariable("tableId") Integer id) {
+        ModelAndView mav = new ModelAndView("tables/checkout");
+        mav.addObject("order", ts.findById(id).getOrder());
 
-	@RequestMapping(value = "/{tableId}/add_diner", method = {RequestMethod.POST})
-	public ModelAndView addDinerPost(@PathVariable("tableId") Integer id) {
-		Table table = ts.findById(id);
-		os.setDiners(table.getOrder(), table.getOrder().getDiners() + 1);
-		return new ModelAndView("redirect:/tables/" + table.getId());
-	}
-
-	@RequestMapping(value = "/{tableId}/subtract_diner", method = {RequestMethod.POST})
-	public ModelAndView subtractDinerPost(@PathVariable("tableId") Integer id) {
-		Table table = ts.findById(id);
-		os.setDiners(table.getOrder(), table.getOrder().getDiners() - 1);
-		return new ModelAndView("redirect:/tables/" + table.getId());
-	}
-
-	@RequestMapping(value = "/{tableId}/checkout")
-	public ModelAndView getCheckoutBill(@PathVariable("tableId") Integer id) {
-
-		ModelAndView mav = new ModelAndView("tables/checkout");
-		mav.addObject("order", ts.findById(id).getOrder());
-
-		return mav;
-	}
+        return mav;
+    }
 }

@@ -83,7 +83,7 @@ public interface OrderService {
 	 * @param order
 	 */
 	void cancel(Order order);
-	
+
 	/**
 	 * Sets the amount of dinners.
 	 *

@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -217,6 +214,10 @@ public class OrderServiceImpl implements OrderService {
 
 	public Map getMonthlyOrderTotal() {
 		return orderDao.getMonthlyOrderTotal();
+	}
+
+	public Collection<Order> findAllOpen(){
+		return orderDao.findAllOpen();
 	}
 	
 }

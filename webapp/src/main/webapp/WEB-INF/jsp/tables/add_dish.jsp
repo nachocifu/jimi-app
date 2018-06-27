@@ -8,18 +8,20 @@
 <c:set var="BusyCode" value="<%=TableStatus.BUSY.ordinal()%>"/>
 <c:set var="PayingCode" value="<%=TableStatus.PAYING.ordinal()%>"/>
 
-
-<html>
+<!DOCTYPE html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title>Jimi Rest</title>
-    <!-- google font -->
-    <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
-          type="text/css"/>
-    <!-- icons -->
-    <link href="<c:url value="/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>" rel="stylesheet"
-          type="text/css"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>
+        Jimi Restaurant
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport'/>
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
+    <!-- CSS Files -->
+    <link href="<c:url value="/resources/css/Final/material-dashboard.css?v=2.1.0"/>" rel="stylesheet"/>
 
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -41,94 +43,95 @@
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
 </head>
 
-<body>
+<body class="">
+<div class="wrapper ">
+    <div class="sidebar" data-color="purple" data-background-color="white">
 
-<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+        <div class="logo">
+            <a href="#" class="simple-text logo-normal">
+                JIMI RESTAURANT APP
+            </a>
+        </div>
 
-<%-- TODO hay que hacer responsive esta tabla --%>
-<div class="table-container">
-    <div class="card">
-        <div class="card-head">
-            <div class="row">
-                <div class="col s6">
-                    <span>
-                        <spring:message code="table.please_select_dish"/>${table.name}
-                    </span>
+        <jsp:include page="/WEB-INF/UTILS/sidbar.jsp"/>
+
+    </div>
+    <div class="main-panel">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <a class="navbar-brand"><spring:message code="table.add_dish"/></a>
                 </div>
             </div>
-        </div>
-        <div class="card-content">
-            <div class="row">
-                <div class="col-sm-12">
-
-                    <c:choose>
-                        <c:when test="${dishes.size() > 0}">
-
-                            <c:url value="/tables/${table.id}/add_dish" var="postPath"/>
-                            <form:form modelAttribute="tableAddDishForm" action="${postPath}"
-                                       method="post">
-
-                                <div class="row">
-                                    <div class="input-field col s12">
-
-                                        <form:select id="dishid" name="dishid" path="dishid">
-                                            <c:forEach items="${dishes}" var="dish">
-                                                <option value="${dish.id}"
-                                                        data-max="${dish.stock}">${dish.name}</option>
-                                            </c:forEach>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <div id="range-input-container"></div>
-                                        <form:input type="number" id="amount" path="amount"
-                                                    step="1" min="1"
-                                                    max="100"
-                                                    value="1" class="hide"/>
-                                        <form:errors path="amount" cssClass="formError" element="p"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                        <%--<input type="submit" value=""--%>
-                                        <%--class="waves-effect waves-light btn"/>--%>
-                                    <button type="submit" class="waves-effect waves-light btn">
-                                        <spring:message code="dish.add"/>
-                                    </button>
-                                </div>
-
-                            </form:form>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="alert alert-info text-center">
-                                <strong><spring:message code="ouch"/></strong>
-                                <spring:message
-                                        code="dishes.no_dishes"/>
+        </nav>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title "><spring:message code="table.add_dish"/></h4>
                             </div>
-                        </c:otherwise>
-                    </c:choose>
+                            <c:url value="/tables/create" var="postPath"/>
+                            <div class="table-responsive">
+                                <c:choose>
+                                    <c:when test="${dishes.size() > 0}">
+                                        <form:form modelAttribute="tableAddDishForm" action="${postPath}" method="post">
+                                            <c:url value="/tables/${table.id}/add_dish" var="postPath"/>
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <form:select style="float:left; padding-right:10px" id="dishid" name="dishid" path="dishid">
+                                                        <c:forEach items="${dishes}" var="dish">
+                                                            <option value="${dish.id}"
+                                                                    data-max="${dish.stock}">${dish.name}</option>
+                                                        </c:forEach>
+                                                    </form:select>
+                                                    <form:input type="number" id="amount" path="amount" step="1" min="1"
+                                                                max="100" value="1" class="hide"/>
+                                                    <form:errors path="amount" element="p"/>
+                                                </div>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary pull-right"><spring:message
+                                                    code="dish.add"/></button>
+                                            <a href="<c:url value="/tables/${table.id}"/>"
+                                               class="waves-effect waves-light btn"><spring:message
+                                                    code="dish.cancel"/> </a>
+                                        </form:form>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert alert-info text-center">
+                                            <strong><spring:message code="ouch"/></strong>
+                                            <spring:message
+                                                    code="dishes.no_dishes"/>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-action">
-
         </div>
     </div>
 </div>
+</div>
 
+<!--   Core JS Files   -->
+<script src="<c:url value="/resources/js/core/jquery.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/core/popper.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/core/bootstrap-material-design.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/plugins/perfect-scrollbar.jquery.min.js"/>"></script>
 
-<!-- start js include path -->
-<script defer src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<%--<script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>--%>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.js"
-        integrity="sha256-IB524Svhneql+nv1wQV7OKsccHNhx8OvsGmbF6WCaM0=" crossorigin="anonymous"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"
-        integrity="sha256-HT7c4lBipI1Hkl/uvUrU1HQx4WF3oQnSafPjgR9Cn8A=" crossorigin="anonymous"></script>
-<script defer src="<c:url value="/resources/js/tables/add_dish.js"/>"></script>
+<!-- Chartist JS -->
+<script src="<c:url value="/resources/js/plugins/chartist.min.js"/>"></script>
+<!--  Notifications Plugin    -->
+<script src="<c:url value="/resources/js/plugins/bootstrap-notify.js"/>"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="<c:url value="/resources/js/material-dashboard.min.js?v=2.1.0"/>" type="text/javascript"></script>
+<script src="<c:url value="/resources/js/jimi-charts.js"/>" type="text/javascript"></script>
 
-<!-- Compiled and minified JavaScript -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
-<!-- end js include path -->
 </body>
 </html>
 

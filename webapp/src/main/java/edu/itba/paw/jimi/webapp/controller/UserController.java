@@ -3,7 +3,6 @@ package edu.itba.paw.jimi.webapp.controller;
 import edu.itba.paw.jimi.form.UserForm;
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import edu.itba.paw.jimi.webapp.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin/users")
@@ -35,11 +33,11 @@ public class UserController {
 	private MessageSource messageSource;
 	
 	private static final int PAGE_SIZE = 3;
-	
+
 	@RequestMapping("/register")
 	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
 		return new ModelAndView("users/create");
-	}
+    }
 
 	@RequestMapping("/{userId}")
 	public ModelAndView index(@PathVariable("userId") final int id, HttpServletResponse response) {
@@ -78,26 +76,26 @@ public class UserController {
 	@RequestMapping("")
 	public ModelAndView list() {
 		final ModelAndView mav = new ModelAndView("users/list");
-		
-		
+
+
 		QueryParams qp = new QueryParams(0, PAGE_SIZE, us.getTotalUsers());
 		List<User> users = (List<User>) us.findAll(qp);
 
 		mav.addObject("users", users);
 		mav.addObject("qp", qp);
 		return mav;
-		
+
 //		mav.addObject("users", us.findAll());
 //		return mav;
 	}
-	
+
 	@RequestMapping("/page/{page}")
 	public ModelAndView listPage(@PathVariable("page") Integer page) {
 		final ModelAndView mav = new ModelAndView("users/list");
-		
+
 		QueryParams qp = new QueryParams((page - 1) * PAGE_SIZE, PAGE_SIZE, us.getTotalUsers());
 		List<User> users = (List<User>) us.findAll(qp);
-		
+
 		mav.addObject("users", users);
 		mav.addObject("qp", qp);
 		return mav;
