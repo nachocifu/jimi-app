@@ -25,7 +25,6 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-@Sql("classpath:schema.sql")
 @Transactional
 public class UserDaoTest {
 	

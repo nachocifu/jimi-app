@@ -25,7 +25,6 @@ import static junit.framework.TestCase.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-@Sql("classpath:schema.sql")
 public class OrderDaoTest {
 
 	@Autowired

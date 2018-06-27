@@ -25,7 +25,6 @@ import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-@Sql("classpath:schema.sql")
 @Transactional
 public class DishDaoTest {
 
