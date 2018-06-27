@@ -51,7 +51,7 @@ missing constraints, foreigein keys and else.
 Structure Queries 
 ```
 ALTER TABLE public.dishes ADD minStock int DEFAULT 0 NULL;
-ALTER TABLE public.dishes ALTER COLUMN name TYPE varchar(40) USING name::varchar(40);
+ALTER TABLE public.dishes ALTER COLUMN name TYPE varchar(25) USING name::varchar(25);
 ALTER TABLE public.dishes ALTER COLUMN price TYPE real USING price::real;
 ALTER TABLE public.users ALTER COLUMN userid TYPE bigint USING userid::bigint;
 ALTER TABLE public.user_roles RENAME COLUMN role TO roles;
@@ -80,6 +80,7 @@ ALTER TABLE public.orders_items RENAME COLUMN dishid TO undonedishes_key;
 ALTER TABLE public.orders_items RENAME COLUMN quantity TO undonedishes;
 ALTER TABLE public.orders_items RENAME TO order_undonedishes;
 ALTER TABLE public.user_roles RENAME TO user_role;
+ALTER TABLE public.users ALTER COLUMN username TYPE varchar(40) USING username::varchar(40);
 -- Migrate table status enum value
 UPDATE tables SET status = status-1;
 
