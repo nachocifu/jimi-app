@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.services;
 
 
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
+import edu.itba.paw.jimi.interfaces.exceptions.Http400Error;
 import edu.itba.paw.jimi.interfaces.exceptions.MaxStockException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
@@ -32,6 +33,7 @@ public class DishServiceTest {
 	private static final float PRICE = 10.50F;
 	private static final int DEFAULT_STOCK = 0;
 	private static final int TEST_STOCK = 150;
+	private static final int TEST_MIN_STOCK = 50;
 	private static final int TEST_NEGATIVE_STOCK = -1;
 	private static final float e = 0.00001f;
 	private static final int MAX_STOCK = 1000000;
@@ -329,5 +331,39 @@ public class DishServiceTest {
 		assertNotNull(dbDishes);
 		assertEquals(2, dbDishes.size());
 	}
-	
+
+	@Test
+	public void defaultMinStockTest() {
+		Mockito.when(dishDao.findById(0)).thenReturn(new Dish(NAME, PRICE, 1, 0));
+
+		Dish testDish = dishService.findById(0);
+
+		Assert.assertEquals(0, testDish.getMinStock());
+	}
+
+	@Test
+	public void setMinStockTest() {
+		Mockito.when(dishDao.findById(0)).thenReturn(new Dish(NAME, PRICE, 1, 0));
+
+		Dish testDish = dishService.findById(0);
+
+		Mockito.when(dishDao.update(testDish)).thenReturn(1);
+
+		int retValue = dishService.setMinStock(testDish, TEST_MIN_STOCK);
+
+		Assert.assertEquals(retValue, TEST_MIN_STOCK);
+		Assert.assertEquals(testDish.getMinStock(), TEST_MIN_STOCK);
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void setMinStockNegativeTest() {
+		Mockito.when(dishDao.findById(0)).thenReturn(new Dish(NAME, PRICE, 1, 0));
+
+		Dish testDish = dishService.findById(0);
+
+		Mockito.when(dishDao.update(testDish)).thenReturn(1);
+
+		dishService.setMinStock(testDish, TEST_NEGATIVE_STOCK);
+	}
+
 }

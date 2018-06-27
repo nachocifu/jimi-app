@@ -20,8 +20,11 @@ public class Dish {
     @Column(precision = 10, scale = 2, nullable = false)
 	private float price;
 
-    @Column(precision = 10, nullable = false)
+	@Column(nullable = false)
 	private int stock;
+
+	@Column(nullable = false)
+	private int minStock;
 
     /* package */ Dish() {
     // Just for Hibernate, we love you!
@@ -92,5 +95,13 @@ public class Dish {
 			return DishStatus.UNAVAILABLE;
 		return DishStatus.AVAILABLE;
 		
+	}
+
+	public int getMinStock() {
+		return minStock;
+	}
+
+	public void setMinStock(int minStock) {
+		this.minStock = minStock;
 	}
 }

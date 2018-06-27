@@ -59,4 +59,13 @@ public interface DishService {
     Collection<Dish> findAllAvailable();
 
     int getTotalDishes();
+
+    /**
+     * Set a new min stock value to dish
+     *
+     * @param dish     the dish to be updated
+     * @param minStock the new value
+     * @return the new min stock value
+     */
+    int setMinStock(Dish dish, int minStock);
 }

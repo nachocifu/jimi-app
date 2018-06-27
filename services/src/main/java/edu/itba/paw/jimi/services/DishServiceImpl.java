@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.InvalidAttributeValueException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -101,4 +102,16 @@ public class DishServiceImpl implements DishService {
     public int getTotalDishes() {
         return dishDao.getTotalDishes();
     }
+
+
+	@Transactional
+	public int setMinStock(Dish dish, int minStock) {
+		if (minStock < 0)
+			throw new RuntimeException("Invalid min stock"); //TODO change exception, maybe catch on front and throw 400?
+		dish.setMinStock(minStock);
+		dishDao.update(dish);
+		LOGGER.info("Updated dish minstock {}", dish);
+		return dish.getMinStock();
+	}
+
 }

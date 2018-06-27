@@ -1,18 +1,19 @@
 package edu.itba.paw.jimi.webapp.controller;
 
 import edu.itba.paw.jimi.form.DishForm;
+import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -21,6 +22,9 @@ public class DishController {
 
     @Autowired
     private DishService dishService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(value = {"/create"}, method = { RequestMethod.GET })
     public ModelAndView register(@ModelAttribute("dishCreateForm") final DishForm form) {
@@ -79,6 +83,24 @@ public class DishController {
         dishService.decreaseStock(dish);
 
         return new ModelAndView("redirect:/admin/dishes/page/" + page);
+    }
+
+    @RequestMapping(value = "/{dishId}/set_min_stock", method = {RequestMethod.POST})
+    public ModelAndView setDishMinStockPost(
+            @PathVariable("dishId") Integer id,
+            @RequestParam(value = "minStock") int minStock) {
+
+        Dish dish = dishService.findById(id);
+
+        if (dish == null) {
+            throw new Http404Error(messageSource.getMessage("error.404.title",
+                    null, LocaleContextHolder.getLocale()), messageSource.getMessage("dish.error.404.body",
+                    null, LocaleContextHolder.getLocale()));
+        }
+
+        dishService.setMinStock(dish, minStock);
+
+        return new ModelAndView("redirect:/dishes/" + dish.getId());
     }
 
 }
