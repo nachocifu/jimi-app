@@ -12,9 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.YearMonth;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class OrderHibernateDao implements OrderDao{
@@ -61,12 +59,20 @@ public class OrderHibernateDao implements OrderDao{
         return (Collection<Order>) query.getResultList();
     }
 
-    public Map getMonthlyOrderTotal() {
+    public Map getMonthlyOrderTotal() { //TODO test
         Map<YearMonth, Double> hardcodeado = new HashMap<>();
-        hardcodeado.put(YearMonth.of(2018, 1), 100.0);
-        hardcodeado.put(YearMonth.of(2018, 2), 150.0);
-        hardcodeado.put(YearMonth.of(2018, 3), 130.0);
-        // TODO remove this hardcoded
+        Query query = em.createNativeQuery(
+                "SELECT CAST(extract(year FROM closedat) as INT) as year, CAST(extract(month FROM closedat) as INT) as month, CAST(SUM(total) AS FLOAT) " +
+                        "FROM orders " +
+                        "GROUP BY year, month " +
+                        "ORDER BY year, month");
+
+        List<Object[]> res = query.getResultList();
+        for (Object[] row : res) {
+            if (Arrays.asList(row).contains(null)) continue;
+            if ((double) row[2] == 0) continue;
+            hardcodeado.put(YearMonth.of(Integer.valueOf(row[0].toString()), Integer.valueOf(row[1].toString())), (double) row[2]);
+        }
         return hardcodeado;
     }
 }
