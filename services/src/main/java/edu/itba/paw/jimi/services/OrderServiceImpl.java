@@ -109,7 +109,11 @@ public class OrderServiceImpl implements OrderService {
 	    return orderService.getMonthlyOrderTotal();
 	}
 
-    public void setDishAsDone(Order order, Dish dish) {
+	public Map getMonthlyOrderCancelled() {
+		return orderService.getMonthlyOrderCancelled();
+	}
+
+	public void setDishAsDone(Order order, Dish dish) {
         orderService.setDishAsDone(order, dish);
     }
 

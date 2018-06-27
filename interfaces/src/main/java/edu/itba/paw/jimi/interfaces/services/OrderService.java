@@ -129,6 +129,8 @@ public interface OrderService {
      */
     Map getMonthlyOrderTotal();
 
+	Map getMonthlyOrderCancelled();
+
     void setDishAsDone(Order order, Dish dish);
 
     int getTotalRelevantOrders();

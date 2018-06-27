@@ -197,4 +197,9 @@ public class OrderJdbcDao implements OrderDao {
 		return 0;
 	}
 
+	@Override
+	public Map getMonthlyOrderCancelled() {
+		return null;
+	}
+
 }

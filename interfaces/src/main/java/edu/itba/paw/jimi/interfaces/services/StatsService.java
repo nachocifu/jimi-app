@@ -58,5 +58,7 @@ public interface StatsService {
      * @return percentage.
      */
     Map getMonthlyOrderTotal();
+
+    Map getMonthlyOrderCancelled();
 	
 }

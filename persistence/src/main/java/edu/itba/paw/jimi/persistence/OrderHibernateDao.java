@@ -116,6 +116,26 @@ public class OrderHibernateDao implements OrderDao{
     }
 
     @Override
+    public Map getMonthlyOrderCancelled() {
+        Map<YearMonth, Integer> response = new TreeMap<YearMonth, Integer>() {
+        };
+        Query query = em.createNativeQuery(
+                "SELECT CAST(extract(year FROM closedat) as INT) as year, CAST(extract(month FROM closedat) as INT) as month, CAST(COUNT(id) AS INT) as total " +
+                        "FROM orders " +
+                        "WHERE status = " + OrderStatus.CANCELED.ordinal() + " " +
+                        "GROUP BY year, month " +
+                        "ORDER BY year, month");
+
+        List<Object[]> res = query.getResultList();
+        for (Object[] row : res) {
+            if (Arrays.asList(row).contains(null)) continue;
+            if ((int) row[2] == 0) continue;
+            response.put(YearMonth.of(Integer.valueOf(row[0].toString()), Integer.valueOf(row[1].toString())), (int) row[2]);
+        }
+        return response;
+    }
+
+    @Override
     public Collection<Order> getActiveOrders(QueryParams qp) {
         String ordering = "";
         if (qp.getOrderBy() != null)

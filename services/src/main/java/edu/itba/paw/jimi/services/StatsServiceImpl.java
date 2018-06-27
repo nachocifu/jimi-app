@@ -65,6 +65,10 @@ public class StatsServiceImpl implements StatsService {
 		return orderService.getMonthlyOrderTotal();
 	}
 
+	public Map getMonthlyOrderCancelled() {
+		return orderService.getMonthlyOrderCancelled();
+	}
+
 	private int getNumberOfTablesWithState(TableStatus status) {
 
 		int count = 0;

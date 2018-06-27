@@ -55,4 +55,6 @@ public interface OrderDao {
 	Collection<Order> getActiveOrders(QueryParams qp);
 
 	int getTotalActiveOrders();
+
+	Map getMonthlyOrderCancelled();
 }

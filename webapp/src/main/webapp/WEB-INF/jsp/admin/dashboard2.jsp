@@ -51,12 +51,27 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="col s6">
+                        <div class="col s5 card">
                             <div id="table-status-pie"></div>
                         </div>
                     </c:otherwise>
                 </c:choose>
 
+                <c:choose>
+                    <c:when test="${monthlyOrdersCancelled.size() <= 0}">
+                        <div class="alert alert-info text-center">
+                            <spring:message code="order.no_order"/>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="col s1"></div>
+                        <div class="col s6 card">
+                            <div id="monthly-order-cancelled-time-series"></div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+            <div class="row">
                 <c:choose>
                     <c:when test="${monthOrderTotals.size() <= 0}">
                         <div class="alert alert-info text-center">
@@ -64,7 +79,8 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="col s6">
+
+                        <div class="col s12 card">
                             <div id="monthly-order-total-time-series"></div>
                         </div>
                     </c:otherwise>
@@ -105,6 +121,19 @@
         },
         length: ${monthOrderTotals.size()},
         plotTitle: "<spring:message code="dashboard.monthly_order_total_time_series"/>"
+    };
+
+    var monthlyOrdersCancelled = {
+        values: {
+            x: [<c:forEach items="${monthlyOrdersCancelled}" var="v" varStatus="loop">
+                '${v.key}'${!loop.last ? ',' : ''}
+                </c:forEach>],
+            y: [<c:forEach items="${monthlyOrdersCancelled}" var="v" varStatus="loop">
+                '${v.value}'${!loop.last ? ',' : ''}
+                </c:forEach>]
+        },
+        length: ${monthlyOrdersCancelled.size()},
+        plotTitle: "<spring:message code="dashboard.monthly_order_cancelled_time_series"/>"
     };
 
 </script>

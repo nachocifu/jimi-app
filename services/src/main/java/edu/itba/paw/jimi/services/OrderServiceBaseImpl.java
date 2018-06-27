@@ -224,6 +224,10 @@ public class OrderServiceBaseImpl implements OrderService {
         return orderDao.getMonthlyOrderTotal();
     }
 
+    public Map getMonthlyOrderCancelled() {
+        return orderDao.getMonthlyOrderCancelled();
+    }
+
     public void setDishAsDone(Order order, Dish dish) {
         if (order.getUnDoneDishes().containsKey(dish)) {
             int amount = order.getDishes().get(dish);
