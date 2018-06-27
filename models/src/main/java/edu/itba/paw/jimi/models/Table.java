@@ -15,13 +15,12 @@ public class Table {
     @Column(name = "tableid")
 	private long id;
 
-    @Column(length = 20, nullable = false) //TODO: De donde sacamos estos valores? Hay que fijarnos en otro lado?
+    @Column(length = 20, nullable = false)
 	private String name;
 
     @Enumerated(EnumType.ORDINAL)
 	private TableStatus status;
 
-//    @JoinColumn(name = "orderid", referencedColumnName = "orderid", nullable = false)
     @OneToOne(fetch = FetchType.EAGER, orphanRemoval = false)
     @Where(clause = "statusid = 0")
 	private Order order;

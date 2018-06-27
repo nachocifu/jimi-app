@@ -26,6 +26,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
           integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous"/>
 
+    <%--<!-- Compiled and minified CSS -->--%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
     <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/tables/checkout.css"/>" rel="stylesheet" type="text/css">
@@ -37,7 +40,6 @@
 
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-<%-- TODO hay que hacer responsive esta tabla --%>
 <div class="table-container">
     <div class="card">
         <div class="card-content">
@@ -92,13 +94,25 @@
             </div>
             <div class="row">
                 <div class="col s4">
-                    <form action="<c:url value="/tables/${table.id}/status"/>" method="POST">
-                        <input value="1" name="status" type="hidden"/>
-                        <input type="submit"
-                               class="waves-effect waves-light btn"
-                               value="<spring:message code="checkout.charged"/>"/>
-                    </form>
+
+                    <!-- Modal Trigger -->
+                    <button data-target="modal1" class="btn modal-trigger"><spring:message code="checkout.charged"/></button>
+
+                    <!-- Modal Structure -->
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                            <h4><spring:message code="table.sure_charged"/></h4>
+                            <form action="<c:url value="/tables/${table.id}/status"/>" method="POST">
+                                <input value="1" name="status" type="hidden"/>
+                                <a class="modal-close btn blue-gray"><spring:message code="table.back"/></a>
+                                <input type="submit"
+                                       class="btn blue-gray"
+                                       value="<spring:message code="checkout.charged"/>"/>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="col s4">
                     <%--TODO hay que mejorar lo que imprime esto, es algo menor, pero todo puede restar--%>
                     <button onclick="window.print();" class="waves-effect waves-light btn" type="button">
@@ -120,10 +134,31 @@
 </div>
 
 
+
+<!-- start js include path -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+
+
+<!-- Compiled and minified JavaScript -->
+
+<!-- end js include path -->
+
 <!-- start js include path -->
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 <!-- end js include path -->
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.modal').modal();
+    });
+</script>
+
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
 </body>
 </html>
 

@@ -55,15 +55,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return ds;
     }
 
-// TODO: Eliminar cuando hibernate funciona.
-//    @Bean
-//    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
-//        final DataSourceInitializer dsi = new DataSourceInitializer();
-//        dsi.setDataSource(ds);
-//        dsi.setDatabasePopulator(databasePopulator());
-//        return dsi;
-//    }
-
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -73,13 +64,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         messageSource.setCacheSeconds(5);
         return messageSource;
     }
-
-// TODO: Eliminar cuando hibernate funciona.
-//    private DatabasePopulator databasePopulator() {
-//        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-//        dbp.addScript(schemaSql);
-//        return dbp;
-//    }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
@@ -100,11 +84,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         final Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto","update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
-
-
-        // TODO: Si ponen esto en prod, hay tabla!!!
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("format_sql", "true");
 
         factoryBean.setJpaProperties(properties);
         return factoryBean;

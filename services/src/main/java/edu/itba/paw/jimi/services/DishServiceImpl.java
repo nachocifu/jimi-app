@@ -3,6 +3,7 @@ package edu.itba.paw.jimi.services;
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.interfaces.exceptions.MaxPriceException;
 import edu.itba.paw.jimi.interfaces.exceptions.MaxStockException;
+import edu.itba.paw.jimi.interfaces.exceptions.MinStockException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
@@ -125,7 +126,7 @@ public class DishServiceImpl implements DishService {
 	@Transactional
 	public int setMinStock(Dish dish, int minStock) {
 		if (minStock < 0)
-			throw new RuntimeException("Invalid min stock"); //TODO change exception, maybe catch on front and throw 400?
+			throw new MinStockException();
 		dish.setMinStock(minStock);
 		dishDao.update(dish);
 		LOGGER.info("Updated dish minstock {}", dish);

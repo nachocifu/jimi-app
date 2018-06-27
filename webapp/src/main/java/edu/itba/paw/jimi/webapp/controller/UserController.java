@@ -95,9 +95,6 @@ public class UserController {
 		mav.addObject("users", users);
 		mav.addObject("qp", qp);
 		return mav;
-		
-//		mav.addObject("users", us.findAll());
-//		return mav;
 	}
 	
 	@RequestMapping("/page/{page}")

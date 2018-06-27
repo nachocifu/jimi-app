@@ -44,7 +44,6 @@
 
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-<%-- TODO hay que hacer responsive esta tabla --%>
 <div class="table-container">
     <div class="card">
         <div class="card-head">

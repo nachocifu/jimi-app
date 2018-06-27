@@ -37,7 +37,6 @@
 
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-<%-- TODO hay que hacer responsive esta tabla --%>
 <div class="table-container">
     <div class="card">
         <div class="card-content">
@@ -51,7 +50,6 @@
                 <form:input type="text" path="username" cssClass="validate"/>
                 <form:errors path="username" cssClass="formError" element="p"/>
 
-                <%--TODO mirar si la class se pone con class o con cssClass?--%>
                 <form:label path="password"
                             cssClass="mdl-textfield__label"><spring:message
                         code="user.password_form_label"/></form:label>
