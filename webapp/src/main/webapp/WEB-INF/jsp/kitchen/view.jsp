@@ -135,7 +135,7 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <span><spring:message code="admin.latest_bills"/></span>
+                    <span><spring:message code="kitchen.total_dishes"/></span>
                     <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp highlight">
                         <thead>
                         <tr>
