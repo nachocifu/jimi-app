@@ -215,9 +215,5 @@ public class OrderServiceImpl implements OrderService {
 	public Map getMonthlyOrderTotal() {
 		return orderDao.getMonthlyOrderTotal();
 	}
-
-	public Collection<Order> findAllOpen(){
-		return orderDao.findAllOpen();
-	}
 	
 }

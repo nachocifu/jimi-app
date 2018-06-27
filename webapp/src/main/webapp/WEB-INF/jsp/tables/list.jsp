@@ -23,18 +23,15 @@
 
 </head>
 
-<body class="">
+<body >
 <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white">
-
         <div class="logo">
             <a href="#" class="simple-text logo-normal">
                 JIMI RESTAURANT APP
             </a>
         </div>
-
         <jsp:include page="/WEB-INF/UTILS/sidbar.jsp"/>
-
     </div>
     <div class="main-panel">
         <!-- Navbar -->
@@ -65,7 +62,7 @@
                                     </c:when>
                                     <c:otherwise>
                                     <table class="table">
-                                        <thead class=" text-primary">
+                                        <thead>
                                         <th><spring:message code="table.name"/></th>
                                         <th><spring:message code="table.status"/></th>
                                         <th>Actions</th>
@@ -74,14 +71,14 @@
                                         <c:forEach items="${tables}" var="table">
                                             <tr>
                                                 <th>${table.name}</th>
-                                                <th>${table.status}</th>
+                                                <th>${table.status.name()}</th>
                                                 <div class="center-align">
                                                     <th>
                                                     <c:choose>
                                                         <c:when test="${table.status == 'FREE'}">
                                                             <form style="float:left; padding-right:10px" action="<c:url value="/tables/${table.id}/status"/>" method="POST">
                                                                 <input value="${BusyCode}" name="status" type="hidden"/>
-                                                                <button type="submit" class="btn btn-success btn-xs"><i class="material-icons">unarchive</i></button>
+                                                                <button type="submit" class="btn btn-warning btn-xs"><i class="material-icons">unarchive</i></button>
                                                             </form>
                                                         </c:when>
                                                         <c:otherwise>

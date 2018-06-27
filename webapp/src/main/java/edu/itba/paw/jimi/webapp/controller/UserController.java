@@ -3,6 +3,7 @@ package edu.itba.paw.jimi.webapp.controller;
 import edu.itba.paw.jimi.form.UserForm;
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import edu.itba.paw.jimi.webapp.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/users")
