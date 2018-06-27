@@ -49,10 +49,10 @@
     <div class="card">
         <div class="card-head">
             <div class="row">
-                <div class="col s6">
-                    <span>
-                        <spring:message code="admin.please_select_dish"/>${order.id}
-                    </span>
+                <div class="col s12">
+                    <h5>
+                        <spring:message code="admin.please_select_dish"/> ${order.id}
+                    </h5>
                 </div>
             </div>
         </div>

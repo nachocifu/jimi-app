@@ -66,13 +66,32 @@
                     <h2>
                         <strong><span>${table.name}</span></strong>
                     </h2>
-                    <h4>
-                        (${diners} <spring:message code="table.diners"/>)
-                    </h4>
+                    <div class="row">
+                        <div class="col s2"></div>
+                        <div class="col s2 inc-margin">
+                            <form action="<c:url value="/tables/${table.id}/subtract_diner"/>" method="post">
+                                    <%--TODO sacar hardcoded valude del input--%>
+                                <input type="submit" value="- <spring:message code="table.diners"/>"
+                                       class="btn btn-default pull-right <c:if test="${diners == 0}">disabled</c:if>">
+                            </form>
+                        </div>
+                        <div class="col s4">
+                            <h4>
+                                (${diners} <spring:message code="table.diners"/>)
+                            </h4>
+                        </div>
+                        <div class="col s2 inc-margin">
+                            <form class="pull-left" action="<c:url value="/tables/${table.id}/add_diner"/>" method="post">
+                                    <%--TODO sacar hardcoded valude del input--%>
+                                <input type="submit" value="+ <spring:message code="table.diners"/>"
+                                       class="btn btn-default pull-right">
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-action">
                     <div class="row">
-                        <div class="col s2">
+                        <div class="col s3">
                             <form action="<c:url value="/tables/${table.id}/add_dish"/>">
                                 <input type="submit" value="<spring:message code="table.add_dish"/>"
                                        class="btn btn-default"/>
@@ -80,7 +99,7 @@
                         </div>
                         <c:choose>
                             <c:when test="${table.order.dishes.size() > 0}">
-                                <div class="col s2">
+                                <div class="col s3">
                                     <!-- Modal Trigger -->
                                     <button data-target="modal1" class="btn modal-trigger"><spring:message code="table.charge_caps"/></button>
 
@@ -101,8 +120,15 @@
                                     </div>
                                 </div>
                             </c:when>
+                            <c:otherwise>
+                                <div class="col s3">
+                                    <input type="submit"
+                                           class="btn blue-gray disabled"
+                                           value="<spring:message code="table.charge_caps"/>"/>
+                                </div>
+                            </c:otherwise>
                         </c:choose>
-                        <div class="col s2">
+                        <div class="col s3">
                             <!-- Modal Trigger -->
                             <button data-target="modal2" class="btn modal-trigger"><spring:message code="table.cancel_caps"/></button>
 
@@ -122,24 +148,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col s4">
+                        <div class="col s3">
                             <a href="<c:url value="/tables/"/>"
                                class="btn blue-gray"><spring:message code="table.return_to_table_list"/>
                             </a>
-                        </div>
-                        <div class="col s2">
-                            <form action="<c:url value="/tables/${table.id}/subtract_diner"/>" method="post">
-                                    <%--TODO sacar hardcoded valude del input--%>
-                                <input type="submit" value="- <spring:message code="table.diners"/>"
-                                       class="btn btn-default pull-right <c:if test="${diners == 0}">disabled</c:if>">
-                            </form>
-                        </div>
-                        <div class="col s2">
-                            <form action="<c:url value="/tables/${table.id}/add_diner"/>" method="post">
-                                    <%--TODO sacar hardcoded valude del input--%>
-                                <input type="submit" value="+ <spring:message code="table.diners"/>"
-                                       class="btn btn-default pull-right">
-                            </form>
                         </div>
                     </div>
                 </div>

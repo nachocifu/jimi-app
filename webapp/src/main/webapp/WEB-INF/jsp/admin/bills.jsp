@@ -56,39 +56,41 @@
                     <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp highlight">
                         <thead>
                         <tr>
-                            <td><strong><spring:message code="bill.transaction_id"/></strong></td>
                             <td><strong><spring:message code="bill.date"/></strong></td>
-                            <td><strong><spring:message code="admin.status"/></strong></td>
                             <td><strong><spring:message code="bill.ammount"/></strong></td>
                             <td><strong><spring:message code="bill.diners"/></strong></td>
+                            <td><strong></strong></td>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach begin="0" end="9" items="${lastOrders}" var="order">
+                        <c:forEach items="${lastOrders}" var="order">
                             <tr>
-                                <td>${order.id}</td>
-                                <td><fmt:formatDate pattern="dd-MM-yyyy" value="${order.closedAt}"/> - <fmt:formatDate
-                                        pattern="HH:mm" value="${order.closedAt}"/></td>
-                                <c:choose>
-                                    <c:when test="${order.total >= 0 && order.total < 1000}">
-                                        <td><span class="label label-danger"><spring:message
-                                                code="category.standard"/></span></td>
-                                    </c:when>
-                                    <c:when test="${order.total >= 1000 && order.total < 1500}">
-                                        <td><span class="label label-warning"><spring:message
-                                                code="category.average"/></span></td>
-                                    </c:when>
-                                    <c:when test="${order.total >= 1500}">
-                                        <td><span class="label label-success"><spring:message
-                                                code="category.outstanding"/></span></td>
-                                    </c:when>
-                                </c:choose>
+                                <td><fmt:formatDate pattern="dd/MM/yyyy" value="${order.closedAt}"/> - <fmt:formatDate
+                                        pattern="H:mm" value="${order.closedAt}"/></td>
                                 <td>$${order.total}</td>
                                 <td>${order.diners}</td>
+                                <td>
+                                    <a href=<c:url
+                                            value="/admin/order_edit/${order.id}"/>>
+                                        <i class="fa fa-edit fa-lg"></i>
+                                    </a>
+                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
+                    <ul class="pagination paginator">
+                        <c:forEach var="i" begin="1" end="${qp.pageCount}">
+                            <c:if test="${qp.currentPage +1 == i}">
+                                <li class="active"><a href="<c:url value="/admin/bills/page/${i}"/>"><c:out
+                                        value="${i}"/></a></li>
+                            </c:if>
+                            <c:if test="${qp.currentPage +1 != i}">
+                                <li class="waves-effect"><a href="<c:url value="/admin/bills/page/${i}"/>"><c:out
+                                        value="${i}"/></a></li>
+                            </c:if>
+                        </c:forEach>
+                    </ul>
                 </c:otherwise>
             </c:choose>
 

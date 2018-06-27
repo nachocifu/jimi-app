@@ -115,6 +115,13 @@ public interface OrderService {
 	 */
 	Collection<Order> findAll(QueryParams qp);
 
+	/**
+	 * Finds all closed orders.
+	 *
+	 * @return A collection of said orders.
+	 */
+	Collection<Order> findAllRelevant(QueryParams qp);
+
     /**
      * Finds all closed orders' total by month.
      *
@@ -123,4 +130,10 @@ public interface OrderService {
     Map getMonthlyOrderTotal();
 
     void setDishAsDone(Order order, Dish dish);
+
+    int getTotalRelevantOrders();
+
+    Collection<Order> getActiveOrders(QueryParams qp);
+
+    int getTotalActiveOrders();
 }

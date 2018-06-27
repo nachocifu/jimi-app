@@ -101,12 +101,28 @@ public class OrderServiceImpl implements OrderService {
 		return orderService.findAll(qp);
 	}
 
-	public Map getMonthlyOrderTotal() {
+    public Collection<Order> findAllRelevant(QueryParams qp) {
+        return orderService.findAllRelevant(qp);
+    }
+
+    public Map getMonthlyOrderTotal() {
 	    return orderService.getMonthlyOrderTotal();
 	}
 
     public void setDishAsDone(Order order, Dish dish) {
         orderService.setDishAsDone(order, dish);
+    }
+
+    public int getTotalRelevantOrders() {
+        return orderService.getTotalRelevantOrders();
+    }
+
+    public Collection<Order> getActiveOrders(QueryParams qp) {
+        return orderService.getActiveOrders(qp);
+    }
+
+    public int getTotalActiveOrders() {
+        return orderService.getTotalActiveOrders();
     }
 
 }

@@ -69,4 +69,64 @@ public class OrderHibernateDao implements OrderDao{
         // TODO remove this hardcoded
         return hardcodeado;
     }
+
+    @Override
+    public Collection<Order> findAllRelevant(QueryParams qp) {
+        String ordering = "";
+        if (qp.getOrderBy() != null)
+            ordering += " order by " + qp.getOrderBy();
+
+        if (qp.isAscending())
+            ordering += " ASC";
+        else
+            ordering += " DESC";
+
+        final Query query = em.createQuery("from Order as o where o.status = :closed or o.status = :canceled" + ordering, Order.class);
+        query.setParameter("closed", OrderStatus.CLOSED);
+        query.setParameter("canceled", OrderStatus.CANCELED);
+
+        if (qp.getStartAt() != QueryParams.NO_VALUE) {
+            query.setFirstResult(qp.getStartAt());
+            query.setMaxResults(qp.getPageSize());
+        }
+
+        return (Collection<Order>) query.getResultList();
+    }
+
+    @Override
+    public int getTotalRelevantOrders() {
+        Query query = em.createQuery("select count(*) from Order as o where o.status = :closed or o.status = :canceled");
+        query.setParameter("closed", OrderStatus.CLOSED);
+        query.setParameter("canceled", OrderStatus.CANCELED);
+        return ((Long)query.getSingleResult()).intValue();
+    }
+
+    @Override
+    public int getTotalActiveOrders() {
+        Query query = em.createQuery("select count(*) from Order as o where o.status = :opened");
+        query.setParameter("opened", OrderStatus.OPEN);
+        return ((Long)query.getSingleResult()).intValue();
+    }
+
+    @Override
+    public Collection<Order> getActiveOrders(QueryParams qp) {
+        String ordering = "";
+        if (qp.getOrderBy() != null)
+            ordering += " order by " + qp.getOrderBy();
+
+        if (qp.isAscending())
+            ordering += " ASC";
+        else
+            ordering += " DESC";
+
+        final Query query = em.createQuery("from Order as o where o.status = :opened" + ordering, Order.class);
+        query.setParameter("opened", OrderStatus.OPEN);
+
+        if (qp.getStartAt() != QueryParams.NO_VALUE) {
+            query.setFirstResult(qp.getStartAt());
+            query.setMaxResults(qp.getPageSize());
+        }
+
+        return (Collection<Order>) query.getResultList();
+    }
 }

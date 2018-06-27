@@ -58,11 +58,27 @@ public class AdminController {
 		return mav;
 	}
 
+    private static final int PAGE_SIZE = 3;
+
 	@RequestMapping("/bills")
 	public ModelAndView bills() {
 		final ModelAndView mav = new ModelAndView("admin/bills");
 
-		mav.addObject("lastOrders", orderService.findAll(new QueryParams("id", false)));
+        QueryParams qp = new QueryParams(0, PAGE_SIZE, orderService.getTotalRelevantOrders(), "closedat", false);
+		mav.addObject("lastOrders", orderService.findAllRelevant(qp));
+        mav.addObject("qp", qp);
+
+		return mav;
+	}
+
+    @RequestMapping("bills/page/{page}")
+    public ModelAndView billsPages(@PathVariable("page") Integer page) {
+        final ModelAndView mav = new ModelAndView("admin/bills");
+
+        QueryParams qp = new QueryParams((page - 1) * PAGE_SIZE, PAGE_SIZE, orderService.getTotalRelevantOrders(), "closedat", false);
+
+        mav.addObject("lastOrders", orderService.findAllRelevant(qp));
+        mav.addObject("qp", qp);
 
 		return mav;
 	}
