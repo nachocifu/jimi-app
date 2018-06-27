@@ -65,7 +65,7 @@ public class TableServiceImpl implements TableService {
     @Transactional
     public void changeStatus(Table table, TableStatus status) {
 
-        if (table.getStatus().equals(TableStatus.BUSY) && !status.equals(TableStatus.PAYING))
+        if (table.getStatus().equals(TableStatus.BUSY) && (!status.equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE)))
             throw new TableStatusTransitionInvalid(TableStatus.PAYING, status);
 
         if (table.getStatus().equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE))
@@ -81,6 +81,12 @@ public class TableServiceImpl implements TableService {
                 break;
             }
             case FREE: {
+                if (table.getStatus().equals(TableStatus.PAYING)) { //Normal flow.
+                    //Nothing to do.
+                }
+                if (table.getStatus().equals(TableStatus.BUSY)) {//Cancel order!
+                    orderService.cancel(table.getOrder());
+                }
                 Order newOrder = orderService.create(OrderStatus.INACTIVE, null, null, 0);
                 table.setOrder(newOrder);
                 break;

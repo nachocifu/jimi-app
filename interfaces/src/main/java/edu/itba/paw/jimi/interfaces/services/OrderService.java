@@ -3,6 +3,7 @@ package edu.itba.paw.jimi.interfaces.services;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -75,6 +76,13 @@ public interface OrderService {
 	 * @param order
 	 */
 	void close(Order order);
+
+	/**
+	 * Sets the timestamp for closedAt and changes the status to canceled.
+	 *
+	 * @param order
+	 */
+	void cancel(Order order);
 	
 	/**
 	 * Sets the amount of dinners.
@@ -91,6 +99,14 @@ public interface OrderService {
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll();
+
+
+	/**
+	 * Finds all closed orders.
+	 *
+	 * @return A collection of said orders.
+	 */
+	Collection<Order> findAll(QueryParams qp);
 
     /**
      * Finds all closed orders' total by month.

@@ -106,9 +106,24 @@ public class TableServiceTest {
 		
 		assertEquals(TableStatus.PAYING, table.getStatus());
 	}
-	
+
+
+	@Test
+	public void setStatusFromBusyToFreeCANCELEDTest() {
+		Order order = new Order(1, null, null, OrderStatus.OPEN, 0, 0);
+		Table table = new Table(TABLE_NAME, 1, TableStatus.BUSY, order);
+
+		// Mockito mocking
+		Mockito.when(tableDao.findById(1)).thenReturn(table);
+		// Mockito mocking
+
+		tableService.changeStatus(table, TableStatus.FREE);
+
+		assertEquals(TableStatus.FREE, table.getStatus());
+	}
+
 	@Test(expected = TableStatusTransitionInvalid.class)
-	public void setStatusFromBusyToNOTCleaningTest() {
+	public void setStatusFromBusyToNOTCleaningORFreeTest() {
 		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.BUSY, order);
 		
@@ -116,7 +131,7 @@ public class TableServiceTest {
 		Mockito.when(tableDao.findById(1)).thenReturn(table);
 		// Mockito mocking
 		
-		tableService.changeStatus(table, TableStatus.FREE);
+		tableService.changeStatus(table, TableStatus.BUSY);
 		
 	}
 	

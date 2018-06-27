@@ -4,6 +4,7 @@ import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -137,6 +138,11 @@ public class OrderJdbcDao implements OrderDao {
 						"WHERE o.statusid = ? ",
 				ROW_MAPPER, OrderStatus.CLOSED.ordinal());
 		return col;
+	}
+
+	@Override
+	public Collection<Order> findAll(QueryParams qp) {
+		return null;
 	}
 
 	public Map getMonthlyOrderTotal() {

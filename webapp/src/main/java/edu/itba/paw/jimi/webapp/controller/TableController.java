@@ -10,6 +10,7 @@ import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -38,13 +39,28 @@ public class TableController {
 	@Autowired
 	private MessageSource messageSource;
 
-	@RequestMapping("")
-	public ModelAndView list() {
-		final ModelAndView mav = new ModelAndView("tables/list");
-		mav.addObject("tables", ts.findAll());
-		return mav;
-	}
+    private static final int PAGE_SIZE = 3;
 
+    @RequestMapping("")
+    public ModelAndView list() {
+        final ModelAndView mav = new ModelAndView("tables/list");
+        QueryParams qp = new QueryParams(0, PAGE_SIZE, ts.getTotalTables());
+        mav.addObject("qp", qp);
+        mav.addObject("tables", ts.findAll(qp));
+        return mav;
+    }
+
+    @RequestMapping("/page/{page}")
+    public ModelAndView listPage(@PathVariable("page") Integer page) {
+        final ModelAndView mav = new ModelAndView("tables/list");
+
+        QueryParams qp = new QueryParams((page - 1) * PAGE_SIZE, PAGE_SIZE, ts.getTotalTables());
+
+        mav.addObject("tables", ts.findAll(qp));
+        mav.addObject("qp", qp);
+        return mav;
+    }
+	
 	@RequestMapping("/{id}")
 	public ModelAndView index(@PathVariable("id") Integer id,
 							  @ModelAttribute("tableSetDinersForm") final TableSetDinersForm form,

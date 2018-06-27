@@ -1,11 +1,17 @@
 package edu.itba.paw.jimi.models.Utilities;
 
 public class QueryParams {
+
+    public static final int NO_VALUE = -1;
+
+
     private int startAt;
     private int pageSize;
     private int total;
     private int pageCount;
     private int currentPage;
+    private String orderBy;
+    private boolean ascending;
 
     public QueryParams(int startAt, int pageSize) {
         this.pageSize = pageSize;
@@ -16,6 +22,29 @@ public class QueryParams {
         this.startAt = startAt;
         this.pageSize = pageSize;
         setTotal(total);
+    }
+
+    public QueryParams(String orderBy, boolean ascending) {
+        this.orderBy = orderBy;
+        this.ascending = ascending;
+        this.startAt = NO_VALUE;
+        this.pageSize = NO_VALUE;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public boolean isAscending() {
+        return ascending;
+    }
+
+    public void setAscending(boolean ascending) {
+        this.ascending = ascending;
     }
 
     public int getPageSize() {

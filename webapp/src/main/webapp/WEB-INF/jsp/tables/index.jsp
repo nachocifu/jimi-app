@@ -7,6 +7,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="BusyCode" value="<%=TableStatus.BUSY.ordinal()%>"/>
 <c:set var="PayingCode" value="<%=TableStatus.PAYING.ordinal()%>"/>
+<c:set var="FreeCode" value="<%=TableStatus.FREE.ordinal()%>"/>
 
 
 <html>
@@ -48,8 +49,8 @@
             <c:if test="${table.status == 'FREE'}">
                 <h2><spring:message code="table.table_is"/>
                     <strong>
-                                                    <span style="color: green;"><spring:message
-                                                            code="table.free"/>.</span>
+                        <span style="color: green;"><spring:message
+                                code="table.free"/>.</span>
                     </strong>
                 </h2>
                 <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
@@ -77,13 +78,49 @@
                                        class="btn btn-default"/>
                             </form>
                         </div>
+                        <c:choose>
+                            <c:when test="${table.order.dishes.size() > 0}">
+                                <div class="col s2">
+                                    <!-- Modal Trigger -->
+                                    <button data-target="modal1" class="btn modal-trigger"><spring:message code="table.charge_caps"/></button>
+
+                                    <!-- Modal Structure -->
+                                    <div id="modal1" class="modal">
+                                        <div class="modal-content">
+                                            <h4><spring:message code="table.sure_charge"/></h4>
+                                            <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
+                                                <div class="modal-footer">
+                                                    <input value="${PayingCode}" name="status" type="hidden"/>
+                                                    <a class="modal-close btn blue-gray"><spring:message code="table.back"/></a>
+                                                    <input type="submit"
+                                                           class="btn blue-gray"
+                                                           value="<spring:message code="table.charge_caps"/>"/>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:when>
+                        </c:choose>
                         <div class="col s2">
-                            <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                                <input value="${PayingCode}" name="status" type="hidden"/>
-                                <input type="submit"
-                                       class="btn blue-gray"
-                                       value="<spring:message code="table.charge_caps"/>"/>
-                            </form>
+                            <!-- Modal Trigger -->
+                            <button data-target="modal2" class="btn modal-trigger"><spring:message code="table.cancel_caps"/></button>
+
+                            <!-- Modal Structure -->
+                            <div id="modal2" class="modal">
+                                <div class="modal-content">
+                                    <h4><spring:message code="table.sure_cancel"/></h4>
+                                    <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
+                                        <div class="modal-footer">
+                                            <input value="${FreeCode}" name="status" type="hidden"/>
+                                            <a class="modal-close btn blue-gray"><spring:message code="table.back"/></a>
+                                            <input type="submit"
+                                                   class="btn blue-gray"
+                                                   value="<spring:message code="table.cancel_caps_confirm"/>"/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                         <div class="col s4">
                             <a href="<c:url value="/tables/"/>"
@@ -135,10 +172,10 @@
                                             <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
                                                   method="post"
                                                   class="form-with-buttons">
-                                                <a class="btn btn-success btn-xs"
-                                                   onclick="M.toast({html: '<spring:message code="table.added"/> ${dishEntry.key.name}'})">
+                                                <button type="submit"
+                                                        class="btn btn-primary btn-xs">
                                                     <i class="fa fa-plus"></i>
-                                                </a>
+                                                </button>
                                                 <input type="hidden"
                                                        value="${dishEntry.key.id}"
                                                        name="dishid"/>
@@ -147,33 +184,34 @@
                                     </td>
                                     <td>
                                         <form action="<c:url value="/tables/${table.id}/remove_one_dish"/>"
-                                              method="post" class="form-with-buttons" id="remove-dish-form">
-                                                <%--<button type="submit"--%>
-                                                <%--class="btn btn-primary btn-xs">--%>
-                                                <%--<i class="fa fa-minus"></i>--%>
-                                                <%--</button>--%>
-                                            <%--<button class="btn btn-success btn-xs"--%>
-                                               <%--onclick="myFunction()">--%>
-                                                <%--<i class="fa fa-minus"></i>--%>
-                                            <%--</button>--%>
-                                                    <a id="removed-dish-a" class="btn btn-success btn-xs"
-                                                       onclick="M.toast({html: '<spring:message code="table.removed"/> ${dishEntry.key.name}'})">
-                                                        <i class="fa fa-minus"></i>
-                                                    </a>
+                                              method="post" class="form-with-buttons">
+                                            <button type="submit"
+                                                    class="btn btn-primary btn-xs">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
                                             <input type="hidden" value="${dishEntry.key.id}"
                                                    name="dishid"/>
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="<c:url value="/tables/${table.id}/remove_all_dish"/>"
-                                              method="post" class="form-with-buttons">
-                                            <button type="submit"
-                                                    class="btn btn-danger btn-xs">
-                                                <i class="fa fa-trash-o "></i>
-                                            </button>
-                                            <input type="hidden" value="${dishEntry.key.id}"
-                                                   name="dishid"/>
-                                        </form>
+                                        <!-- Modal Trigger -->
+                                        <button data-target="modal3" class="btn modal-trigger"><i class="fa fa-trash-o"></i></button>
+
+                                        <!-- Modal Structure -->
+                                        <div id="modal3" class="modal">
+                                            <div class="modal-content">
+                                                <h4><spring:message code="table.sure_remove_all_dishes"/></h4>
+                                                <form action="<c:url value="/tables/${table.id}/remove_all_dish"/>"
+                                                      method="post" class="form-with-buttons">
+                                                    <input type="hidden" value="${dishEntry.key.id}"
+                                                           name="dishid"/>
+                                                    <a class="modal-close btn blue-gray"><spring:message code="table.back"/></a>
+                                                    <input type="submit"
+                                                           class="btn blue-gray"
+                                                           value="<spring:message code="table.sure_remove_all_dishes_confirm"/>"/>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -191,14 +229,16 @@
     </div>
 </div>
 
-<!-- start js include path -->
-<script>
-    document.getElementById("removed-dish-a").onclick = function() {
-        M.toast({html: '<spring:message code="table.removed"/> ${dishEntry.key.name}'})
-        document.getElementById("remove-dish-form").submit();
-    }
 
+<!-- start js include path -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.modal').modal();
+    });
 </script>
+
 <!-- Compiled and minified JavaScript -->
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 

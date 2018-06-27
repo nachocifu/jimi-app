@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.interfaces.daos;
 
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -33,6 +34,12 @@ public interface OrderDao {
 	 * @return List of said orders.
 	 */
 	Collection<Order> findAll();
+
+	/**
+	 * Find all closed orders, ordered decreased by closed timestamp.
+	 * @return List of said orders.
+	 */
+	Collection<Order> findAll(QueryParams qp);
 
 	/**
 	 * Find all closed orders' total by month, ordered decreased by closed timestamp.

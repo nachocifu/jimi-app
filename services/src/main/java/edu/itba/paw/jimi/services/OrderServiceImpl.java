@@ -10,6 +10,7 @@ import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -186,9 +187,28 @@ public class OrderServiceImpl implements OrderService {
 		LOGGER.info("Closed order {}", order);
 	}
 
+	public void cancel(Order order) {
+		if (!order.getStatus().equals(OrderStatus.OPEN))
+			throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
+
+		order.setStatus(OrderStatus.CANCELED);
+		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+		orderDao.update(order);
+
+		LOGGER.info("Canceled order {}", order);
+	}
+
 	public Collection<Order> findAll() {
 		
 		Collection<Order> orders = orderDao.findAll();
+		if (orders != null)
+			return orders;
+		else
+			return new HashSet<Order>();
+	}
+
+	public Collection<Order> findAll(QueryParams qp) {
+		Collection<Order> orders = orderDao.findAll(qp);
 		if (orders != null)
 			return orders;
 		else
