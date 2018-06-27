@@ -40,7 +40,6 @@ _Waiter:_
 * Change DB structure (@see migrations note)
 
 ## Screen Resolutions Supported
-*  694x768
 *  1024x768
 *  1366x768
 

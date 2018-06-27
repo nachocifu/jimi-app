@@ -58,7 +58,7 @@ public class AdminController {
 		return mav;
 	}
 
-    private static final int PAGE_SIZE = 3;
+    private static final int PAGE_SIZE = 10;
 
 	@RequestMapping("/bills")
 	public ModelAndView bills() {
