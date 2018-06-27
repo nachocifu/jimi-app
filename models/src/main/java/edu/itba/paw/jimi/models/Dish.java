@@ -14,7 +14,7 @@ public class Dish {
     @Column(name = "dishid")
     private int id;
 
-    @Column(length = 40, nullable = false)
+    @Column(length = 25, nullable = false)
 	private String name;
 
     @Column(precision = 10, scale = 2, nullable = false)
