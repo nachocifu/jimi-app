@@ -24,9 +24,6 @@
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/tables/create.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
 </head>

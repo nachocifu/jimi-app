@@ -26,21 +26,6 @@
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
-          integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous"/>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.css"
-          integrity="sha256-tkYpq+Xdq4PQNNGRDPtH3G55auZB4+kh/RA80Abngaw=" crossorigin="anonymous"/>
-
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
-
-
-    <link href="<c:url value="/resources/css/header.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/common.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="/resources/css/tables/add_dish.css"/>" rel="stylesheet" type="text/css">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
 </head>
 
 <body class="">
@@ -74,14 +59,14 @@
                                 <h4 class="card-title "><spring:message code="table.add_dish"/></h4>
                             </div>
                             <c:url value="/tables/create" var="postPath"/>
-                            <div class="table-responsive">
+                            <div class="table">
                                 <c:choose>
                                     <c:when test="${dishes.size() > 0}">
                                         <form:form modelAttribute="tableAddDishForm" action="${postPath}" method="post">
                                             <c:url value="/tables/${table.id}/add_dish" var="postPath"/>
                                             <div class="row">
                                                 <div class="input-field col s12">
-                                                    <form:select style="float:left; padding-right:10px" id="dishid" name="dishid" path="dishid">
+                                                    <form:select id="dishid" name="dishid" path="dishid">
                                                         <c:forEach items="${dishes}" var="dish">
                                                             <option value="${dish.id}"
                                                                     data-max="${dish.stock}">${dish.name}</option>
@@ -124,8 +109,6 @@
 <script src="<c:url value="/resources/js/core/bootstrap-material-design.min.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/resources/js/plugins/perfect-scrollbar.jquery.min.js"/>"></script>
 
-<!-- Chartist JS -->
-<script src="<c:url value="/resources/js/plugins/chartist.min.js"/>"></script>
 <!--  Notifications Plugin    -->
 <script src="<c:url value="/resources/js/plugins/bootstrap-notify.js"/>"></script>
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
