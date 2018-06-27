@@ -34,12 +34,10 @@
 
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-<%-- TODO hay que hacer responsive esta tabla --%>
 <div class="table-container">
     <div class="card">
 
         <div class="card-content">
-            <%--TODO estos titulos se ven raros--%>
             <span class="card-title"><spring:message code="dishes"/></span>
             <c:choose>
                 <c:when test="${dishes.size() > 0}">

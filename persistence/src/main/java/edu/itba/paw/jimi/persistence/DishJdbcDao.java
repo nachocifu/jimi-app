@@ -31,7 +31,6 @@ public class DishJdbcDao implements DishDao {
 		}
 	};
 
-	//TODO: Hay que quitar?
 	@Autowired
 	public DishJdbcDao(final DataSource ds) {
 		jdbcTemplate = new JdbcTemplate(ds);

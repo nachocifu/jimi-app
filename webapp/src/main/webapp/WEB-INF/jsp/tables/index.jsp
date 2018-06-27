@@ -41,11 +41,9 @@
 
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-<%-- TODO hay que hacer responsive esta tabla --%>
 <div class="table-container">
     <div class="card">
         <div class="card-content">
-            <%--TODO--%>
             <c:if test="${table.status == 'FREE'}">
                 <h2><spring:message code="table.table_is"/>
                     <strong>
@@ -54,7 +52,6 @@
                     </strong>
                 </h2>
                 <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
-                        <%--TODO deberiamos sacar estos hardcodeos de numeros en value--%>
                     <input value="${BusyCode}" name="status" type="hidden"/>
                     <input type="submit"
                            class="btn btn-default rebeccapurple-color"
@@ -70,7 +67,6 @@
                         <div class="col s2"></div>
                         <div class="col s2 inc-margin">
                             <form action="<c:url value="/tables/${table.id}/subtract_diner"/>" method="post">
-                                    <%--TODO sacar hardcoded valude del input--%>
                                 <input type="submit" value="- <spring:message code="table.diners"/>"
                                        class="btn btn-default pull-right <c:if test="${diners == 0}">disabled</c:if>">
                             </form>
@@ -82,7 +78,6 @@
                         </div>
                         <div class="col s2 inc-margin">
                             <form class="pull-left" action="<c:url value="/tables/${table.id}/add_diner"/>" method="post">
-                                    <%--TODO sacar hardcoded valude del input--%>
                                 <input type="submit" value="+ <spring:message code="table.diners"/>"
                                        class="btn btn-default pull-right">
                             </form>
