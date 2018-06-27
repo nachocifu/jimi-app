@@ -78,12 +78,12 @@
                                                         <c:when test="${table.status == 'FREE'}">
                                                             <form style="float:left; padding-right:10px" action="<c:url value="/tables/${table.id}/status"/>" method="POST">
                                                                 <input value="${BusyCode}" name="status" type="hidden"/>
-                                                                <button type="submit" class="btn btn-warning btn-xs"><i class="material-icons">unarchive</i></button>
+                                                                <button type="submit" class="btn btn-success btn-xs"><i class="material-icons">unarchive</i></button>
                                                             </form>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <form style="float:left; padding-right:10px" action="<c:url value="/tables/${table.id}/"/>" method="POST">
-                                                                <button type="submit" class="btn btn-success btn-xs"><i class="material-icons">edit</i></button>
+                                                                <button type="submit" class="btn btn-warning btn-xs"><i class="material-icons">edit</i></button>
                                                             </form>
                                                         </c:otherwise>
                                                     </c:choose>

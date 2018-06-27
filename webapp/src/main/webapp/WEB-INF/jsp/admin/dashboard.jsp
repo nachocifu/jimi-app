@@ -53,12 +53,12 @@
                                 <div class="card-icon">
                                     <i class="material-icons">content_copy</i>
                                 </div>
-                                <p class="card-category">Used Space</p>
+                                <p class="card-category"><spring:message code="Tables.in.use"/> </p>
                                 <h3 class="card-title">${busyTables}/${totalTables}</h3>
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
-                                    <i class="material-icons">local_offer</i> Tracked from Github
+                                    <i class="material-icons">local_offer</i> <spring:message code="Tracked.live"/>
                                 </div>
                             </div>
                         </div>
@@ -69,12 +69,12 @@
                                 <div class="card-icon">
                                     <i class="material-icons">store</i>
                                 </div>
-                                <p class="card-category">Revenue</p>
-                                <h3 class="card-title">$34,245</h3>
+                                <p class="card-category"><spring:message code="Revenue"/> </p>
+                                <h3 class="card-title">$${lastMonthTot.toString()}</h3>
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
-                                    <i class="material-icons">date_range</i> Last 24 Hours
+                                    <i class="material-icons">date_range</i> <spring:message code="last.month"/>
                                 </div>
                             </div>
                         </div>

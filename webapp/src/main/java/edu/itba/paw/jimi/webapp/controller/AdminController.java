@@ -27,11 +27,9 @@ public class AdminController {
 		final ModelAndView mav = new ModelAndView("admin/dashboard");
 		
 		mav.addObject("busyTables", statsService.getBusyTablesUnits());
-		mav.addObject("freeTables", statsService.getFreeTablesUnits());
-		mav.addObject("payingTables", statsService.getPayingTablesUnits());
 		mav.addObject("totalTables", tableService.findAll().size());
 		mav.addObject("lastOrders", orderService.findAll(new QueryParams("id", false)));
-		mav.addObject("monthOrderTotals", statsService.getMonthlyOrderTotal());
+		mav.addObject("lastMonthTot",orderService.lastMonthTotal());
 		return mav;
 	}
 

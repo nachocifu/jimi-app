@@ -114,4 +114,11 @@ public interface OrderService {
      * @return A collection of said orders.TODO
      */
     Map getMonthlyOrderTotal();
+
+	/**
+	 * Calculate total by last month.
+	 *
+	 * @return  total.
+	 */
+	Double lastMonthTotal();
 }

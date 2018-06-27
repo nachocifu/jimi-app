@@ -1,5 +1,6 @@
 package edu.itba.paw.jimi.services;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.YearMonthDV;
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotOpenOrderException;
 import edu.itba.paw.jimi.interfaces.exceptions.DishAddedToInactiveOrderException;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -215,5 +219,36 @@ public class OrderServiceImpl implements OrderService {
 	public Map getMonthlyOrderTotal() {
 		return orderDao.getMonthlyOrderTotal();
 	}
-	
+
+	public Double lastMonthTotal() {
+		Collection<Order> orders = orderDao.findAll();
+		Double total = 0.0;
+		int lastMonth = Calendar.getInstance().get(Calendar.MONTH);
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+
+		for(Order o : orders){
+			if(o.getClosedAt() != null){
+				if(getMonth(o.getClosedAt()) == lastMonth && getYear(o.getClosedAt()) == year){
+				    total += o.getTotal();
+                }
+			}
+		}
+
+		return total;
+	}
+
+	private int getMonth(Date date){
+		if (date != null) {
+			return Integer.parseInt(date.toString().substring(5, 7)) % 13;
+		}
+		return 0;
+	}
+
+	private int getYear(Date date){
+		if (date != null) {
+			return Integer.parseInt(date.toString().substring(0, 4));
+		}
+		return 0;
+	}
+
 }

@@ -19,6 +19,9 @@
     <!-- CSS Files -->
     <link href="<c:url value="/resources/css/Final/material-dashboard.css?v=2.1.0"/>" rel="stylesheet"/>
 
+    <!--Material-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 </head>
 
 <body class="">
@@ -171,8 +174,6 @@
 <script src="<c:url value="/resources/js/core/bootstrap-material-design.min.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/resources/js/plugins/perfect-scrollbar.jquery.min.js"/>"></script>
 
-<!-- Chartist JS -->
-<script src="<c:url value="/resources/js/plugins/chartist.min.js"/>"></script>
 <!--  Notifications Plugin    -->
 <script src="<c:url value="/resources/js/plugins/bootstrap-notify.js"/>"></script>
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
