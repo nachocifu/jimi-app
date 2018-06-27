@@ -43,7 +43,7 @@
     <div class="card">
         <div class="card-content">
 
-
+            <span class="card-title"><spring:message code="order.title"/></span>
             <c:choose>
                 <c:when test="${lastOrders.size() <= 0}">
                     <div class="alert alert-info text-center">

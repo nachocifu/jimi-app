@@ -32,6 +32,9 @@
     <link href="<c:url value="/resources/css/kitchen/view.css"/>" rel="stylesheet" type="text/css">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/jimi-rest/favicon.ico"/>"/>
+
+    <meta http-equiv="refresh" content="5">
+
 </head>
 
 <body>

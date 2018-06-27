@@ -140,7 +140,7 @@
                 <c:otherwise>
                     <div class="alert alert-danger text-center">
                         <strong><spring:message code="ouch"/></strong> <spring:message
-                            code="table.no_tables"/>
+                            code="dish.no_dishes"/>
                     </div>
                 </c:otherwise>
             </c:choose>

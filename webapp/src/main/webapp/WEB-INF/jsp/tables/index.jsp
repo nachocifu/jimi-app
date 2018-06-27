@@ -180,6 +180,17 @@
                                                            maxFractionDigits="2"/>
                                     </td>
                                     <td>
+                                        <form action="<c:url value="/tables/${table.id}/remove_one_dish"/>"
+                                              method="post" class="form-with-buttons">
+                                            <button type="submit"
+                                                    class="btn btn-primary btn-xs">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                            <input type="hidden" value="${dishEntry.key.id}"
+                                                   name="dishid"/>
+                                        </form>
+                                    </td>
+                                    <td>
                                         <c:if test="${dishEntry.key.stock != 0}">
                                             <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
                                                   method="post"
@@ -193,17 +204,6 @@
                                                        name="dishid"/>
                                             </form>
                                         </c:if>
-                                    </td>
-                                    <td>
-                                        <form action="<c:url value="/tables/${table.id}/remove_one_dish"/>"
-                                              method="post" class="form-with-buttons">
-                                            <button type="submit"
-                                                    class="btn btn-primary btn-xs">
-                                                <i class="fa fa-minus"></i>
-                                            </button>
-                                            <input type="hidden" value="${dishEntry.key.id}"
-                                                   name="dishid"/>
-                                        </form>
                                     </td>
                                     <td>
                                         <!-- Modal Trigger -->
