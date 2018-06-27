@@ -30,6 +30,7 @@ public class AdminController {
 		mav.addObject("totalTables", tableService.findAll().size());
 		mav.addObject("lastOrders", orderService.findAll(new QueryParams("id", false)));
 		mav.addObject("lastMonthTot",orderService.lastMonthTotal());
+		mav.addObject("average", statsService.average());
 		return mav;
 	}
 

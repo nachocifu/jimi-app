@@ -8,14 +8,16 @@
 
 <!DOCTYPE html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>
         Jimi Restaurant
     </title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport'/>
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
     <!-- CSS Files -->
     <link href="<c:url value="/resources/css/Final/material-dashboard.css?v=2.1.0"/>" rel="stylesheet"/>
 
@@ -51,9 +53,9 @@
                         <div class="card card-stats">
                             <div class="card-header card-header-warning card-header-icon">
                                 <div class="card-icon">
-                                    <i class="material-icons">content_copy</i>
+                                    <i class="material-icons">store</i>
                                 </div>
-                                <p class="card-category"><spring:message code="Tables.in.use"/> </p>
+                                <p class="card-category"><spring:message code="Tables.in.use"/></p>
                                 <h3 class="card-title">${busyTables}/${totalTables}</h3>
                             </div>
                             <div class="card-footer">
@@ -67,9 +69,9 @@
                         <div class="card card-stats">
                             <div class="card-header card-header-success card-header-icon">
                                 <div class="card-icon">
-                                    <i class="material-icons">store</i>
+                                    <i class="material-icons">attach_money</i>
                                 </div>
-                                <p class="card-category"><spring:message code="Revenue"/> </p>
+                                <p class="card-category"><spring:message code="Revenue"/></p>
                                 <h3 class="card-title">$${lastMonthTot.toString()}</h3>
                             </div>
                             <div class="card-footer">
@@ -83,14 +85,14 @@
                         <div class="card card-stats">
                             <div class="card-header card-header-danger card-header-icon">
                                 <div class="card-icon">
-                                    <i class="material-icons">info_outline</i>
+                                    <i class="material-icons">av_timer</i>
                                 </div>
-                                <p class="card-category">Fixed Issues</p>
-                                <h3 class="card-title">75</h3>
+                                <p class="card-category"><spring:message code="av.time"/></p>
+                                <h3 class="card-title">${average} min</h3>
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
-                                    <i class="material-icons">local_offer</i> Tracked from Github
+                                    <i class="material-icons">error_outline</i> <spring:message code="bo"/> </p>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +125,8 @@
                             <div class="card-body">
                                 <h4 class="card-title">Daily Sales</h4>
                                 <p class="card-category">
-                                    <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
+                                    <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase
+                                    in today sales.</p>
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
@@ -173,15 +176,16 @@
                             <div class="card-header card-header-warning">
                                 <h4 class="card-title"><spring:message code="admin.latest_bills"/></h4>
                             </div>
-                            <c:choose>
-                                <c:when test="${lastOrders.size() <= 0}">
-                                    <div class="alert alert-info text-center">
-                                        <strong><spring:message code="ouch"/></strong>
-                                        <spring:message code="order.no_order"/>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="card-body table-responsive">
+                            <div class="card-body table-responsive">
+                                <c:choose>
+                                    <c:when test="${lastOrders.size() <= 0}">
+                                        <div class="alert alert-info text-center">
+                                            <strong><spring:message code="ouch"/></strong>
+                                            <spring:message code="order.no_order"/>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+
                                         <table class="table table-hover">
                                             <thead class="text-warning">
                                             <th>ID</th>
@@ -200,9 +204,9 @@
                                             </c:forEach>
                                             </tbody>
                                         </table>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
                         </div>
                     </div>
                 </div>

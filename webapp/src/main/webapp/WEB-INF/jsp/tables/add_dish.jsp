@@ -72,8 +72,7 @@
                                                                     data-max="${dish.stock}">${dish.name}</option>
                                                         </c:forEach>
                                                     </form:select>
-                                                    <form:input type="number" id="amount" path="amount" step="1" min="1"
-                                                                max="100" value="1" class="hide"/>
+                                                    <form:input type="number" id="amount" path="amount" step="1" min="1" max="100" value="1" class="hide"/>
                                                     <form:errors path="amount" element="p"/>
                                                 </div>
                                             </div>
@@ -100,6 +99,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 </div>
 

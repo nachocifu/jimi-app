@@ -58,5 +58,12 @@ public interface StatsService {
      * @return percentage.
      */
     Map getMonthlyOrderTotal();
+
+    /**
+     * Calculate average time between orders of the day.
+     *
+     * @return  total.
+     */
+    Double average();
 	
 }
