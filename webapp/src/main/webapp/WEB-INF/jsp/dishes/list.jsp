@@ -50,6 +50,8 @@
                             <th><spring:message code="dish.price"/></th>
                             <th><spring:message code="dish.stock"/></th>
                             <th><spring:message code="dish.status"/></th>
+                            <th><spring:message code="dish.minStock"/></th>
+                            <th></th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -71,6 +73,9 @@
                                                     code="dish.unavailable"/></span>
                                         </c:otherwise>
                                     </c:choose>
+                                </td>
+                                <td>
+                                    <c:out value="${dish.minStock}"/>
                                 </td>
                                 <td>
                                     <form method="POST"
@@ -97,6 +102,12 @@
                                             </button>
                                         </form>
                                     </c:if>
+                                </td>
+                                <td>
+                                    <a href=<c:url
+                                            value="/admin/dishes/edit/${dish.id}"/>>
+                                        <i class="fa fa-edit fa-lg"></i>
+                                    </a>
                                 </td>
                             </tr>
                         </c:forEach>

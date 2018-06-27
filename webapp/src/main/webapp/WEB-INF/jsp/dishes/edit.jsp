@@ -41,13 +41,13 @@
 <div class="table-container">
     <div class="card">
         <div class="card-content">
-            <span class="card-title"><spring:message code="table.add_dish"/></span>
-            <c:url value="/admin/dishes/create" var="postPath"/>
+            <span class="card-title"><spring:message code="table.edit_dish"/></span>
+            <c:url value="/admin/dishes/edit/${dish.id}" var="postPath"/>
             <form:form modelAttribute="dishCreateForm" action="${postPath}" method="post">
 
                 <form:label class="mdl-textfield__label" path="name"><spring:message
                         code="dish.name"/></form:label>
-                <form:input class="mdl-textfield__input" type="text" path="name"/>
+                <form:input disabled="true" class="mdl-textfield__input" type="text" path="name"/>
                 <form:errors path="name" element="p" cssClass="formError"/>
 
 
@@ -71,7 +71,7 @@
 
                 <button type="submit"
                         class="waves-effect waves-light btn">
-                    <spring:message code="dish.add"/>
+                    <spring:message code="dish.edit"/>
                 </button>
                 <a href="<c:url value="/admin/dishes/"/>"
                    class="waves-effect waves-light btn">

@@ -23,6 +23,14 @@ public interface DishService {
      * @return The new value of stock.
      */
     int setStock(Dish dish, int stock);
+
+    /**
+     * Sets the value of price of the dish.
+     * @param dish The dish to be updated.
+     * @param price The new price.
+     * @return The new value of stock.
+     */
+    int setPrice(Dish dish, float price);
     
     /**
      * Increases the value of stock of the dish by one.
