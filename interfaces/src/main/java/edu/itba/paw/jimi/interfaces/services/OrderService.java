@@ -93,6 +93,13 @@ public interface OrderService {
 	 */
 	int setDiners(Order order, int diners);
 
+    /**
+     * Returns the order with id.
+     * @param id the id.
+     * @return
+     */
+	Order findById(long id);
+
 	/**
 	 * Finds all closed orders.
 	 *

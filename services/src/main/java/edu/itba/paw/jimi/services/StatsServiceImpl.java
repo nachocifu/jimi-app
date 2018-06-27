@@ -8,6 +8,7 @@ import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -24,6 +25,7 @@ public class StatsServiceImpl implements StatsService {
 	private TableService tableService;
 
 	@Autowired
+	@Qualifier(value = "userOrderService")
 	private OrderService orderService;
 	
 	public int getBusyTablesUnits() {

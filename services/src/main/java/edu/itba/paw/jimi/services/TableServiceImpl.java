@@ -12,6 +12,7 @@ import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class TableServiceImpl implements TableService {
     private TableDao tableDao;
 
     @Autowired
+    @Qualifier(value = "userOrderService")
     private OrderService orderService;
 
     @Transactional
