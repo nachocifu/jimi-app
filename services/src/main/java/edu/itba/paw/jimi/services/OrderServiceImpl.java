@@ -231,7 +231,7 @@ public class OrderServiceImpl implements OrderService {
 				if(getMonth(o.getClosedAt()) == lastMonth && getYear(o.getClosedAt()) == year){
 				    total += o.getTotal();
                 }
-			}
+			}ç`´´
 		}
 
 		return total;
