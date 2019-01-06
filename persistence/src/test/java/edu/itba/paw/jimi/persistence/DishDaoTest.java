@@ -76,7 +76,6 @@ public class DishDaoTest {
 		assertEquals(REAL_PRICE, dish.getPrice());
 	}
 	
-	
 	@Test
 	public void testFindById() {
 		final Dish dish = dishDao.create(NAME, PRICE, 1);

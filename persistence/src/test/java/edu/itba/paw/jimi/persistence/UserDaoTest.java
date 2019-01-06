@@ -7,10 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,21 +34,20 @@ public class UserDaoTest {
 	
 	@Autowired
 	private UserDao userDao;
-
+	
 	private JdbcTemplate jdbcTemplate;
-
+	
 	@Before
 	public void setUp() {
 		jdbcTemplate = new JdbcTemplate(ds);
 		cleanUp();
 	}
-
+	
 	private void cleanUp() {
 		JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
 	}
-
+	
 	@Test
-    @Transactional
 	public void testCreate() {
 		final User user = userDao.create(USERNAME, PASSWORD, null);
 		assertNotNull(user);
@@ -64,7 +61,6 @@ public class UserDaoTest {
 	
 	
 	@Test
-    @Transactional
 	public void testCreateWithRoles() {
 		Set<String> roles = new HashSet<String>();
 		roles.add(User.ROLE_ADMIN);
@@ -82,10 +78,8 @@ public class UserDaoTest {
 		
 		cleanUp();
 	}
-	//TEST WITH ROLES Y DAR EL MISMO MAS DE UNA VEZ. DEBERIA CONTAR COMO UNO POR SET
-
+	
 	@Test
-    @Transactional
 	public void testUpdate() {
 		final User user = userDao.create(USERNAME, PASSWORD, null);
 		assertNotNull(user);
@@ -105,7 +99,6 @@ public class UserDaoTest {
 	}
 	
 	@Test
-    @Transactional
 	public void testUpdateNewRoles() {
 		final User user = userDao.create(USERNAME, PASSWORD, null);
 		assertNotNull(user);
@@ -130,7 +123,6 @@ public class UserDaoTest {
 	}
 	
 	@Test
-    @Transactional
 	public void testUpdateDifferentRole() {
 		Set<String> roles1 = new HashSet<String>();
 		roles1.add(User.ROLE_ADMIN);
@@ -161,7 +153,6 @@ public class UserDaoTest {
 	}
 	
 	@Test
-    @Transactional
 	public void testUpdateDifferentRoles() {
 		Set<String> roles1 = new HashSet<String>();
 		roles1.add(User.ROLE_ADMIN);
@@ -194,7 +185,6 @@ public class UserDaoTest {
 	}
 	
 	@Test
-    @Transactional
 	public void testUpdateNoMoreRolesNull() {
 		Set<String> roles1 = new HashSet<String>();
 		roles1.add(User.ROLE_ADMIN);
@@ -207,7 +197,7 @@ public class UserDaoTest {
 		dbUser.setPassword(PASSWORD + "1");
 		assertEquals(2, dbUser.getRoles().size());
 		assertEquals(true, dbUser.getRoles().contains(User.ROLE_ADMIN));
-
+		
 		dbUser.setRoles(null); //If you set roles as null, then we do not alter the roles.
 		
 		userDao.update(dbUser);
@@ -216,7 +206,7 @@ public class UserDaoTest {
 		
 		assertEquals(USERNAME + "1", dbUser2.getUsername());
 		assertEquals(PASSWORD + "1", dbUser2.getPassword());
- 		assertEquals(2, dbUser2.getRoles().size());
+		assertEquals(2, dbUser2.getRoles().size());
 		assertEquals(true, dbUser2.getRoles().contains(User.ROLE_USER));
 		assertEquals(true, dbUser2.getRoles().contains(User.ROLE_ADMIN));
 		
@@ -224,7 +214,6 @@ public class UserDaoTest {
 	}
 	
 	@Test
-    @Transactional
 	public void testUpdateNoMoreRolesEmpty() {
 		Set<String> roles1 = new HashSet<String>();
 		roles1.add(User.ROLE_ADMIN);
@@ -253,7 +242,6 @@ public class UserDaoTest {
 	}
 	
 	@Test
-    @Transactional
 	public void testFindById() {
 		User user = userDao.create(USERNAME, PASSWORD, null);
 		final User dbUser = userDao.findById(user.getId());
@@ -269,7 +257,6 @@ public class UserDaoTest {
 	}
 	
 	@Test
-    @Transactional
 	public void testFindByIdEmpty() {
 		final User dbUser = userDao.findById(1);
 		
@@ -281,7 +268,6 @@ public class UserDaoTest {
 	
 	
 	@Test
-    @Transactional
 	public void testFindByUsernameWithSarasa() {
 		final User dbUser = userDao.findByUsername("asd");
 		assertNull(dbUser);
@@ -290,7 +276,6 @@ public class UserDaoTest {
 	}
 	
 	@Test
-    @Transactional
 	public void testFindByUsernameEmpty() {
 		final User dbUser = userDao.findByUsername("");
 		assertNull(dbUser);
@@ -298,7 +283,6 @@ public class UserDaoTest {
 	}
 	
 	@Test
-    @Transactional
 	public void testFindByUsernameNull() {
 		final User dbUser = userDao.findByUsername(null);
 		
@@ -310,7 +294,6 @@ public class UserDaoTest {
 	
 	
 	@Test
-    @Transactional
 	public void testFindByUsername() {
 		User user = userDao.create(USERNAME, PASSWORD, null);
 		final User dbUser = userDao.findByUsername(USERNAME);
@@ -326,7 +309,6 @@ public class UserDaoTest {
 	}
 	
 	@Test
-    @Transactional
 	public void testFindAllEmpty() {
 		Collection<User> col = userDao.findAll();
 		assertNotNull(col);
@@ -335,7 +317,6 @@ public class UserDaoTest {
 	
 	
 	@Test
-    @Transactional
 	public void testFindAllWithSome() {
 		
 		userDao.create(USERNAME + "1", PASSWORD, null);
@@ -350,7 +331,7 @@ public class UserDaoTest {
 		
 		cleanUp();
 	}
-
+	
 	//@Test(expected = DuplicateKeyException.class)
 	//public void testCreateWithSameUsername() {
 	//	userDao.create(USERNAME, PASSWORD, null);

@@ -22,6 +22,7 @@ import static junit.framework.TestCase.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
+@Transactional
 public class OrderDaoTest {
 	
 	@Autowired
@@ -62,7 +63,6 @@ public class OrderDaoTest {
 	}
 	
 	@Test
-	@Transactional
 	public void testCreate() {
 		Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		assertNotNull(order);
@@ -70,7 +70,6 @@ public class OrderDaoTest {
 	}
 	
 	@Test
-	@Transactional
 	public void testUpdate() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, TOTAL);
 		order.setStatus(OrderStatus.OPEN);
@@ -91,7 +90,6 @@ public class OrderDaoTest {
 	}
 	
 	@Test
-	@Transactional
 	public void testFindByIdEmpty() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		Order dbOrder = orderDao.findById(order.getId());
@@ -99,7 +97,6 @@ public class OrderDaoTest {
 	}
 	
 	@Test
-	@Transactional
 	public void testFindByIdWithValues() {
 		final Order order = orderDao.create(OrderStatus.OPEN, OPENEDAT, CLOSEDAT, DINERS, 0);
 		Order dbOrder = orderDao.findById(order.getId());
@@ -118,8 +115,6 @@ public class OrderDaoTest {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		
 		order.setDish(dish, 1);
-		
-		System.out.println("DISH: " + dishDao.findById(dish.getId()).getId());
 		
 		orderDao.update(order);
 		
@@ -141,7 +136,6 @@ public class OrderDaoTest {
 	}
 	
 	@Test
-	@Transactional
 	public void testFindByIdOneDishThrice() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
@@ -167,7 +161,6 @@ public class OrderDaoTest {
 	}
 	
 	@Test
-	@Transactional
 	public void testFindByIdSeveralDishes() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		
@@ -227,7 +220,6 @@ public class OrderDaoTest {
 	}
 	
 	@Test
-	@Transactional
 	public void testFindByIdAddAndRemove() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
@@ -264,7 +256,6 @@ public class OrderDaoTest {
 	}
 	
 	@Test
-	@Transactional
 	public void testFindByIdAddAndRemoveButNoDelete() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);

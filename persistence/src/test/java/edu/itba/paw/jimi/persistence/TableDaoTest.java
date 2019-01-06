@@ -24,7 +24,7 @@ import static junit.framework.TestCase.assertNotNull;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, MockConfig.class})
 @Transactional
 public class TableDaoTest {
 	
@@ -76,7 +76,7 @@ public class TableDaoTest {
 		Order order = new Order(1, OPENEDAT, CLOSEDAT, OrderStatus.INACTIVE, 2, 2);
 		order.setDish(dish, 2);
 		Mockito.when(dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK)).thenReturn(dish);
-		Mockito.when(orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2, 2)).thenReturn(order);
+		Mockito.when(orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2,2)).thenReturn(order);
 		Mockito.when(dishDao.findById(1)).thenReturn(dish);
 		Mockito.when(orderDao.findById(1)).thenReturn(order);
 		
@@ -109,8 +109,7 @@ public class TableDaoTest {
 	public void testFindByIdUnsavedOrderException() {
 		
 		Order order = new Order(1, OPENEDAT, CLOSEDAT, OrderStatus.INACTIVE, 2, 2);
-		Mockito.when(orderDao.findById(1)).thenReturn(null); // Not saved, so it returns null.
-		
+		orderDao.findById(1);
 		tableDao.create(TABLE_NAME, TableStatus.FREE, order);
 		
 		cleanDB();
@@ -124,7 +123,7 @@ public class TableDaoTest {
 		Order order = new Order(1, OPENEDAT, CLOSEDAT, OrderStatus.INACTIVE, 2, 2);
 		order.setDish(dish, 2);
 		Mockito.when(dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK)).thenReturn(dish);
-		Mockito.when(orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2, 2)).thenReturn(order);
+		Mockito.when(orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2,2)).thenReturn(order);
 		Mockito.when(dishDao.findById(1)).thenReturn(dish);
 		Mockito.when(orderDao.findById(1)).thenReturn(order);
 		
