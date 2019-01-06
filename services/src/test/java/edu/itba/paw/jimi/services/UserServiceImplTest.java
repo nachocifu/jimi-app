@@ -1,7 +1,6 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.UserDao;
-import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,21 +9,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = OrderServiceTestConfig.class)
-public class UserServiceTest {
+@RunWith(MockitoJUnitRunner.class)
+public class UserServiceImplTest {
 
     private static final String USERNAME = "test";
     private static final String PASSWORD = "test";
@@ -32,10 +26,8 @@ public class UserServiceTest {
     private static Set<String> adminRoles;
 
     @InjectMocks
-    @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
-    @Autowired
     @Mock
     private UserDao userDao;
 
@@ -60,7 +52,7 @@ public class UserServiceTest {
         Mockito.when(userDao.create(USERNAME, PASSWORD, userRoles)).thenReturn(returnUser);
         // Mocking
 
-        User user = userService.create(USERNAME, PASSWORD);
+        User user = userServiceImpl.create(USERNAME, PASSWORD);
         assertEquals(USERNAME, user.getUsername());
         assertEquals(PASSWORD, user.getPassword());
 
@@ -77,7 +69,7 @@ public class UserServiceTest {
         Mockito.when(userDao.create(USERNAME, PASSWORD, adminRoles)).thenReturn(returnUser);
         // Mocking
 
-        User user = userService.createAdmin(USERNAME, PASSWORD);
+        User user = userServiceImpl.createAdmin(USERNAME, PASSWORD);
         assertEquals(USERNAME, user.getUsername());
         assertEquals(PASSWORD, user.getPassword());
 
@@ -95,7 +87,7 @@ public class UserServiceTest {
         Mockito.when(userDao.findById(1)).thenReturn(returnUser);
         // Mocking
 
-        User dbUser = userService.findById(1);
+        User dbUser = userServiceImpl.findById(1);
         assertNotNull(dbUser);
         assertEquals(1, dbUser.getId());
         assertEquals(USERNAME, dbUser.getUsername());
@@ -110,7 +102,7 @@ public class UserServiceTest {
         Mockito.when(userDao.findById(1)).thenReturn(null);
         // Mocking
 
-        User dbUser = userService.findById(1);
+        User dbUser = userServiceImpl.findById(1);
         assertNull(dbUser);
     }
 
@@ -123,7 +115,7 @@ public class UserServiceTest {
         Mockito.when(userDao.findByUsername(USERNAME)).thenReturn(returnUser);
         // Mocking
 
-        User dbUser = userService.findByUsername(USERNAME);
+        User dbUser = userServiceImpl.findByUsername(USERNAME);
         assertNotNull(dbUser);
         assertEquals(1, dbUser.getId());
         assertEquals(USERNAME, dbUser.getUsername());
@@ -138,7 +130,7 @@ public class UserServiceTest {
         Mockito.when(userDao.findByUsername(USERNAME)).thenReturn(null);
         // Mocking
 
-        User dbUser = userService.findByUsername(USERNAME);
+        User dbUser = userServiceImpl.findByUsername(USERNAME);
         assertNull(dbUser);
     }
 
@@ -160,7 +152,7 @@ public class UserServiceTest {
         Mockito.when(userDao.findAll()).thenReturn(returnUsers);
         // Mocking
 
-        Collection<User> dbUsers = userService.findAll();
+        Collection<User> dbUsers = userServiceImpl.findAll();
         assertNotNull(dbUsers);
 
         assertEquals(3, dbUsers.size());
@@ -183,7 +175,7 @@ public class UserServiceTest {
         Mockito.when(userDao.findAll()).thenReturn(returnUsers);
         // Mocking
 
-        Collection<User> dbUsers = userService.findAll();
+        Collection<User> dbUsers = userServiceImpl.findAll();
         assertNotNull(dbUsers);
 
         assertEquals(2, dbUsers.size());
@@ -197,7 +189,7 @@ public class UserServiceTest {
         Mockito.when(userDao.findAll()).thenReturn(returnUsers);
         // Mocking
 
-        Collection<User> dbUsers = userService.findAll();
+        Collection<User> dbUsers = userServiceImpl.findAll();
         assertNotNull(dbUsers);
 
         assertEquals(0, dbUsers.size());
@@ -210,7 +202,7 @@ public class UserServiceTest {
         Mockito.when(userDao.findAll()).thenReturn(null);
         // Mocking
 
-        Collection<User> dbUsers = userService.findAll();
+        Collection<User> dbUsers = userServiceImpl.findAll();
         assertNotNull(dbUsers);
 
         assertEquals(0, dbUsers.size());
