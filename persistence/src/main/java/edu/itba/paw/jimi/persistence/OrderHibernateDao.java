@@ -59,7 +59,7 @@ public class OrderHibernateDao implements OrderDao{
         return (Collection<Order>) query.getResultList();
     }
 
-    public Map getMonthlyOrderTotal() { //TODO test
+    public Map getMonthlyOrderTotal() {
         Map<YearMonth, Double> response = new TreeMap<YearMonth, Double>() {
         };
         Query query = em.createNativeQuery(
