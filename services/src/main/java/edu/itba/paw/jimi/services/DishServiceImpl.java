@@ -20,71 +20,73 @@ import java.util.HashSet;
 @Service
 @Transactional
 public class DishServiceImpl implements DishService {
-
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DishServiceImpl.class);
 	private static final float MAX_PRICE = 10000f;
-
+	
 	@Autowired
 	private DishDao dishDao;
 	
 	private static final int MAX_STOCK = 1000000;
-
+	
+	@Override
 	public Dish findById(final long id) {
 		return dishDao.findById(id);
 	}
-
-	@Transactional
+	
+	@Override
 	public Dish create(String name, float price) {
 		LOGGER.info("Create dish {} {}", name, price);
 		return dishDao.create(name, price, 0);
 	}
-
-	@Transactional
+	
+	@Override
 	public int setStock(Dish dish, int stock) {
 		if (stock < 0) {
 			return 0;
 		}
-
+		
 		if (stock >= MAX_STOCK) {
 			throw new MaxStockException();
 		}
-
+		
 		dish.setStock(stock);
 		dishDao.update(dish);
 		LOGGER.info("Updated dish stock {}", dish);
 		return dish.getStock();
 	}
-
-	@Transactional
+	
+	@Override
 	public int setPrice(Dish dish, float price) {
 		if (price < 0) {
 			return 0;
 		}
-
+		
 		if (price >= MAX_PRICE) {
 			throw new MaxPriceException();
 		}
-
+		
 		dish.setPrice(price);
 		dishDao.update(dish);
 		LOGGER.info("Updated dish price {}", dish);
 		return dish.getStock();
 	}
-
-	@Transactional
+	
+	@Override
 	public int increaseStock(Dish dish) {
 		return setStock(dish, dish.getStock() + 1);
 	}
-
-	@Transactional
+	
+	@Override
 	public int decreaseStock(Dish dish) {
 		if (dish.getStock() <= 0) {
 			return 0;
 		}
-
+		
 		return setStock(dish, dish.getStock() - 1);
 	}
-
+	
+	@Override
 	public Collection<Dish> findAll() {
 		Collection<Dish> dishes = dishDao.findAll();
 		if (dishes != null)
@@ -92,7 +94,8 @@ public class DishServiceImpl implements DishService {
 		else
 			return new HashSet<Dish>();
 	}
-
+	
+	@Override
 	public Collection<Dish> findAll(QueryParams qp) {
 		Collection<Dish> dishes = dishDao.findAll(qp);
 		if (dishes != null)
@@ -100,7 +103,8 @@ public class DishServiceImpl implements DishService {
 		else
 			return new HashSet<Dish>();
 	}
-
+	
+	@Override
 	public Collection<Dish> findAllAvailable() {
 		
 		Collection<Dish> dishes = findAll();
@@ -116,13 +120,13 @@ public class DishServiceImpl implements DishService {
 		return availableDishes;
 		
 	}
-
-    public int getTotalDishes() {
-        return dishDao.getTotalDishes();
-    }
-
-
-	@Transactional
+	
+	@Override
+	public int getTotalDishes() {
+		return dishDao.getTotalDishes();
+	}
+	
+	@Override
 	public int setMinStock(Dish dish, int minStock) {
 		if (minStock < 0)
 			throw new MinStockException();
@@ -131,5 +135,5 @@ public class DishServiceImpl implements DishService {
 		LOGGER.info("Updated dish minstock {}", dish);
 		return dish.getMinStock();
 	}
-
+	
 }

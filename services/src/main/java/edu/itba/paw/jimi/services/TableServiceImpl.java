@@ -22,87 +22,90 @@ import java.util.HashSet;
 @Transactional
 @Service
 public class TableServiceImpl implements TableService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TableServiceImpl.class);
-
-    @Autowired
-    private TableDao tableDao;
-
-    @Autowired
-    @Qualifier(value = "userOrderService")
-    private OrderService orderService;
-
-    @Transactional
-    public Table findById(final long id) {
-        Table t = tableDao.findById(id);
-        return t;
-    }
-
-    @Transactional
-    public Table create(String name) {
-        Order order = orderService.create(OrderStatus.INACTIVE, null, null, 0);
-        LOGGER.info("Created table {}", name);
-        return tableDao.create(name, TableStatus.FREE, order);
-    }
-
-    public Collection<Table> findAll() {
-        Collection<Table> tables = tableDao.findAll();
-        if (tables != null)
-            return tables;
-        else
-            return new HashSet<Table>();
-    }
-
-    public Collection<Table> findAll(QueryParams qp) {
-        Collection<Table> tables = tableDao.findAll(qp);
-        if (tables != null)
-            return tables;
-        else
-            return new HashSet<Table>();
-    }
-
-    public int getTotalTables() {
-        return tableDao.getTotalTables();
-    }
-
-    @Transactional
-    public void changeStatus(Table table, TableStatus status) {
-
-        if (table.getStatus().equals(TableStatus.BUSY) && (!status.equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE)))
-            throw new TableStatusTransitionInvalid(TableStatus.PAYING, status);
-
-        if (table.getStatus().equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE))
-            throw new TableStatusTransitionInvalid(TableStatus.FREE, status);
-
-        if (table.getStatus().equals(TableStatus.FREE) && !status.equals(TableStatus.BUSY))
-            throw new TableStatusTransitionInvalid(TableStatus.BUSY, status);
-
-
-        switch (status) {
-            case BUSY: {
-                orderService.open(table.getOrder());
-                break;
-            }
-            case FREE: {
-                if (table.getStatus().equals(TableStatus.PAYING)) { //Normal flow.
-                    //Nothing to do.
-                }
-                if (table.getStatus().equals(TableStatus.BUSY)) {//Cancel order!
-                    orderService.cancel(table.getOrder());
-                }
-                Order newOrder = orderService.create(OrderStatus.INACTIVE, null, null, 0);
-                table.setOrder(newOrder);
-                break;
-            }
-            case PAYING: {
-                orderService.close(table.getOrder());
-                break;
-            }
-        }
-
-        table.setStatus(status);
-        table.setStatus(status);
-        tableDao.update(table);
-        LOGGER.info("Updated table {}", table);
-    }
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(TableServiceImpl.class);
+	
+	@Autowired
+	private TableDao tableDao;
+	
+	@Autowired
+	@Qualifier(value = "userOrderService")
+	private OrderService orderService;
+	
+	@Override
+	public Table findById(final long id) {
+		Table t = tableDao.findById(id);
+		return t;
+	}
+	
+	@Override
+	public Table create(String name) {
+		Order order = orderService.create(OrderStatus.INACTIVE, null, null, 0);
+		LOGGER.info("Created table {}", name);
+		return tableDao.create(name, TableStatus.FREE, order);
+	}
+	
+	@Override
+	public Collection<Table> findAll() {
+		Collection<Table> tables = tableDao.findAll();
+		if (tables != null)
+			return tables;
+		else
+			return new HashSet<Table>();
+	}
+	
+	@Override
+	public Collection<Table> findAll(QueryParams qp) {
+		Collection<Table> tables = tableDao.findAll(qp);
+		if (tables != null)
+			return tables;
+		else
+			return new HashSet<Table>();
+	}
+	
+	@Override
+	public int getTotalTables() {
+		return tableDao.getTotalTables();
+	}
+	
+	@Override
+	public void changeStatus(Table table, TableStatus status) {
+		
+		if (table.getStatus().equals(TableStatus.BUSY) && (!status.equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE)))
+			throw new TableStatusTransitionInvalid(TableStatus.PAYING, status);
+		
+		if (table.getStatus().equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE))
+			throw new TableStatusTransitionInvalid(TableStatus.FREE, status);
+		
+		if (table.getStatus().equals(TableStatus.FREE) && !status.equals(TableStatus.BUSY))
+			throw new TableStatusTransitionInvalid(TableStatus.BUSY, status);
+		
+		
+		switch (status) {
+			case BUSY: {
+				orderService.open(table.getOrder());
+				break;
+			}
+			case FREE: {
+				if (table.getStatus().equals(TableStatus.PAYING)) { //Normal flow.
+					//Nothing to do.
+				}
+				if (table.getStatus().equals(TableStatus.BUSY)) {//Cancel order!
+					orderService.cancel(table.getOrder());
+				}
+				Order newOrder = orderService.create(OrderStatus.INACTIVE, null, null, 0);
+				table.setOrder(newOrder);
+				break;
+			}
+			case PAYING: {
+				orderService.close(table.getOrder());
+				break;
+			}
+		}
+		
+		table.setStatus(status);
+		table.setStatus(status);
+		tableDao.update(table);
+		LOGGER.info("Updated table {}", table);
+	}
+	
 }

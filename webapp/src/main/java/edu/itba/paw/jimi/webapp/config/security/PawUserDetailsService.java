@@ -14,22 +14,22 @@ import java.util.Set;
 
 @Component
 public class PawUserDetailsService implements UserDetailsService {
-
-    @Autowired
-    private UserService us;
-
-    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final User user = us.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("No user by the username " + username);
-        }
-
-        Set<SimpleGrantedAuthority> authorities = new HashSet<SimpleGrantedAuthority>();
-        for (String role : user.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role));
-        }
-
-        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
-
-    }
+	
+	@Autowired
+	private UserService us;
+	
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+		final User user = us.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("No user by the username " + username);
+		}
+		
+		Set<SimpleGrantedAuthority> authorities = new HashSet<SimpleGrantedAuthority>();
+		for (String role : user.getRoles()) {
+			authorities.add(new SimpleGrantedAuthority(role));
+		}
+		
+		return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
+		
+	}
 }

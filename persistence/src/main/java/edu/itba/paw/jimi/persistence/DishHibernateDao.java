@@ -19,12 +19,14 @@ public class DishHibernateDao implements DishDao {
 	private EntityManager em;
 	
 	
+	@Override
 	public Dish create(String name, float price, int stock) {
 		final Dish dish = new Dish(name, price, stock);
 		em.persist(dish);
 		return dish;
 	}
 	
+	@Override
 	public int update(Dish dish) {
 		em.merge(dish);
 		return 1;
@@ -36,10 +38,12 @@ public class DishHibernateDao implements DishDao {
 		return query.getResultList();
 	}
 	
+	@Override
 	public Dish findById(long id) {
 		return em.find(Dish.class, (int) id);
 	}
 	
+	@Override
 	public Collection<Dish> findAll(QueryParams qp) {
 		final Query query = em.createQuery("from Dish order by name", Dish.class);
 		query.setFirstResult(qp.getStartAt());
