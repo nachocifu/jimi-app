@@ -149,66 +149,66 @@ public class StatsServiceImplTest {
 				&& statsServiceImpl.getFreeTables() <= 100);
 		Assert.assertEquals(percentageExpected, statsServiceImpl.getFreeTables());
 	}
-
-    @Test
-    public void getPayingTablesUnitsWithNoTables() {
-        Mockito.when(tableService.findAll()).thenReturn(new LinkedList<Table>());
-
-        Assert.assertEquals(0, tableService.findAll().size());
-        Assert.assertEquals(0, statsServiceImpl.getPayingTablesUnits());
-    }
-
-    @Test
-    public void getPayingTablesUnitsWithOneTable() {
-        LinkedList<Table> list = new LinkedList<Table>();
-        list.add(new Table(NAME, ID, TableStatus.PAYING, ORDER));
-        Mockito.when(tableService.findAll()).thenReturn(list);
-
-        Assert.assertEquals(1, tableService.findAll().size());
-        Assert.assertEquals(1, statsServiceImpl.getPayingTablesUnits());
-    }
-
-    @Test
-    public void getPayingTablesUnitsWithMultipleTables() {
-        LinkedList<Table> list = new LinkedList<Table>();
-
-        list.add(new Table(NAME, ID, TableStatus.BUSY, ORDER));
-        list.add(new Table(NAME, ID + 1, TableStatus.BUSY, ORDER));
-        list.add(new Table(NAME, ID + 2, TableStatus.PAYING, ORDER));
-        list.add(new Table(NAME, ID + 3, TableStatus.BUSY, ORDER));
-        list.add(new Table(NAME, ID + 4, TableStatus.PAYING, ORDER));
-        list.add(new Table(NAME, ID + 5, TableStatus.BUSY, ORDER));
-        list.add(new Table(NAME, ID + 6, TableStatus.PAYING, ORDER));
-        list.add(new Table(NAME, ID + 7, TableStatus.BUSY, ORDER));
-        list.add(new Table(NAME, ID + 8, TableStatus.PAYING, ORDER));
-
-        Mockito.when(tableService.findAll()).thenReturn(list);
-
-        Assert.assertEquals(9, tableService.findAll().size());
-        Assert.assertEquals(4, statsServiceImpl.getPayingTablesUnits());
-    }
-
-    @Test
-    public void getPayingTablesPercentage() {
-        int percentageExpected = (int) ((4.0 / 9.0) * 100.0);
-        LinkedList<Table> list = new LinkedList<Table>();
-
-        list.add(new Table(NAME, ID, TableStatus.BUSY, ORDER));
-        list.add(new Table(NAME, ID + 1, TableStatus.BUSY, ORDER));
-        list.add(new Table(NAME, ID + 2, TableStatus.PAYING, ORDER));
-        list.add(new Table(NAME, ID + 3, TableStatus.BUSY, ORDER));
-        list.add(new Table(NAME, ID + 4, TableStatus.PAYING, ORDER));
-        list.add(new Table(NAME, ID + 5, TableStatus.BUSY, ORDER));
-        list.add(new Table(NAME, ID + 6, TableStatus.PAYING, ORDER));
-        list.add(new Table(NAME, ID + 7, TableStatus.BUSY, ORDER));
-        list.add(new Table(NAME, ID + 8, TableStatus.PAYING, ORDER));
-
-        Mockito.when(tableService.findAll()).thenReturn(list);
-
-        Assert.assertTrue(statsServiceImpl.getPayingTables() >= 0
-                && statsServiceImpl.getPayingTables() <= 100);
-        Assert.assertEquals(percentageExpected, statsServiceImpl.getPayingTables());
-    }
+	
+	@Test
+	public void getPayingTablesUnitsWithNoTables() {
+		Mockito.when(tableService.findAll()).thenReturn(new LinkedList<Table>());
+		
+		Assert.assertEquals(0, tableService.findAll().size());
+		Assert.assertEquals(0, statsServiceImpl.getPayingTablesUnits());
+	}
+	
+	@Test
+	public void getPayingTablesUnitsWithOneTable() {
+		LinkedList<Table> list = new LinkedList<Table>();
+		list.add(new Table(NAME, ID, TableStatus.PAYING, ORDER));
+		Mockito.when(tableService.findAll()).thenReturn(list);
+		
+		Assert.assertEquals(1, tableService.findAll().size());
+		Assert.assertEquals(1, statsServiceImpl.getPayingTablesUnits());
+	}
+	
+	@Test
+	public void getPayingTablesUnitsWithMultipleTables() {
+		LinkedList<Table> list = new LinkedList<Table>();
+		
+		list.add(new Table(NAME, ID, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 1, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 2, TableStatus.PAYING, ORDER));
+		list.add(new Table(NAME, ID + 3, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 4, TableStatus.PAYING, ORDER));
+		list.add(new Table(NAME, ID + 5, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 6, TableStatus.PAYING, ORDER));
+		list.add(new Table(NAME, ID + 7, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 8, TableStatus.PAYING, ORDER));
+		
+		Mockito.when(tableService.findAll()).thenReturn(list);
+		
+		Assert.assertEquals(9, tableService.findAll().size());
+		Assert.assertEquals(4, statsServiceImpl.getPayingTablesUnits());
+	}
+	
+	@Test
+	public void getPayingTablesPercentage() {
+		int percentageExpected = (int) ((4.0 / 9.0) * 100.0);
+		LinkedList<Table> list = new LinkedList<Table>();
+		
+		list.add(new Table(NAME, ID, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 1, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 2, TableStatus.PAYING, ORDER));
+		list.add(new Table(NAME, ID + 3, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 4, TableStatus.PAYING, ORDER));
+		list.add(new Table(NAME, ID + 5, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 6, TableStatus.PAYING, ORDER));
+		list.add(new Table(NAME, ID + 7, TableStatus.BUSY, ORDER));
+		list.add(new Table(NAME, ID + 8, TableStatus.PAYING, ORDER));
+		
+		Mockito.when(tableService.findAll()).thenReturn(list);
+		
+		Assert.assertTrue(statsServiceImpl.getPayingTables() >= 0
+				&& statsServiceImpl.getPayingTables() <= 100);
+		Assert.assertEquals(percentageExpected, statsServiceImpl.getPayingTables());
+	}
 	
 	@Test
 	public void getStockStateNoItemsPercentage() {

@@ -1,6 +1,5 @@
 package edu.itba.paw.jimi.webapp.controller;
 
-import com.sun.media.jfxmedia.logging.Logger;
 import edu.itba.paw.jimi.interfaces.exceptions.Http400Error;
 import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.exceptions.HttpError;
