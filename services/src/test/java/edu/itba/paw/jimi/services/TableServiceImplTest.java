@@ -4,8 +4,10 @@ package edu.itba.paw.jimi.services;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
-import edu.itba.paw.jimi.interfaces.services.TableService;
-import edu.itba.paw.jimi.models.*;
+import edu.itba.paw.jimi.models.Order;
+import edu.itba.paw.jimi.models.OrderStatus;
+import edu.itba.paw.jimi.models.Table;
+import edu.itba.paw.jimi.models.TableStatus;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,33 +16,24 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TableServiceTestConfig.class)
-public class TableServiceTest {
+@RunWith(MockitoJUnitRunner.class)
+public class TableServiceImplTest {
 	
 	private static final String TABLE_NAME = "Table 1";
-	@InjectMocks
-	@Autowired
-	private TableService tableService;
 	
-	@Autowired
+	@InjectMocks
+	private TableServiceImpl tableServiceImpl;
+	
 	@Mock
 	private TableDao tableDao;
 	
-	@Autowired
 	@Mock
     @Qualifier(value = "adminOrderService")
 	private OrderService orderService;
@@ -60,7 +53,7 @@ public class TableServiceTest {
 		Mockito.when(tableDao.create(TABLE_NAME, TableStatus.FREE, order)).thenReturn(new Table(TABLE_NAME, 1, TableStatus.FREE, order));
 		// Mockito mocking
 		
-		Table table = tableService.create(TABLE_NAME);
+		Table table = tableServiceImpl.create(TABLE_NAME);
 		assertEquals(TABLE_NAME, table.getName());
 		assertEquals(TableStatus.FREE, table.getStatus());
 		assertEquals(order.getId(), table.getOrder().getId());
@@ -77,7 +70,7 @@ public class TableServiceTest {
 		Mockito.when(tableDao.findById(1)).thenReturn(table);
 		// Mockito mocking
 		
-		tableService.changeStatus(table, TableStatus.BUSY);
+		tableServiceImpl.changeStatus(table, TableStatus.BUSY);
 		
 		assertEquals(TableStatus.BUSY, table.getStatus());
 	}
@@ -91,7 +84,7 @@ public class TableServiceTest {
 		Mockito.when(tableDao.findById(1)).thenReturn(table);
 		// Mockito mocking
 		
-		tableService.changeStatus(table, TableStatus.FREE);
+		tableServiceImpl.changeStatus(table, TableStatus.FREE);
 		
 	}
 	
@@ -104,7 +97,7 @@ public class TableServiceTest {
 		Mockito.when(tableDao.findById(1)).thenReturn(table);
 		// Mockito mocking
 		
-		tableService.changeStatus(table, TableStatus.PAYING);
+		tableServiceImpl.changeStatus(table, TableStatus.PAYING);
 		
 		assertEquals(TableStatus.PAYING, table.getStatus());
 	}
@@ -119,7 +112,7 @@ public class TableServiceTest {
 		Mockito.when(tableDao.findById(1)).thenReturn(table);
 		// Mockito mocking
 
-		tableService.changeStatus(table, TableStatus.FREE);
+		tableServiceImpl.changeStatus(table, TableStatus.FREE);
 
 		assertEquals(TableStatus.FREE, table.getStatus());
 	}
@@ -133,7 +126,7 @@ public class TableServiceTest {
 		Mockito.when(tableDao.findById(1)).thenReturn(table);
 		// Mockito mocking
 		
-		tableService.changeStatus(table, TableStatus.BUSY);
+		tableServiceImpl.changeStatus(table, TableStatus.BUSY);
 		
 	}
 	
@@ -146,7 +139,7 @@ public class TableServiceTest {
 		Mockito.when(tableDao.findById(1)).thenReturn(table);
 		// Mockito mocking
 		
-		tableService.changeStatus(table, TableStatus.FREE);
+		tableServiceImpl.changeStatus(table, TableStatus.FREE);
 		
 		assertEquals(TableStatus.FREE, table.getStatus());
 	}
@@ -160,19 +153,19 @@ public class TableServiceTest {
 		Mockito.when(tableDao.findById(1)).thenReturn(table);
 		// Mockito mocking
 		
-		tableService.changeStatus(table, TableStatus.BUSY);
+		tableServiceImpl.changeStatus(table, TableStatus.BUSY);
 	}
 
 	@Test
 	public void findAllNotNullEmpty(){
-		Mockito.when(tableService.findAll()).thenReturn(new LinkedList<Table>());
-		Assert.assertNotNull(tableService.findAll());
+		Mockito.when(tableServiceImpl.findAll()).thenReturn(new LinkedList<Table>());
+		Assert.assertNotNull(tableServiceImpl.findAll());
 	}
 
 	@Test
 	public void findAllNotNull(){
-		Mockito.when(tableService.findAll()).thenReturn(null);
-		Assert.assertNotNull(tableService.findAll());
+		Mockito.when(tableServiceImpl.findAll()).thenReturn(null);
+		Assert.assertNotNull(tableServiceImpl.findAll());
 	}
 
 

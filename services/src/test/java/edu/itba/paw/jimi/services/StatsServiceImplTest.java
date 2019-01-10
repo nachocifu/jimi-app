@@ -1,56 +1,41 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.services.DishService;
-import edu.itba.paw.jimi.interfaces.services.StatsService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.*;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.sql.Timestamp;
 import java.util.LinkedList;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = StatsServiceTestConfig.class)
-public class StatsServiceTest {
+@RunWith(MockitoJUnitRunner.class)
+public class StatsServiceImplTest {
 	
 	private static final int ID = 123;
 	private static final String NAME = "Table221";
 	private static final Order ORDER = new Order(ID, new Timestamp(10000), new Timestamp(100002), OrderStatus.INACTIVE, 0, 0);
 	
 	@InjectMocks
-	@Autowired
-	private StatsService statsService;
+	private StatsServiceImpl statsServiceImpl;
 	
-	@Autowired
 	@Mock
 	private DishService dishService;
 	
-	@Autowired
 	@Mock
 	private TableService tableService;
-	
-	@Before
-	public void before() {
-		MockitoAnnotations.initMocks(this);
-	}
-	
 	
 	@Test
 	public void getBusyTablesUnitsWithNoTables() {
 		Mockito.when(tableService.findAll()).thenReturn(new LinkedList<Table>());
 		
 		Assert.assertEquals(0, tableService.findAll().size());
-		Assert.assertEquals(0, statsService.getBusyTablesUnits());
+		Assert.assertEquals(0, statsServiceImpl.getBusyTablesUnits());
 	}
 	
 	@Test
@@ -60,7 +45,7 @@ public class StatsServiceTest {
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
 		Assert.assertEquals(1, tableService.findAll().size());
-		Assert.assertEquals(1, statsService.getBusyTablesUnits());
+		Assert.assertEquals(1, statsServiceImpl.getBusyTablesUnits());
 	}
 	
 	@Test
@@ -80,7 +65,7 @@ public class StatsServiceTest {
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
 		Assert.assertEquals(9, tableService.findAll().size());
-		Assert.assertEquals(5, statsService.getBusyTablesUnits());
+		Assert.assertEquals(5, statsServiceImpl.getBusyTablesUnits());
 	}
 	
 	@Test
@@ -100,9 +85,9 @@ public class StatsServiceTest {
 		
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
-		Assert.assertTrue(statsService.getBusyTables() >= 0
-				&& statsService.getBusyTables() <= 100);
-		Assert.assertEquals(percentageExpected, statsService.getBusyTables());
+		Assert.assertTrue(statsServiceImpl.getBusyTables() >= 0
+				&& statsServiceImpl.getBusyTables() <= 100);
+		Assert.assertEquals(percentageExpected, statsServiceImpl.getBusyTables());
 	}
 	
 	@Test
@@ -110,7 +95,7 @@ public class StatsServiceTest {
 		Mockito.when(tableService.findAll()).thenReturn(new LinkedList<Table>());
 		
 		Assert.assertEquals(0, tableService.findAll().size());
-		Assert.assertEquals(0, statsService.getFreeTablesUnits());
+		Assert.assertEquals(0, statsServiceImpl.getFreeTablesUnits());
 	}
 	
 	@Test
@@ -120,7 +105,7 @@ public class StatsServiceTest {
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
 		Assert.assertEquals(1, tableService.findAll().size());
-		Assert.assertEquals(1, statsService.getFreeTablesUnits());
+		Assert.assertEquals(1, statsServiceImpl.getFreeTablesUnits());
 	}
 	
 	@Test
@@ -140,7 +125,7 @@ public class StatsServiceTest {
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
 		Assert.assertEquals(9, tableService.findAll().size());
-		Assert.assertEquals(4, statsService.getFreeTablesUnits());
+		Assert.assertEquals(4, statsServiceImpl.getFreeTablesUnits());
 	}
 	
 	@Test
@@ -160,9 +145,9 @@ public class StatsServiceTest {
 		
 		Mockito.when(tableService.findAll()).thenReturn(list);
 		
-		Assert.assertTrue(statsService.getFreeTables() >= 0
-				&& statsService.getFreeTables() <= 100);
-		Assert.assertEquals(percentageExpected, statsService.getFreeTables());
+		Assert.assertTrue(statsServiceImpl.getFreeTables() >= 0
+				&& statsServiceImpl.getFreeTables() <= 100);
+		Assert.assertEquals(percentageExpected, statsServiceImpl.getFreeTables());
 	}
 
     @Test
@@ -170,7 +155,7 @@ public class StatsServiceTest {
         Mockito.when(tableService.findAll()).thenReturn(new LinkedList<Table>());
 
         Assert.assertEquals(0, tableService.findAll().size());
-        Assert.assertEquals(0, statsService.getPayingTablesUnits());
+        Assert.assertEquals(0, statsServiceImpl.getPayingTablesUnits());
     }
 
     @Test
@@ -180,7 +165,7 @@ public class StatsServiceTest {
         Mockito.when(tableService.findAll()).thenReturn(list);
 
         Assert.assertEquals(1, tableService.findAll().size());
-        Assert.assertEquals(1, statsService.getPayingTablesUnits());
+        Assert.assertEquals(1, statsServiceImpl.getPayingTablesUnits());
     }
 
     @Test
@@ -200,7 +185,7 @@ public class StatsServiceTest {
         Mockito.when(tableService.findAll()).thenReturn(list);
 
         Assert.assertEquals(9, tableService.findAll().size());
-        Assert.assertEquals(4, statsService.getPayingTablesUnits());
+        Assert.assertEquals(4, statsServiceImpl.getPayingTablesUnits());
     }
 
     @Test
@@ -220,18 +205,18 @@ public class StatsServiceTest {
 
         Mockito.when(tableService.findAll()).thenReturn(list);
 
-        Assert.assertTrue(statsService.getPayingTables() >= 0
-                && statsService.getPayingTables() <= 100);
-        Assert.assertEquals(percentageExpected, statsService.getPayingTables());
+        Assert.assertTrue(statsServiceImpl.getPayingTables() >= 0
+                && statsServiceImpl.getPayingTables() <= 100);
+        Assert.assertEquals(percentageExpected, statsServiceImpl.getPayingTables());
     }
 	
 	@Test
 	public void getStockStateNoItemsPercentage() {
 		Mockito.when(dishService.findAll()).thenReturn(new LinkedList<Dish>());
 		
-		Assert.assertTrue(statsService.getStockState() >= 0
-				&& statsService.getStockState() <= 100);
-		Assert.assertEquals(0, statsService.getStockState());
+		Assert.assertTrue(statsServiceImpl.getStockState() >= 0
+				&& statsServiceImpl.getStockState() <= 100);
+		Assert.assertEquals(0, statsServiceImpl.getStockState());
 	}
 	
 	@Test
@@ -246,9 +231,9 @@ public class StatsServiceTest {
 		
 		Mockito.when(dishService.findAll()).thenReturn(list);
 		
-		Assert.assertTrue(statsService.getStockState() >= 0
-				&& statsService.getStockState() <= 100);
-		Assert.assertEquals(100, statsService.getStockState());
+		Assert.assertTrue(statsServiceImpl.getStockState() >= 0
+				&& statsServiceImpl.getStockState() <= 100);
+		Assert.assertEquals(100, statsServiceImpl.getStockState());
 	}
 	
 	@Test
@@ -264,8 +249,8 @@ public class StatsServiceTest {
 		
 		Mockito.when(dishService.findAll()).thenReturn(list);
 		
-		Assert.assertTrue(statsService.getStockState() >= 0
-				&& statsService.getStockState() <= 100);
-		Assert.assertEquals(percentageExpected, statsService.getStockState());
+		Assert.assertTrue(statsServiceImpl.getStockState() >= 0
+				&& statsServiceImpl.getStockState() <= 100);
+		Assert.assertEquals(percentageExpected, statsServiceImpl.getStockState());
 	}
 }

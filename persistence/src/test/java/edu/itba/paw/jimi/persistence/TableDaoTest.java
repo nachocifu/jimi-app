@@ -8,24 +8,16 @@ import edu.itba.paw.jimi.models.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -52,24 +44,21 @@ public class TableDaoTest {
 	
 	private static final Timestamp OPENEDAT = new Timestamp(1525467178);
 	private static final Timestamp CLOSEDAT = new Timestamp(1525467178 + 60 * 60);
-
+	
 	@Autowired
 	private DataSource ds;
-
+	
 	@Autowired
-	@Mock
 	private DishDao dishDao;
-
+	
 	@Autowired
-	@Mock
 	private OrderDao orderDao;
-
+	
 	@Autowired
-	@InjectMocks
 	private TableDao tableDao;
-
+	
 	private JdbcTemplate jdbcTemplate;
-
+	
 	@Before
 	public void setUp() {
 		jdbcTemplate = new JdbcTemplate(ds);
@@ -82,7 +71,7 @@ public class TableDaoTest {
 	
 	@Test
 	public void testFindById() {
-
+		
 		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
 		Order order = new Order(1, OPENEDAT, CLOSEDAT, OrderStatus.INACTIVE, 2, 2);
 		order.setDish(dish, 2);
@@ -90,47 +79,46 @@ public class TableDaoTest {
 		Mockito.when(orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2,2)).thenReturn(order);
 		Mockito.when(dishDao.findById(1)).thenReturn(dish);
 		Mockito.when(orderDao.findById(1)).thenReturn(order);
-
-
+		
+		
 		Order orderMock = orderDao.findById(1);
 		final Table table = tableDao.create(TABLE_NAME, TableStatus.FREE, orderMock);
-
+		
 		Table dbTable = tableDao.findById(table.getId());
 		assertNotNull(dbTable);
 		assertNotNull(dbTable.getOrder());
 		assertNotNull(dbTable.getOrder().getDishes().keySet().iterator().next());
-
+		
 		//Assert table.
 		assertEquals(TABLE_NAME, dbTable.getName());
 		assertEquals(TableStatus.FREE.ordinal(), dbTable.getStatus().ordinal());
 		assertEquals(order.getId(), dbTable.getOrder().getId());
-
+		
 	}
 	
-
+	
 	@Test(expected = TableWithNullOrderException.class)
 	public void testFindByIdNullOrderException() {
-
+		
 		tableDao.create(TABLE_NAME, TableStatus.FREE, null);
-
+		
 		cleanDB();
 	}
-
+	
 	@Test(expected = TableWithNullOrderException.class)
 	public void testFindByIdUnsavedOrderException() {
-
+		
 		Order order = new Order(1, OPENEDAT, CLOSEDAT, OrderStatus.INACTIVE, 2, 2);
-		Mockito.when(orderDao.findById(1)).thenReturn(null); // Not saved, so it returns null.
-
+		orderDao.findById(1);
 		tableDao.create(TABLE_NAME, TableStatus.FREE, order);
-
+		
 		cleanDB();
 	}
-
-
+	
+	
 	@Test
 	public void testUpdate() {
-
+		
 		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
 		Order order = new Order(1, OPENEDAT, CLOSEDAT, OrderStatus.INACTIVE, 2, 2);
 		order.setDish(dish, 2);
@@ -138,38 +126,38 @@ public class TableDaoTest {
 		Mockito.when(orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2,2)).thenReturn(order);
 		Mockito.when(dishDao.findById(1)).thenReturn(dish);
 		Mockito.when(orderDao.findById(1)).thenReturn(order);
-
-
+		
+		
 		final Table table = tableDao.create(TABLE_NAME, TableStatus.FREE, order);
-
-
+		
+		
 		Table dbTable = tableDao.findById(table.getId());
 		assertNotNull(dbTable);
 		assertNotNull(dbTable.getOrder());
 		assertNotNull(dbTable.getOrder().getDishes().keySet().iterator().next());
-
-
+		
+		
 		//Assert table.
 		assertEquals(TABLE_NAME, dbTable.getName());
 		assertEquals(TableStatus.FREE.ordinal(), dbTable.getStatus().ordinal());
 		assertEquals(order.getId(), dbTable.getOrder().getId());
-
-
+		
+		
 		dbTable.getOrder().setDish(dish, 5);
 		dbTable.getOrder().setDiners(5);
 		dbTable.setName(TABLE_NAME2);
 		dbTable.setStatus(TableStatus.BUSY);
-
+		
 		tableDao.update(dbTable);
-
+		
 		Table dbTableUpdated = tableDao.findById(dbTable.getId());
-
+		
 		//Assert update
 		assertNotNull(dbTableUpdated);
 		assertEquals(5, dbTableUpdated.getOrder().getDishes().get(dish).intValue());
 		assertEquals(TABLE_NAME2, dbTableUpdated.getName());
 		assertEquals(dbTableUpdated.getStatus().ordinal(), TableStatus.BUSY.ordinal());
 		assertEquals(5, dbTableUpdated.getOrder().getDiners());
-
+		
 	}
 }
