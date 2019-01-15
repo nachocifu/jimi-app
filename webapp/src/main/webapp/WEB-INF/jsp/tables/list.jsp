@@ -56,13 +56,13 @@
                                 <td><c:out value="${table.order.diners}"/></td>
 
                                 <c:choose>
-                                    <c:when test="${table.status.toString() == 'FREE'}">
+                                    <c:when test="${table.status.name() == 'FREE'}">
                                         <td><span
                                                 class="label label-success label-mini"><spring:message
                                                 code="table.free"/></span>
                                         </td>
                                     </c:when>
-                                    <c:when test="${table.status.toString() == 'BUSY'}">
+                                    <c:when test="${table.status.name() == 'BUSY'}">
                                         <td><span
                                                 class="label label-danger label-mini"><spring:message
                                                 code="table.busy"/></span>
