@@ -10,30 +10,30 @@ import java.util.Map;
 //@SecondaryTable(name = "orders_items")
 @javax.persistence.Table(name = "orders")
 public class Order {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_orderid_seq")
-    @SequenceGenerator(sequenceName = "orders_orderid_seq", name = "orders_orderid_seq", allocationSize = 1)
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_orderid_seq")
+	@SequenceGenerator(sequenceName = "orders_orderid_seq", name = "orders_orderid_seq", allocationSize = 1)
 	private long id;
-
-    @Column(precision = 10, nullable = false)
+	
+	@Column(precision = 10, nullable = false)
 	private int diners;
-
-    @Column(precision = 10, scale = 2, nullable = false)
+	
+	@Column(precision = 10, scale = 2, nullable = false)
 	private Float total;
-
-    @ElementCollection(fetch = FetchType.EAGER)
+	
+	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Dish, Integer> unDoneDishes;
-
+	
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Dish, Integer> doneDishes;
-
-    @Temporal(TemporalType.TIMESTAMP)
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date openedAt;
-
-    @Temporal(TemporalType.TIMESTAMP)
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date closedAt;
-
+	
 	@Enumerated(EnumType.ORDINAL)
 	private OrderStatus status;
 	
@@ -52,21 +52,22 @@ public class Order {
 		this.diners = diners;
 		this.total = total;
 	}
-    public Order(Date openedAt, Date closedAt, OrderStatus status, int diners, float total) {
-        this.openedAt = openedAt;
-        this.closedAt = closedAt;
-        this.status = status;
-        this.unDoneDishes = new HashMap<Dish, Integer>();
-        this.doneDishes = new HashMap<Dish, Integer>();
-        this.diners = diners;
-        this.total = total;
-    }
-
-    public void setDishes(Map<Dish, Integer> dishes) {
-        this.unDoneDishes = dishes;
-    }
-
-    /**
+	
+	public Order(Date openedAt, Date closedAt, OrderStatus status, int diners, float total) {
+		this.openedAt = openedAt;
+		this.closedAt = closedAt;
+		this.status = status;
+		this.unDoneDishes = new HashMap<Dish, Integer>();
+		this.doneDishes = new HashMap<Dish, Integer>();
+		this.diners = diners;
+		this.total = total;
+	}
+	
+	public void setDishes(Map<Dish, Integer> dishes) {
+		this.unDoneDishes = dishes;
+	}
+	
+	/**
 	 * This method sets the dish and amount overwriting the amount.
 	 *
 	 * @param dish   the dish to add.
@@ -74,20 +75,20 @@ public class Order {
 	 * @return the resulting quantity of this dish in this order.
 	 */
 	public Integer setDish(Dish dish, int amount) {
-        if (amount > 0) {
-            this.unDoneDishes.put(dish, amount);
-            return amount;
-        }else {
-            this.unDoneDishes.remove(dish);
-            return 0;
-        }
+		if (amount > 0) {
+			this.unDoneDishes.put(dish, amount);
+			return amount;
+		} else {
+			this.unDoneDishes.remove(dish);
+			return 0;
+		}
 	}
-
+	
 	public Integer setDoneDish(Dish dish, int amount) {
 		if (amount > 0) {
 			this.doneDishes.put(dish, amount);
 			return amount;
-		}else {
+		} else {
 			this.doneDishes.remove(dish);
 			return 0;
 		}
@@ -120,11 +121,11 @@ public class Order {
 		}
 		return undone;
 	}
-
+	
 	public Map<Dish, Integer> getUnDoneDishes() {
 		return unDoneDishes;
 	}
-
+	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -179,11 +180,11 @@ public class Order {
 	public void setTotal(Float total) {
 		this.total = total;
 	}
-
+	
 	public void setDoneDishes(Map<Dish, Integer> doneDishes) {
 		this.doneDishes = doneDishes;
 	}
-
+	
 	public Map<Dish, Integer> getDoneDishes() {
 		return doneDishes;
 	}
