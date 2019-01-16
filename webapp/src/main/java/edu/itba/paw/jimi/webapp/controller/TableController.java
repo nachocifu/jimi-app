@@ -115,6 +115,10 @@ public class TableController {
 	@RequestMapping(value = "/create", method = {RequestMethod.POST})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ModelAndView create(@Valid @ModelAttribute("registerForm") final TableForm form, final BindingResult errors) {
+  
+		if (ts.tableNameExists(form.getName())) {
+			errors.rejectValue("name", "table.error.existing.name.body");
+		}
 
 		if (errors.hasErrors()) {
 			return register(form);

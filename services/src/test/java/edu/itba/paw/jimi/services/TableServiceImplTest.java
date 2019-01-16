@@ -2,12 +2,14 @@ package edu.itba.paw.jimi.services;
 
 
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
+import edu.itba.paw.jimi.interfaces.exceptions.ExistingTableNameException;
 import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
+import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +47,6 @@ public class TableServiceImplTest {
 	
 	@Test
 	public void createTest() {
-		
 		// Mockito mocking
 		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		
@@ -59,6 +60,18 @@ public class TableServiceImplTest {
 		assertEquals(order.getId(), table.getOrder().getId());
 		assertEquals(OrderStatus.INACTIVE, order.getStatus());
 		assertEquals(0, table.getOrder().getDiners());
+	}
+	
+	@Test(expected = ServiceException.class)
+	public void createExistingTableNameTest() {
+		Mockito.when(tableDao.create(TABLE_NAME, TableStatus.FREE, null)).thenThrow(new ExistingTableNameException(TABLE_NAME));
+		tableServiceImpl.create(TABLE_NAME);
+	}
+	
+	@Test
+	public void tableNameExistsTest() {
+		Mockito.when(tableDao.tableNameExists(TABLE_NAME)).thenReturn(true);
+		tableServiceImpl.tableNameExists(TABLE_NAME);
 	}
 	
 	@Test
@@ -101,7 +114,6 @@ public class TableServiceImplTest {
 		
 		assertEquals(TableStatus.PAYING, table.getStatus());
 	}
-	
 	
 	@Test
 	public void setStatusFromBusyToFreeCANCELEDTest() {
@@ -167,6 +179,4 @@ public class TableServiceImplTest {
 		Mockito.when(tableServiceImpl.findAll()).thenReturn(null);
 		Assert.assertNotNull(tableServiceImpl.findAll());
 	}
-	
-	
 }

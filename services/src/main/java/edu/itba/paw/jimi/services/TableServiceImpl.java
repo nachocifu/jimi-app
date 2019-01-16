@@ -9,6 +9,7 @@ import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.PersistenceException;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -41,7 +43,14 @@ public class TableServiceImpl implements TableService {
 	public Table create(String name) {
 		Order order = orderService.create(OrderStatus.INACTIVE, null, null, 0);
 		LOGGER.info("Created table {}", name);
-		return tableDao.create(name, TableStatus.FREE, order);
+		Table table;
+		try {
+			table = tableDao.create(name, TableStatus.FREE, order);
+		} catch (PersistenceException e) {
+			LOGGER.error("Error while storing", e);
+			throw new ServiceException(e.getMessage());
+		}
+		return table;
 	}
 	
 	@Override
@@ -60,6 +69,11 @@ public class TableServiceImpl implements TableService {
 			return tables;
 		else
 			return new HashSet<Table>();
+	}
+	
+	@Override
+	public boolean tableNameExists(String tableName) {
+		return tableDao.tableNameExists(tableName);
 	}
 	
 	@Override

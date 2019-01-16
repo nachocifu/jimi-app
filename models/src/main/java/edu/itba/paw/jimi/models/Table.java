@@ -15,7 +15,7 @@ public class Table {
     @Column(name = "tableid")
 	private long id;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20, nullable = false, unique = true)
 	private String name;
 
     @Enumerated(EnumType.ORDINAL)
