@@ -1,15 +1,15 @@
 package edu.itba.paw.jimi.persistence;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
-import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
 import java.time.YearMonth;
 import java.util.*;

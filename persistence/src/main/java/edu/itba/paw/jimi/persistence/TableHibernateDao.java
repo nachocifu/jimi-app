@@ -3,7 +3,6 @@ package edu.itba.paw.jimi.persistence;
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
-import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
@@ -11,7 +10,10 @@ import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.Collection;
 
 @Repository

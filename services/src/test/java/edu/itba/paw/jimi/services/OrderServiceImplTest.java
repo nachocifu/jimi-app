@@ -19,10 +19,7 @@ public class OrderServiceImplTest {
 	private static final String DISH_NAME = "Cambuchá";
 	private static final float DISH_PRICE = 5.25F;
 	private static final int DISH_STOCK = 5;
-	private static final float DELTA = 0.001f;
-	
 	private static final Timestamp OPENEDAT = new Timestamp(1525467178);
-	private static final Timestamp CLOSEDAT = new Timestamp(1525467178 + 60 * 60);
 	
 	@Mock
 	private OrderService orderService;

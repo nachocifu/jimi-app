@@ -26,10 +26,8 @@ public class OrderServiceBaseImplTest {
 	private static final float DISH_PRICE = 5.25F;
 	private static final int DISH_STOCK = 5;
 	private static final float DELTA = 0.001f;
-	
 	private static final Timestamp OPENEDAT = new Timestamp(1525467178);
-	private static final Timestamp CLOSEDAT = new Timestamp(1525467178 + 60 * 60);
-
+	
 	@Mock
 	private OrderDao orderDao;
 	
@@ -504,13 +502,13 @@ public class OrderServiceBaseImplTest {
 	}
 	
 	@Test
-	public void findAllNotNullEmpty(){
+	public void findAllNotNullEmpty() {
 		Mockito.when(orderServiceBaseImpl.findAll()).thenReturn(new LinkedList<Order>());
 		Assert.assertNotNull(orderServiceBaseImpl.findAll());
 	}
 	
 	@Test
-	public void findAllNotNull(){
+	public void findAllNotNull() {
 		Mockito.when(orderServiceBaseImpl.findAll()).thenReturn(null);
 		Assert.assertNotNull(orderServiceBaseImpl.findAll());
 	}

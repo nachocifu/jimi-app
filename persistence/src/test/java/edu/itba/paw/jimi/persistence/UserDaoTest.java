@@ -71,8 +71,8 @@ public class UserDaoTest {
 		assertEquals(PASSWORD, user.getPassword());
 		
 		assertEquals(2, user.getRoles().size());
-		assertEquals(true, user.getRoles().contains(User.ROLE_ADMIN));
-		assertEquals(true, user.getRoles().contains(User.ROLE_USER));
+		assertTrue(user.getRoles().contains(User.ROLE_ADMIN));
+		assertTrue(user.getRoles().contains(User.ROLE_USER));
 		
 		cleanUp();
 	}
@@ -115,7 +115,7 @@ public class UserDaoTest {
 		assertEquals(USERNAME + "1", dbUser2.getUsername());
 		assertEquals(PASSWORD + "1", dbUser2.getPassword());
 		assertEquals(1, dbUser2.getRoles().size());
-		assertEquals(true, dbUser2.getRoles().contains(User.ROLE_ADMIN));
+		assertTrue(dbUser2.getRoles().contains(User.ROLE_ADMIN));
 		
 		cleanUp();
 	}
@@ -131,7 +131,7 @@ public class UserDaoTest {
 		dbUser.setUsername(USERNAME + "1");
 		dbUser.setPassword(PASSWORD + "1");
 		assertEquals(1, dbUser.getRoles().size());
-		assertEquals(true, dbUser.getRoles().contains(User.ROLE_ADMIN));
+		assertTrue(dbUser.getRoles().contains(User.ROLE_ADMIN));
 		
 		
 		Set<String> roles = new HashSet<String>();
@@ -145,7 +145,7 @@ public class UserDaoTest {
 		assertEquals(USERNAME + "1", dbUser2.getUsername());
 		assertEquals(PASSWORD + "1", dbUser2.getPassword());
 		assertEquals(1, dbUser2.getRoles().size());
-		assertEquals(true, dbUser2.getRoles().contains(User.ROLE_USER));
+		assertTrue(dbUser2.getRoles().contains(User.ROLE_USER));
 		
 		cleanUp();
 	}
@@ -161,7 +161,7 @@ public class UserDaoTest {
 		dbUser.setUsername(USERNAME + "1");
 		dbUser.setPassword(PASSWORD + "1");
 		assertEquals(1, dbUser.getRoles().size());
-		assertEquals(true, dbUser.getRoles().contains(User.ROLE_ADMIN));
+		assertTrue(dbUser.getRoles().contains(User.ROLE_ADMIN));
 		
 		
 		Set<String> roles = new HashSet<String>();
@@ -176,8 +176,8 @@ public class UserDaoTest {
 		assertEquals(USERNAME + "1", dbUser2.getUsername());
 		assertEquals(PASSWORD + "1", dbUser2.getPassword());
 		assertEquals(2, dbUser2.getRoles().size());
-		assertEquals(true, dbUser2.getRoles().contains(User.ROLE_USER));
-		assertEquals(true, dbUser2.getRoles().contains(User.ROLE_ADMIN));
+		assertTrue(dbUser2.getRoles().contains(User.ROLE_USER));
+		assertTrue(dbUser2.getRoles().contains(User.ROLE_ADMIN));
 		
 		cleanUp();
 	}
@@ -194,8 +194,8 @@ public class UserDaoTest {
 		dbUser.setUsername(USERNAME + "1");
 		dbUser.setPassword(PASSWORD + "1");
 		assertEquals(2, dbUser.getRoles().size());
-		assertEquals(true, dbUser.getRoles().contains(User.ROLE_ADMIN));
-		
+		assertTrue(dbUser.getRoles().contains(User.ROLE_ADMIN));
+
 		dbUser.setRoles(null); //If you set roles as null, then we do not alter the roles.
 		
 		userDao.update(dbUser);
@@ -204,9 +204,9 @@ public class UserDaoTest {
 		
 		assertEquals(USERNAME + "1", dbUser2.getUsername());
 		assertEquals(PASSWORD + "1", dbUser2.getPassword());
-		assertEquals(2, dbUser2.getRoles().size());
-		assertEquals(true, dbUser2.getRoles().contains(User.ROLE_USER));
-		assertEquals(true, dbUser2.getRoles().contains(User.ROLE_ADMIN));
+ 		assertEquals(2, dbUser2.getRoles().size());
+		assertTrue(dbUser2.getRoles().contains(User.ROLE_USER));
+		assertTrue(dbUser2.getRoles().contains(User.ROLE_ADMIN));
 		
 		cleanUp();
 	}
@@ -223,7 +223,7 @@ public class UserDaoTest {
 		dbUser.setUsername(USERNAME + "1");
 		dbUser.setPassword(PASSWORD + "1");
 		assertEquals(2, dbUser.getRoles().size());
-		assertEquals(true, dbUser.getRoles().contains(User.ROLE_ADMIN));
+		assertTrue(dbUser.getRoles().contains(User.ROLE_ADMIN));
 		
 		
 		dbUser.setRoles(new HashSet<String>());

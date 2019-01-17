@@ -35,7 +35,7 @@ public class TableServiceImplTest {
 	private TableDao tableDao;
 	
 	@Mock
-    @Qualifier(value = "adminOrderService")
+	@Qualifier(value = "adminOrderService")
 	private OrderService orderService;
 	
 	@Before
@@ -101,22 +101,22 @@ public class TableServiceImplTest {
 		
 		assertEquals(TableStatus.PAYING, table.getStatus());
 	}
-
-
+	
+	
 	@Test
 	public void setStatusFromBusyToFreeCANCELEDTest() {
 		Order order = new Order(1, null, null, OrderStatus.OPEN, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.BUSY, order);
-
+		
 		// Mockito mocking
 		Mockito.when(tableDao.findById(1)).thenReturn(table);
 		// Mockito mocking
-
+		
 		tableServiceImpl.changeStatus(table, TableStatus.FREE);
-
+		
 		assertEquals(TableStatus.FREE, table.getStatus());
 	}
-
+	
 	@Test(expected = TableStatusTransitionInvalid.class)
 	public void setStatusFromBusyToNOTCleaningORFreeTest() {
 		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
@@ -155,18 +155,18 @@ public class TableServiceImplTest {
 		
 		tableServiceImpl.changeStatus(table, TableStatus.BUSY);
 	}
-
+	
 	@Test
-	public void findAllNotNullEmpty(){
+	public void findAllNotNullEmpty() {
 		Mockito.when(tableServiceImpl.findAll()).thenReturn(new LinkedList<Table>());
 		Assert.assertNotNull(tableServiceImpl.findAll());
 	}
-
+	
 	@Test
-	public void findAllNotNull(){
+	public void findAllNotNull() {
 		Mockito.when(tableServiceImpl.findAll()).thenReturn(null);
 		Assert.assertNotNull(tableServiceImpl.findAll());
 	}
-
-
+	
+	
 }
