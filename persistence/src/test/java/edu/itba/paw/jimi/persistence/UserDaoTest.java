@@ -53,7 +53,6 @@ public class UserDaoTest {
 		assertNotNull(user);
 		assertEquals(USERNAME, user.getUsername());
 		assertEquals(PASSWORD, user.getPassword());
-		//assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
 		assertNotNull(user.getRoles());
 		
 		cleanUp();
@@ -62,7 +61,7 @@ public class UserDaoTest {
 	
 	@Test
 	public void testCreateWithRoles() {
-		Set<String> roles = new HashSet<String>();
+		Set<String> roles = new HashSet<>();
 		roles.add(User.ROLE_ADMIN);
 		roles.add(User.ROLE_USER);
 		
@@ -70,7 +69,6 @@ public class UserDaoTest {
 		assertNotNull(user);
 		assertEquals(USERNAME, user.getUsername());
 		assertEquals(PASSWORD, user.getPassword());
-		//assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
 		
 		assertEquals(2, user.getRoles().size());
 		assertEquals(true, user.getRoles().contains(User.ROLE_ADMIN));

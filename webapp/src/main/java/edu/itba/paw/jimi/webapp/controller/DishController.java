@@ -161,7 +161,7 @@ public class DishController {
 
 
         String[] header = {"name", "price", "stock", "minStock"};
-        for (Dish dish : dishService.findAll()) //TODO bring only does where stock<minStock
+        for (Dish dish : dishService.findAll())
             csvWriter.write(dish, header);
 
         csvWriter.close();
