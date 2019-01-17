@@ -56,7 +56,7 @@
                         <thead>
                         <tr>
                             <td><strong><spring:message code="bill.date"/></strong></td>
-                            <td><strong><spring:message code="bill.ammount"/></strong></td>
+                            <td><strong><spring:message code="bill.amount"/></strong></td>
                             <td><strong><spring:message code="bill.diners"/></strong></td>
                             <td><strong></strong></td>
                         </tr>
