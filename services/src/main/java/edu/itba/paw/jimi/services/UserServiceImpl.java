@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,14 +21,17 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao userDao;
 	
+	@Override
 	public User findById(final long id) {
 		return userDao.findById(id);
 	}
 	
+	@Override
 	public User findByUsername(String username) {
 		return userDao.findByUsername(username);
 	}
 	
+	@Override
 	public Collection<User> findAll() {
 		Collection<User> users = userDao.findAll();
 		if (users != null)
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
 			return new HashSet<User>();
 	}
 	
+	@Override
 	public Collection<User> findAll(QueryParams qp) {
 		Collection<User> users = userDao.findAll(qp);
 		if (users != null)
@@ -46,7 +49,7 @@ public class UserServiceImpl implements UserService {
 			return new HashSet<User>();
 	}
 	
-	@Transactional
+	@Override
 	public User create(final String username, String password) {
 		Set<String> roles = new HashSet<String>();
 		roles.add(User.ROLE_USER);
@@ -54,7 +57,7 @@ public class UserServiceImpl implements UserService {
 		return userDao.create(username, password, roles);
 	}
 	
-	@Transactional
+	@Override
 	public User createAdmin(String username, String password) {
 		Set<String> roles = new HashSet<String>();
 		roles.add(User.ROLE_USER);
@@ -63,6 +66,7 @@ public class UserServiceImpl implements UserService {
 		return userDao.create(username, password, roles);
 	}
 	
+	@Override
 	public int getTotalUsers() {
 		return userDao.getTotalUsers();
 	}
