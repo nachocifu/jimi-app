@@ -38,6 +38,9 @@ public interface TableService {
 	 */
 	boolean tableNameExists(String tableName);
 	
+	/**
+	 * Returns total number of tables.
+	 */
 	int getTotalTables();
 	
 	/**
@@ -47,5 +50,12 @@ public interface TableService {
 	 * @param status The new status of the table.
 	 */
 	void changeStatus(Table table, TableStatus status);
+	
+	/**
+	 * Gets number of tables with status tableStatus.
+	 *
+	 * @return umber of tables with status tableStatus.
+	 */
+	int getNumberOfTablesWithState(TableStatus tableStatus);
 	
 }

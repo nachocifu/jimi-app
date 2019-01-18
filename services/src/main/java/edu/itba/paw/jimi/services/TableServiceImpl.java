@@ -121,4 +121,9 @@ public class TableServiceImpl implements TableService {
 		LOGGER.info("Updated table {}", table);
 	}
 	
+	@Override
+	public int getNumberOfTablesWithState(TableStatus tableStatus) {
+		return tableDao.getNumberOfTablesWithState(tableStatus);
+	}
+	
 }

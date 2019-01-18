@@ -5,7 +5,6 @@ import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.StatsService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,32 +29,32 @@ public class StatsServiceImpl implements StatsService {
 	
 	@Override
 	public int getBusyTablesUnits() {
-		return getNumberOfTablesWithState(TableStatus.BUSY);
+		return tableService.getNumberOfTablesWithState(TableStatus.BUSY);
 	}
 	
 	@Override
 	public int getBusyTables() {
-		return (int) ((getBusyTablesUnits() * 100.0) / tableService.findAll().size());
+		return (int) ((getBusyTablesUnits() * 100.0) / tableService.getTotalTables());
 	}
 	
 	@Override
 	public int getFreeTablesUnits() {
-		return getNumberOfTablesWithState(TableStatus.FREE);
+		return tableService.getNumberOfTablesWithState(TableStatus.FREE);
 	}
 	
 	@Override
 	public int getFreeTables() {
-		return (int) ((getFreeTablesUnits() * 100.0) / tableService.findAll().size());
+		return (int) ((getFreeTablesUnits() * 100.0) / tableService.getTotalTables());
 	}
 	
 	@Override
 	public int getPayingTablesUnits() {
-		return getNumberOfTablesWithState(TableStatus.PAYING);
+		return tableService.getNumberOfTablesWithState(TableStatus.PAYING);
 	}
 	
 	@Override
 	public int getPayingTables() {
-		return (int) ((getPayingTablesUnits() * 100.0) / tableService.findAll().size());
+		return (int) ((getPayingTablesUnits() * 100.0) / tableService.getTotalTables());
 	}
 	
 	@Override
@@ -76,18 +75,6 @@ public class StatsServiceImpl implements StatsService {
 	@Override
 	public Map getMonthlyOrderCancelled() {
 		return orderService.getMonthlyOrderCancelled();
-	}
-	
-	private int getNumberOfTablesWithState(TableStatus status) {
-		
-		int count = 0;
-		
-		for (Table t : tableService.findAll()) {
-			if (t.getStatus() == status)
-				count += 1;
-		}
-		
-		return count;
 	}
 	
 }
