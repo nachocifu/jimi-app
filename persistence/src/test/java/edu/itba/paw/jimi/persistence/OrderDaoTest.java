@@ -5,18 +5,26 @@ import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Map;
 
 import static junit.framework.TestCase.*;
 
@@ -37,7 +45,6 @@ public class OrderDaoTest {
 	private DishDao dishDao; //Here we are not using a mocked dao because orderDao uses a union on DB to get the dishes, so mocking it would break the union.
 	
 	private static final String ORDER_TABLE_NAME = "orders";
-	private static final String ORDER_ITEM_TABLE_NAME = "orders_items";
 	
 	private static final String DISH_NAME = "Cambuchá";
 	private static final Float DISH_PRICE = 5.25F;
@@ -53,13 +60,33 @@ public class OrderDaoTest {
 	
 	private static final Timestamp OPENEDAT = new Timestamp(1525467178);
 	private static final Timestamp CLOSEDAT = new Timestamp(1525467178 + 60 * 60);
+	private static final Timestamp CLOSEDAT_1 = Timestamp.from(CLOSEDAT.toInstant().atZone(ZoneId.of("UTC")).plus(1, ChronoUnit.MONTHS).toInstant());
+	private static final Timestamp CLOSEDAT_2 = Timestamp.from(CLOSEDAT.toInstant().atZone(ZoneId.of("UTC")).plus(2, ChronoUnit.MONTHS).toInstant());
 	
 	private static final int DINERS = 2;
 	private static final float TOTAL = 2f;
 	
 	
+	private JdbcTemplate jdbcTemplate;
+	
 	@Before
 	public void setUp() {
+		jdbcTemplate = new JdbcTemplate(ds);
+		addTestData();
+	}
+	
+	private void addTestData() {
+		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2, 2);
+		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2, 2);
+		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT_1, 2, 3);
+		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT_1, 2, 3);
+		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT_2, 2, 4);
+		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT_2, 2, 4);
+	}
+	
+	@After
+	public void cleanDB() {
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_TABLE_NAME);
 	}
 	
 	@Test
@@ -299,6 +326,18 @@ public class OrderDaoTest {
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
 		
+	}
+	
+	@Test
+	public void testGetMonthlyOrderTotal() {
+		Map map = orderDao.getMonthlyOrderTotal();
+		Object[] keySet = map.keySet().toArray();
+		Assert.assertEquals(YearMonth.from(CLOSEDAT.toLocalDateTime()), keySet[0]);
+		Assert.assertEquals(YearMonth.from(CLOSEDAT_1.toLocalDateTime()), keySet[1]);
+		Assert.assertEquals(YearMonth.from(CLOSEDAT_2.toLocalDateTime()), keySet[2]);
+		Assert.assertEquals(4.0, map.get(keySet[0]));
+		Assert.assertEquals(6.0, map.get(keySet[1]));
+		Assert.assertEquals(8.0, map.get(keySet[2]));
 	}
 	
 }
