@@ -12,10 +12,10 @@ public interface TableService {
 	Table findById(final long id);
 	
 	/**
-	 * Creates a new table with a order.
+	 * Creates a new table with an order.
 	 *
-	 * @param name
-	 * @return
+	 * @param name the name of the new table
+	 * @return created table
 	 */
 	Table create(String name) throws ServiceException;
 	

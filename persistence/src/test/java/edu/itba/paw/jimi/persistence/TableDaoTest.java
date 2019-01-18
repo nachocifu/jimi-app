@@ -3,9 +3,9 @@ package edu.itba.paw.jimi.persistence;
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
-import edu.itba.paw.jimi.interfaces.exceptions.ExistingTableNameException;
 import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import edu.itba.paw.jimi.models.*;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,6 @@ import static junit.framework.TestCase.assertNotNull;
 @Transactional
 public class TableDaoTest {
 	
-	private static final String ORDER_TABLE_NAME = "orders";
 	private static final String TABLE_TABLE_NAME = "tables";
 	private static final String TABLE_NAME = "Table 1";
 	private static final String TABLE_NAME2 = "Table 2";
@@ -62,57 +61,44 @@ public class TableDaoTest {
 		addTestData();
 	}
 	
-	void addTestData() {
+	private void addTestData() {
 		testDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		testOrder = orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2, 2);
 		testOrder.setDish(testDish, 2);
-		try {
-			testTable = tableDao.create(TABLE_NAME, TableStatus.FREE, testOrder);
-		} catch (ExistingTableNameException e) {
-			e.printStackTrace();
-		}
+		testTable = tableDao.create(TABLE_NAME, TableStatus.FREE, testOrder);
 	}
 	
-	private void cleanDB() {
+	@After
+	public void cleanDB() {
 		JdbcTestUtils.deleteFromTables(jdbcTemplate, TABLE_TABLE_NAME);
-		JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_TABLE_NAME);
 	}
 	
 	@Test
 	public void testFindById() {
-		
 		Table dbTable = tableDao.findById(testTable.getId());
 		assertNotNull(dbTable);
 		assertNotNull(dbTable.getOrder());
 		assertNotNull(dbTable.getOrder().getDishes().keySet().iterator().next());
 		
-		//Assert testTable.
 		assertEquals(TABLE_NAME, dbTable.getName());
 		assertEquals(TableStatus.FREE.ordinal(), dbTable.getStatus().ordinal());
 		assertEquals(testOrder.getId(), dbTable.getOrder().getId());
-		
 	}
 	
-	@Test(expected = ExistingTableNameException.class)
-	public void testCreateTableWithExistingName() throws ExistingTableNameException {
+	@Test
+	public void testTableWithExistingName() {
 		Assert.assertTrue(tableDao.tableNameExists(TABLE_NAME));
-		tableDao.create(TABLE_NAME, TableStatus.FREE, testOrder);
-		cleanDB();
 	}
 	
 	@Test(expected = TableWithNullOrderException.class)
-	public void testFindByIdNullOrderException() throws ExistingTableNameException {
+	public void testFindByIdNullOrderException() {
 		tableDao.create(TABLE_NAME, TableStatus.FREE, null);
-		cleanDB();
 	}
 	
 	@Test(expected = TableWithNullOrderException.class)
-	public void testFindByIdUnsavedOrderException() throws ExistingTableNameException {
-		Order order = new Order(1, OPENEDAT, CLOSEDAT, OrderStatus.INACTIVE, 2, 2);
-		orderDao.findById(1);
+	public void testFindByIdUnsavedOrderException() {
+		Order order = new Order(100, OPENEDAT, CLOSEDAT, OrderStatus.INACTIVE, 2, 2);
 		tableDao.create(TABLE_NAME, TableStatus.FREE, order);
-		
-		cleanDB();
 	}
 	
 	@Test

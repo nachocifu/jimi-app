@@ -35,8 +35,7 @@ public class TableServiceImpl implements TableService {
 	
 	@Override
 	public Table findById(final long id) {
-		Table t = tableDao.findById(id);
-		return t;
+		return tableDao.findById(id);
 	}
 	
 	@Override

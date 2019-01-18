@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.persistence;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
-import edu.itba.paw.jimi.interfaces.exceptions.ExistingTableNameException;
 import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
@@ -57,8 +56,6 @@ public class TableHibernateDao implements TableDao {
 	public Table create(String name, TableStatus ts, Order order) {
 		if (order == null || orderDao.findById(order.getId()) == null)
 			throw new TableWithNullOrderException();
-		if (tableNameExists(name))
-			throw new ExistingTableNameException(name);
 		final Table table = new Table(name, ts, order);
 		em.persist(table);
 		return table;
