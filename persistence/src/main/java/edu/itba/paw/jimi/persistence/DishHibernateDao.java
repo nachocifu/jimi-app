@@ -18,7 +18,6 @@ public class DishHibernateDao implements DishDao {
 	@PersistenceContext(unitName = "testName")
 	private EntityManager em;
 	
-	
 	@Override
 	public Dish create(String name, float price, int stock) {
 		final Dish dish = new Dish(name, price, stock);
@@ -50,6 +49,11 @@ public class DishHibernateDao implements DishDao {
 		query.setMaxResults(qp.getPageSize());
 		
 		return (Collection<Dish>) query.getResultList();
+	}
+	
+	@Override
+	public Collection<Dish> findDishesMissingStock() {
+		return em.createQuery("from Dish as d where d.stock < d.minStock", Dish.class).getResultList();
 	}
 	
 	@Override
