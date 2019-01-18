@@ -93,8 +93,6 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Override
 	public int removeOneDish(Order order, Dish dish) {
-		
-		
 		int previousAmount;
 		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish) != 0) {
 			//Here logic to remove undone dishes.

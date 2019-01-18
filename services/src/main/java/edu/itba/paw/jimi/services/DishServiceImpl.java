@@ -136,4 +136,9 @@ public class DishServiceImpl implements DishService {
 		return dish.getMinStock();
 	}
 	
+	@Override
+	public Collection<Dish> findDishesMissingStock() {
+		return dishDao.findDishesMissingStock();
+	}
+	
 }

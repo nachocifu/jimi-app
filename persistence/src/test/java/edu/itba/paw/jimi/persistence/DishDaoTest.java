@@ -4,15 +4,21 @@ package edu.itba.paw.jimi.persistence;
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.util.Collection;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
@@ -24,15 +30,21 @@ import static junit.framework.TestCase.assertNotNull;
 @Transactional
 public class DishDaoTest {
 	
+	private static final String DISHES_TABLE_NAME = "dishes";
 	private static final String NAME = "Cambuchá";
-	
 	private static final String PI_NAME = "Pie";
-	
 	private static final Float PRICE = 5.25F;
-	
 	private static final Float REAL_PRICE = (float) Math.PI;
-	
 	private static final int MAX_STOCK = 1000000;
+	private static final String DISH_NAME = "Cambuchá";
+	private static final String DISH_NAME_MISS_STOCK = "Cambuchá missing stock";
+	private static final String DISH_NAME_OVER_STOCK = "Cambuchá over stock";
+	private static final Float DISH_PRICE = 5.25F;
+	private static final int DISH_STOCK = 5;
+	private static final int MIN_STOCK = 5;
+	private Dish dishEqualStock;
+	private Dish dishMissingStock;
+	private Dish dishOverStock;
 	
 	@Autowired
 	private DataSource ds;
@@ -40,6 +52,31 @@ public class DishDaoTest {
 	@Autowired
 	@Qualifier("dishHibernateDao")
 	private DishDao dishDao; //Here we are not using a mocked dao because orderDao uses a union on DB to get the dishes, so mocking it would break the union.
+	
+	private JdbcTemplate jdbcTemplate;
+	
+	@Before
+	public void setUp() {
+		jdbcTemplate = new JdbcTemplate(ds);
+		addTestData();
+	}
+	
+	private void addTestData() {
+		dishEqualStock = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+		dishEqualStock.setMinStock(MIN_STOCK);
+		dishDao.update(dishEqualStock);
+		dishMissingStock = dishDao.create(DISH_NAME_MISS_STOCK, DISH_PRICE, DISH_STOCK - 3);
+		dishMissingStock.setMinStock(MIN_STOCK);
+		dishDao.update(dishMissingStock);
+		dishOverStock = dishDao.create(DISH_NAME_OVER_STOCK, DISH_PRICE, DISH_STOCK + 3);
+		dishOverStock.setMinStock(MIN_STOCK);
+		dishDao.update(dishOverStock);
+	}
+	
+	@After
+	public void cleanDB() {
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, DISHES_TABLE_NAME);
+	}
 	
 	@Test
 	public void testCreate() {
@@ -97,31 +134,26 @@ public class DishDaoTest {
 	
 	@Test
 	public void testFindAll() {
-		final Dish dish1 = dishDao.create(NAME + " Colorada", PRICE * 2, 3);
-		final Dish dish2 = dishDao.create(NAME + " Virgen", PRICE, 4);
-		final Dish dish3 = dishDao.create(NAME + " Organica", PRICE * 0.5f, 1);
-		
 		List<Dish> dishes = (List<Dish>) dishDao.findAll(new QueryParams(0, 10));
 		assertEquals(3, dishes.size());
 		
-		assertEquals(dish1.getName(), NAME + " Colorada");
-		assertEquals(dish2.getName(), NAME + " Virgen");
-		assertEquals(dish3.getName(), NAME + " Organica");
+		assertEquals(dishEqualStock.getName(), DISH_NAME);
+		assertEquals(dishMissingStock.getName(), DISH_NAME_MISS_STOCK);
+		assertEquals(dishOverStock.getName(), DISH_NAME_OVER_STOCK);
 		
-		assertEquals(dish1.getPrice(), PRICE * 2);
-		assertEquals(dish2.getPrice(), PRICE);
-		assertEquals(dish3.getPrice(), PRICE * 0.5f);
+		assertEquals(dishEqualStock.getPrice(), DISH_PRICE);
+		assertEquals(dishMissingStock.getPrice(), DISH_PRICE);
+		assertEquals(dishOverStock.getPrice(), DISH_PRICE);
 		
-		assertEquals(dish1.getStock(), 3);
-		assertEquals(dish2.getStock(), 4);
-		assertEquals(dish3.getStock(), 1);
-		
+		assertEquals(dishEqualStock.getStock(), DISH_STOCK);
+		assertEquals(dishMissingStock.getStock(), DISH_STOCK - 3);
+		assertEquals(dishOverStock.getStock(), DISH_STOCK + 3);
 	}
 	
 	@Test
-	public void testFindAllNull() {
-		List<Dish> dishes = (List<Dish>) dishDao.findAll(new QueryParams(0, 10));
-		assertNotNull(dishes);
-		assertEquals(dishes.size(), 0);
+	public void testFindDishesMissingStock() {
+		Collection<Dish> dishes = dishDao.findDishesMissingStock();
+		Assert.assertEquals(1, dishes.size());
+		Assert.assertEquals(dishMissingStock, dishes.toArray()[0]);
 	}
 }

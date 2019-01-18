@@ -73,6 +73,19 @@ public interface DishService {
 	 */
 	Collection<Dish> findAllAvailable();
 	
+	/**
+	 * Returns all dishes with missing stock, that is, their stock lower than their
+	 * minimum stock.
+	 *
+	 * @return dishes missing stock.
+	 */
+	Collection<Dish> findDishesMissingStock();
+	
+	/**
+	 * Returns the amount of dishes in the database.
+	 *
+	 * @return a positive integer.
+	 */
 	int getTotalDishes();
 	
 	/**
@@ -83,4 +96,5 @@ public interface DishService {
 	 * @return the new min stock value
 	 */
 	int setMinStock(Dish dish, int minStock);
+	
 }
