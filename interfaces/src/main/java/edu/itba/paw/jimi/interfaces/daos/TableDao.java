@@ -6,13 +6,15 @@ import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
 
+import javax.persistence.PersistenceException;
 import java.util.Collection;
 
 public interface TableDao {
-
-
+	
+	
 	/**
 	 * Returns a table with the passed id.
+	 *
 	 * @param id the id to look for.
 	 * @return the table with said id.
 	 */
@@ -31,23 +33,29 @@ public interface TableDao {
 	 * @return all the tables.
 	 */
 	Collection<Table> findAll();
-
+	
 	/**
 	 * Returns all the tables.
 	 *
 	 * @return all the tables.
 	 */
 	Collection<Table> findAll(QueryParams qp);
-
+	
 	int getTotalTables();
-
+	
+	/**
+	 * Returns true if a table exists with tableName.
+	 */
+	boolean tableNameExists(String tableName);
+	
 	/**
 	 * Creates a Table.
-	 * @param name Name of the table.
-	 * @param ts Status of the table.
+	 *
+	 * @param name  Name of the table.
+	 * @param ts    Status of the table.
 	 * @param order Tables order.
-	 * @throws TableWithNullOrderException when a order not in the DB or null is passed.
 	 * @return The created table.
+	 * @throws TableWithNullOrderException when a order not in the DB or null is passed.
 	 */
-	Table create(String name, TableStatus ts, Order order) throws TableWithNullOrderException;
+	Table create(String name, TableStatus ts, Order order) throws PersistenceException;
 }

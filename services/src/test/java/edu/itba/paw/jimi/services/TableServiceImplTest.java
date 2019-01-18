@@ -45,7 +45,6 @@ public class TableServiceImplTest {
 	
 	@Test
 	public void createTest() {
-		
 		// Mockito mocking
 		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		
@@ -101,7 +100,6 @@ public class TableServiceImplTest {
 		
 		assertEquals(TableStatus.PAYING, table.getStatus());
 	}
-	
 	
 	@Test
 	public void setStatusFromBusyToFreeCANCELEDTest() {
@@ -167,6 +165,4 @@ public class TableServiceImplTest {
 		Mockito.when(tableServiceImpl.findAll()).thenReturn(null);
 		Assert.assertNotNull(tableServiceImpl.findAll());
 	}
-	
-	
 }
