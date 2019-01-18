@@ -58,4 +58,12 @@ public interface TableDao {
 	 * @throws TableWithNullOrderException when a order not in the DB or null is passed.
 	 */
 	Table create(String name, TableStatus ts, Order order) throws PersistenceException;
+	
+	/**
+	 * Gets number of tables with status tableStatus.
+	 *
+	 * @return umber of tables with status tableStatus.
+	 */
+	int getNumberOfTablesWithState(TableStatus tableStatus);
+	
 }

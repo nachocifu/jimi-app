@@ -61,6 +61,13 @@ public class TableHibernateDao implements TableDao {
 		return table;
 	}
 	
+	@Override
+	public int getNumberOfTablesWithState(TableStatus tableStatus) {
+		final TypedQuery<Long> query = em.createQuery("select count(*) from Table as t where t.status = :tableStatus", Long.class);
+		query.setParameter("tableStatus", tableStatus);
+		return query.getSingleResult().intValue();
+	}
+	
 	public boolean tableNameExists(String tableName) {
 		final TypedQuery<Table> query = em.createQuery("from Table as t where t.name = :tableName", Table.class);
 		query.setParameter("tableName", tableName);

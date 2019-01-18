@@ -55,10 +55,15 @@ public interface StatsService {
     /**
      * Calculates historic total for orders of a month.
      *
-     * @return percentage.
+     * @return map of month to total.
      */
     Map getMonthlyOrderTotal();
-
+    
+    /**
+     * Calculates cancelled orders of a month.
+     *
+     * @return map of month to number of cancelled orders.
+     */
     Map getMonthlyOrderCancelled();
 	
 }

@@ -7,7 +7,6 @@ import java.util.Map;
 
 
 @Entity
-//@SecondaryTable(name = "orders_items")
 @javax.persistence.Table(name = "orders")
 public class Order {
 	

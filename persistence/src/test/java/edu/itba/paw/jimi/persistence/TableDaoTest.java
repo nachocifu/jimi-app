@@ -66,6 +66,14 @@ public class TableDaoTest {
 		testOrder = orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2, 2);
 		testOrder.setDish(testDish, 2);
 		testTable = tableDao.create(TABLE_NAME, TableStatus.FREE, testOrder);
+		tableDao.create("Table 3", TableStatus.BUSY, testOrder);
+		tableDao.create("Table 4", TableStatus.BUSY, testOrder);
+		tableDao.create("Table 5", TableStatus.FREE, testOrder);
+		tableDao.create("Table 6", TableStatus.BUSY, testOrder);
+		tableDao.create("Table 7", TableStatus.FREE, testOrder);
+		tableDao.create("Table 8", TableStatus.FREE, testOrder);
+		tableDao.create("Table 9", TableStatus.BUSY, testOrder);
+		tableDao.create("Table 10", TableStatus.FREE, testOrder);
 	}
 	
 	@After
@@ -129,4 +137,30 @@ public class TableDaoTest {
 		assertEquals(dbTableUpdated.getStatus().ordinal(), TableStatus.BUSY.ordinal());
 		assertEquals(5, dbTableUpdated.getOrder().getDiners());
 	}
+	
+	@Test
+	public void testGetNumberOfTablesWithStateFree() {
+		Assert.assertEquals(5, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
+	}
+	
+	@Test
+	public void testGetNumberOfTablesWithStateChanges() {
+		Assert.assertEquals(5, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
+		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
+		Assert.assertEquals(0, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
+		
+		testTable.setStatus(TableStatus.BUSY);
+		tableDao.update(testTable);
+		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
+		Assert.assertEquals(5, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
+		Assert.assertEquals(0, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
+		
+		
+		testTable.setStatus(TableStatus.PAYING);
+		tableDao.update(testTable);
+		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
+		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
+		Assert.assertEquals(1, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
+	}
+	
 }
