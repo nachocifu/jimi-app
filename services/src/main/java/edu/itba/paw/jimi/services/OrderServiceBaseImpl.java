@@ -83,12 +83,7 @@ public class OrderServiceBaseImpl implements OrderService {
 		// Update dish stock
 		dishService.setStock(dish, dish.getStock() - amount);
 		
-		Order dbOrder = orderDao.findById(order.getId());
-		
-		if (dbOrder.getDishes().containsKey(dish))
-			return dbOrder.getDishes().get(dish);
-		else
-			return 0;
+		return order.getDishes().getOrDefault(dish, 0);
 	}
 	
 	@Override
@@ -117,17 +112,11 @@ public class OrderServiceBaseImpl implements OrderService {
 		
 		LOGGER.info("Updated order (remove one dish): {}", order);
 		
-		Order dbOrder = orderDao.findById(order.getId());
-		if (!dbOrder.getDishes().containsKey(dish))
-			return 0;
-		else
-			return dbOrder.getDishes().get(dish);
+		return order.getDishes().getOrDefault(dish, 0);
 	}
 	
 	@Override
 	public int removeAllDish(Order order, Dish dish) {
-		
-		
 		// Update dish stock
 		if (order.getDishes().containsKey(dish)) {
 			int previousValue = order.getDishes().get(dish);
@@ -141,11 +130,7 @@ public class OrderServiceBaseImpl implements OrderService {
 		
 		LOGGER.info("Updated order (remove all dish): {}", order);
 		
-		Order dbOrder = orderDao.findById(order.getId());
-		if (!dbOrder.getDishes().containsKey(dish))
-			return 0;
-		else
-			return dbOrder.getDishes().get(dish);
+		return order.getDishes().getOrDefault(dish, 0);
 	}
 	
 	@Override

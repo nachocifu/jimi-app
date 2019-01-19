@@ -123,20 +123,8 @@ public class OrderServiceBaseImplTest {
 	public void addDishesThenRemoveOne() {
 		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
 		Order order = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
-		
-		// Mockito mocking
-		Order returnOrder1 = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
-		returnOrder1.setDish(dish, 1);
-		
-		Order returnOrder2 = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
-		returnOrder2.setDish(dish, 2);
-		
-		Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1, returnOrder2);
-		// Mockito mocking
-		
 		orderServiceBaseImpl.addDishes(order, dish, 4);
-		
-		assertEquals(DISH_STOCK - 3, orderServiceBaseImpl.removeOneDish(order, dish));
+		assertEquals(3, orderServiceBaseImpl.removeOneDish(order, dish));
 	}
 	
 	@Test
@@ -318,27 +306,13 @@ public class OrderServiceBaseImplTest {
 	
 	@Test
 	public void addDishTwiceThenRemoveAllTest() {
-		
 		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
 		Order order = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
-		
-		// Mockito mocking
-		Order returnOrder1 = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
-		returnOrder1.setDish(dish, 1);
-		
-		Order returnOrder2 = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
-		returnOrder2.setDish(dish, 2);
-		
-		Order returnOrder3 = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
-		
-		Mockito.when(orderDao.findById(1)).thenReturn(returnOrder1, returnOrder2, returnOrder3);
-		// Mockito mocking
 		
 		orderServiceBaseImpl.addDish(order, dish);
 		orderServiceBaseImpl.addDish(order, dish);
 		int retValue = orderServiceBaseImpl.removeAllDish(order, dish);
-		
-		assertEquals(retValue, 0);
+		assertEquals(0, retValue);
 	}
 	
 	@Test
@@ -381,7 +355,7 @@ public class OrderServiceBaseImplTest {
 		
 		int retValue = orderServiceBaseImpl.removeOneDish(order, dish);
 		
-		assertEquals(retValue, 0);
+		assertEquals(0, retValue);
 	}
 	
 	@Test
@@ -399,7 +373,39 @@ public class OrderServiceBaseImplTest {
 		
 		int retValue = orderServiceBaseImpl.removeOneDish(order, dish);
 		
-		assertEquals(retValue, 0);
+		assertEquals(0, retValue);
+	}
+	
+	@Test
+	public void removeOneUndoneDishTest() {
+		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
+		Order order = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
+		order.setDish(dish, 2);
+		
+		Mockito.when(orderDao.findById(order.getId())).thenReturn(order);
+		orderServiceBaseImpl.removeOneDish(order, dish);
+		
+		int newUndoneDishAmount = order.getUnDoneDishes().get(dish);
+		Assert.assertEquals(1, newUndoneDishAmount);
+		Assert.assertEquals(1, order.getUnDoneDishes().size());
+		Assert.assertEquals(DISH_PRICE, order.getTotal(), 0D);
+	}
+	
+	@Test
+	public void removeOneDoneDishTest() {
+		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
+		Order order = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
+		order.setDoneDish(dish, 2);
+		int originalStock = dish.getStock();
+		
+		orderServiceBaseImpl.removeOneDish(order, dish);
+		
+		int newDoneDishAmount = order.getDoneDishes().get(dish);
+		Assert.assertEquals(1, newDoneDishAmount);
+		Assert.assertEquals(1, order.getDoneDishes().size());
+		Assert.assertEquals(DISH_PRICE, order.getTotal(), 0D);
+		Dish updatedDish = order.getDoneDishes().keySet().stream().findFirst().get();
+		Assert.assertEquals(originalStock, updatedDish.getStock());
 	}
 	
 	@Test

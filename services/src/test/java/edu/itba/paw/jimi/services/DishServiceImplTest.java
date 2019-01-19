@@ -79,8 +79,8 @@ public class DishServiceImplTest {
 		
 		int retValue = dishServiceImpl.setStock(testDish, TEST_STOCK);
 		
-		Assert.assertEquals(retValue, TEST_STOCK);
-		Assert.assertEquals(testDish.getStock(), TEST_STOCK);
+		Assert.assertEquals(TEST_STOCK, retValue);
+		Assert.assertEquals(TEST_STOCK, testDish.getStock());
 	}
 	
 	@Test(expected = MaxStockException.class)
