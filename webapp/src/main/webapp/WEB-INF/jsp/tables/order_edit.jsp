@@ -61,7 +61,7 @@
                         </form>
                     </div>
                     <div class="col s3">
-                        <a href="<c:url value="/admin/bills"/>"
+                        <a href="<c:url value="/web/admin/bills"/>"
                            class="btn blue-gray"><spring:message code="admin.return_to_order_list"/>
                         </a>
                     </div>

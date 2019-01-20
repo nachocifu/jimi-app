@@ -69,7 +69,7 @@
                                         <td>${dish.key.name}</td>
                                         <td>${dish.value}</td>
                                         <td>
-                                            <form action="<c:url value="/kitchen/done"/>" method="post">
+                                            <form action="<c:url value="/web/kitchen/done"/>" method="post">
                                                 <button type="submit"
                                                         class="btn btn-primary btn-xs">
                                                     <i class="fa fa-check"></i>
@@ -111,7 +111,7 @@
                                         <td>${dish.key.name}</td>
                                         <td>${dish.value}</td>
                                         <td>
-                                            <form action="<c:url value="/kitchen/done"/>" method="post">
+                                            <form action="<c:url value="/web/kitchen/done"/>" method="post">
                                                 <button type="submit"
                                                         class="btn btn-primary btn-xs">
                                                     <i class="fa fa-check"></i>

@@ -41,7 +41,7 @@
     <div class="card">
         <div class="card-content">
             <span class="card-title"><spring:message code="table.register_header"/></span>
-            <c:url value="/tables/create" var="postPath"/>
+            <c:url value="/web/tables/create" var="postPath"/>
             <form:form modelAttribute="registerForm" action="${postPath}" method="post">
                 <form:label path="name"
                             cssClass="mdl-textfield__label"><spring:message
@@ -53,7 +53,7 @@
                         class="waves-effect waves-light btn">
                     <spring:message code="table.register"/>
                 </button>
-                <a href="<c:url value="/tables/"/>"
+                <a href="<c:url value="/web/tables/"/>"
                    class="waves-effect waves-light btn">
                     <spring:message code="dish.cancel"/>
                 </a>

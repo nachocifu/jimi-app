@@ -144,7 +144,7 @@
                             </div>
                         </div>
                         <div class="col s3">
-                            <a href="<c:url value="/tables/"/>"
+                            <a href="<c:url value="/web/tables/"/>"
                                class="btn blue-gray"><spring:message code="table.return_to_table_list"/>
                             </a>
                         </div>

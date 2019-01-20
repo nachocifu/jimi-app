@@ -24,7 +24,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/users")
+@RequestMapping("web/admin/users")
 public class UserController {
 	
 	@Autowired

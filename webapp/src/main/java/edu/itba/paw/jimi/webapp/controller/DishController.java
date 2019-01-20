@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/dishes")
+@RequestMapping("web/admin/dishes")
 public class DishController {
 	
 	@Autowired

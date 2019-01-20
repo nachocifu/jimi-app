@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.*;
 
 @Controller
-@RequestMapping("/kitchen")
+@RequestMapping("web/kitchen")
 public class KitchenController {
     @Autowired
     @Qualifier(value = "userOrderService")

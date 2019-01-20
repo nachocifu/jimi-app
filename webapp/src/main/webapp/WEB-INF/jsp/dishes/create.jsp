@@ -41,7 +41,7 @@
     <div class="card">
         <div class="card-content">
             <span class="card-title"><spring:message code="table.add_dish"/></span>
-            <c:url value="/admin/dishes/create" var="postPath"/>
+            <c:url value="/web/admin/dishes/create" var="postPath"/>
             <form:form modelAttribute="dishCreateForm" action="${postPath}" method="post">
 
                 <form:label class="mdl-textfield__label" path="name"><spring:message
@@ -72,7 +72,7 @@
                         class="waves-effect waves-light btn">
                     <spring:message code="dish.add"/>
                 </button>
-                <a href="<c:url value="/admin/dishes/"/>"
+                <a href="<c:url value="/web/admin/dishes/"/>"
                    class="waves-effect waves-light btn">
                     <spring:message code="dish.cancel"/>
                 </a>

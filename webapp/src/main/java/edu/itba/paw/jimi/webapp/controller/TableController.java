@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/tables")
+@RequestMapping("web/tables")
 public class TableController {
 
 	@Autowired

@@ -57,7 +57,7 @@
                         <div class="row">
                             <div class="col s12">
                                 <form method="POST"
-                                      action="<c:url value="/admin/dishes/csvStockWarning"/>">
+                                      action="<c:url value="/web/admin/dishes/csvStockWarning"/>">
                                     <button type="submit"
                                             class="btn btn-success btn-xs">
                                         <spring:message code="dish.download"/>
@@ -88,7 +88,7 @@
                                 </td>
                                 <td>
                                     <form method="POST"
-                                          action="<c:url value="/admin/dishes/stock/increase"/>">
+                                          action="<c:url value="/web/admin/dishes/stock/increase"/>">
                                         <input type="hidden" value="${dish.id}"
                                                name="dishid">
                                         <input type="hidden" value="${qp.currentPage + 1}" name="page">
@@ -101,7 +101,7 @@
                                 <td>
                                     <c:if test="${dish.stock > 0}">
                                         <form method="POST"
-                                              action="<c:url value="/admin/dishes/stock/decrease"/>">
+                                              action="<c:url value="/web/admin/dishes/stock/decrease"/>">
                                             <input type="hidden" value="${dish.id}"
                                                    name="dishid">
                                             <input type="hidden" value="${qp.currentPage + 1}" name="page">

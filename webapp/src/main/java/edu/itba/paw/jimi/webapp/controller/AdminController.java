@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-@RequestMapping("/admin")
+@RequestMapping("web/admin")
 @Controller
 public class AdminController {
 

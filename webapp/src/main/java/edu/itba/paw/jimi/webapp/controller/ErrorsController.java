@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
-@RequestMapping("/error")
+@RequestMapping("web/error")
 @ControllerAdvice
 public class ErrorsController {
 

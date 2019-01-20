@@ -6,54 +6,54 @@
 <div class="sidebar-wrapper">
     <ul class="nav">
         <li class="nav-item  ">
-            <a class="nav-link" href="<c:url value="/admin/"/>">
+            <a class="nav-link" href="<c:url value="/web/admin/"/>">
                 <i class="material-icons">dashboard</i>
                 <p><spring:message code="sidebar.dashboard"/></p>
             </a>
         </li>
         <li class="nav-item ">
-            <a class="nav-link" href="<c:url value="/tables/"/>">
+            <a class="nav-link" href="<c:url value="/web/tables/"/>">
                 <i class="material-icons">widgets</i>
                 <p><spring:message code="sidebar.table_list"/></p>
             </a>
         </li>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
         <li class="nav-item ">
-            <a class="nav-link" href="<c:url value="/tables/register"/>">
+            <a class="nav-link" href="<c:url value="/web/tables/register"/>">
                 <i class="material-icons">library_add</i>
                 <p><spring:message code="sidebar.new_table"/></p>
             </a>
         </li>
         </sec:authorize>
         <li class="nav-item ">
-            <a class="nav-link" href="<c:url value="/admin/dishes/"/>">
+            <a class="nav-link" href="<c:url value="/web/admin/dishes/"/>">
                 <i class="material-icons">fastfood</i>
                 <p><spring:message code="sidebar.dish_list"/></p>
             </a>
         </li>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
         <li class="nav-item ">
-            <a class="nav-link" href="<c:url value="/admin/dishes/create"/>">
+            <a class="nav-link" href="<c:url value="/web/admin/dishes/create"/>">
                 <i class="material-icons">playlist_add</i>
                 <p><spring:message code="sidebar.new_dish"/></p>
             </a>
         </li>
 
         <li class="nav-item ">
-            <a class="nav-link" href="<c:url value="/admin/users/"/>">
+            <a class="nav-link" href="<c:url value="/web/admin/users/"/>">
                 <i class="material-icons">person</i>
                 <p><spring:message code="sidebar.user_list"/></p>
             </a>
         </li>
         <li class="nav-item ">
-            <a class="nav-link" href="<c:url value="/admin/users/register/"/>">
+            <a class="nav-link" href="<c:url value="/web/admin/users/register/"/>">
                 <i class="material-icons">group_add</i>
                 <p><spring:message code="sidebar.new_user"/></p>
             </a>
         </li>
         </sec:authorize>
         <li class="nav-item ">
-            <a class="nav-link" href="<c:url value="/kitchen/"/>">
+            <a class="nav-link" href="<c:url value="/web/kitchen/"/>">
                 <i class="material-icons">kitchen</i>
                 <p><spring:message code="sidebar.kitchen"/></p>
             </a>

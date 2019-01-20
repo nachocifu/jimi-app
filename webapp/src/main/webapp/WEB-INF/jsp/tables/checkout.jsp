@@ -120,7 +120,7 @@
                     </button>
                 </div>
                 <div class="col s4">
-                    <a href="<c:url value="/tables/"/>">
+                    <a href="<c:url value="/web/tables/"/>">
                         <button class="waves-effect waves-light btn" type="button">
                                                 <span><i class="fa fa-list"></i> <spring:message
                                                         code="checkout.tables"/></span>

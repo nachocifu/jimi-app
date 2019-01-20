@@ -72,7 +72,7 @@
                         class="waves-effect waves-light btn">
                     <spring:message code="dish.edit"/>
                 </button>
-                <a href="<c:url value="/admin/dishes/"/>"
+                <a href="<c:url value="/web/admin/dishes/"/>"
                    class="waves-effect waves-light btn">
                     <spring:message code="dish.cancel"/>
                 </a>
