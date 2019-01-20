@@ -64,7 +64,7 @@ public class StatsServiceImpl implements StatsService {
 			if (d.getStock() <= infBound)
 				underBound += 1;
 		}
-		return (int) ((underBound * 100.0) / dishService.findAll().size());
+		return (int) ((underBound * 100.0) / dishService.getTotalDishes());
 	}
 	
 	@Override
