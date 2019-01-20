@@ -164,7 +164,7 @@ public class DishController {
 		
 		
 		String[] header = {"name", "price", "stock", "minStock"};
-		for (Dish dish : dishService.findAll())
+		for (Dish dish : dishService.findDishesMissingStock())
 			csvWriter.write(dish, header);
 		
 		csvWriter.close();
