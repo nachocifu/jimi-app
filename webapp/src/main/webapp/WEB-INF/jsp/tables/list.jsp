@@ -87,6 +87,14 @@
                                         <i class="fas fa-cash-register fa-lg"></i>
                                     </a>
                                 </td>
+                                <td>
+                                    <c:if test="${table.status == 'FREE'}">
+                                        <a href=<c:url
+                                                value="/tables/delete/${table.id}"/>>
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </c:if>
+                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>

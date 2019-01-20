@@ -129,6 +129,22 @@ public class TableController {
 		return new ModelAndView("redirect:/tables/" + tb.getId());
 	}
 	
+	@RequestMapping(value = {"/delete/{tableid}"}, method = {RequestMethod.GET})
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ModelAndView delete(@ModelAttribute("registerForm") final TableForm form, @PathVariable("tableid") long tableid) {
+		Table table = ts.findById(tableid);
+		ModelAndView mv = new ModelAndView("tables/delete");
+		mv.addObject("table", table);
+		return mv;
+	}
+	
+	@RequestMapping(value = "/delete/{tableid}", method = {RequestMethod.POST})
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ModelAndView delete(@Valid @ModelAttribute("registerForm") final TableForm form, final BindingResult errors, @PathVariable("tableid") long tableid) {
+		ts.delete(tableid);
+		return new ModelAndView("redirect:/tables");
+	}
+	
 	@RequestMapping(value = {"/edit/{tableid}"}, method = {RequestMethod.GET})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ModelAndView update(@ModelAttribute("registerForm") final TableForm form, @PathVariable("tableid") long tableid) {

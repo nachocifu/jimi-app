@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.Timestamp;
 
+import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
@@ -163,4 +164,10 @@ public class TableDaoTest {
 		Assert.assertEquals(1, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
 	}
 	
+	@Test
+	public void testDeleteTable() {
+		assertNotNull(tableDao.findById(testTable.getId()));
+		tableDao.delete(testTable.getId());
+		assertNull(tableDao.findById(testTable.getId()));
+	}
 }

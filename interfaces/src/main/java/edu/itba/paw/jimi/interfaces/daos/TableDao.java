@@ -66,4 +66,11 @@ public interface TableDao {
 	 */
 	int getNumberOfTablesWithState(TableStatus tableStatus);
 	
+	/**
+	 * Deletes a Table.
+	 *
+	 * @param id Id of the table.
+	 */
+	void delete(final long id);
+	
 }
