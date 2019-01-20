@@ -5,7 +5,8 @@
 
 
 <script>
-    document.addEventListener("touchstart", function() {},false);
+    document.addEventListener("touchstart", function () {
+    }, false);
 </script>
 
 <div class="navbar-fixed">
@@ -16,11 +17,11 @@
                     <a><span><spring:message code="menu.admin"/></span></a>
                     <div>
                         <a href="<c:url value="/admin/"/>" class="nav-link nav-toggle">
-                            <i class="fa fa-columns"></i>
+                            <i class="fas fa-columns fa-sm"></i>
                             <span class="title"><spring:message code="sidebar.dashboard"/></span>
                         </a>
                         <a href="<c:url value="/admin/bills"/>" class="nav-link ">
-                            <i class="fa fa-list"></i>
+                            <i class="fas fa-list fa-sm"></i>
                             <span class="title"><spring:message code="sidebar.bills_list"/></span>
                         </a>
                     </div>
@@ -31,45 +32,45 @@
                 <div>
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <a href="<c:url value="/tables/register"/>" class="nav-link ">
-                            <i class="fa fa-plus"></i>
+                            <i class="fas fa-plus fa-sm"></i>
                             <span class="title"><spring:message code="sidebar.new_table"/></span>
                         </a>
                     </sec:authorize>
                     <a href="<c:url value="/tables/"/>" class="nav-link ">
-                        <i class="fa fa-list"></i>
+                        <i class="fas fa-list fa-sm"></i>
                         <span class="title"><spring:message code="sidebar.table_list"/></span>
                     </a>
                 </div>
             </div>
+            <div>
+                <a><span class="title"><spring:message code="sidebar.dishes"/></span></a>
                 <div>
-                    <a><span class="title"><spring:message code="sidebar.dishes"/></span></a>
-                    <div>
-                        <sec:authorize access="hasRole('ROLE_ADMIN')">
-                            <a href="<c:url value="/admin/dishes/create"/>" class="nav-link ">
-                                <i class="fa fa-plus"></i>
-                                <span class="title"><spring:message code="sidebar.new_dish"/></span>
-                            </a>
-                            <a href="<c:url value="/admin/dishes/"/>" class="nav-link ">
-                                <i class="fa fa-list"></i>
-                                <span class="title"><spring:message code="sidebar.dish_list"/></span>
-                            </a>
-                        </sec:authorize>
-                        <a href="<c:url value="/kitchen/"/>" class="nav-link ">
-                            <i class="fa fa-cutlery"></i>
-                            <span class="title"><spring:message code="sidebar.kitchen"/></span>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <a href="<c:url value="/admin/dishes/create"/>" class="nav-link ">
+                            <i class="fas fa-plus fa-sm"></i>
+                            <span class="title"><spring:message code="sidebar.new_dish"/></span>
                         </a>
-                    </div>
+                        <a href="<c:url value="/admin/dishes/"/>" class="nav-link ">
+                            <i class="fas fa-list fa-sm"></i>
+                            <span class="title"><spring:message code="sidebar.dish_list"/></span>
+                        </a>
+                    </sec:authorize>
+                    <a href="<c:url value="/kitchen/"/>" class="nav-link ">
+                        <i class="fas fa-utensils fa-sm"></i>
+                        <span class="title"><spring:message code="sidebar.kitchen"/></span>
+                    </a>
                 </div>
+            </div>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <div>
                     <a><span class="title"><spring:message code="sidebar.users"/></span></a>
                     <div>
                         <a href="<c:url value="/admin/users/register/"/>" class="nav-link ">
-                            <i class="fa fa-plus"></i>
+                            <i class="fas fa-plus fa-sm"></i>
                             <span class="title"><spring:message code="sidebar.new_user"/></span>
                         </a>
                         <a href="<c:url value="/admin/users/"/>" class="nav-link ">
-                            <i class="fa fa-list"></i>
+                            <i class="fas fa-list fa-sm"></i>
                             <span class="title"><spring:message code="sidebar.user_list"/></span>
                         </a>
                     </div>
