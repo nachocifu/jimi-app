@@ -166,4 +166,11 @@ public class TableServiceImplTest {
 		Assert.assertNotNull(tableServiceImpl.findAll());
 	}
 	
+	@Test
+	public void setName() {
+		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
+		Table table = new Table(TABLE_NAME, 1, TableStatus.FREE, order);
+		tableServiceImpl.setName(table, TABLE_NAME.concat(TABLE_NAME));
+		assertEquals(TABLE_NAME.concat(TABLE_NAME), table.getName());
+	}
 }

@@ -58,4 +58,11 @@ public interface TableService {
 	 */
 	int getNumberOfTablesWithState(TableStatus tableStatus);
 	
+	/**
+	 * Sets a new name for the table.
+	 *
+	 * @param table The table to modify.
+	 * @param name  The new name of the table.
+	 */
+	void setName(Table table, String name);
 }

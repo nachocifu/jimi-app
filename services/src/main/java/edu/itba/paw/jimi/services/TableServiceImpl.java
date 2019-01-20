@@ -126,4 +126,11 @@ public class TableServiceImpl implements TableService {
 		return tableDao.getNumberOfTablesWithState(tableStatus);
 	}
 	
+	@Override
+	public void setName(Table table, String name) {
+		table.setName(name);
+		tableDao.update(table);
+		LOGGER.info("Updated table name {}", table);
+	}
+	
 }
