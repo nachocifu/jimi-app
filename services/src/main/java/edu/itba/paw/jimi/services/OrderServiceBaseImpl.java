@@ -249,4 +249,9 @@ public class OrderServiceBaseImpl implements OrderService {
 		return orderDao.getTotalActiveOrders();
 	}
 	
+	@Override
+	public Collection<Order> get30MinutesWaitOrders() {
+		return orderDao.get30MinutesWaitOrders();
+	}
+	
 }

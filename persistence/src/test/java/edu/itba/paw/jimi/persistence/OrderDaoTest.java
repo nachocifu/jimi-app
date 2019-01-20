@@ -24,6 +24,9 @@ import java.sql.Timestamp;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import static junit.framework.TestCase.*;
@@ -82,6 +85,14 @@ public class OrderDaoTest {
 		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT_1, 2, 3);
 		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT_2, 2, 4);
 		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT_2, 2, 4);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		orderDao.create(OrderStatus.OPEN, new Timestamp(cal.getTimeInMillis()), null, 2, 4);
+		orderDao.create(OrderStatus.OPEN, new Timestamp(cal.getTimeInMillis()), null, 2, 4);
+		cal.add(Calendar.MINUTE, -30);
+		orderDao.create(OrderStatus.OPEN, new Timestamp(cal.getTimeInMillis()), null, 2, 4);
+		orderDao.create(OrderStatus.OPEN, new Timestamp(cal.getTimeInMillis()), null, 2, 4);
 	}
 	
 	@After
@@ -338,6 +349,13 @@ public class OrderDaoTest {
 		Assert.assertEquals(4.0, map.get(keySet[0]));
 		Assert.assertEquals(6.0, map.get(keySet[1]));
 		Assert.assertEquals(8.0, map.get(keySet[2]));
+	}
+	
+	@Test
+	public void testGet30MinutesWaitOrders() {
+		Collection<Order> waitOrders = orderDao.get30MinutesWaitOrders();
+		assertEquals(2, waitOrders.size());
+		assertEquals(4, orderDao.getTotalActiveOrders());
 	}
 	
 }
