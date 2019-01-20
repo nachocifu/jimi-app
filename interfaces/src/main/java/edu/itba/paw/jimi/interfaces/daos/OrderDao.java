@@ -12,6 +12,7 @@ public interface OrderDao {
 	
 	/**
 	 * Returns the Order with the passed id.
+	 *
 	 * @param id the id to look for.
 	 * @return The dish with the passed id.
 	 */
@@ -19,42 +20,54 @@ public interface OrderDao {
 	
 	/**
 	 * Create an order.
+	 *
 	 * @return An order.
 	 */
 	Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners, float total);
 	
 	/**
 	 * Updates the order.
+	 *
 	 * @param order The order to be updated.
 	 */
 	void update(Order order);
-
+	
 	/**
 	 * Find all closed orders, ordered decreased by closed timestamp.
+	 *
 	 * @return List of said orders.
 	 */
 	Collection<Order> findAll();
-
+	
 	/**
 	 * Find all closed orders, ordered decreased by closed timestamp.
+	 *
 	 * @return List of said orders.
 	 */
 	Collection<Order> findAll(QueryParams qp);
-
+	
 	/**
 	 * Find all closed orders' total by month, ordered decreased by closed timestamp.
 	 *
-     * @return List of said orders.
+	 * @return List of said orders.
 	 */
 	Map getMonthlyOrderTotal();
-
-    Collection<Order> findAllRelevant(QueryParams qp);
-
-    int getTotalRelevantOrders();
-
+	
+	Collection<Order> findAllRelevant(QueryParams qp);
+	
+	int getTotalRelevantOrders();
+	
 	Collection<Order> getActiveOrders(QueryParams qp);
-
+	
 	int getTotalActiveOrders();
-
+	
 	Map getMonthlyOrderCancelled();
+	
+	/**
+	 * Finds all urgent orders.
+	 * An order is urgent when it has been opened for more than 30 minutes.
+	 *
+	 * @return A collection of said orders.
+	 */
+	Collection<Order> get30MinutesWaitOrders();
 }

@@ -142,4 +142,9 @@ public class OrderServiceImpl implements OrderService {
 		return orderService.getTotalActiveOrders();
 	}
 	
+	@Override
+	public Collection<Order> get30MinutesWaitOrders() {
+		return orderService.get30MinutesWaitOrders();
+	}
+	
 }

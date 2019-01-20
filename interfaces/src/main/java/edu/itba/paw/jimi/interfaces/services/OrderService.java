@@ -76,7 +76,7 @@ public interface OrderService {
 	 * @param order
 	 */
 	void close(Order order);
-
+	
 	/**
 	 * Sets the timestamp for closedAt and changes the status to canceled.
 	 *
@@ -92,50 +92,59 @@ public interface OrderService {
 	 * @return The amount of diners saved.
 	 */
 	int setDiners(Order order, int diners);
-
-    /**
-     * Returns the order with id.
-     * @param id the id.
-     * @return
-     */
+	
+	/**
+	 * Returns the order with id.
+	 *
+	 * @param id the id.
+	 * @return
+	 */
 	Order findById(long id);
-
+	
 	/**
 	 * Finds all closed orders.
 	 *
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll();
-
-
+	
+	
 	/**
 	 * Finds all closed orders.
 	 *
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll(QueryParams qp);
-
+	
 	/**
 	 * Finds all closed orders.
 	 *
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAllRelevant(QueryParams qp);
-
-    /**
-     * Finds all closed orders' total by month.
-     *
+	
+	/**
+	 * Finds all closed orders' total by month.
+	 *
 	 * @return A collection of said orders.
-     */
-    Map getMonthlyOrderTotal();
-
+	 */
+	Map getMonthlyOrderTotal();
+	
 	Map getMonthlyOrderCancelled();
-
-    void setDishAsDone(Order order, Dish dish);
-
-    int getTotalRelevantOrders();
-
-    Collection<Order> getActiveOrders(QueryParams qp);
-
-    int getTotalActiveOrders();
+	
+	void setDishAsDone(Order order, Dish dish);
+	
+	int getTotalRelevantOrders();
+	
+	Collection<Order> getActiveOrders(QueryParams qp);
+	
+	int getTotalActiveOrders();
+	
+	/**
+	 * Finds all urgent orders.
+	 * An order is urgent when it has been opened for more than 30 minutes.
+	 *
+	 * @return A collection of said orders.
+	 */
+	Collection<Order> get30MinutesWaitOrders();
 }
