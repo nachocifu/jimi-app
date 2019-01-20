@@ -94,6 +94,7 @@ public class StatsServiceImplTest {
 		list.add(new Dish(NAME + "d", (float) 0.0, ID + 4, 20));
 		
 		Mockito.when(dishService.findAll()).thenReturn(list);
+		Mockito.when(dishService.getTotalDishes()).thenReturn(5);
 		
 		Assert.assertTrue(statsServiceImpl.getStockState() >= 0
 				&& statsServiceImpl.getStockState() <= 100);
@@ -112,6 +113,7 @@ public class StatsServiceImplTest {
 		list.add(new Dish(NAME + "d", (float) 0.0, ID + 4, 20));
 		
 		Mockito.when(dishService.findAll()).thenReturn(list);
+		Mockito.when(dishService.getTotalDishes()).thenReturn(5);
 		
 		Assert.assertTrue(statsServiceImpl.getStockState() >= 0
 				&& statsServiceImpl.getStockState() <= 100);
