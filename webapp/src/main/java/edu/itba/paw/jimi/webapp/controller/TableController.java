@@ -133,6 +133,8 @@ public class TableController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ModelAndView delete(@ModelAttribute("registerForm") final TableForm form, @PathVariable("tableid") long tableid) {
 		Table table = ts.findById(tableid);
+		// if table null 404
+		// if table.order.!free 400
 		ModelAndView mv = new ModelAndView("tables/delete");
 		mv.addObject("table", table);
 		return mv;
@@ -141,7 +143,9 @@ public class TableController {
 	@RequestMapping(value = "/delete/{tableid}", method = {RequestMethod.POST})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ModelAndView delete(@Valid @ModelAttribute("registerForm") final TableForm form, final BindingResult errors, @PathVariable("tableid") long tableid) {
-		ts.delete(tableid);
+		Table table = ts.findById(tableid);
+//		if no table 404
+//		ts.delete(table);
 		return new ModelAndView("redirect:/tables");
 	}
 	
