@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -40,6 +42,9 @@ public class TableDaoTest {
 	private Dish testDish;
 	private Order testOrder;
 	private Table testTable;
+	private Collection<Table> freeTables;
+	private Collection<Table> busyTables;
+	private Collection<Table> payingTables;
 	
 	@Autowired
 	private DataSource ds;
@@ -65,15 +70,19 @@ public class TableDaoTest {
 		testDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		testOrder = orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2, 2);
 		testOrder.setDish(testDish, 2);
+		freeTables = new LinkedList<>();
+		busyTables = new LinkedList<>();
+		payingTables = new LinkedList<>();
 		testTable = tableDao.create(TABLE_NAME, TableStatus.FREE, testOrder);
-		tableDao.create("Table 3", TableStatus.BUSY, testOrder);
-		tableDao.create("Table 4", TableStatus.BUSY, testOrder);
-		tableDao.create("Table 5", TableStatus.FREE, testOrder);
-		tableDao.create("Table 6", TableStatus.BUSY, testOrder);
-		tableDao.create("Table 7", TableStatus.FREE, testOrder);
-		tableDao.create("Table 8", TableStatus.FREE, testOrder);
-		tableDao.create("Table 9", TableStatus.BUSY, testOrder);
-		tableDao.create("Table 10", TableStatus.FREE, testOrder);
+		freeTables.add(testTable);
+		busyTables.add(tableDao.create("Table 3", TableStatus.BUSY, testOrder));
+		busyTables.add(tableDao.create("Table 4", TableStatus.BUSY, testOrder));
+		freeTables.add(tableDao.create("Table 5", TableStatus.FREE, testOrder));
+		busyTables.add(tableDao.create("Table 6", TableStatus.BUSY, testOrder));
+		freeTables.add(tableDao.create("Table 7", TableStatus.FREE, testOrder));
+		freeTables.add(tableDao.create("Table 8", TableStatus.FREE, testOrder));
+		busyTables.add(tableDao.create("Table 9", TableStatus.BUSY, testOrder));
+		freeTables.add(tableDao.create("Table 10", TableStatus.FREE, testOrder));
 	}
 	
 	@After
@@ -91,6 +100,17 @@ public class TableDaoTest {
 		assertEquals(TABLE_NAME, dbTable.getName());
 		assertEquals(TableStatus.FREE.ordinal(), dbTable.getStatus().ordinal());
 		assertEquals(testOrder.getId(), dbTable.getOrder().getId());
+	}
+	
+	@Test
+	public void testFindTablesWithStatus() {
+		Collection<Table> freeStatusTables = tableDao.findTablesWithStatus(TableStatus.FREE);
+		Collection<Table> busyStatusTables = tableDao.findTablesWithStatus(TableStatus.BUSY);
+		Collection<Table> payingStatusTables = tableDao.findTablesWithStatus(TableStatus.PAYING);
+		
+		Assert.assertTrue(freeTables.containsAll(freeStatusTables));
+		Assert.assertTrue(busyTables.containsAll(busyStatusTables));
+		Assert.assertTrue(payingTables.containsAll(payingStatusTables));
 	}
 	
 	@Test

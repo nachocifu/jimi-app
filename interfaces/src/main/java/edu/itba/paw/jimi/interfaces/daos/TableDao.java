@@ -34,11 +34,18 @@ public interface TableDao {
 	Collection<Table> findAll();
 	
 	/**
-	 * Returns all the tables.
+	 * Returns all the tables based on QueryParams qp.
 	 *
-	 * @return all the tables.
+	 * @return all the tables based on QueryParams qp.
 	 */
 	Collection<Table> findAll(QueryParams qp);
+	
+	/**
+	 * Returns all the active with the given status.
+	 *
+	 * @return all the active with the given status.
+	 */
+	Collection<Table> findTablesWithStatus(TableStatus tableStatus);
 	
 	int getTotalTables();
 	

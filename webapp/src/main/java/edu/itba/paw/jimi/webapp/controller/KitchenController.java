@@ -2,8 +2,11 @@ package edu.itba.paw.jimi.webapp.controller;
 
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
+import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
+import edu.itba.paw.jimi.models.Table;
+import edu.itba.paw.jimi.models.TableStatus;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,16 +19,21 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/kitchen")
 public class KitchenController {
+	
 	@Autowired
 	@Qualifier(value = "userOrderService")
 	private OrderService orderService;
 	
 	@Autowired
 	private DishService dishService;
+	
+	@Autowired
+	private TableService tableService;
 	
 	@RequestMapping("")
 	public ModelAndView view() {
@@ -46,9 +54,16 @@ public class KitchenController {
 		}
 		
 		Collection<Order> urgentOrders = orderService.get30MinutesWaitOrders();
+		Collection<Table> busyTables = tableService.findTablesWithStatus(TableStatus.BUSY);
+		Collection<Table> urgentTables = busyTables
+				.parallelStream()
+				.filter(t -> urgentOrders.contains(t.getOrder()))
+				.collect(Collectors.toList());
+		busyTables.removeAll(urgentTables);
 		
+		mav.addObject("tables", busyTables);
 		mav.addObject("orders", orders);
-		mav.addObject("urgentOrders", urgentOrders);
+		mav.addObject("urgentTables", urgentTables);
 		mav.addObject("totalDishes", totalDishes);
 		mav.addObject("qp", qp);
 		

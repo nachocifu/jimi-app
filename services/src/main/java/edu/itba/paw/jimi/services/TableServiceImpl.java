@@ -71,6 +71,11 @@ public class TableServiceImpl implements TableService {
 	}
 	
 	@Override
+	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
+		return tableDao.findTablesWithStatus(tableStatus);
+	}
+	
+	@Override
 	public boolean tableNameExists(String tableName) {
 		return tableDao.tableNameExists(tableName);
 	}
