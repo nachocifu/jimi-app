@@ -129,30 +129,21 @@ public class TableController {
 		return new ModelAndView("redirect:/tables/" + tb.getId());
 	}
 	
-	@RequestMapping(value = {"/delete/{tableid}"}, method = {RequestMethod.GET})
+	@RequestMapping(value = "/delete/{tableid}", method = {RequestMethod.POST})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ModelAndView delete(@ModelAttribute("registerForm") final TableForm form, @PathVariable("tableid") long tableid) {
+	public ModelAndView delete(@Valid @ModelAttribute("registerForm") final TableForm form, final BindingResult errors, @PathVariable("tableid") long tableid) {
 		Table table = ts.findById(tableid);
 		if (table == null) {
 			throw new Http404Error(messageSource.getMessage("table.error.not.found.title",
 					null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
 					null, LocaleContextHolder.getLocale()));
 		}
-		if(table.getStatus() != TableStatus.FREE)
+		if (table.getStatus() != TableStatus.FREE) {
 			throw new Http400Error(messageSource.getMessage("table.error.not.free.title",
 					null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.free.body",
 					null, LocaleContextHolder.getLocale()));
-		ModelAndView mv = new ModelAndView("tables/delete");
-		mv.addObject("table", table);
-		return mv;
-	}
-	
-	@RequestMapping(value = "/delete/{tableid}", method = {RequestMethod.POST})
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ModelAndView delete(@Valid @ModelAttribute("registerForm") final TableForm form, final BindingResult errors, @PathVariable("tableid") long tableid) {
-		Table table = ts.findById(tableid);
-//		if no table 404
-//		ts.delete(table);
+		}
+		ts.delete(tableid);
 		return new ModelAndView("redirect:/tables");
 	}
 	
@@ -160,6 +151,11 @@ public class TableController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ModelAndView update(@ModelAttribute("registerForm") final TableForm form, @PathVariable("tableid") long tableid) {
 		Table table = ts.findById(tableid);
+		if (table == null) {
+			throw new Http404Error(messageSource.getMessage("table.error.not.found.title",
+					null, LocaleContextHolder.getLocale()), messageSource.getMessage("table.error.not.found.body",
+					null, LocaleContextHolder.getLocale()));
+		}
 		
 		form.setName(table.getName());
 		
@@ -191,7 +187,6 @@ public class TableController {
 	@RequestMapping(value = "/{tableId}/add_dish", method = {RequestMethod.GET})
 	public ModelAndView addDish(@PathVariable("tableId") Integer id,
 	                            @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
-		
 		Table table = ts.findById(id);
 		if (table == null) {
 			throw new Http400Error(messageSource.getMessage("table.error.not.found.title",
