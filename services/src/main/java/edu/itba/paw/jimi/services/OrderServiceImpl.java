@@ -147,4 +147,9 @@ public class OrderServiceImpl implements OrderService {
 		return orderService.get30MinutesWaitOrders();
 	}
 	
+	@Override
+	public Map getAllUndoneDishesFromAllActiveOrders() {
+		return orderService.getAllUndoneDishesFromAllActiveOrders();
+	}
+	
 }

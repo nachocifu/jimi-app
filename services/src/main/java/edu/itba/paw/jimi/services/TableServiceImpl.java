@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.PersistenceException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -136,6 +137,17 @@ public class TableServiceImpl implements TableService {
 		table.setName(name);
 		tableDao.update(table);
 		LOGGER.info("Updated table name {}", table);
+	}
+	
+	@Override
+	public Collection<Table> getUrgentTables() {
+		Collection<Order> urgentOrders = orderService.get30MinutesWaitOrders();
+		Collection<Table> busyTables = this.findTablesWithStatus(TableStatus.BUSY);
+		Collection<Table> urgentTables = busyTables
+				.parallelStream()
+				.filter(t -> urgentOrders.contains(t.getOrder()))
+				.collect(Collectors.toList());
+		return urgentTables;
 	}
 	
 }

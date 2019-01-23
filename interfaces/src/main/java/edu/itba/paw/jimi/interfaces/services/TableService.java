@@ -72,4 +72,9 @@ public interface TableService {
 	 * @param name  The new name of the table.
 	 */
 	void setName(Table table, String name);
+	
+	/**
+	 * Returns tables with urgent orders.
+	 */
+	Collection<Table> getUrgentTables();
 }

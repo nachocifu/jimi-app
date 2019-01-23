@@ -147,4 +147,11 @@ public interface OrderService {
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> get30MinutesWaitOrders();
+	
+	/**
+	 * Finds all undone dishes from all active orders.
+	 *
+	 * @return A collection of said dishes.
+	 */
+	Map getAllUndoneDishesFromAllActiveOrders();
 }
