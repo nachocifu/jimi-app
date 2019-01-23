@@ -3,6 +3,7 @@ package edu.itba.paw.jimi.interfaces.services;
 import java.util.Map;
 
 public interface StatsService {
+    
     /**
      * Calculates percentage of free tables.
      *

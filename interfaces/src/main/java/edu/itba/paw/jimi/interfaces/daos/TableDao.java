@@ -11,7 +11,6 @@ import java.util.Collection;
 
 public interface TableDao {
 	
-	
 	/**
 	 * Returns a table with the passed id.
 	 *

@@ -168,9 +168,9 @@
                                 <tr>
                                     <td><c:out value="${dishEntry.key.name}"/></td>
                                     <td><c:out value="${dishEntry.key.price}"/></td>
-                                    <td><c:out value="${dishEntry.value}"/></td>
+                                    <td><c:out value="${dishEntry.value.amount}"/></td>
                                     <td>
-                                        $<fmt:formatNumber value="${dishEntry.value * dishEntry.key.price}"
+                                        $<fmt:formatNumber value="${dishEntry.value.amount * dishEntry.key.price}"
                                                            maxFractionDigits="2"/>
                                     </td>
                                     <td>
@@ -201,7 +201,7 @@
                                     </td>
                                     <td>
                                         <!-- Modal Trigger -->
-                                        <button data-target="modal3" class="btn modal-trigger"><i class="fa fa-trash-o"></i></button>
+                                        <button data-target="modal3" class="btn modal-trigger"><i class="fas fa-trash-alt"></i></button>
 
                                         <!-- Modal Structure -->
                                         <div id="modal3" class="modal">

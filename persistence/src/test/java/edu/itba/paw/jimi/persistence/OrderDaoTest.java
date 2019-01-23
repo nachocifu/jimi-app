@@ -48,6 +48,7 @@ public class OrderDaoTest {
 	private DishDao dishDao; //Here we are not using a mocked dao because orderDao uses a union on DB to get the dishes, so mocking it would break the union.
 	
 	private static final String ORDER_TABLE_NAME = "orders";
+	private static final String ORDER_UNDONEDISHES_TABLE_NAME = "order_undonedishes";
 	
 	private static final String DISH_NAME = "Cambuchá";
 	private static final Float DISH_PRICE = 5.25F;
@@ -69,7 +70,6 @@ public class OrderDaoTest {
 	private static final int DINERS = 2;
 	private static final float TOTAL = 2f;
 	
-	
 	private JdbcTemplate jdbcTemplate;
 	
 	@Before
@@ -85,18 +85,11 @@ public class OrderDaoTest {
 		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT_1, 2, 3);
 		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT_2, 2, 4);
 		orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT_2, 2, 4);
-		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
-		orderDao.create(OrderStatus.OPEN, new Timestamp(cal.getTimeInMillis()), null, 2, 4);
-		orderDao.create(OrderStatus.OPEN, new Timestamp(cal.getTimeInMillis()), null, 2, 4);
-		cal.add(Calendar.MINUTE, -30);
-		orderDao.create(OrderStatus.OPEN, new Timestamp(cal.getTimeInMillis()), null, 2, 4);
-		orderDao.create(OrderStatus.OPEN, new Timestamp(cal.getTimeInMillis()), null, 2, 4);
 	}
 	
 	@After
 	public void cleanDB() {
+		JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_UNDONEDISHES_TABLE_NAME);
 		JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_TABLE_NAME);
 	}
 	
@@ -162,7 +155,7 @@ public class OrderDaoTest {
 		assertNotNull(dbOrder.getDishes().get(dish));
 		
 		
-		int amount = dbOrder.getDishes().get(dish);
+		int amount = dbOrder.getDishes().get(dish).getAmount();
 		assertEquals(1, amount);
 		
 		Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
@@ -187,7 +180,7 @@ public class OrderDaoTest {
 		assertNotNull(dbOrder.getDishes().get(dish));
 		
 		
-		int amount = dbOrder.getDishes().get(dish);
+		int amount = dbOrder.getDishes().get(dish).getAmount();
 		assertEquals(3, amount);
 		
 		Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
@@ -223,13 +216,13 @@ public class OrderDaoTest {
 		assertNotNull(dbOrder.getDishes().get(dish3));
 		
 		
-		int amount = dbOrder.getDishes().get(dish);
+		int amount = dbOrder.getDishes().get(dish).getAmount();
 		assertEquals(3, amount);
 		
-		int amount2 = dbOrder.getDishes().get(dish2);
+		int amount2 = dbOrder.getDishes().get(dish2).getAmount();
 		assertEquals(5, amount2);
 		
-		int amount3 = dbOrder.getDishes().get(dish3);
+		int amount3 = dbOrder.getDishes().get(dish3).getAmount();
 		assertEquals(1, amount3);
 		
 		
@@ -272,7 +265,7 @@ public class OrderDaoTest {
 		assertNotNull(dbOrder.getDishes().get(dish));
 		
 		
-		int amount = dbOrder.getDishes().get(dish);
+		int amount = dbOrder.getDishes().get(dish).getAmount();
 		assertEquals(1, amount);
 		
 		Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
@@ -308,7 +301,7 @@ public class OrderDaoTest {
 		assertNotNull(dbOrder.getDishes().get(dish));
 		
 		
-		int amount = dbOrder.getDishes().get(dish);
+		int amount = dbOrder.getDishes().get(dish).getAmount();
 		assertEquals(2, amount);
 		
 		Dish dbDish = dbOrder.getDishes().keySet().iterator().next();
@@ -328,7 +321,7 @@ public class OrderDaoTest {
 		assertNotNull(dbOrder.getDishes().get(dish));
 		
 		
-		amount = dbOrder.getDishes().get(dish);
+		amount = dbOrder.getDishes().get(dish).getAmount();
 		assertEquals(1, amount);
 		
 		dbDish = dbOrder.getDishes().keySet().iterator().next();
@@ -353,9 +346,25 @@ public class OrderDaoTest {
 	
 	@Test
 	public void testGet30MinutesWaitOrders() {
+		Order notUrgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
+		Order urgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
+		Dish notUrgentDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+		urgentOrder.setDish(notUrgentDish, 1);
+		notUrgentOrder.setDish(notUrgentDish, 1);
+		
+		Dish urgentDish = dishDao.create(DISH_NAME2, DISH_PRICE2, DISH_STOCK2);
+		urgentOrder.setDish(urgentDish, 1);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MINUTE, -30);
+		urgentOrder.getUnDoneDishes().get(urgentDish).setOrderedAt(new Timestamp(cal.getTimeInMillis()));
+		
 		Collection<Order> waitOrders = orderDao.get30MinutesWaitOrders();
-		assertEquals(2, waitOrders.size());
-		assertEquals(4, orderDao.getTotalActiveOrders());
+		Order retrievedUrgentOrder = waitOrders.iterator().next();
+		assertEquals(1, waitOrders.size());
+		assertTrue(retrievedUrgentOrder.getUnDoneDishes().containsKey(urgentDish));
+		assertEquals(2, orderDao.getTotalActiveOrders());
 	}
 	
 }

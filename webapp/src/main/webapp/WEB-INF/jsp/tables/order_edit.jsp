@@ -97,9 +97,9 @@
                             <tr>
                                 <td><c:out value="${dishEntry.key.name}"/></td>
                                 <td><c:out value="${dishEntry.key.price}"/></td>
-                                <td><c:out value="${dishEntry.value}"/></td>
+                                <td><c:out value="${dishEntry.value.amount}"/></td>
                                 <td>
-                                    $<fmt:formatNumber value="${dishEntry.value * dishEntry.key.price}"
+                                    $<fmt:formatNumber value="${dishEntry.value.amount * dishEntry.key.price}"
                                                        maxFractionDigits="2"/>
                                 </td>
                                 <td>
@@ -133,7 +133,7 @@
                                           method="post" class="form-with-buttons">
                                         <button type="submit"
                                                 class="btn btn-danger btn-xs">
-                                            <i class="fa fa-trash-o "></i>
+                                            <i class="fas fa-trash-alt "></i>
                                         </button>
                                         <input type="hidden" value="${dishEntry.key.id}"
                                                name="dishid"/>

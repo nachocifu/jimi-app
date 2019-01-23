@@ -385,7 +385,7 @@ public class OrderServiceBaseImplTest {
 		Mockito.when(orderDao.findById(order.getId())).thenReturn(order);
 		orderServiceBaseImpl.removeOneDish(order, dish);
 		
-		int newUndoneDishAmount = order.getUnDoneDishes().get(dish);
+		int newUndoneDishAmount = order.getUnDoneDishes().get(dish).getAmount();
 		Assert.assertEquals(1, newUndoneDishAmount);
 		Assert.assertEquals(1, order.getUnDoneDishes().size());
 		Assert.assertEquals(DISH_PRICE, order.getTotal(), 0D);

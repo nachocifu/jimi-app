@@ -132,7 +132,7 @@ public class TableDaoTest {
 		
 		//Assert update
 		assertNotNull(dbTableUpdated);
-		assertEquals(5, dbTableUpdated.getOrder().getDishes().get(testDish).intValue());
+		assertEquals(5, dbTableUpdated.getOrder().getDishes().get(testDish).getAmount());
 		assertEquals(TABLE_NAME2, dbTableUpdated.getName());
 		assertEquals(dbTableUpdated.getStatus().ordinal(), TableStatus.BUSY.ordinal());
 		assertEquals(5, dbTableUpdated.getOrder().getDiners());
