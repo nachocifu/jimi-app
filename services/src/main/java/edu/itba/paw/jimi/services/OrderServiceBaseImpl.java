@@ -25,7 +25,7 @@ import java.util.*;
 @Transactional
 public class OrderServiceBaseImpl implements OrderService {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceBaseImpl.class);
 	
 	@Autowired
 	private OrderDao orderDao;
