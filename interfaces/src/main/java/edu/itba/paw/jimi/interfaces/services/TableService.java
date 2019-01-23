@@ -74,6 +74,11 @@ public interface TableService {
 	void setName(Table table, String name);
 	
 	/**
+	 * Returns tables with urgent orders.
+	 */
+	Collection<Table> getUrgentTables();
+	
+	/**
 	 * Deletes a Table.
 	 *
 	 * @param id Id of the table.

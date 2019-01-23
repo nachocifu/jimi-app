@@ -46,7 +46,7 @@
         <div class="top-two-thirds">
             <div class="right-half card">
                 <c:choose>
-                    <c:when test="${orders.size() <= 0}">
+                    <c:when test="${tables.size() <= 0}">
                         <div class="alert alert-info text-center">
                             <strong><spring:message code="ouch"/></strong>
                             <spring:message code="order.no_order"/>

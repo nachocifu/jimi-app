@@ -7,6 +7,7 @@ import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
+import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +17,10 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Timestamp;
-import java.util.LinkedList;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 
 public class OrderServiceBaseImplTest {
 	
@@ -517,5 +519,31 @@ public class OrderServiceBaseImplTest {
 	public void findAllNotNull() {
 		Mockito.when(orderServiceBaseImpl.findAll()).thenReturn(null);
 		Assert.assertNotNull(orderServiceBaseImpl.findAll());
+	}
+	
+	@Test
+	public void getAllUndoneDishesFromAllActiveOrders() {
+		Order order1 = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 2, 0);
+		Order order2 = new Order(2, OPENEDAT, null, OrderStatus.OPEN, 2, 0);
+		Dish dish1 = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
+		Dish dish2 = new Dish(DISH_NAME, DISH_PRICE, 2, DISH_STOCK);
+		
+		order1.setDish(dish1, 1);
+		order2.setDish(dish1, 2);
+		order1.setDish(dish2, 3);
+		order2.setDish(dish2, 4);
+		
+		Collection<Order> orders = new HashSet<>();
+		orders.add(order1);
+		orders.add(order2);
+		
+		Mockito.when(orderDao.getActiveOrders(any(QueryParams.class))).thenReturn(orders);
+		
+		Map<Dish, Integer> totalDishes = new HashMap<>();
+		totalDishes.put(dish1, 3);
+		totalDishes.put(dish2, 7);
+		
+		Map actualDishes = orderServiceBaseImpl.getAllUndoneDishesFromAllActiveOrders();
+		assertEquals(totalDishes, actualDishes);
 	}
 }

@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Qualifier(value = "adminOrderService")
@@ -84,7 +81,7 @@ public class OrderServiceBaseImpl implements OrderService {
 		// Update dish stock
 		dishService.setStock(dish, dish.getStock() - amount);
 		
-		if(order.getDishes().containsKey(dish))
+		if (order.getDishes().containsKey(dish))
 			return order.getDishes().get(dish).getAmount();
 		else
 			return 0;
@@ -114,7 +111,7 @@ public class OrderServiceBaseImpl implements OrderService {
 		
 		LOGGER.info("Updated order (remove one dish): {}", order);
 		
-		if(order.getDishes().containsKey(dish))
+		if (order.getDishes().containsKey(dish))
 			return order.getDishes().get(dish).getAmount();
 		else
 			return 0;
@@ -135,7 +132,7 @@ public class OrderServiceBaseImpl implements OrderService {
 		
 		LOGGER.info("Updated order (remove all dish): {}", order);
 		
-		if(order.getDishes().containsKey(dish))
+		if (order.getDishes().containsKey(dish))
 			return order.getDishes().get(dish).getAmount();
 		else
 			return 0;
@@ -262,6 +259,23 @@ public class OrderServiceBaseImpl implements OrderService {
 	@Override
 	public Collection<Order> get30MinutesWaitOrders() {
 		return orderDao.get30MinutesWaitOrders();
+	}
+	
+	@Override
+	public Map getAllUndoneDishesFromAllActiveOrders() {
+		QueryParams qp = new QueryParams("openedat", false);
+		Collection<Order> orders = getActiveOrders(qp);
+		Map<Dish, Integer> totalDishes = new HashMap<>();
+		for (Order o : orders) {
+			for (Dish d : o.getUnDoneDishes().keySet()) {
+				if (totalDishes.containsKey(d)) {
+					totalDishes.put(d, totalDishes.get(d) + o.getUnDoneDishes().get(d).getAmount());
+				} else {
+					totalDishes.put(d, o.getUnDoneDishes().get(d).getAmount());
+				}
+			}
+		}
+		return totalDishes;
 	}
 	
 }

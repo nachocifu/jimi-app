@@ -3,11 +3,8 @@ package edu.itba.paw.jimi.webapp.controller;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
-import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -17,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/kitchen")
@@ -39,33 +34,14 @@ public class KitchenController {
 	public ModelAndView view() {
 		final ModelAndView mav = new ModelAndView("kitchen/view");
 		
-		QueryParams qp = new QueryParams("openedat", false);
-		Collection<Order> orders = orderService.getActiveOrders(qp);
+		Map totalDishes = orderService.getAllUndoneDishesFromAllActiveOrders();
 		
-		Map<Dish, Integer> totalDishes = new HashMap<>();
-		for (Order o : orders) {
-			for (Dish d : o.getUnDoneDishes().keySet()) {
-				if (totalDishes.containsKey(d)) {
-					totalDishes.put(d, totalDishes.get(d) + o.getUnDoneDishes().get(d).getAmount());
-				} else {
-					totalDishes.put(d, o.getUnDoneDishes().get(d).getAmount());
-				}
-			}
-		}
-		
-		Collection<Order> urgentOrders = orderService.get30MinutesWaitOrders();
 		Collection<Table> busyTables = tableService.findTablesWithStatus(TableStatus.BUSY);
-		Collection<Table> urgentTables = busyTables
-				.parallelStream()
-				.filter(t -> urgentOrders.contains(t.getOrder()))
-				.collect(Collectors.toList());
-		busyTables.removeAll(urgentTables);
+		Collection<Table> urgentTables = tableService.getUrgentTables();
 		
 		mav.addObject("tables", busyTables);
-		mav.addObject("orders", orders);
 		mav.addObject("urgentTables", urgentTables);
 		mav.addObject("totalDishes", totalDishes);
-		mav.addObject("qp", qp);
 		
 		return mav;
 	}
