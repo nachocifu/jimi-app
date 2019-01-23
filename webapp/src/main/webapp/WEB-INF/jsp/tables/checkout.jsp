@@ -75,9 +75,9 @@
                         <tr>
                             <td class="text-center">${dish.key.name}</td>
                             <td class="text-center">${dish.key.price}</td>
-                            <td class="text-center">${dish.value}</td>
+                            <td class="text-center">${dish.value.amount}</td>
                             <td class="text-right"><fmt:formatNumber
-                                    value="${dish.value * dish.key.price}"
+                                    value="${dish.value.amount * dish.key.price}"
                                     maxFractionDigits="2"/></td>
                         </tr>
                     </c:forEach>

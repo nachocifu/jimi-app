@@ -18,7 +18,8 @@
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
           type="text/css"/>
     <!-- icons -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -66,7 +67,7 @@
                                 <c:forEach items="${order.unDoneDishes}" var="dish">
                                     <tr>
                                         <td>${dish.key.name}</td>
-                                        <td>${dish.value}</td>
+                                        <td>${dish.value.amount}</td>
                                         <td>
                                             <form action="<c:url value="/kitchen/done"/>" method="post">
                                                 <button type="submit"
@@ -108,7 +109,7 @@
                                 <c:forEach items="${order.unDoneDishes}" var="dish">
                                     <tr>
                                         <td>${dish.key.name}</td>
-                                        <td>${dish.value}</td>
+                                        <td>${dish.value.amount}</td>
                                         <td>
                                             <form action="<c:url value="/kitchen/done"/>" method="post">
                                                 <button type="submit"
@@ -160,8 +161,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

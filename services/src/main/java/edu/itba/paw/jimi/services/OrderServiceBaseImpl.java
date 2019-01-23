@@ -6,6 +6,7 @@ import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
+import edu.itba.paw.jimi.models.DishData;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
@@ -43,8 +44,8 @@ public class OrderServiceBaseImpl implements OrderService {
 	private void updateTotal(Order order) {
 		
 		float total = 0f;
-		for (Map.Entry<Dish, Integer> d : order.getDishes().entrySet())
-			total += d.getKey().getPrice() * d.getValue();
+		for (Map.Entry<Dish, DishData> d : order.getDishes().entrySet())
+			total += d.getKey().getPrice() * d.getValue().getAmount();
 		
 		order.setTotal(total);
 		
@@ -70,7 +71,7 @@ public class OrderServiceBaseImpl implements OrderService {
 		
 		int previousAmount;
 		if (order.getUnDoneDishes().containsKey(dish))
-			previousAmount = order.getUnDoneDishes().get(dish);
+			previousAmount = order.getUnDoneDishes().get(dish).getAmount();
 		else
 			previousAmount = 0;
 		
@@ -83,15 +84,18 @@ public class OrderServiceBaseImpl implements OrderService {
 		// Update dish stock
 		dishService.setStock(dish, dish.getStock() - amount);
 		
-		return order.getDishes().getOrDefault(dish, 0);
+		if(order.getDishes().containsKey(dish))
+			return order.getDishes().get(dish).getAmount();
+		else
+			return 0;
 	}
 	
 	@Override
 	public int removeOneDish(Order order, Dish dish) {
 		int previousAmount;
-		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish) != 0) {
+		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish).getAmount() != 0) {
 			//Here logic to remove undone dishes.
-			previousAmount = order.getUnDoneDishes().get(dish);
+			previousAmount = order.getUnDoneDishes().get(dish).getAmount();
 			order.setDish(dish, previousAmount - 1);
 			updateTotal(order);
 			orderDao.update(order);
@@ -110,14 +114,17 @@ public class OrderServiceBaseImpl implements OrderService {
 		
 		LOGGER.info("Updated order (remove one dish): {}", order);
 		
-		return order.getDishes().getOrDefault(dish, 0);
+		if(order.getDishes().containsKey(dish))
+			return order.getDishes().get(dish).getAmount();
+		else
+			return 0;
 	}
 	
 	@Override
 	public int removeAllDish(Order order, Dish dish) {
 		// Update dish stock
 		if (order.getDishes().containsKey(dish)) {
-			int previousValue = order.getDishes().get(dish);
+			int previousValue = order.getDishes().get(dish).getAmount();
 			dishService.setStock(dish, dish.getStock() + previousValue);
 		}
 		
@@ -128,7 +135,10 @@ public class OrderServiceBaseImpl implements OrderService {
 		
 		LOGGER.info("Updated order (remove all dish): {}", order);
 		
-		return order.getDishes().getOrDefault(dish, 0);
+		if(order.getDishes().containsKey(dish))
+			return order.getDishes().get(dish).getAmount();
+		else
+			return 0;
 	}
 	
 	@Override
@@ -227,7 +237,7 @@ public class OrderServiceBaseImpl implements OrderService {
 	@Override
 	public void setDishAsDone(Order order, Dish dish) {
 		if (order.getUnDoneDishes().containsKey(dish)) {
-			int amount = order.getDishes().get(dish);
+			int amount = order.getDishes().get(dish).getAmount();
 			order.setDish(dish, 0);
 			order.setDoneDish(dish, amount);
 			orderDao.update(order);

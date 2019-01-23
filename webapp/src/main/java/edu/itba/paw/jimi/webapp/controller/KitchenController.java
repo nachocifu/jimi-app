@@ -38,9 +38,9 @@ public class KitchenController {
 		for (Order o : orders) {
 			for (Dish d : o.getUnDoneDishes().keySet()) {
 				if (totalDishes.containsKey(d)) {
-					totalDishes.put(d, totalDishes.get(d) + o.getUnDoneDishes().get(d));
+					totalDishes.put(d, totalDishes.get(d) + o.getUnDoneDishes().get(d).getAmount());
 				} else {
-					totalDishes.put(d, o.getUnDoneDishes().get(d));
+					totalDishes.put(d, o.getUnDoneDishes().get(d).getAmount());
 				}
 			}
 		}
