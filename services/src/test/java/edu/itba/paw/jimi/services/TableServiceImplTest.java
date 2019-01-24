@@ -2,6 +2,7 @@ package edu.itba.paw.jimi.services;
 
 
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
+import edu.itba.paw.jimi.interfaces.exceptions.FreeTableDeletionAttemptException;
 import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Order;
@@ -172,5 +173,21 @@ public class TableServiceImplTest {
 		Table table = new Table(TABLE_NAME, 1, TableStatus.FREE, order);
 		tableServiceImpl.setName(table, TABLE_NAME.concat(TABLE_NAME));
 		assertEquals(TABLE_NAME.concat(TABLE_NAME), table.getName());
+	}
+	
+	@Test(expected = FreeTableDeletionAttemptException.class)
+	public void deleteBusyTable() {
+		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
+		Table table = new Table(TABLE_NAME, 1, TableStatus.BUSY, order);
+		Mockito.when(tableDao.findById(1)).thenReturn(table);
+		tableServiceImpl.delete(1);
+	}
+	
+	@Test(expected = FreeTableDeletionAttemptException.class)
+	public void deletePayingTable() {
+		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
+		Table table = new Table(TABLE_NAME, 1, TableStatus.PAYING, order);
+		Mockito.when(tableDao.findById(1)).thenReturn(table);
+		tableServiceImpl.delete(1);
 	}
 }

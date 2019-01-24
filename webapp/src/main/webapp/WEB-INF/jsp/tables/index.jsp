@@ -19,7 +19,8 @@
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
           type="text/css"/>
     <!-- icons -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -54,7 +55,7 @@
                     <input value="${BusyCode}" name="status" type="hidden"/>
                     <input type="submit"
                            class="btn btn-default rebeccapurple-color"
-                           value="<spring:message code="table.occupy"/>"/>
+                           value="<spring:message code="table.occupy"/> ${table.name}"/>
                 </form>
             </c:if>
             <c:if test="${table.status == 'BUSY'}">
@@ -76,7 +77,8 @@
                             </h4>
                         </div>
                         <div class="col s2 inc-margin">
-                            <form class="pull-left" action="<c:url value="/tables/${table.id}/add_diner"/>" method="post">
+                            <form class="pull-left" action="<c:url value="/tables/${table.id}/add_diner"/>"
+                                  method="post">
                                 <input type="submit" value="+ <spring:message code="table.diners"/>"
                                        class="btn btn-default pull-right">
                             </form>
@@ -95,7 +97,8 @@
                             <c:when test="${table.order.dishes.size() > 0}">
                                 <div class="col s3">
                                     <!-- Modal Trigger -->
-                                    <button data-target="modal1" class="btn modal-trigger"><spring:message code="table.charge_caps"/></button>
+                                    <button data-target="modal1" class="btn modal-trigger"><spring:message
+                                            code="table.charge_caps"/></button>
 
                                     <!-- Modal Structure -->
                                     <div id="modal1" class="modal">
@@ -104,7 +107,8 @@
                                             <form action="<c:url value="/tables/${table.id}/status"/>" method="post">
                                                 <div class="modal-footer">
                                                     <input value="${PayingCode}" name="status" type="hidden"/>
-                                                    <a class="modal-close btn blue-gray"><spring:message code="table.back"/></a>
+                                                    <a class="modal-close btn blue-gray"><spring:message
+                                                            code="table.back"/></a>
                                                     <input type="submit"
                                                            class="btn blue-gray"
                                                            value="<spring:message code="table.charge_caps"/>"/>
@@ -124,7 +128,8 @@
                         </c:choose>
                         <div class="col s3">
                             <!-- Modal Trigger -->
-                            <button data-target="modal2" class="btn modal-trigger"><spring:message code="table.cancel_caps"/></button>
+                            <button data-target="modal2" class="btn modal-trigger"><spring:message
+                                    code="table.cancel_caps"/></button>
 
                             <!-- Modal Structure -->
                             <div id="modal2" class="modal">
@@ -201,7 +206,8 @@
                                     </td>
                                     <td>
                                         <!-- Modal Trigger -->
-                                        <button data-target="modal3" class="btn modal-trigger"><i class="fa fa-trash-o"></i></button>
+                                        <button data-target="modal3" class="btn modal-trigger"><i
+                                                class="fas fa-trash-alt"></i></button>
 
                                         <!-- Modal Structure -->
                                         <div id="modal3" class="modal">
@@ -211,7 +217,8 @@
                                                       method="post" class="form-with-buttons">
                                                     <input type="hidden" value="${dishEntry.key.id}"
                                                            name="dishid"/>
-                                                    <a class="modal-close btn blue-gray"><spring:message code="table.back"/></a>
+                                                    <a class="modal-close btn blue-gray"><spring:message
+                                                            code="table.back"/></a>
                                                     <input type="submit"
                                                            class="btn blue-gray"
                                                            value="<spring:message code="table.sure_remove_all_dishes_confirm"/>"/>

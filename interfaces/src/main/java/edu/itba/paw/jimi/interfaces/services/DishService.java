@@ -6,6 +6,7 @@ import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import java.util.Collection;
 
 public interface DishService {
+	
 	Dish findById(final long id);
 	
 	/**

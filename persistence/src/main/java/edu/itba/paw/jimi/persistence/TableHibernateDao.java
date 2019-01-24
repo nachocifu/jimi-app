@@ -68,6 +68,12 @@ public class TableHibernateDao implements TableDao {
 		return query.getSingleResult().intValue();
 	}
 	
+	@Override
+	public void delete(long id) {
+		Table tableToDelete = em.find(Table.class, id);
+		em.remove(tableToDelete);
+	}
+	
 	public boolean tableNameExists(String tableName) {
 		final TypedQuery<Table> query = em.createQuery("from Table as t where t.name = :tableName", Table.class);
 		query.setParameter("tableName", tableName);
