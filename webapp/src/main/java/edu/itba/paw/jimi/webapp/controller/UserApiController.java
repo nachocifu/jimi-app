@@ -1,27 +1,12 @@
 package edu.itba.paw.jimi.webapp.controller;
 
-import edu.itba.paw.jimi.form.UserForm;
-import edu.itba.paw.jimi.interfaces.exceptions.Http400Error;
-import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
-import edu.itba.paw.jimi.webapp.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -30,18 +15,19 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("users")
-@Component
+@Controller
+@Produces(value = {MediaType.APPLICATION_JSON})
 public class UserApiController {
-
+	
 	@Autowired
 	private UserService us;
-
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
+	
 	@Autowired
 	private MessageSource messageSource;
-
+	
 	private static final int PAGE_SIZE = 10;
 
 //	@RequestMapping("/register")
@@ -86,10 +72,10 @@ public class UserApiController {
 //
 //		return new ModelAndView("redirect:/admin/users");
 //	}
-
+	
 	@GET
 	@Path("/")
-	@Produces(value = {MediaType.APPLICATION_JSON} )
+	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response list() {
 //		final ModelAndView mav = new ModelAndView("users/list");
 
@@ -99,7 +85,9 @@ public class UserApiController {
 
 //		mav.addObject("users", users);
 //		mav.addObject("qp", qp);
-		return Response.noContent().build();
+//		return Response.noContent().build();
+		final List<User> allUsers = (List<User>) us.findAll();
+		return Response.ok(allUsers).build();
 	}
 
 //	@RequestMapping("/page/{page}")

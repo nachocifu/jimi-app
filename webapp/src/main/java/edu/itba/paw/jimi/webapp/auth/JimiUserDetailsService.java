@@ -1,4 +1,4 @@
-package edu.itba.paw.jimi.webapp.config.security;
+package edu.itba.paw.jimi.webapp.auth;
 
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
@@ -13,13 +13,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class PawUserDetailsService implements UserDetailsService {
+public class JimiUserDetailsService implements UserDetailsService {
 	
 	@Autowired
-	private UserService us;
+	private UserService userService;
 	
+	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		final User user = us.findByUsername(username);
+		final User user = userService.findByUsername(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("No user by the username " + username);
 		}
