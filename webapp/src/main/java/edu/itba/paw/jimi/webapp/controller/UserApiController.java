@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -86,8 +87,8 @@ public class UserApiController {
 //		mav.addObject("users", users);
 //		mav.addObject("qp", qp);
 //		return Response.noContent().build();
-		final List<User> allUsers = (List<User>) us.findAll();
-		return Response.ok(allUsers).build();
+		GenericEntity<List<User>> entity = new GenericEntity<List<User>>((List<User>) us.findAll()) {};
+		return Response.ok(entity).build();
 	}
 
 //	@RequestMapping("/page/{page}")

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,9 +46,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 				.and().authorizeRequests()
-				.antMatchers( HttpMethod.POST,"/api/users").permitAll()
-				.antMatchers( "/api/users/**").hasRole("USER")
-				.antMatchers( "/api/users").hasRole("USER")
+				.antMatchers("/api/users/**").hasRole("ADMIN")
+				.antMatchers("/api/users").hasRole("ADMIN")
 				.antMatchers("/api/**").authenticated()
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
