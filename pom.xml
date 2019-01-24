@@ -26,6 +26,7 @@
         <maven-war-plugin.version>2.6</maven-war-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jersey.version>3.0-SNAPSHOT</jersey.version>
+        <jsonwebtoken.version>0.7.0</jsonwebtoken.version>
     </properties>
     <modules>
         <module>webapp</module>
@@ -221,6 +222,13 @@
                 <groupId>org.glassfish.jersey.media</groupId>
                 <artifactId>jersey-media-jaxb</artifactId>
                 <version>${jersey.version}</version>
+            </dependency>
+
+            <!-- JWT -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jsonwebtoken.version}</version>
             </dependency>
 
         </dependencies>
