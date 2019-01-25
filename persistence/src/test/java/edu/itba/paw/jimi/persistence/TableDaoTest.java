@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
@@ -84,6 +86,17 @@ public class TableDaoTest {
 		freeTables.add(tableDao.create("Table 8", TableStatus.FREE, testOrder));
 		busyTables.add(tableDao.create("Table 9", TableStatus.BUSY, testOrder));
 		freeTables.add(tableDao.create("Table 10", TableStatus.FREE, testOrder));
+		
+		Order order1 = orderDao.create(OrderStatus.OPEN, new Timestamp(1525467178), null, 1, 0F);
+		Order order2 = orderDao.create(OrderStatus.OPEN, new Timestamp(1525467179), null, 1, 0F);
+		Order order3 = orderDao.create(OrderStatus.OPEN, new Timestamp(1525467180), null, 1, 0F);
+		order1.setDish(testDish, 1);
+		order2.setDish(testDish, 1);
+		order3.setDish(testDish, 1);
+		busyTables.add(tableDao.create("Free Table 3", TableStatus.BUSY, order3));
+		busyTables.add(tableDao.create("Free Table 2", TableStatus.BUSY, order2));
+		busyTables.add(tableDao.create("Free Table 1", TableStatus.BUSY, order1));
+		busyTables = busyTables.parallelStream().sorted(Comparator.comparing(o -> o.getOrder().getOpenedAt())).collect(Collectors.toList());
 	}
 	
 	@After
@@ -112,6 +125,12 @@ public class TableDaoTest {
 		Assert.assertTrue(freeTables.containsAll(freeStatusTables));
 		Assert.assertTrue(busyTables.containsAll(busyStatusTables));
 		Assert.assertTrue(payingTables.containsAll(payingStatusTables));
+	}
+	
+	@Test
+	public void testFindTablesWithStatusBusySorted() {
+		Collection<Table> actualBusyTables = tableDao.findTablesWithStatus(TableStatus.BUSY);
+		assertEquals(busyTables, actualBusyTables);
 	}
 	
 	@Test
