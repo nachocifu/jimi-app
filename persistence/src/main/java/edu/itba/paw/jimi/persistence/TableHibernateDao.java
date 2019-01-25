@@ -15,9 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class TableHibernateDao implements TableDao {
@@ -51,12 +49,10 @@ public class TableHibernateDao implements TableDao {
 	
 	@Override
 	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
-		final TypedQuery<Table> query = em.createQuery("from Table as t where t.status = :tableStatus", Table.class);
+		final TypedQuery<Table> query = em.createQuery("from Table as t where t.status = :tableStatus order by t.order.openedAt", Table.class);
 		query.setParameter("tableStatus", tableStatus);
-		return query.getResultList()
-				.parallelStream()
-				.sorted(Comparator.comparing(o -> o.getOrder().getOpenedAt()))
-				.collect(Collectors.toList());
+		List res =  query.getResultList();
+		return res;
 	}
 	
 	@Override
