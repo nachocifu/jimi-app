@@ -19,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static junit.framework.Assert.assertNull;
@@ -208,5 +206,27 @@ public class TableDaoTest {
 		assertNotNull(tableDao.findById(testTable.getId()));
 		tableDao.delete(testTable.getId());
 		assertNull(tableDao.findById(testTable.getId()));
+	}
+	
+	@Test
+	public void testGetUrgentTables() {
+		Order notUrgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
+		Order urgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
+		Dish notUrgentDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+		urgentOrder.setDish(notUrgentDish, 1);
+		notUrgentOrder.setDish(notUrgentDish, 1);
+		
+		Dish urgentDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+		urgentOrder.setDish(urgentDish, 1);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MINUTE, -30);
+		urgentOrder.getUnDoneDishes().get(urgentDish).setOrderedAt(new Timestamp(cal.getTimeInMillis()));
+		
+		Table expectedUrgentTable = tableDao.create("Urgent table", TableStatus.BUSY, urgentOrder);
+		Collection<Table> urgentTables = tableDao.getUrgentTables();
+		assertEquals(1, urgentTables.size());
+		assertEquals(expectedUrgentTable, urgentTables.toArray()[0]);
 	}
 }

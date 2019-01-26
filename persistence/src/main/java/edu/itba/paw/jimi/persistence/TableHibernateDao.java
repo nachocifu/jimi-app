@@ -4,6 +4,7 @@ import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import edu.itba.paw.jimi.models.Order;
+import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
@@ -14,7 +15,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -79,6 +82,24 @@ public class TableHibernateDao implements TableDao {
 	public void delete(long id) {
 		Table tableToDelete = em.find(Table.class, id);
 		em.remove(tableToDelete);
+	}
+	
+	@Override
+	public Collection<Table> getUrgentTables() {
+		final TypedQuery<Table> query = em.createQuery("from Table as t where t.status = :tableStatus " +
+				"and t.order in " +
+				"(from Order as o join o.unDoneDishes as ud " +
+				"where o.status = :opened and ud.orderedAt < :last30)" +
+				"order by t.order.openedAt", Table.class);
+		query.setParameter("tableStatus", TableStatus.BUSY);
+		query.setParameter("opened", OrderStatus.OPEN);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MINUTE, -30);
+		query.setParameter("last30", cal.getTime());
+		
+		return query.getResultList();
 	}
 	
 	public boolean tableNameExists(String tableName) {

@@ -180,27 +180,13 @@ public class TableServiceImplTest {
 	public void getUrgentTablesTest() {
 		Order urgentOrder1 = new Order(1, null, null, OrderStatus.OPEN, 0, 0);
 		Order urgentOrder2 = new Order(2, null, null, OrderStatus.OPEN, 0, 0);
-		Collection<Order> urgentOrders = new LinkedList<>();
-		urgentOrders.add(urgentOrder1);
-		urgentOrders.add(urgentOrder2);
-		
 		Table busyTable1 = new Table(TABLE_NAME, 1, TableStatus.BUSY, urgentOrder1);
 		Table busyTable2 = new Table(TABLE_NAME, 2, TableStatus.BUSY, urgentOrder2);
-		Table busyTable3 = new Table(TABLE_NAME, 3, TableStatus.BUSY, new Order(3, null, null, OrderStatus.OPEN, 0, 0));
-		Collection<Table> busyTables = new LinkedList<>();
-		busyTables.add(busyTable1);
-		busyTables.add(busyTable2);
-		busyTables.add(busyTable3);
-		
-		Mockito.when(orderService.get30MinutesWaitOrders()).thenReturn(urgentOrders);
-		Mockito.when(tableServiceImpl.findTablesWithStatus(TableStatus.BUSY)).thenReturn(busyTables);
-		
 		Collection<Table> expectedUrgentTables = new LinkedList<>();
 		expectedUrgentTables.add(busyTable1);
 		expectedUrgentTables.add(busyTable2);
-		
+		Mockito.when(tableServiceImpl.getUrgentTables()).thenReturn(expectedUrgentTables);
 		assertEquals(expectedUrgentTables, tableServiceImpl.getUrgentTables());
-		
 	}
 	
 	@Test(expected = FreeTableDeletionAttemptException.class)

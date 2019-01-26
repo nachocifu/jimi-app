@@ -79,4 +79,8 @@ public interface TableDao {
 	 */
 	void delete(final long id);
 	
+	/**
+	 * Returns tables with urgent orders.
+	 */
+	Collection<Table> getUrgentTables();
 }
