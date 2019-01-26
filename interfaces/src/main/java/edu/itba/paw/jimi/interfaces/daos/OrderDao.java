@@ -1,5 +1,6 @@
 package edu.itba.paw.jimi.interfaces.daos;
 
+import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
@@ -57,7 +58,7 @@ public interface OrderDao {
 	
 	int getTotalRelevantOrders();
 	
-	Collection<Order> getActiveOrders(QueryParams qp);
+	Collection<Order> getActiveOrders();
 	
 	int getTotalActiveOrders();
 	
@@ -70,4 +71,12 @@ public interface OrderDao {
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> get30MinutesWaitOrders();
+	
+	
+	/**
+	 * Finds all undone dishes from active orders.
+	 *
+	 * @return A collection of said dishes.
+	 */
+	Map<Dish, Long> getAllUndoneDishesFromAllActiveOrders();
 }

@@ -1,13 +1,14 @@
 package edu.itba.paw.jimi.models;
 
 import javax.persistence.*;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 
 @Entity
-@javax.persistence.Table(name = "orders")
+@Table(name = "orders")
 public class Order {
 	
 	@Id
