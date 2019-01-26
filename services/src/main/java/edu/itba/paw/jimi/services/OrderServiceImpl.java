@@ -133,8 +133,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public Collection<Order> getActiveOrders(QueryParams qp) {
-		return orderService.getActiveOrders(qp);
+	public Collection<Order> getActiveOrders() {
+		return orderService.getActiveOrders();
 	}
 	
 	@Override

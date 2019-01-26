@@ -51,8 +51,7 @@ public class TableHibernateDao implements TableDao {
 	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
 		final TypedQuery<Table> query = em.createQuery("from Table as t where t.status = :tableStatus order by t.order.openedAt", Table.class);
 		query.setParameter("tableStatus", tableStatus);
-		List res =  query.getResultList();
-		return res;
+		return query.getResultList();
 	}
 	
 	@Override

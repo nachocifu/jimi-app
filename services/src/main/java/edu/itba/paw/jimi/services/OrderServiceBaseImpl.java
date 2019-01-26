@@ -18,7 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
 
 @Service
 @Qualifier(value = "adminOrderService")
@@ -247,8 +250,8 @@ public class OrderServiceBaseImpl implements OrderService {
 	}
 	
 	@Override
-	public Collection<Order> getActiveOrders(QueryParams qp) {
-		return orderDao.getActiveOrders(qp);
+	public Collection<Order> getActiveOrders() {
+		return orderDao.getActiveOrders();
 	}
 	
 	@Override
@@ -263,19 +266,7 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Override
 	public Map getAllUndoneDishesFromAllActiveOrders() {
-		QueryParams qp = new QueryParams("openedat", false);
-		Collection<Order> orders = getActiveOrders(qp);
-		Map<Dish, Integer> totalDishes = new HashMap<>();
-		for (Order o : orders) {
-			for (Dish d : o.getUnDoneDishes().keySet()) {
-				if (totalDishes.containsKey(d)) {
-					totalDishes.put(d, totalDishes.get(d) + o.getUnDoneDishes().get(d).getAmount());
-				} else {
-					totalDishes.put(d, o.getUnDoneDishes().get(d).getAmount());
-				}
-			}
-		}
-		return totalDishes;
+		return orderDao.getAllUndoneDishesFromAllActiveOrders();
 	}
 	
 }

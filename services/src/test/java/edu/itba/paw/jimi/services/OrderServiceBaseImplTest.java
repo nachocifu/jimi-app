@@ -7,7 +7,6 @@ import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,17 +16,18 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 
 public class OrderServiceBaseImplTest {
 	
 	private static final String DISH_NAME = "Cambuchá";
 	private static final float DISH_PRICE = 5.25F;
 	private static final int DISH_STOCK = 5;
-	private static final float DELTA = 0.001f;
+	private static final float DELTA = 0.001F;
 	private static final Timestamp OPENEDAT = new Timestamp(1525467178);
 	
 	@Mock
@@ -523,25 +523,14 @@ public class OrderServiceBaseImplTest {
 	
 	@Test
 	public void getAllUndoneDishesFromAllActiveOrders() {
-		Order order1 = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 2, 0);
-		Order order2 = new Order(2, OPENEDAT, null, OrderStatus.OPEN, 2, 0);
 		Dish dish1 = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
 		Dish dish2 = new Dish(DISH_NAME, DISH_PRICE, 2, DISH_STOCK);
 		
-		order1.setDish(dish1, 1);
-		order2.setDish(dish1, 2);
-		order1.setDish(dish2, 3);
-		order2.setDish(dish2, 4);
+		Map<Dish, Long> totalDishes = new HashMap<>();
+		totalDishes.put(dish1, 3L);
+		totalDishes.put(dish2, 7L);
 		
-		Collection<Order> orders = new HashSet<>();
-		orders.add(order1);
-		orders.add(order2);
-		
-		Mockito.when(orderDao.getActiveOrders(any(QueryParams.class))).thenReturn(orders);
-		
-		Map<Dish, Integer> totalDishes = new HashMap<>();
-		totalDishes.put(dish1, 3);
-		totalDishes.put(dish2, 7);
+		Mockito.when(orderDao.getAllUndoneDishesFromAllActiveOrders()).thenReturn(totalDishes);
 		
 		Map actualDishes = orderServiceBaseImpl.getAllUndoneDishesFromAllActiveOrders();
 		assertEquals(totalDishes, actualDishes);

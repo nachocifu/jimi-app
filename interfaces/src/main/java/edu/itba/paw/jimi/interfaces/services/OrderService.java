@@ -130,14 +130,33 @@ public interface OrderService {
 	 */
 	Map getMonthlyOrderTotal();
 	
+	/**
+	 * Finds all cancelled orders' total by month.
+	 *
+	 * @return A collection of said orders.
+	 */
 	Map getMonthlyOrderCancelled();
 	
+	/**
+	 * Sets dish from order as done.
+	 */
 	void setDishAsDone(Order order, Dish dish);
 	
+	/**
+	 * @return count of cancelled or closed orders.
+	 */
 	int getTotalRelevantOrders();
 	
-	Collection<Order> getActiveOrders(QueryParams qp);
+	/**
+	 * Finds all open orders.
+	 *
+	 * @return A collection of said orders in ascending order by open timestamp.
+	 */
+	Collection<Order> getActiveOrders();
 	
+	/**
+	 * @return count of open orders.
+	 */
 	int getTotalActiveOrders();
 	
 	/**

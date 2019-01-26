@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.persistence;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
+import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Utilities.QueryParams;
@@ -137,24 +138,9 @@ public class OrderHibernateDao implements OrderDao {
 	}
 	
 	@Override
-	public Collection<Order> getActiveOrders(QueryParams qp) {
-		String ordering = "";
-		if (qp.getOrderBy() != null)
-			ordering += " order by " + qp.getOrderBy();
-		
-		if (qp.isAscending())
-			ordering += " ASC";
-		else
-			ordering += " DESC";
-		
-		final Query query = em.createQuery("from Order as o where o.status = :opened" + ordering, Order.class);
+	public Collection<Order> getActiveOrders() {
+		final Query query = em.createQuery("FROM Order o WHERE o.status = :opened ORDER BY o.openedAt ASC", Order.class);
 		query.setParameter("opened", OrderStatus.OPEN);
-		
-		if (qp.getStartAt() != QueryParams.NO_VALUE) {
-			query.setFirstResult(qp.getStartAt());
-			query.setMaxResults(qp.getPageSize());
-		}
-		
 		return (Collection<Order>) query.getResultList();
 	}
 	
@@ -171,5 +157,19 @@ public class OrderHibernateDao implements OrderDao {
 		query.setParameter("last30", cal.getTime());
 		
 		return (Collection<Order>) query.getResultList();
+	}
+	
+	@Override
+	public Map<Dish, Long> getAllUndoneDishesFromAllActiveOrders() {
+		TypedQuery<Object[]> query = em.createQuery(
+				"SELECT KEY(u), SUM(u.amount) " +
+						"FROM Order AS o JOIN o.unDoneDishes AS u " +
+						"WHERE o.status = :opened " +
+						"GROUP BY KEY(u), dishid ", Object[].class);
+		query.setParameter("opened", OrderStatus.OPEN);
+		Map<Dish, Long> totalDishes = new HashMap<>();
+		for (Object[] result : query.getResultList())
+			totalDishes.put((Dish) result[0], (Long) result[1]);
+		return totalDishes;
 	}
 }
