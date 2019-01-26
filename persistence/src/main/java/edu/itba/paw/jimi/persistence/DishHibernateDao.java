@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Collection;
 
@@ -44,11 +43,11 @@ public class DishHibernateDao implements DishDao {
 	
 	@Override
 	public Collection<Dish> findAll(QueryParams qp) {
-		final Query query = em.createQuery("from Dish order by name", Dish.class);
+		final TypedQuery<Dish> query = em.createQuery("from Dish order by name", Dish.class);
 		query.setFirstResult(qp.getStartAt());
 		query.setMaxResults(qp.getPageSize());
 		
-		return (Collection<Dish>) query.getResultList();
+		return query.getResultList();
 	}
 	
 	@Override
