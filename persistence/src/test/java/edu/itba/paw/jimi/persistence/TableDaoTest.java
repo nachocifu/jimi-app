@@ -185,22 +185,22 @@ public class TableDaoTest {
 	
 	@Test
 	public void testGetNumberOfTablesWithStateChanges() {
-		Assert.assertEquals(5, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
-		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
-		Assert.assertEquals(0, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
+		Assert.assertEquals(freeTables.size(), tableDao.getNumberOfTablesWithState(TableStatus.FREE));
+		Assert.assertEquals(busyTables.size(), tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
+		Assert.assertEquals(payingTables.size(), tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
 		
 		testTable.setStatus(TableStatus.BUSY);
 		tableDao.update(testTable);
-		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
-		Assert.assertEquals(5, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
-		Assert.assertEquals(0, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
+		Assert.assertEquals(freeTables.size() - 1, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
+		Assert.assertEquals(busyTables.size() + 1, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
+		Assert.assertEquals(payingTables.size(), tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
 		
 		
 		testTable.setStatus(TableStatus.PAYING);
 		tableDao.update(testTable);
-		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
-		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
-		Assert.assertEquals(1, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
+		Assert.assertEquals(freeTables.size() - 1, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
+		Assert.assertEquals(busyTables.size(), tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
+		Assert.assertEquals(payingTables.size() + 1, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
 	}
 	
 	@Test
