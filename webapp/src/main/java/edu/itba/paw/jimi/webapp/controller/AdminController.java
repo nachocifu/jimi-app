@@ -1,7 +1,5 @@
 package edu.itba.paw.jimi.webapp.controller;
 
-import edu.itba.paw.jimi.form.TableAddDishForm;
-import edu.itba.paw.jimi.form.TableSetDinersForm;
 import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
@@ -10,6 +8,8 @@ import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.utils.QueryParams;
+import edu.itba.paw.jimi.webapp.dto.form.TableAddDishForm;
+import edu.itba.paw.jimi.webapp.dto.form.TableSetDinersForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;

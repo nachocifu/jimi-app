@@ -1,4 +1,4 @@
-package edu.itba.paw.jimi.form;
+package edu.itba.paw.jimi.webapp.dto.form;
 
 import javax.validation.constraints.*;
 
