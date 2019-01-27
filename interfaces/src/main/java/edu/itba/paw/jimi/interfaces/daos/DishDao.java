@@ -1,7 +1,7 @@
 package edu.itba.paw.jimi.interfaces.daos;
 
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import java.util.Collection;
 

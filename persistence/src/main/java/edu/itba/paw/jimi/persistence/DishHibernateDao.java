@@ -2,7 +2,7 @@ package edu.itba.paw.jimi.persistence;
 
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

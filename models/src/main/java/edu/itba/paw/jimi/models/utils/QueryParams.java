@@ -1,4 +1,4 @@
-package edu.itba.paw.jimi.models.Utilities;
+package edu.itba.paw.jimi.models.utils;
 
 public class QueryParams {
 	
