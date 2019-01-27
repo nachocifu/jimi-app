@@ -3,6 +3,10 @@ sudo: false
 
 script: "mvn test"
 
+branches:
+  only:
+    - master
+
 notifications:
   email:
     - icifuent@itba.edu.ar
