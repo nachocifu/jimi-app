@@ -1,5 +1,5 @@
 <%@ page import="edu.itba.paw.jimi.models.TableStatus" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -18,7 +18,8 @@
     <link href="<c:url value="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>" rel="stylesheet"
           type="text/css"/>
     <!-- icons -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
     <!--Material-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -67,6 +68,11 @@
                             path="minStock" min="0" step="1"/>
                 <form:errors path="minStock" element="p" cssClass="formError"/>
 
+
+                <form:label class="mdl-textfield__label" path="discontinued"><spring:message
+                        code="dish.discontinued"/></form:label>
+                <form:checkbox class="validate" path="discontinued"
+                               checked="${dish.discontinued == 'true' ? 'checked' : '' }"/>
                 <button type="submit"
                         class="waves-effect waves-light btn">
                     <spring:message code="dish.edit"/>

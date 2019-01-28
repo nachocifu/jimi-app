@@ -2,7 +2,7 @@ package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.hibernate.service.spi.ServiceException;
 
 import java.util.Collection;

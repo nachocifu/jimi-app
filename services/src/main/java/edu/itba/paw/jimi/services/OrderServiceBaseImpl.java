@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
+import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
 import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
 import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
@@ -9,7 +10,7 @@ import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.DishData;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +43,11 @@ public class OrderServiceBaseImpl implements OrderService {
 	 * @param order The order to update.
 	 */
 	private void updateTotal(Order order) {
-		
 		float total = 0f;
 		for (Map.Entry<Dish, DishData> d : order.getDishes().entrySet())
 			total += d.getKey().getPrice() * d.getValue().getAmount();
 		
 		order.setTotal(total);
-		
 	}
 	
 	@Override
@@ -65,9 +64,11 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Override
 	public int addDishes(Order order, Dish dish, int amount) {
-		
 		if (amount > dish.getStock())
 			throw new StockHandlingException("Amount of dishes exceeds available dish stock.");
+		
+		if (dish.isDiscontinued())
+			throw new AddingDiscontinuedDishException();
 		
 		int previousAmount;
 		if (order.getUnDoneDishes().containsKey(dish))
@@ -164,7 +165,6 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Override
 	public void open(Order order) {
-		
 		if (!order.getStatus().equals(OrderStatus.INACTIVE))
 			throw new OrderStatusException(OrderStatus.INACTIVE, order.getStatus());
 		
@@ -177,7 +177,6 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Override
 	public void close(Order order) {
-		
 		if (!order.getStatus().equals(OrderStatus.OPEN))
 			throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
 		
@@ -202,7 +201,6 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Override
 	public Collection<Order> findAll() {
-		
 		Collection<Order> orders = orderDao.findAll();
 		if (orders != null)
 			return orders;

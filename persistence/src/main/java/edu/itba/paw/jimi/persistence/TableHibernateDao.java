@@ -7,13 +7,12 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Calendar;
 import java.util.Collection;
@@ -43,11 +42,11 @@ public class TableHibernateDao implements TableDao {
 	}
 	
 	public Collection<Table> findAll(QueryParams qp) {
-		final Query query = em.createQuery("from Table order by name", Table.class);
+		final TypedQuery<Table> query = em.createQuery("from Table order by name", Table.class);
 		query.setFirstResult(qp.getStartAt());
 		query.setMaxResults(qp.getPageSize());
 		
-		return (Collection<Table>) query.getResultList();
+		return query.getResultList();
 	}
 	
 	@Override

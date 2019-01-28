@@ -190,7 +190,7 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <c:if test="${dishEntry.key.stock != 0}">
+                                        <c:if test="${dishEntry.key.stock != 0 && ! dishEntry.key.discontinued}">
                                             <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
                                                   method="post"
                                                   class="form-with-buttons">

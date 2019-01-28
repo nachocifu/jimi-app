@@ -9,7 +9,7 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,9 +105,6 @@ public class TableServiceImpl implements TableService {
 				break;
 			}
 			case FREE: {
-				if (table.getStatus().equals(TableStatus.PAYING)) { //Normal flow.
-					//Nothing to do.
-				}
 				if (table.getStatus().equals(TableStatus.BUSY)) {//Cancel order!
 					orderService.cancel(table.getOrder());
 				}
@@ -153,13 +150,6 @@ public class TableServiceImpl implements TableService {
 	@Override
 	public Collection<Table> getUrgentTables() {
 		return tableDao.getUrgentTables();
-//		Collection<Order> urgentOrders = orderService.get30MinutesWaitOrders();
-//		Collection<Table> busyTables = this.findTablesWithStatus(TableStatus.BUSY);
-//		Collection<Table> urgentTables = busyTables
-//				.parallelStream()
-//				.filter(t -> urgentOrders.contains(t.getOrder()))
-//				.collect(Collectors.toList());
-//		return urgentTables;
 	}
 	
 }

@@ -4,7 +4,7 @@ import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.time.YearMonth;
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 @Repository
 public class OrderHibernateDao implements OrderDao {
 	
@@ -51,14 +52,14 @@ public class OrderHibernateDao implements OrderDao {
 		else
 			ordering += " DESC";
 		
-		final Query query = em.createQuery("from Order " + ordering, Order.class);
+		final TypedQuery<Order> query = em.createQuery("from Order " + ordering, Order.class);
 		
 		if (qp.getStartAt() != QueryParams.NO_VALUE) {
 			query.setFirstResult(qp.getStartAt());
 			query.setMaxResults(qp.getPageSize());
 		}
 		
-		return (Collection<Order>) query.getResultList();
+		return query.getResultList();
 	}
 	
 	public Map getMonthlyOrderTotal() {
@@ -90,7 +91,7 @@ public class OrderHibernateDao implements OrderDao {
 		else
 			ordering += " DESC";
 		
-		final Query query = em.createQuery("from Order as o where o.status = :closed or o.status = :canceled" + ordering, Order.class);
+		final TypedQuery<Order> query = em.createQuery("from Order as o where o.status = :closed or o.status = :canceled" + ordering, Order.class);
 		query.setParameter("closed", OrderStatus.CLOSED);
 		query.setParameter("canceled", OrderStatus.CANCELED);
 		
@@ -99,7 +100,7 @@ public class OrderHibernateDao implements OrderDao {
 			query.setMaxResults(qp.getPageSize());
 		}
 		
-		return (Collection<Order>) query.getResultList();
+		return query.getResultList();
 	}
 	
 	@Override
@@ -139,16 +140,16 @@ public class OrderHibernateDao implements OrderDao {
 	
 	@Override
 	public Collection<Order> getActiveOrders() {
-		final Query query = em.createQuery("FROM Order o WHERE o.status = :opened ORDER BY o.openedAt ASC", Order.class);
+		final TypedQuery<Order> query = em.createQuery("FROM Order o WHERE o.status = :opened ORDER BY o.openedAt ASC", Order.class);
 		query.setParameter("opened", OrderStatus.OPEN);
-		return (Collection<Order>) query.getResultList();
+		return query.getResultList();
 	}
 	
 	@Override
 	public Collection<Order> get30MinutesWaitOrders() {
-		final Query query = em.createQuery(
-				"select o from Order as o join o.unDoneDishes as ud WHERE o.status = :opened and ud.orderedAt < :last30 " +
-						"order by o.openedAt ASC");
+		final TypedQuery<Order> query = em.createQuery(
+				"from Order as o join o.unDoneDishes as ud WHERE o.status = :opened and ud.orderedAt < :last30 " +
+						"order by o.openedAt ASC", Order.class);
 		query.setParameter("opened", OrderStatus.OPEN);
 		
 		Calendar cal = Calendar.getInstance();
@@ -156,7 +157,7 @@ public class OrderHibernateDao implements OrderDao {
 		cal.add(Calendar.MINUTE, -30);
 		query.setParameter("last30", cal.getTime());
 		
-		return (Collection<Order>) query.getResultList();
+		return query.getResultList();
 	}
 	
 	@Override
