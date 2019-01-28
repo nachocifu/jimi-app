@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
+import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
 import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
 import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
@@ -14,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +38,9 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Autowired
 	private DishService dishService;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	/**
 	 * Updates the total value of the object. Does not touch the DB!
@@ -65,6 +71,11 @@ public class OrderServiceBaseImpl implements OrderService {
 	public int addDishes(Order order, Dish dish, int amount) {
 		if (amount > dish.getStock())
 			throw new StockHandlingException("Amount of dishes exceeds available dish stock.");
+		
+		if (dish.isDiscontinued())
+			throw new AddingDiscontinuedDishException(messageSource.getMessage("dish.discontinued",
+					null, LocaleContextHolder.getLocale()), messageSource.getMessage("dish.add.discontinued.body",
+					null, LocaleContextHolder.getLocale()));
 		
 		int previousAmount;
 		if (order.getUnDoneDishes().containsKey(dish))
@@ -263,4 +274,7 @@ public class OrderServiceBaseImpl implements OrderService {
 		return orderDao.getAllUndoneDishesFromAllActiveOrders();
 	}
 	
+	public void setMessageSource(MessageSource ms) {
+		this.messageSource = ms;
+	}
 }

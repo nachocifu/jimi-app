@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
+import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
 import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
 import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.MessageSource;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class OrderServiceBaseImplTest {
 	
@@ -42,6 +45,7 @@ public class OrderServiceBaseImplTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
+		orderServiceBaseImpl.setMessageSource(mock(MessageSource.class));
 	}
 	
 	@Test
@@ -341,6 +345,14 @@ public class OrderServiceBaseImplTest {
 		int retValue = orderServiceBaseImpl.removeAllDish(order, dish);
 		
 		assertEquals(0, retValue);
+	}
+	
+	@Test(expected = AddingDiscontinuedDishException.class)
+	public void addDiscontinuedDish() {
+		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
+		Order order = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
+		dish.setDiscontinued(true);
+		orderServiceBaseImpl.addDishes(order, dish, 1);
 	}
 	
 	@Test
