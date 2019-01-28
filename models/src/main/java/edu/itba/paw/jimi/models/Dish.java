@@ -27,6 +27,8 @@ public class Dish {
 	@Column(nullable = false)
 	private int minStock;
 	
+	private Boolean discontinued = false;
+	
 	/* package */ Dish() {
 		// Just for Hibernate, we love you!
 	}
@@ -52,7 +54,8 @@ public class Dish {
 		return Float.compare(dish.price, price) == 0 &&
 				stock == dish.stock &&
 				minStock == dish.minStock &&
-				Objects.equals(name, dish.name);
+				Objects.equals(name, dish.name) &&
+				discontinued == dish.discontinued;
 	}
 	
 	@Override
@@ -105,5 +108,13 @@ public class Dish {
 	
 	public void setMinStock(int minStock) {
 		this.minStock = minStock;
+	}
+	
+	public boolean isDiscontinued() {
+		return discontinued;
+	}
+	
+	public void setDiscontinued(boolean offered) {
+		this.discontinued = offered;
 	}
 }

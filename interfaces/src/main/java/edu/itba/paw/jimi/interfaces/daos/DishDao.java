@@ -27,7 +27,6 @@ public interface DishDao {
 	 */
 	int update(Dish dish);
 	
-	
 	/**
 	 * Returns all the dishes.
 	 *
@@ -51,10 +50,26 @@ public interface DishDao {
 	Collection<Dish> findDishesMissingStock();
 	
 	/**
+	 * Returns all discontinued dishes.
+	 *
+	 * @return discontinued dishes.
+	 */
+	Collection<Dish> findDiscontinuedDishes();
+	
+	/**
 	 * Returns the amount of dishes in the database.
 	 *
 	 * @return a positive integer.
 	 */
 	int getTotalDishes();
 	
+	/**
+	 * Returns all the dishes that are not discontinued and are in stock.
+	 */
+	Collection<Dish> findAllAvailable();
+	
+	/**
+	 * Returns all the dishes that are not discontinued and are in stock.
+	 */
+	Collection<Dish> findAllAvailable(QueryParams qp);
 }

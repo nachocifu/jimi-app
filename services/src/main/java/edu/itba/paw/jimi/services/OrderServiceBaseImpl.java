@@ -42,13 +42,11 @@ public class OrderServiceBaseImpl implements OrderService {
 	 * @param order The order to update.
 	 */
 	private void updateTotal(Order order) {
-		
 		float total = 0f;
 		for (Map.Entry<Dish, DishData> d : order.getDishes().entrySet())
 			total += d.getKey().getPrice() * d.getValue().getAmount();
 		
 		order.setTotal(total);
-		
 	}
 	
 	@Override
@@ -65,7 +63,6 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Override
 	public int addDishes(Order order, Dish dish, int amount) {
-		
 		if (amount > dish.getStock())
 			throw new StockHandlingException("Amount of dishes exceeds available dish stock.");
 		
@@ -164,7 +161,6 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Override
 	public void open(Order order) {
-		
 		if (!order.getStatus().equals(OrderStatus.INACTIVE))
 			throw new OrderStatusException(OrderStatus.INACTIVE, order.getStatus());
 		
@@ -177,7 +173,6 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Override
 	public void close(Order order) {
-		
 		if (!order.getStatus().equals(OrderStatus.OPEN))
 			throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
 		
@@ -202,7 +197,6 @@ public class OrderServiceBaseImpl implements OrderService {
 	
 	@Override
 	public Collection<Order> findAll() {
-		
 		Collection<Order> orders = orderDao.findAll();
 		if (orders != null)
 			return orders;

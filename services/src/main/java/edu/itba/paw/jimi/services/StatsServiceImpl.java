@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 public class StatsServiceImpl implements StatsService {
 	
-	private final int infBound = 50;
+	private static final int infBound = 50;
 	
 	@Autowired
 	private DishService dishService;
@@ -75,6 +75,11 @@ public class StatsServiceImpl implements StatsService {
 	@Override
 	public Map getMonthlyOrderCancelled() {
 		return orderService.getMonthlyOrderCancelled();
+	}
+	
+	@Override
+	public int getDiscontinuedDishes() {
+		return dishService.getDiscontinuedDishes();
 	}
 	
 }
