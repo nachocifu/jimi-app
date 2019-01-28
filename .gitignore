@@ -38,4 +38,4 @@ buildNumber.properties
 hs_err_pid*
 webapp/target/generated-sources/
 .idea
-
+.DS_Store
