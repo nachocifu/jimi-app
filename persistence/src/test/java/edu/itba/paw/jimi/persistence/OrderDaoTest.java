@@ -376,7 +376,7 @@ public class OrderDaoTest {
 		cal.add(Calendar.MINUTE, -30);
 		urgentOrder.getUnDoneDishes().get(urgentDish).setOrderedAt(new Timestamp(cal.getTimeInMillis()));
 		
-		Collection<Order> waitOrders = orderDao.get30MinutesWaitOrders();
+		Collection<Order> waitOrders = orderDao.getOrdersFromLastMinutes(30);
 		Order retrievedUrgentOrder = waitOrders.iterator().next();
 		assertEquals(1, waitOrders.size());
 		assertTrue(retrievedUrgentOrder.getUnDoneDishes().containsKey(urgentDish));

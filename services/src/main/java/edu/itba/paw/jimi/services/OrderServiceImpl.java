@@ -133,8 +133,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public Collection<Order> getActiveOrders() {
-		return orderService.getActiveOrders();
+	public Collection<Order> getActiveOrders(QueryParams qp) {
+		return orderService.getActiveOrders(qp);
 	}
 	
 	@Override
@@ -143,8 +143,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public Collection<Order> get30MinutesWaitOrders() {
-		return orderService.get30MinutesWaitOrders();
+	public Collection<Order> getOrdersFromLastMinutes(int minutes) {
+		return orderService.getOrdersFromLastMinutes(minutes);
 	}
 	
 	@Override

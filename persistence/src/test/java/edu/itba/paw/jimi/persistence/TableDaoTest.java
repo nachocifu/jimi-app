@@ -209,7 +209,7 @@ public class TableDaoTest {
 	}
 	
 	@Test
-	public void testGetUrgentTables() {
+	public void testGetTablesWithOrdersFromLast30Minutes() {
 		Order notUrgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
 		Order urgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
 		Dish notUrgentDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
@@ -225,7 +225,7 @@ public class TableDaoTest {
 		urgentOrder.getUnDoneDishes().get(urgentDish).setOrderedAt(new Timestamp(cal.getTimeInMillis()));
 		
 		Table expectedUrgentTable = tableDao.create("Urgent table", TableStatus.BUSY, urgentOrder);
-		Collection<Table> urgentTables = tableDao.getUrgentTables();
+		Collection<Table> urgentTables = tableDao.getTablesWithOrdersFromLastMinutes(30);
 		assertEquals(1, urgentTables.size());
 		assertEquals(expectedUrgentTable, urgentTables.toArray()[0]);
 	}

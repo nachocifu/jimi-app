@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.PersistenceException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 @Transactional
 @Service
@@ -148,8 +149,10 @@ public class TableServiceImpl implements TableService {
 	}
 	
 	@Override
-	public Collection<Table> getUrgentTables() {
-		return tableDao.getUrgentTables();
+	public Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes) {
+		if (minutes < 0)
+			return new LinkedList<>();
+		return tableDao.getTablesWithOrdersFromLastMinutes(minutes);
 	}
 	
 }

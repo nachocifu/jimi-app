@@ -80,7 +80,7 @@ public interface TableDao {
 	void delete(final long id);
 	
 	/**
-	 * Returns tables with urgent orders.
+	 * Returns tables with orders from the last given quantity of minutes.
 	 */
-	Collection<Table> getUrgentTables();
+	Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes);
 }

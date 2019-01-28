@@ -19,7 +19,7 @@ public interface OrderService {
 	 * @param openedAt The timestamp when this order became opened.
 	 * @param closedAt The timestamp when this order became closed.
 	 * @param diners   The diners of the order.
-	 * @return
+	 * @return created order
 	 */
 	Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners);
 	
@@ -152,7 +152,7 @@ public interface OrderService {
 	 *
 	 * @return A collection of said orders in ascending order by open timestamp.
 	 */
-	Collection<Order> getActiveOrders();
+	Collection<Order> getActiveOrders(QueryParams qp);
 	
 	/**
 	 * @return count of open orders.
@@ -160,12 +160,11 @@ public interface OrderService {
 	int getTotalActiveOrders();
 	
 	/**
-	 * Finds all urgent orders.
-	 * An order is urgent when it has been opened for more than 30 minutes.
+	 * Finds all orders from the last given amount of minutes.
 	 *
 	 * @return A collection of said orders.
 	 */
-	Collection<Order> get30MinutesWaitOrders();
+	Collection<Order> getOrdersFromLastMinutes(int minutes);
 	
 	/**
 	 * Finds all undone dishes from all active orders.

@@ -17,9 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -543,5 +541,25 @@ public class OrderServiceBaseImplTest {
 		
 		Map actualDishes = orderServiceBaseImpl.getAllUndoneDishesFromAllActiveOrders();
 		assertEquals(totalDishes, actualDishes);
+	}
+	
+	@Test
+	public void getOrdersFromLast30Minutes() {
+		Order urgentOrder = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 1, 0);
+		Dish urgentDish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
+		urgentOrder.setDish(urgentDish, 1);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MINUTE, -30);
+		urgentOrder.getUnDoneDishes().get(urgentDish).setOrderedAt(new Timestamp(cal.getTimeInMillis()));
+		
+		List<Order> expectedUrgentOrders = new LinkedList<>();
+		expectedUrgentOrders.add(urgentOrder);
+		
+		Mockito.when(orderDao.getOrdersFromLastMinutes(30)).thenReturn(expectedUrgentOrders);
+		
+		List<Order> actualUrgentOrders = (List<Order>) orderServiceBaseImpl.getOrdersFromLastMinutes(30);
+		assertEquals(expectedUrgentOrders, actualUrgentOrders);
 	}
 }

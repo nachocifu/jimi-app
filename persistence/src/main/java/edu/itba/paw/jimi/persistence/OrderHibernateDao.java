@@ -139,23 +139,25 @@ public class OrderHibernateDao implements OrderDao {
 	}
 	
 	@Override
-	public Collection<Order> getActiveOrders() {
+	public Collection<Order> getActiveOrders(QueryParams qp) {
 		final TypedQuery<Order> query = em.createQuery("FROM Order o WHERE o.status = :opened ORDER BY o.openedAt ASC", Order.class);
 		query.setParameter("opened", OrderStatus.OPEN);
+		query.setFirstResult(qp.getStartAt());
+		query.setMaxResults(qp.getPageSize());
 		return query.getResultList();
 	}
 	
 	@Override
-	public Collection<Order> get30MinutesWaitOrders() {
+	public Collection<Order> getOrdersFromLastMinutes(int minutes) {
 		final TypedQuery<Order> query = em.createQuery(
-				"from Order as o join o.unDoneDishes as ud WHERE o.status = :opened and ud.orderedAt < :last30 " +
+				"from Order as o join o.unDoneDishes as ud WHERE o.status = :opened and ud.orderedAt < :lastMinutes " +
 						"order by o.openedAt ASC", Order.class);
 		query.setParameter("opened", OrderStatus.OPEN);
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
-		cal.add(Calendar.MINUTE, -30);
-		query.setParameter("last30", cal.getTime());
+		cal.add(Calendar.MINUTE, -minutes);
+		query.setParameter("lastMinutes", cal.getTime());
 		
 		return query.getResultList();
 	}

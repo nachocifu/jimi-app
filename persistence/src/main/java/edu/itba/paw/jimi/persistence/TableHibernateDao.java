@@ -84,19 +84,19 @@ public class TableHibernateDao implements TableDao {
 	}
 	
 	@Override
-	public Collection<Table> getUrgentTables() {
+	public Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes) {
 		final TypedQuery<Table> query = em.createQuery("from Table as t where t.status = :tableStatus " +
 				"and t.order in " +
 				"(from Order as o join o.unDoneDishes as ud " +
-				"where o.status = :opened and ud.orderedAt < :last30)" +
+				"where o.status = :opened and ud.orderedAt < :lastMinutes)" +
 				"order by t.order.openedAt", Table.class);
 		query.setParameter("tableStatus", TableStatus.BUSY);
 		query.setParameter("opened", OrderStatus.OPEN);
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
-		cal.add(Calendar.MINUTE, -30);
-		query.setParameter("last30", cal.getTime());
+		cal.add(Calendar.MINUTE, -minutes);
+		query.setParameter("lastMinutes", cal.getTime());
 		
 		return query.getResultList();
 	}

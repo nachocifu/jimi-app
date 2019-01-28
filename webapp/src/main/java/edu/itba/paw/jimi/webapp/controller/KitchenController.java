@@ -37,7 +37,7 @@ public class KitchenController {
 		Map totalDishes = orderService.getAllUndoneDishesFromAllActiveOrders();
 		
 		Collection<Table> busyTables = tableService.findTablesWithStatus(TableStatus.BUSY);
-		Collection<Table> urgentTables = tableService.getUrgentTables();
+		Collection<Table> urgentTables = tableService.getTablesWithOrdersFromLastMinutes(30);
 		
 		mav.addObject("tables", busyTables);
 		mav.addObject("urgentTables", urgentTables);

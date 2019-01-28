@@ -58,19 +58,23 @@ public interface OrderDao {
 	
 	int getTotalRelevantOrders();
 	
-	Collection<Order> getActiveOrders();
+	/**
+	 * Find all active orders.
+	 *
+	 * @return List of said orders.
+	 */
+	Collection<Order> getActiveOrders(QueryParams qp);
 	
 	int getTotalActiveOrders();
 	
 	Map getMonthlyOrderCancelled();
 	
 	/**
-	 * Finds all urgent orders.
-	 * An order is urgent when it has been opened for more than 30 minutes.
+	 * Finds all orders from the last given amount of minutes.
 	 *
 	 * @return A collection of said orders.
 	 */
-	Collection<Order> get30MinutesWaitOrders();
+	Collection<Order> getOrdersFromLastMinutes(int minutes);
 	
 	
 	/**

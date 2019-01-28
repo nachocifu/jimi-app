@@ -74,9 +74,11 @@ public interface TableService {
 	void setName(Table table, String name);
 	
 	/**
-	 * Returns tables with urgent orders.
+	 * Returns tables with orders from the last given quantity of minutes.
+	 * <p>
+	 * If minutes is less than 0, empty collection is returned.
 	 */
-	Collection<Table> getUrgentTables();
+	Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes);
 	
 	/**
 	 * Deletes a Table.
