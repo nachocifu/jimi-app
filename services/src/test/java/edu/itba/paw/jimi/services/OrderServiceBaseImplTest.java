@@ -15,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.context.MessageSource;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -23,7 +22,6 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 public class OrderServiceBaseImplTest {
 	
@@ -45,7 +43,6 @@ public class OrderServiceBaseImplTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		orderServiceBaseImpl.setMessageSource(mock(MessageSource.class));
 	}
 	
 	@Test

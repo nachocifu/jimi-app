@@ -3,8 +3,10 @@ package edu.itba.paw.jimi.webapp.controller;
 import edu.itba.paw.jimi.form.TableAddDishForm;
 import edu.itba.paw.jimi.form.TableForm;
 import edu.itba.paw.jimi.form.TableSetDinersForm;
+import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
 import edu.itba.paw.jimi.interfaces.exceptions.Http400Error;
 import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
+import edu.itba.paw.jimi.interfaces.exceptions.Http409Error;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
@@ -231,7 +233,13 @@ public class TableController {
 					null, LocaleContextHolder.getLocale()));
 		}
 		Dish dish = dishService.findById(dishid);
-		orderService.addDish(table.getOrder(), dish);
+		try {
+			orderService.addDish(table.getOrder(), dish);
+		} catch (AddingDiscontinuedDishException e) {
+			throw new Http409Error(messageSource.getMessage("dish.discontinued",
+					null, LocaleContextHolder.getLocale()), messageSource.getMessage("dish.add.discontinued.body",
+					null, LocaleContextHolder.getLocale()));
+		}
 		
 		return new ModelAndView("redirect:/tables/" + table.getId());
 	}
