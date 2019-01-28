@@ -87,7 +87,29 @@
                                         <i class="fas fa-cash-register fa-lg"></i>
                                     </a>
                                 </td>
+                                <td>
+                                    <c:if test="${table.status == 'FREE'}">
+                                        <!-- Modal Trigger -->
+                                        <a data-target="modal" data-toggle="modal" class="modal-trigger" href="#modal">
+                                            <i class=" fas fa-trash-alt fa-lg"></i>
+                                        </a>
+                                    </c:if>
+                                </td>
                             </tr>
+                            <!-- Modal Structure -->
+                            <div id="modal" class="modal">
+                                <div class="modal-content">
+                                    <h4><spring:message code="table.sure_delete"/></h4>
+                                    <form action="<c:url value="/tables/delete/${table.id}"/>" method="post">
+                                        <div class="modal-footer">
+                                            <a class="modal-close btn blue-gray"><spring:message code="table.back"/></a>
+                                            <input type="submit"
+                                                   class="btn blue-gray"
+                                                   value="<spring:message code="table.delete_caps_confirm"/>"/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </c:forEach>
                         </tbody>
                     </table>
@@ -117,9 +139,12 @@
 
 
 <!-- start js include path -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-
+<script src="<c:url value="/webjars/jquery/3.0.0/jquery.min.js"/>"></script>
+<script>
+    $(document).ready(function () {
+        $('.modal').modal();
+    });
+</script>
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 

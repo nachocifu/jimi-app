@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
+import edu.itba.paw.jimi.interfaces.exceptions.FreeTableDeletionAttemptException;
 import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
@@ -131,6 +132,17 @@ public class TableServiceImpl implements TableService {
 		table.setName(name);
 		tableDao.update(table);
 		LOGGER.info("Updated table name {}", table);
+	}
+	
+	@Override
+	public void delete(long id) {
+		Table table = tableDao.findById(id);
+		if (table.getStatus() != TableStatus.FREE) {
+			throw new FreeTableDeletionAttemptException();
+		} else {
+			tableDao.delete(id);
+			LOGGER.info("Deleted table {}", table);
+		}
 	}
 	
 }

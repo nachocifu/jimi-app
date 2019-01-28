@@ -65,4 +65,11 @@ public interface TableService {
 	 * @param name  The new name of the table.
 	 */
 	void setName(Table table, String name);
+	
+	/**
+	 * Deletes a Table.
+	 *
+	 * @param id Id of the table.
+	 */
+	void delete(final long id);
 }
