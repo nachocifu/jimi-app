@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink} from 'reactstrap';
+import {Nav, NavItem, NavLink} from 'reactstrap';
 import PropTypes from 'prop-types';
-
-import {AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
-import logo from '../../assets/img/brand/logo.svg'
-import sygnet from '../../assets/img/brand/sygnet.svg'
-import CoreUIIcons from "../../views/Icons/CoreUIIcons";
+import {AppSidebarToggler} from '@coreui/react';
 import Button from "reactstrap/es/Button";
 
 const propTypes = {
