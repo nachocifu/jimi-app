@@ -2,7 +2,7 @@ package edu.itba.paw.jimi.webapp.api;
 
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.UserDTO;
 import edu.itba.paw.jimi.webapp.dto.UserListDTO;
 import edu.itba.paw.jimi.webapp.dto.form.UserForm;
