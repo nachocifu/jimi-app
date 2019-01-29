@@ -2,7 +2,7 @@ package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.hibernate.service.spi.ServiceException;
 
 import java.util.Collection;
@@ -27,11 +27,18 @@ public interface TableService {
 	Collection<Table> findAll();
 	
 	/**
-	 * Returns all the tables.
+	 * Returns all the tables based on QueryParams qp.
 	 *
-	 * @return all the tables.
+	 * @return all the tables based on QueryParams qp.
 	 */
 	Collection<Table> findAll(QueryParams qp);
+	
+	/**
+	 * Returns all the tables with the given status.
+	 *
+	 * @return all the active with the given status.
+	 */
+	Collection<Table> findTablesWithStatus(TableStatus tableStatus);
 	
 	/**
 	 * Returns true if a table exists with tableName.
@@ -65,6 +72,13 @@ public interface TableService {
 	 * @param name  The new name of the table.
 	 */
 	void setName(Table table, String name);
+	
+	/**
+	 * Returns tables with orders from the last given quantity of minutes.
+	 * <p>
+	 * If minutes is less than 0, empty collection is returned.
+	 */
+	Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes);
 	
 	/**
 	 * Deletes a Table.

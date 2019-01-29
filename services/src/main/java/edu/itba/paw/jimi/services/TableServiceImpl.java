@@ -9,7 +9,7 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.PersistenceException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 @Transactional
 @Service
@@ -72,6 +73,11 @@ public class TableServiceImpl implements TableService {
 	}
 	
 	@Override
+	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
+		return tableDao.findTablesWithStatus(tableStatus);
+	}
+	
+	@Override
 	public boolean tableNameExists(String tableName) {
 		return tableDao.tableNameExists(tableName);
 	}
@@ -100,9 +106,6 @@ public class TableServiceImpl implements TableService {
 				break;
 			}
 			case FREE: {
-				if (table.getStatus().equals(TableStatus.PAYING)) { //Normal flow.
-					//Nothing to do.
-				}
 				if (table.getStatus().equals(TableStatus.BUSY)) {//Cancel order!
 					orderService.cancel(table.getOrder());
 				}
@@ -143,6 +146,13 @@ public class TableServiceImpl implements TableService {
 			tableDao.delete(id);
 			LOGGER.info("Deleted table {}", table);
 		}
+	}
+	
+	@Override
+	public Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes) {
+		if (minutes < 0)
+			return new LinkedList<>();
+		return tableDao.getTablesWithOrdersFromLastMinutes(minutes);
 	}
 	
 }

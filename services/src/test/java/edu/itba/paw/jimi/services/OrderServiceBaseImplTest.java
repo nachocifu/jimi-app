@@ -1,6 +1,7 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
+import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
 import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
 import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
@@ -16,7 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Timestamp;
-import java.util.LinkedList;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,7 +26,7 @@ public class OrderServiceBaseImplTest {
 	private static final String DISH_NAME = "Cambuchá";
 	private static final float DISH_PRICE = 5.25F;
 	private static final int DISH_STOCK = 5;
-	private static final float DELTA = 0.001f;
+	private static final float DELTA = 0.001F;
 	private static final Timestamp OPENEDAT = new Timestamp(1525467178);
 	
 	@Mock
@@ -341,6 +342,14 @@ public class OrderServiceBaseImplTest {
 		assertEquals(0, retValue);
 	}
 	
+	@Test(expected = AddingDiscontinuedDishException.class)
+	public void addDiscontinuedDish() {
+		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
+		Order order = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 0, 0);
+		dish.setDiscontinued(true);
+		orderServiceBaseImpl.addDishes(order, dish, 1);
+	}
+	
 	@Test
 	public void removeOneDishWithoutAddingTest() {
 		
@@ -385,7 +394,7 @@ public class OrderServiceBaseImplTest {
 		Mockito.when(orderDao.findById(order.getId())).thenReturn(order);
 		orderServiceBaseImpl.removeOneDish(order, dish);
 		
-		int newUndoneDishAmount = order.getUnDoneDishes().get(dish);
+		int newUndoneDishAmount = order.getUnDoneDishes().get(dish).getAmount();
 		Assert.assertEquals(1, newUndoneDishAmount);
 		Assert.assertEquals(1, order.getUnDoneDishes().size());
 		Assert.assertEquals(DISH_PRICE, order.getTotal(), 0D);
@@ -517,5 +526,40 @@ public class OrderServiceBaseImplTest {
 	public void findAllNotNull() {
 		Mockito.when(orderServiceBaseImpl.findAll()).thenReturn(null);
 		Assert.assertNotNull(orderServiceBaseImpl.findAll());
+	}
+	
+	@Test
+	public void getAllUndoneDishesFromAllActiveOrders() {
+		Dish dish1 = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
+		Dish dish2 = new Dish(DISH_NAME, DISH_PRICE, 2, DISH_STOCK);
+		
+		Map<Dish, Long> totalDishes = new HashMap<>();
+		totalDishes.put(dish1, 3L);
+		totalDishes.put(dish2, 7L);
+		
+		Mockito.when(orderDao.getAllUndoneDishesFromAllActiveOrders()).thenReturn(totalDishes);
+		
+		Map actualDishes = orderServiceBaseImpl.getAllUndoneDishesFromAllActiveOrders();
+		assertEquals(totalDishes, actualDishes);
+	}
+	
+	@Test
+	public void getOrdersFromLast30Minutes() {
+		Order urgentOrder = new Order(1, OPENEDAT, null, OrderStatus.OPEN, 1, 0);
+		Dish urgentDish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
+		urgentOrder.setDish(urgentDish, 1);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MINUTE, -30);
+		urgentOrder.getUnDoneDishes().get(urgentDish).setOrderedAt(new Timestamp(cal.getTimeInMillis()));
+		
+		List<Order> expectedUrgentOrders = new LinkedList<>();
+		expectedUrgentOrders.add(urgentOrder);
+		
+		Mockito.when(orderDao.getOrdersFromLastMinutes(30)).thenReturn(expectedUrgentOrders);
+		
+		List<Order> actualUrgentOrders = (List<Order>) orderServiceBaseImpl.getOrdersFromLastMinutes(30);
+		assertEquals(expectedUrgentOrders, actualUrgentOrders);
 	}
 }

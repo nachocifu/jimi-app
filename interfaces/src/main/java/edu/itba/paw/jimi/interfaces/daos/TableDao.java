@@ -4,13 +4,12 @@ import edu.itba.paw.jimi.interfaces.exceptions.TableWithNullOrderException;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import javax.persistence.PersistenceException;
 import java.util.Collection;
 
 public interface TableDao {
-	
 	
 	/**
 	 * Returns a table with the passed id.
@@ -35,11 +34,18 @@ public interface TableDao {
 	Collection<Table> findAll();
 	
 	/**
-	 * Returns all the tables.
+	 * Returns all the tables based on QueryParams qp.
 	 *
-	 * @return all the tables.
+	 * @return all the tables based on QueryParams qp.
 	 */
 	Collection<Table> findAll(QueryParams qp);
+	
+	/**
+	 * Returns all the active with the given status.
+	 *
+	 * @return all the active with the given status.
+	 */
+	Collection<Table> findTablesWithStatus(TableStatus tableStatus);
 	
 	int getTotalTables();
 	
@@ -73,4 +79,8 @@ public interface TableDao {
 	 */
 	void delete(final long id);
 	
+	/**
+	 * Returns tables with orders from the last given quantity of minutes.
+	 */
+	Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes);
 }

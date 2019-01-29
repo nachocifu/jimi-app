@@ -6,7 +6,7 @@ import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +140,16 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int getTotalActiveOrders() {
 		return orderService.getTotalActiveOrders();
+	}
+	
+	@Override
+	public Collection<Order> getOrdersFromLastMinutes(int minutes) {
+		return orderService.getOrdersFromLastMinutes(minutes);
+	}
+	
+	@Override
+	public Map getAllUndoneDishesFromAllActiveOrders() {
+		return orderService.getAllUndoneDishesFromAllActiveOrders();
 	}
 	
 }

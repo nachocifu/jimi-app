@@ -3,7 +3,7 @@ package edu.itba.paw.jimi.interfaces.services;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -19,7 +19,7 @@ public interface OrderService {
 	 * @param openedAt The timestamp when this order became opened.
 	 * @param closedAt The timestamp when this order became closed.
 	 * @param diners   The diners of the order.
-	 * @return
+	 * @return created order
 	 */
 	Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners);
 	
@@ -76,7 +76,7 @@ public interface OrderService {
 	 * @param order
 	 */
 	void close(Order order);
-
+	
 	/**
 	 * Sets the timestamp for closedAt and changes the status to canceled.
 	 *
@@ -92,50 +92,84 @@ public interface OrderService {
 	 * @return The amount of diners saved.
 	 */
 	int setDiners(Order order, int diners);
-
-    /**
-     * Returns the order with id.
-     * @param id the id.
-     * @return
-     */
+	
+	/**
+	 * Returns the order with id.
+	 *
+	 * @param id the id.
+	 * @return
+	 */
 	Order findById(long id);
-
+	
 	/**
 	 * Finds all closed orders.
 	 *
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll();
-
-
+	
+	
 	/**
 	 * Finds all closed orders.
 	 *
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll(QueryParams qp);
-
+	
 	/**
 	 * Finds all closed orders.
 	 *
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAllRelevant(QueryParams qp);
-
-    /**
-     * Finds all closed orders' total by month.
-     *
+	
+	/**
+	 * Finds all closed orders' total by month.
+	 *
 	 * @return A collection of said orders.
-     */
-    Map getMonthlyOrderTotal();
-
+	 */
+	Map getMonthlyOrderTotal();
+	
+	/**
+	 * Finds all cancelled orders' total by month.
+	 *
+	 * @return A collection of said orders.
+	 */
 	Map getMonthlyOrderCancelled();
-
-    void setDishAsDone(Order order, Dish dish);
-
-    int getTotalRelevantOrders();
-
-    Collection<Order> getActiveOrders(QueryParams qp);
-
-    int getTotalActiveOrders();
+	
+	/**
+	 * Sets dish from order as done.
+	 */
+	void setDishAsDone(Order order, Dish dish);
+	
+	/**
+	 * @return count of cancelled or closed orders.
+	 */
+	int getTotalRelevantOrders();
+	
+	/**
+	 * Finds all open orders.
+	 *
+	 * @return A collection of said orders in ascending order by open timestamp.
+	 */
+	Collection<Order> getActiveOrders(QueryParams qp);
+	
+	/**
+	 * @return count of open orders.
+	 */
+	int getTotalActiveOrders();
+	
+	/**
+	 * Finds all orders from the last given amount of minutes.
+	 *
+	 * @return A collection of said orders.
+	 */
+	Collection<Order> getOrdersFromLastMinutes(int minutes);
+	
+	/**
+	 * Finds all undone dishes from all active orders.
+	 *
+	 * @return A collection of said dishes.
+	 */
+	Map getAllUndoneDishesFromAllActiveOrders();
 }

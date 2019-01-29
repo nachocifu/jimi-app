@@ -6,14 +6,13 @@ import edu.itba.paw.jimi.interfaces.exceptions.MaxStockException;
 import edu.itba.paw.jimi.interfaces.exceptions.MinStockException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -57,9 +56,9 @@ public class DishServiceImpl implements DishService {
 	}
 	
 	@Override
-	public int setPrice(Dish dish, float price) {
+	public void setPrice(Dish dish, float price) {
 		if (price < 0) {
-			return 0;
+			return;
 		}
 		
 		if (price >= MAX_PRICE) {
@@ -69,7 +68,6 @@ public class DishServiceImpl implements DishService {
 		dish.setPrice(price);
 		dishDao.update(dish);
 		LOGGER.info("Updated dish price {}", dish);
-		return dish.getStock();
 	}
 	
 	@Override
@@ -84,6 +82,13 @@ public class DishServiceImpl implements DishService {
 		}
 		
 		return setStock(dish, dish.getStock() - 1);
+	}
+	
+	@Override
+	public void setDiscontinued(Dish dish, boolean discontinued) {
+		dish.setDiscontinued(discontinued);
+		dishDao.update(dish);
+		LOGGER.info("Updated dish discontinued {}", dish);
 	}
 	
 	@Override
@@ -106,24 +111,22 @@ public class DishServiceImpl implements DishService {
 	
 	@Override
 	public Collection<Dish> findAllAvailable() {
-		
-		Collection<Dish> dishes = findAll();
-		
-		Collection<Dish> availableDishes = new ArrayList<Dish>();
-		
-		for (Dish d : dishes) {
-			if (d.getStock() > 0) {
-				availableDishes.add(d);
-			}
-		}
-		
-		return availableDishes;
-		
+		return dishDao.findAllAvailable();
+	}
+	
+	@Override
+	public Collection<Dish> findAllAvailable(QueryParams qp) {
+		return dishDao.findAllAvailable(qp);
 	}
 	
 	@Override
 	public int getTotalDishes() {
 		return dishDao.getTotalDishes();
+	}
+	
+	@Override
+	public int getDiscontinuedDishes() {
+		return dishDao.findDiscontinuedDishes().size();
 	}
 	
 	@Override

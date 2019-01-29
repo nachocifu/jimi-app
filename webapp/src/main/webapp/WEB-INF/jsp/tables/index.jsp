@@ -173,9 +173,9 @@
                                 <tr>
                                     <td><c:out value="${dishEntry.key.name}"/></td>
                                     <td><c:out value="${dishEntry.key.price}"/></td>
-                                    <td><c:out value="${dishEntry.value}"/></td>
+                                    <td><c:out value="${dishEntry.value.amount}"/></td>
                                     <td>
-                                        $<fmt:formatNumber value="${dishEntry.value * dishEntry.key.price}"
+                                        $<fmt:formatNumber value="${dishEntry.value.amount * dishEntry.key.price}"
                                                            maxFractionDigits="2"/>
                                     </td>
                                     <td>
@@ -190,7 +190,7 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <c:if test="${dishEntry.key.stock != 0}">
+                                        <c:if test="${dishEntry.key.stock != 0 && ! dishEntry.key.discontinued}">
                                             <form action="<c:url value="/tables/${table.id}/add_one_dish"/>"
                                                   method="post"
                                                   class="form-with-buttons">

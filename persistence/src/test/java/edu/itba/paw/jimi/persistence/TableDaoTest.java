@@ -19,10 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,6 +43,9 @@ public class TableDaoTest {
 	private Dish testDish;
 	private Order testOrder;
 	private Table testTable;
+	private Collection<Table> freeTables;
+	private Collection<Table> busyTables;
+	private Collection<Table> payingTables;
 	
 	@Autowired
 	private DataSource ds;
@@ -66,15 +71,30 @@ public class TableDaoTest {
 		testDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		testOrder = orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2, 2);
 		testOrder.setDish(testDish, 2);
+		freeTables = new LinkedList<>();
+		busyTables = new LinkedList<>();
+		payingTables = new LinkedList<>();
 		testTable = tableDao.create(TABLE_NAME, TableStatus.FREE, testOrder);
-		tableDao.create("Table 3", TableStatus.BUSY, testOrder);
-		tableDao.create("Table 4", TableStatus.BUSY, testOrder);
-		tableDao.create("Table 5", TableStatus.FREE, testOrder);
-		tableDao.create("Table 6", TableStatus.BUSY, testOrder);
-		tableDao.create("Table 7", TableStatus.FREE, testOrder);
-		tableDao.create("Table 8", TableStatus.FREE, testOrder);
-		tableDao.create("Table 9", TableStatus.BUSY, testOrder);
-		tableDao.create("Table 10", TableStatus.FREE, testOrder);
+		freeTables.add(testTable);
+		busyTables.add(tableDao.create("Table 3", TableStatus.BUSY, testOrder));
+		busyTables.add(tableDao.create("Table 4", TableStatus.BUSY, testOrder));
+		freeTables.add(tableDao.create("Table 5", TableStatus.FREE, testOrder));
+		busyTables.add(tableDao.create("Table 6", TableStatus.BUSY, testOrder));
+		freeTables.add(tableDao.create("Table 7", TableStatus.FREE, testOrder));
+		freeTables.add(tableDao.create("Table 8", TableStatus.FREE, testOrder));
+		busyTables.add(tableDao.create("Table 9", TableStatus.BUSY, testOrder));
+		freeTables.add(tableDao.create("Table 10", TableStatus.FREE, testOrder));
+		
+		Order order1 = orderDao.create(OrderStatus.OPEN, new Timestamp(1525467178), null, 1, 0F);
+		Order order2 = orderDao.create(OrderStatus.OPEN, new Timestamp(1525467179), null, 1, 0F);
+		Order order3 = orderDao.create(OrderStatus.OPEN, new Timestamp(1525467180), null, 1, 0F);
+		order1.setDish(testDish, 1);
+		order2.setDish(testDish, 1);
+		order3.setDish(testDish, 1);
+		busyTables.add(tableDao.create("Free Table 3", TableStatus.BUSY, order3));
+		busyTables.add(tableDao.create("Free Table 2", TableStatus.BUSY, order2));
+		busyTables.add(tableDao.create("Free Table 1", TableStatus.BUSY, order1));
+		busyTables = busyTables.parallelStream().sorted(Comparator.comparing(o -> o.getOrder().getOpenedAt())).collect(Collectors.toList());
 	}
 	
 	@After
@@ -92,6 +112,23 @@ public class TableDaoTest {
 		assertEquals(TABLE_NAME, dbTable.getName());
 		assertEquals(TableStatus.FREE.ordinal(), dbTable.getStatus().ordinal());
 		assertEquals(testOrder.getId(), dbTable.getOrder().getId());
+	}
+	
+	@Test
+	public void testFindTablesWithStatus() {
+		Collection<Table> freeStatusTables = tableDao.findTablesWithStatus(TableStatus.FREE);
+		Collection<Table> busyStatusTables = tableDao.findTablesWithStatus(TableStatus.BUSY);
+		Collection<Table> payingStatusTables = tableDao.findTablesWithStatus(TableStatus.PAYING);
+		
+		Assert.assertTrue(freeTables.containsAll(freeStatusTables));
+		Assert.assertTrue(busyTables.containsAll(busyStatusTables));
+		Assert.assertTrue(payingTables.containsAll(payingStatusTables));
+	}
+	
+	@Test
+	public void testFindTablesWithStatusBusySorted() {
+		Collection<Table> actualBusyTables = tableDao.findTablesWithStatus(TableStatus.BUSY);
+		assertEquals(busyTables, actualBusyTables);
 	}
 	
 	@Test
@@ -133,7 +170,7 @@ public class TableDaoTest {
 		
 		//Assert update
 		assertNotNull(dbTableUpdated);
-		assertEquals(5, dbTableUpdated.getOrder().getDishes().get(testDish).intValue());
+		assertEquals(5, dbTableUpdated.getOrder().getDishes().get(testDish).getAmount());
 		assertEquals(TABLE_NAME2, dbTableUpdated.getName());
 		assertEquals(dbTableUpdated.getStatus().ordinal(), TableStatus.BUSY.ordinal());
 		assertEquals(5, dbTableUpdated.getOrder().getDiners());
@@ -146,22 +183,22 @@ public class TableDaoTest {
 	
 	@Test
 	public void testGetNumberOfTablesWithStateChanges() {
-		Assert.assertEquals(5, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
-		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
-		Assert.assertEquals(0, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
+		Assert.assertEquals(freeTables.size(), tableDao.getNumberOfTablesWithState(TableStatus.FREE));
+		Assert.assertEquals(busyTables.size(), tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
+		Assert.assertEquals(payingTables.size(), tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
 		
 		testTable.setStatus(TableStatus.BUSY);
 		tableDao.update(testTable);
-		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
-		Assert.assertEquals(5, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
-		Assert.assertEquals(0, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
+		Assert.assertEquals(freeTables.size() - 1, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
+		Assert.assertEquals(busyTables.size() + 1, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
+		Assert.assertEquals(payingTables.size(), tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
 		
 		
 		testTable.setStatus(TableStatus.PAYING);
 		tableDao.update(testTable);
-		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
-		Assert.assertEquals(4, tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
-		Assert.assertEquals(1, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
+		Assert.assertEquals(freeTables.size() - 1, tableDao.getNumberOfTablesWithState(TableStatus.FREE));
+		Assert.assertEquals(busyTables.size(), tableDao.getNumberOfTablesWithState(TableStatus.BUSY));
+		Assert.assertEquals(payingTables.size() + 1, tableDao.getNumberOfTablesWithState(TableStatus.PAYING));
 	}
 	
 	@Test
@@ -169,5 +206,27 @@ public class TableDaoTest {
 		assertNotNull(tableDao.findById(testTable.getId()));
 		tableDao.delete(testTable.getId());
 		assertNull(tableDao.findById(testTable.getId()));
+	}
+	
+	@Test
+	public void testGetTablesWithOrdersFromLast30Minutes() {
+		Order notUrgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
+		Order urgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
+		Dish notUrgentDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+		urgentOrder.setDish(notUrgentDish, 1);
+		notUrgentOrder.setDish(notUrgentDish, 1);
+		
+		Dish urgentDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+		urgentOrder.setDish(urgentDish, 1);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MINUTE, -30);
+		urgentOrder.getUnDoneDishes().get(urgentDish).setOrderedAt(new Timestamp(cal.getTimeInMillis()));
+		
+		Table expectedUrgentTable = tableDao.create("Urgent table", TableStatus.BUSY, urgentOrder);
+		Collection<Table> urgentTables = tableDao.getTablesWithOrdersFromLastMinutes(30);
+		assertEquals(1, urgentTables.size());
+		assertEquals(expectedUrgentTable, urgentTables.toArray()[0]);
 	}
 }

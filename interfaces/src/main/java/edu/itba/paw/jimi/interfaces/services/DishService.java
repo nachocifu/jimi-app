@@ -1,7 +1,7 @@
 package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import java.util.Collection;
 
@@ -32,9 +32,8 @@ public interface DishService {
 	 *
 	 * @param dish  The dish to be updated.
 	 * @param price The new price.
-	 * @return The new value of stock.
 	 */
-	int setPrice(Dish dish, float price);
+	void setPrice(Dish dish, float price);
 	
 	/**
 	 * Increases the value of stock of the dish by one.
@@ -51,6 +50,14 @@ public interface DishService {
 	 * @return The new value of stock.
 	 */
 	int decreaseStock(Dish dish);
+	
+	/**
+	 * Toggles a dish to be discontinued or not.
+	 *
+	 * @param dish         the dish to be updated
+	 * @param discontinued the new value
+	 */
+	void setDiscontinued(Dish dish, boolean discontinued);
 	
 	/**
 	 * Returns all the dishes.
@@ -75,6 +82,13 @@ public interface DishService {
 	Collection<Dish> findAllAvailable();
 	
 	/**
+	 * Returns all available, that is, stock greater than 0, dishes.
+	 *
+	 * @return all the dishes.
+	 */
+	Collection<Dish> findAllAvailable(QueryParams qp);
+	
+	/**
 	 * Returns all dishes with missing stock, that is, their stock lower than their
 	 * minimum stock.
 	 *
@@ -83,11 +97,18 @@ public interface DishService {
 	Collection<Dish> findDishesMissingStock();
 	
 	/**
-	 * Returns the amount of dishes in the database.
+	 * Returns the amount of all dishes in the database.
 	 *
 	 * @return a positive integer.
 	 */
 	int getTotalDishes();
+	
+	/**
+	 * Calculates discontinued dishes.
+	 *
+	 * @return count of said dishes.
+	 */
+	int getDiscontinuedDishes();
 	
 	/**
 	 * Set a new min stock value to dish

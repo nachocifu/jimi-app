@@ -20,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.util.Collection;
 import java.util.LinkedList;
 
 import static org.junit.Assert.assertEquals;
@@ -156,23 +157,41 @@ public class TableServiceImplTest {
 	}
 	
 	@Test
-	public void findAllNotNullEmpty() {
+	public void findAllNotNullEmptyTest() {
 		Mockito.when(tableServiceImpl.findAll()).thenReturn(new LinkedList<Table>());
 		Assert.assertNotNull(tableServiceImpl.findAll());
 	}
 	
 	@Test
-	public void findAllNotNull() {
+	public void findAllNotNullTest() {
 		Mockito.when(tableServiceImpl.findAll()).thenReturn(null);
 		Assert.assertNotNull(tableServiceImpl.findAll());
 	}
 	
 	@Test
-	public void setName() {
+	public void setNameTest() {
 		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.FREE, order);
 		tableServiceImpl.setName(table, TABLE_NAME.concat(TABLE_NAME));
 		assertEquals(TABLE_NAME.concat(TABLE_NAME), table.getName());
+	}
+	
+	@Test
+	public void getTablesWithOrdersFromLast30MinutesTest() {
+		Order urgentOrder1 = new Order(1, null, null, OrderStatus.OPEN, 0, 0);
+		Order urgentOrder2 = new Order(2, null, null, OrderStatus.OPEN, 0, 0);
+		Table busyTable1 = new Table(TABLE_NAME, 1, TableStatus.BUSY, urgentOrder1);
+		Table busyTable2 = new Table(TABLE_NAME, 2, TableStatus.BUSY, urgentOrder2);
+		Collection<Table> expectedUrgentTables = new LinkedList<>();
+		expectedUrgentTables.add(busyTable1);
+		expectedUrgentTables.add(busyTable2);
+		Mockito.when(tableServiceImpl.getTablesWithOrdersFromLastMinutes(30)).thenReturn(expectedUrgentTables);
+		assertEquals(expectedUrgentTables, tableServiceImpl.getTablesWithOrdersFromLastMinutes(30));
+	}
+	
+	@Test
+	public void getTablesWithOrdersFromLastInvalidMinutesTest() {
+		assertEquals(0, tableServiceImpl.getTablesWithOrdersFromLastMinutes(-1).size());
 	}
 	
 	@Test(expected = FreeTableDeletionAttemptException.class)

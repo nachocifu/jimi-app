@@ -3,7 +3,7 @@ package edu.itba.paw.jimi.persistence;
 
 import edu.itba.paw.jimi.interfaces.daos.DishDao;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,8 +21,7 @@ import javax.sql.DataSource;
 import java.util.Collection;
 import java.util.List;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,6 +44,7 @@ public class DishDaoTest {
 	private Dish dishEqualStock;
 	private Dish dishMissingStock;
 	private Dish dishOverStock;
+	private Dish dishDiscontinued;
 	
 	@Autowired
 	private DataSource ds;
@@ -71,6 +71,9 @@ public class DishDaoTest {
 		dishOverStock = dishDao.create(DISH_NAME_OVER_STOCK, DISH_PRICE, DISH_STOCK + 3);
 		dishOverStock.setMinStock(MIN_STOCK);
 		dishDao.update(dishOverStock);
+		dishDiscontinued = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
+		dishDiscontinued.setDiscontinued(true);
+		dishDao.update(dishDiscontinued);
 	}
 	
 	@After
@@ -82,7 +85,6 @@ public class DishDaoTest {
 	public void testCreate() {
 		final Dish dish = dishDao.create(NAME, PRICE, 1);
 		assertNotNull(dish);
-		assertNotNull(dish.getId());
 		assertEquals(NAME, dish.getName());
 		assertEquals(PRICE, dish.getPrice());
 	}
@@ -92,7 +94,6 @@ public class DishDaoTest {
 		final Dish dish = dishDao.create(NAME, PRICE, 1);
 		
 		assertNotNull(dish);
-		assertNotNull(dish.getId());
 		assertEquals(NAME, dish.getName());
 		assertEquals(PRICE, dish.getPrice());
 		
@@ -135,7 +136,7 @@ public class DishDaoTest {
 	@Test
 	public void testFindAll() {
 		List<Dish> dishes = (List<Dish>) dishDao.findAll(new QueryParams(0, 10));
-		assertEquals(3, dishes.size());
+		assertEquals(4, dishes.size());
 		
 		assertEquals(dishEqualStock.getName(), DISH_NAME);
 		assertEquals(dishMissingStock.getName(), DISH_NAME_MISS_STOCK);
@@ -148,6 +149,25 @@ public class DishDaoTest {
 		assertEquals(dishEqualStock.getStock(), DISH_STOCK);
 		assertEquals(dishMissingStock.getStock(), DISH_STOCK - 3);
 		assertEquals(dishOverStock.getStock(), DISH_STOCK + 3);
+	}
+	
+//	@Test
+//	public void testFindAllOffered() {
+//		List<Dish> dishes = (List<Dish>) dishDao.findAllOffered();
+//		assertEquals(3, dishes.size());
+//	}
+	
+	@Test
+	public void testFindAllAvailable() {
+		List<Dish> dishes = (List<Dish>) dishDao.findAllAvailable();
+		assertEquals(3, dishes.size());
+	}
+	
+	@Test
+	public void testFindDiscontinuedDishes() {
+		List<Dish> discontinuedDishes = (List<Dish>) dishDao.findDiscontinuedDishes();
+		assertEquals(1, discontinuedDishes.size());
+		assertTrue(discontinuedDishes.contains(dishDiscontinued));
 	}
 	
 	@Test
