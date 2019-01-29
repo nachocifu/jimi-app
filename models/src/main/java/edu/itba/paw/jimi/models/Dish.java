@@ -51,11 +51,11 @@ public class Dish {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Dish dish = (Dish) o;
-		return id == dish.id || Float.compare(dish.price, price) == 0 &&
+		return id == dish.id || (Float.compare(dish.price, price) == 0 &&
 				stock == dish.stock &&
 				minStock == dish.minStock &&
 				Objects.equals(name, dish.name) &&
-				discontinued == dish.discontinued;
+				discontinued == dish.discontinued);
 	}
 	
 	@Override
