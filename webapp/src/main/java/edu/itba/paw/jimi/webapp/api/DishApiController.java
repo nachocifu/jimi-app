@@ -131,7 +131,6 @@ public class DishApiController {
 		};
 		csvWriter.writeHeader(headerT);
 		
-		
 		String[] header = {"name", "price", "stock", "minStock"};
 		for (Dish dish : dishService.findDishesMissingStock())
 			csvWriter.write(dish, header);
@@ -140,7 +139,7 @@ public class DishApiController {
 		csvWriter.close();
 		
 		return Response
-				.ok(csvWriter.toString())
+				.ok()
 				.header("Content-Disposition", String.format("attachment; filename=\"%s\"", messageSource.getMessage("csv.file", null, LocaleContextHolder.getLocale())))
 				.header("Content-Type", "application/vnd.ms-excel")
 				.build();
