@@ -36,11 +36,13 @@ const Typography = React.lazy(() => import('./views/Theme/Typography'));
 const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
+const Dishes = React.lazy(() => import('./views/Dishes/Dishes'));
+const Dish = React.lazy(() => import('./views/Dishes/Dish'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   {path: '/', exact: true, name: 'Home', component: DefaultLayout},
-  {path: '/dashboard', name: 'Dashboard', component: Dashboard},
+  {path: '/stats', name: 'Stadistics', component: Dashboard},
   {path: '/theme', exact: true, name: 'Theme', component: Colors},
   {path: '/theme/colors', name: 'Colors', component: Colors},
   {path: '/theme/typography', name: 'Typography', component: Typography},
@@ -80,6 +82,8 @@ const routes = [
   {path: '/charts', name: 'Charts', component: Charts},
   {path: '/users', exact: true, name: 'Users', component: Users},
   {path: '/users/:id', exact: true, name: 'User Details', component: User},
+  {path: '/dishes', exact: true, name: 'Dishes', component: Dishes},
+  {path: '/dishes/:id', exact: true, name: 'Dish Details', component: Dish},
 ];
 
 export default routes;
