@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.webapp.dto.form;
 
 import javax.validation.constraints.*;
 
-
 public class DishForm {
 	
 	@Size(min = 1, max = 25)
@@ -19,8 +18,6 @@ public class DishForm {
 	@DecimalMin(value = "0")
 	@DecimalMax(value = "10000")
 	private int minStock;
-	
-	private boolean discontinued;
 	
 	public String getName() {
 		return name;
@@ -54,12 +51,4 @@ public class DishForm {
 		this.minStock = minStock;
 	}
 	
-	public boolean isDiscontinued() {
-		
-		return discontinued;
-	}
-	
-	public void setDiscontinued(boolean discontinued) {
-		this.discontinued = discontinued;
-	}
 }

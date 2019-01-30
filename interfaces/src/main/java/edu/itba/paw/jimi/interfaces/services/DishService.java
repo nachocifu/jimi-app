@@ -19,6 +19,14 @@ public interface DishService {
 	Dish create(String name, float price);
 	
 	/**
+	 * Sets the name of the dish.
+	 *
+	 * @param dish The dish to be updated.
+	 * @param name The new name of stock.
+	 */
+	void setName(Dish dish, String name);
+	
+	/**
 	 * Sets the value of stock of the dish.
 	 *
 	 * @param dish  The dish to be updated.

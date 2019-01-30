@@ -47,6 +47,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 				.and().authorizeRequests()
+				.antMatchers("/api/admin/**").hasRole("ADMIN")
 				.antMatchers(HttpMethod.POST, "/api/users/create").hasRole("ADMIN")
 				.antMatchers("/api/users/**").hasRole("ADMIN")
 				.antMatchers("/api/users").hasRole("ADMIN")

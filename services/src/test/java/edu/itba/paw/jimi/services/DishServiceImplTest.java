@@ -70,6 +70,13 @@ public class DishServiceImplTest {
 	}
 	
 	@Test
+	public void setNameTest() {
+		Dish testDish = new Dish(NAME, PRICE, 1, 0);
+		dishServiceImpl.setName(testDish, "New name");
+		Assert.assertEquals("New name", testDish.getName());
+	}
+	
+	@Test
 	public void setStockTest() {
 		Mockito.when(dishDao.findById(0)).thenReturn(new Dish(NAME, PRICE, 1, 0));
 		
