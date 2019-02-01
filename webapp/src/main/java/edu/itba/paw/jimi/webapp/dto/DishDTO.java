@@ -25,6 +25,14 @@ public class DishDTO {
 		this.uri = baseURI.resolve(String.valueOf(this.id));
 	}
 	
+	public DishDTO(Dish dish) {
+		this.id = dish.getId();
+		this.name = dish.getName();
+		this.price = dish.getPrice();
+		this.stock = dish.getStock();
+		this.minStock = dish.getMinStock();
+	}
+	
 	public int getId() {
 		return id;
 	}

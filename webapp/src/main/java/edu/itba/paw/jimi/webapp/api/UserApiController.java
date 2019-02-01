@@ -5,7 +5,7 @@ import edu.itba.paw.jimi.models.User;
 import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.UserDTO;
 import edu.itba.paw.jimi.webapp.dto.UserListDTO;
-import edu.itba.paw.jimi.webapp.dto.form.UserForm;
+import edu.itba.paw.jimi.webapp.dto.form.user.UserForm;
 import edu.itba.paw.jimi.webapp.utils.PaginationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,15 +84,18 @@ public class UserApiController extends BaseApiController {
 	
 	@GET
 	@Path("/{id}")
-	public Response getUserById(@PathParam("id") final int id) {
+	public Response getUserById(@PathParam("id") final long id) {
 		final User user = userService.findById(id);
 		
-		if (user != null) {
-			return Response.ok(new UserDTO(user, buildBaseURI(uriInfo))).build();
-		} else {
+		if (user == null) {
 			LOGGER.warn("User with id {} not found", id);
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(messageSource.getMessage("user.error.not.found.body", null, LocaleContextHolder.getLocale()))
+					.build();
 		}
+		
+		return Response.ok(new UserDTO(user, buildBaseURI(uriInfo))).build();
 	}
 	
 }

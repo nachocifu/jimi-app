@@ -9,6 +9,6 @@ public enum TableStatus {
 		for (TableStatus t : TableStatus.values()) {
 			if (t.ordinal() == statusId) return t;
 		}
-		throw new IllegalArgumentException("TableStatus not found.");
+		return null;
 	}
 }

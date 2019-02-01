@@ -1,12 +1,12 @@
-package edu.itba.paw.jimi.webapp.dto.form;
+package edu.itba.paw.jimi.webapp.dto.form.table;
 
-import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
-public class TableSetDinersForm {
+public class TableDinersForm {
 	
-	@DecimalMin(value = "1")
-	@DecimalMax(value = "100")
+	@NotNull
+	@DecimalMin(value = "0")
 	private int diners;
 	
 	public int getDiners() {

@@ -1,6 +1,6 @@
 package edu.itba.paw.jimi.webapp.validators;
 
-import edu.itba.paw.jimi.webapp.dto.form.UserForm;
+import edu.itba.paw.jimi.webapp.dto.form.user.UserForm;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

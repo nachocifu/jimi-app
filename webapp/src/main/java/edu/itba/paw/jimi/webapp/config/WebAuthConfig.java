@@ -48,6 +48,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.and().authorizeRequests()
 				.antMatchers("/api/dishes/**").hasRole("ADMIN")
 				.antMatchers("/api/admin/**").hasRole("ADMIN")
+				.antMatchers("/api/tables/**").hasAnyRole("ADMIN", "USER")
 				.antMatchers("/api/users/**").hasRole("ADMIN")
 				.antMatchers("/api/**").authenticated()
 				.and()
