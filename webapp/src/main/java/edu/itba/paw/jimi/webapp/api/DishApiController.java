@@ -6,6 +6,7 @@ import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.DishDTO;
 import edu.itba.paw.jimi.webapp.dto.DishListDTO;
 import edu.itba.paw.jimi.webapp.dto.form.DishForm;
+import edu.itba.paw.jimi.webapp.dto.form.SetDishStockForm;
 import edu.itba.paw.jimi.webapp.utils.PaginationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +29,11 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.LinkedList;
 
-@Path("admin/dishes")
+@Path("dishes")
 @Controller
-public class DishApiController {
+public class DishApiController extends BaseApiController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(DishApiController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BaseApiController.class);
 	
 	@Autowired
 	private DishService dishService;
@@ -46,7 +47,6 @@ public class DishApiController {
 	@Context
 	private UriInfo uriInfo;
 	
-	private final static String dishApiUri = "admin/dishes/";
 	private static final int DEFAULT_PAGE_SIZE = 5;
 	private static final int MAX_PAGE_SIZE = 20;
 	
@@ -57,13 +57,12 @@ public class DishApiController {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
 		final Collection<Dish> allDishes = dishService.findAll(new QueryParams((page - 1) * pageSize, pageSize)); //TODO: change for paginated
-		return Response.ok(new DishListDTO(new LinkedList<>(allDishes), buildBaseURI()))
+		return Response.ok(new DishListDTO(new LinkedList<>(allDishes), buildBaseURI(uriInfo)))
 				.links(paginationHelper.getPaginationLinks(uriInfo, page, dishService.getTotalDishes()))
 				.build();
 	}
 	
 	@POST
-	@Path("/create")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response createDish(@Valid final DishForm dishForm) {
 		if (dishForm == null)
@@ -74,11 +73,11 @@ public class DishApiController {
 		dishService.setMinStock(dish, dishForm.getMinStock());
 		
 		final URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(dish.getId())).build();
-		return Response.created(location).entity(new DishDTO(dish, buildBaseURI())).build();
+		return Response.created(location).entity(new DishDTO(dish, buildBaseURI(uriInfo))).build();
 	}
 	
 	@PUT
-	@Path("/update/{id}")
+	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateDish(@PathParam("id") final int dishId,
 	                           @Valid final DishForm dishForm) {
@@ -98,22 +97,27 @@ public class DishApiController {
 	}
 	
 	@PUT
-	@Path("/stock/increase/{id}")
-	public Response increaseDishStock(@PathParam("id") final int dishId) {
-		Dish dish = dishService.findById(dishId);
+	@Path("/{id}/stock")
+	public Response setDishStock(@PathParam("id") final int dishId,
+	                             @Valid final SetDishStockForm setDishStockForm) {
+		if (setDishStockForm == null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		
+		final Dish dish = dishService.findById(dishId);
 		if (dish == null)
 			return Response.status(Response.Status.NOT_FOUND).build();
-		dishService.increaseStock(dish);
-		return Response.noContent().build();
-	}
-	
-	@PUT
-	@Path("/stock/decrease/{id}")
-	public Response decreaseDishStock(@PathParam("id") final int dishId) {
-		Dish dish = dishService.findById(dishId);
-		if (dish == null)
-			return Response.status(Response.Status.NOT_FOUND).build();
-		dishService.decreaseStock(dish);
+		
+		if (dishService.findById(dishId).getStock() != setDishStockForm.getOldStock()) {
+			LOGGER.warn("Cannot update dish stock: existing stock {} does not coincide with client old stock", setDishStockForm.getOldStock());
+			final URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(dish.getId())).build();
+			return Response
+					.status(Response.Status.CONFLICT)
+					.header("Location", location)
+					.entity(messageSource.getMessage("dish.error.409.stock.conflict", null, LocaleContextHolder.getLocale()))
+					.build();
+		}
+		
+		dishService.setStock(dish, setDishStockForm.getNewStock());
 		return Response.noContent().build();
 	}
 	
@@ -143,10 +147,6 @@ public class DishApiController {
 				.header("Content-Disposition", String.format("attachment; filename=\"%s\"", messageSource.getMessage("csv.file", null, LocaleContextHolder.getLocale())))
 				.header("Content-Type", "application/vnd.ms-excel")
 				.build();
-	}
-	
-	private URI buildBaseURI() {
-		return URI.create(String.valueOf(uriInfo.getBaseUri()) + dishApiUri);
 	}
 	
 }

@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UserForm {
 	
 	@Size(min = 6, max = 40)
-	@Pattern(regexp = "[a-zA-Z0-9]+")
+	@Pattern(regexp = "[a-zA-Z0-9]+", message = "{Pattern.message}")
 	@NotBlank
 	private String username;
 	
