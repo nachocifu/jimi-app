@@ -28,7 +28,7 @@ import java.util.LinkedList;
 @Path("users")
 @Controller
 @Produces(value = {MediaType.APPLICATION_JSON})
-public class UserApiController {
+public class UserApiController extends BaseApiController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserApiController.class);
 	
@@ -47,7 +47,6 @@ public class UserApiController {
 	@Context
 	private UriInfo uriInfo;
 	
-	private final static String userApiUri = "users/";
 	private static final int DEFAULT_PAGE_SIZE = 10;
 	private static final int MAX_PAGE_SIZE = 30;
 	
@@ -58,13 +57,12 @@ public class UserApiController {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
 		final Collection<User> allUsers = userService.findAll(new QueryParams((page - 1) * pageSize, pageSize));
-		return Response.ok(new UserListDTO(new LinkedList<>(allUsers), buildBaseURI()))
+		return Response.ok(new UserListDTO(new LinkedList<>(allUsers), buildBaseURI(uriInfo)))
 				.links(paginationHelper.getPaginationLinks(uriInfo, page, userService.getTotalUsers()))
 				.build();
 	}
 	
 	@POST
-	@Path("/create")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response createUser(@Valid final UserForm userForm) {
 		
@@ -81,7 +79,7 @@ public class UserApiController {
 		
 		final User user = userService.create(userForm.getUsername(), passwordEncoder.encode(userForm.getPassword()));
 		final URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(user.getId())).build();
-		return Response.created(location).entity(new UserDTO(user, buildBaseURI())).build();
+		return Response.created(location).entity(new UserDTO(user, buildBaseURI(uriInfo))).build();
 	}
 	
 	@GET
@@ -90,14 +88,11 @@ public class UserApiController {
 		final User user = userService.findById(id);
 		
 		if (user != null) {
-			return Response.ok(new UserDTO(user, buildBaseURI())).build();
+			return Response.ok(new UserDTO(user, buildBaseURI(uriInfo))).build();
 		} else {
 			LOGGER.warn("User with id {} not found", id);
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
 	
-	private URI buildBaseURI() {
-		return URI.create(String.valueOf(uriInfo.getBaseUri()) + userApiUri);
-	}
 }
