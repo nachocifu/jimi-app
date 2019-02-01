@@ -4,7 +4,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 
-public class BaseApiController {
+public abstract class BaseApiController {
 	
 	URI buildBaseURI(UriInfo uriInfo) {
 		return URI.create(String.valueOf(uriInfo.getBaseUri()) +
