@@ -20,12 +20,9 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -58,15 +55,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
 		dbp.addScript(schemaSql);
 		return dbp;
-	}
-	
-	@Bean
-	public ViewResolver viewResolver() {
-		final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/jsp/");
-		viewResolver.setSuffix(".jsp");
-		return viewResolver;
 	}
 	
 	@Profile("development")
