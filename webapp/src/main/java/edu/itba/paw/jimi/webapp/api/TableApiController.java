@@ -270,13 +270,8 @@ public class TableApiController extends BaseApiController {
 		
 		final Order order = table.getOrder();
 		final Dish currentDish = orderService.getDishById(order, dishId);
-		final int currentAmount = order.getDishes().get(currentDish).getAmount();
 		final int newAmount = tableDishAmountForm.getAmount();
-		if (currentAmount < newAmount) {
-			orderService.addDishes(order, currentDish, newAmount - currentAmount);
-		} else if (currentAmount > newAmount) {
-			orderService.removeUndoneDish(order, currentDish, currentAmount - newAmount);
-		}
+		orderService.setNewUndoneDishAmount(order, currentDish, newAmount);
 		return Response.noContent().build();
 	}
 	

@@ -72,6 +72,15 @@ public interface OrderService {
 	int removeAllUndoneDish(Order order, Dish dish);
 	
 	/**
+	 * Updates an undone dish amount in an order.
+	 *
+	 * @param order  The order in which to operate.
+	 * @param dish   The dish to update.
+	 * @param amount The new amount to set to the undone dish in the order.
+	 */
+	void setNewUndoneDishAmount(Order order, Dish dish, int amount);
+	
+	/**
 	 * Find out of given order contains a given dishId.
 	 *
 	 * @param order  The order in which to operate.
