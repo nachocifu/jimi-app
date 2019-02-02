@@ -12,7 +12,6 @@ import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -94,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
 	public int removeOneDish(Order order, Dish dish) {
         if (!order.getStatus().equals(OrderStatus.OPEN))
-			throw new DishSetToInactiveTableException();
+			throw new DishSetToInactiveOrderException();
 
 		int previousAmount;
 		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish).getAmount() != 0) {
@@ -127,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
 	public int removeAllDish(Order order, Dish dish) {
         if (!order.getStatus().equals(OrderStatus.OPEN))
-			throw new DishSetToInactiveTableException();
+			throw new DishSetToInactiveOrderException();
 
 		// Update dish stock
 		if (order.getDishes().containsKey(dish)) {

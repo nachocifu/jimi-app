@@ -572,7 +572,7 @@ public class OrderServiceImplTest {
         orderService.setDiners(order, 5);
     }
 
-	@Test(expected = DishSetToInactiveTableException.class)
+	@Test(expected = DishSetToInactiveOrderException.class)
     public void addDishTwiceThenRemoveOnceNotOpenOrderTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
@@ -598,7 +598,7 @@ public class OrderServiceImplTest {
 
     }
 
-	@Test(expected = DishSetToInactiveTableException.class)
+	@Test(expected = DishSetToInactiveOrderException.class)
     public void addDishTwiceThenRemoveAllNotOpenOrderTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
