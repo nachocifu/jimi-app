@@ -6,9 +6,9 @@ import edu.itba.paw.jimi.models.utils.QueryParams;
 import java.util.Collection;
 
 public interface DishService {
-	
+
 	Dish findById(final long id);
-	
+
 	/**
 	 * Create a new dish.
 	 *
@@ -17,7 +17,7 @@ public interface DishService {
 	 * @return The created dish.
 	 */
 	Dish create(String name, float price);
-	
+
 	/**
 	 * Sets the value of stock of the dish.
 	 *
@@ -26,7 +26,7 @@ public interface DishService {
 	 * @return The new value of stock.
 	 */
 	int setStock(Dish dish, int stock);
-	
+
 	/**
 	 * Sets the value of price of the dish.
 	 *
@@ -34,7 +34,7 @@ public interface DishService {
 	 * @param price The new price.
 	 */
 	void setPrice(Dish dish, float price);
-	
+
 	/**
 	 * Increases the value of stock of the dish by one.
 	 *
@@ -42,7 +42,7 @@ public interface DishService {
 	 * @return The new value of stock.
 	 */
 	int increaseStock(Dish dish);
-	
+
 	/**
 	 * Decreases the value of stock of the dish by one.
 	 *
@@ -50,7 +50,7 @@ public interface DishService {
 	 * @return The new value of stock.
 	 */
 	int decreaseStock(Dish dish);
-	
+
 	/**
 	 * Toggles a dish to be discontinued or not.
 	 *
@@ -58,36 +58,52 @@ public interface DishService {
 	 * @param discontinued the new value
 	 */
 	void setDiscontinued(Dish dish, boolean discontinued);
-	
+
 	/**
 	 * Returns all the dishes.
 	 *
 	 * @return all the dishes.
 	 */
 	Collection<Dish> findAll();
-	
+
 	/**
 	 * Returns all the dishes.
-	 *
+	 * @deprecated
 	 * @param qp the QueryParams.
 	 * @return all the dishes.
 	 */
 	Collection<Dish> findAll(QueryParams qp);
-	
+
+	/**
+	 * Returns all the dishes.
+	 *
+	 * @param pageSize
+	 * @param offset
+	 * @return all the dishes.
+	 */
+	Collection<Dish> findAll(int pageSize, int offset);
+
 	/**
 	 * Returns all available, that is, stock greater than 0, dishes.
 	 *
 	 * @return all the dishes.
 	 */
 	Collection<Dish> findAllAvailable();
-	
+
+	/**
+	 * Returns all available, that is, stock greater than 0, dishes.
+	 * @deprecated
+	 * @return all the dishes.
+	 */
+	Collection<Dish> findAllAvailable(QueryParams qp);
+
 	/**
 	 * Returns all available, that is, stock greater than 0, dishes.
 	 *
 	 * @return all the dishes.
 	 */
-	Collection<Dish> findAllAvailable(QueryParams qp);
-	
+	Collection<Dish> findAllAvailable(int pageSize, int offset);
+
 	/**
 	 * Returns all dishes with missing stock, that is, their stock lower than their
 	 * minimum stock.
@@ -95,21 +111,21 @@ public interface DishService {
 	 * @return dishes missing stock.
 	 */
 	Collection<Dish> findDishesMissingStock();
-	
+
 	/**
 	 * Returns the amount of all dishes in the database.
 	 *
 	 * @return a positive integer.
 	 */
 	int getTotalDishes();
-	
+
 	/**
 	 * Calculates discontinued dishes.
 	 *
 	 * @return count of said dishes.
 	 */
 	int getDiscontinuedDishes();
-	
+
 	/**
 	 * Set a new min stock value to dish
 	 *
@@ -118,5 +134,5 @@ public interface DishService {
 	 * @return the new min stock value
 	 */
 	int setMinStock(Dish dish, int minStock);
-	
+
 }
