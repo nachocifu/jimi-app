@@ -19,33 +19,33 @@ import java.util.Map;
 @Controller
 @RequestMapping("/kitchen")
 public class KitchenController {
-	
+
 	@Autowired
-	@Qualifier(value = "userOrderService")
+	@Qualifier(value = "orderService")
 	private OrderService orderService;
-	
+
 	@Autowired
 	private DishService dishService;
-	
+
 	@Autowired
 	private TableService tableService;
-	
+
 	@RequestMapping("")
 	public ModelAndView view() {
 		final ModelAndView mav = new ModelAndView("kitchen/view");
-		
+
 		Map totalDishes = orderService.getAllUndoneDishesFromAllActiveOrders();
-		
+
 		Collection<Table> busyTables = tableService.findTablesWithStatus(TableStatus.BUSY);
 		Collection<Table> urgentTables = tableService.getTablesWithOrdersFromLastMinutes(30);
-		
+
 		mav.addObject("tables", busyTables);
 		mav.addObject("urgentTables", urgentTables);
 		mav.addObject("totalDishes", totalDishes);
-		
+
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "done", method = RequestMethod.POST)
 	public ModelAndView done(@RequestParam(value = "orderid") long orderid, @RequestParam(value = "dishid") long dishid) {
 		orderService.setDishAsDone(orderService.findById(orderid), dishService.findById(dishid));

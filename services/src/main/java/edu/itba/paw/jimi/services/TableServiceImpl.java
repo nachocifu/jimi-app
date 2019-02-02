@@ -32,7 +32,6 @@ public class TableServiceImpl implements TableService {
 	private TableDao tableDao;
 
 	@Autowired
-	@Qualifier(value = "userOrderService")
 	private OrderService orderService;
 
 	@Override
@@ -63,11 +62,6 @@ public class TableServiceImpl implements TableService {
 			return new HashSet<Table>();
 	}
 
-	/**
-	 * @param qp
-	 * @return
-	 * @deprecated
-	 */
 	@Override
 	public Collection<Table> findAll(QueryParams qp) {
 		return findAll(qp.getPageSize(), qp.getStartAt());
