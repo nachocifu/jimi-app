@@ -22,134 +22,170 @@ import java.util.Map;
 @Qualifier(value = "userOrderService")
 @Transactional
 public class OrderServiceImpl implements OrderService {
-	
+
 	@Autowired
 	@Qualifier(value = "adminOrderService")
 	private OrderService orderService;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
-	
+
 	@Override
 	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners) {
 		return orderService.create(status, openedAt, closedAt, diners);
 	}
-	
+
 	@Override
 	public int addDish(Order order, Dish dish) {
 		return orderService.addDish(order, dish);
 	}
-	
+
 	@Override
 	public int addDishes(Order order, Dish dish, int amount) {
-		
+
 		if (!order.getStatus().equals(OrderStatus.OPEN))
 			throw new DishAddedToInactiveOrderException();
-		
+
 		return orderService.addDishes(order, dish, amount);
 	}
-	
+
 	@Override
 	public int removeOneDish(Order order, Dish dish) {
-		
+
 		if (!order.getStatus().equals(OrderStatus.OPEN))
 			throw new DishAddedToInactiveOrderException();
-		
+
 		return orderService.removeOneDish(order, dish);
 	}
-	
+
 	@Override
 	public int removeAllDish(Order order, Dish dish) {
-		
+
 		if (!order.getStatus().equals(OrderStatus.OPEN))
 			throw new DishAddedToInactiveOrderException();
-		
+
 		return orderService.removeAllDish(order, dish);
 	}
-	
+
 	@Override
 	public int setDiners(Order order, int diners) {
 		Order o = orderService.findById(order.getId());
-		
+
 		if (!o.getStatus().equals(OrderStatus.OPEN))
 			throw new DinersSetOnNotOpenOrderException();
-		
+
 		return orderService.setDiners(order, diners);
 	}
-	
+
 	@Override
 	public Order findById(long id) {
 		return orderService.findById(id);
 	}
-	
+
 	@Override
 	public void open(Order order) {
 		orderService.open(order);
 	}
-	
+
 	@Override
 	public void close(Order order) {
 		orderService.close(order);
 	}
-	
+
 	@Override
 	public void cancel(Order order) {
 		orderService.cancel(order);
 	}
-	
+
 	@Override
 	public Collection<Order> findAll() {
-		
+
 		return orderService.findAll();
 	}
-	
+
 	@Override
 	public Collection<Order> findAll(QueryParams qp) {
 		return orderService.findAll(qp);
 	}
-	
+
+	/**
+	 * Finds all closed orders.
+	 *
+	 * @param maxResults
+	 * @param offset
+	 * @return A collection of said orders.
+	 */
+	@Override
+	public Collection<Order> findAll(int maxResults, int offset) {
+		return null;
+	}
+
 	@Override
 	public Collection<Order> findAllRelevant(QueryParams qp) {
 		return orderService.findAllRelevant(qp);
 	}
-	
+
+	/**
+	 * Finds all closed orders.
+	 *
+	 * @param maxResults
+	 * @param offset
+	 * @return A collection of said orders.
+	 */
+	@Override
+	public Collection<Order> findAllRelevant(int maxResults, int offset) {
+		return null;
+	}
+
 	@Override
 	public Map getMonthlyOrderTotal() {
 		return orderService.getMonthlyOrderTotal();
 	}
-	
+
 	@Override
 	public Map getMonthlyOrderCancelled() {
 		return orderService.getMonthlyOrderCancelled();
 	}
-	
+
 	@Override
 	public void setDishAsDone(Order order, Dish dish) {
 		orderService.setDishAsDone(order, dish);
 	}
-	
+
 	@Override
 	public int getTotalRelevantOrders() {
 		return orderService.getTotalRelevantOrders();
 	}
-	
+
 	@Override
 	public Collection<Order> getActiveOrders(QueryParams qp) {
 		return orderService.getActiveOrders(qp);
 	}
-	
+
+	/**
+	 * Finds all open orders.
+	 *
+	 * @param maxResults
+	 * @param offset
+	 * @return A collection of said orders in ascending order by open timestamp.
+	 */
+	@Override
+	public Collection<Order> getActiveOrders(int maxResults, int offset) {
+		return null;
+	}
+
 	@Override
 	public int getTotalActiveOrders() {
 		return orderService.getTotalActiveOrders();
 	}
-	
+
 	@Override
 	public Collection<Order> getOrdersFromLastMinutes(int minutes) {
 		return orderService.getOrdersFromLastMinutes(minutes);
 	}
-	
+
 	@Override
 	public Map getAllUndoneDishesFromAllActiveOrders() {
 		return orderService.getAllUndoneDishesFromAllActiveOrders();
 	}
-	
+
 }
