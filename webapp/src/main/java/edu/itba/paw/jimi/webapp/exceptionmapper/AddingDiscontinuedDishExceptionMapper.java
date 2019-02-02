@@ -18,6 +18,6 @@ public class AddingDiscontinuedDishExceptionMapper implements ExceptionMapper<Ad
 	@Override
 	public Response toResponse(final AddingDiscontinuedDishException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		return Response.status(Response.Status.CONFLICT).entity(new ExceptionDTO("m")).type(MediaType.APPLICATION_JSON).build();
+		return Response.status(Response.Status.CONFLICT).entity(new ExceptionDTO(exception.getMessage())).type(MediaType.APPLICATION_JSON).build();
 	}
 }
