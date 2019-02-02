@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 public class TableStatusForm {
 	
-	@NotNull
+	@NotNull(message = "{table.status.not.found}")
 	private TableStatus status;
 	
 	public TableStatus getStatus() {

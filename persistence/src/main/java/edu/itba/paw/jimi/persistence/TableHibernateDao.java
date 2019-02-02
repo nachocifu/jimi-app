@@ -61,7 +61,7 @@ public class TableHibernateDao implements TableDao {
 	}
 
 	public Table create(String name, TableStatus ts, Order order) {
-		if (order == null || orderDao.findById(order.getId()) == null)
+		if (order == null || orderDao.findById(order.getId()) == null) //TODO Are we sure order can be null?
 			throw new TableWithNullOrderException();
 		final Table table = new Table(name, ts, order);
 		em.persist(table);
