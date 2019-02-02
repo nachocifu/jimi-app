@@ -10,7 +10,7 @@ import javax.persistence.PersistenceException;
 import java.util.Collection;
 
 public interface TableDao {
-	
+
 	/**
 	 * Returns a table with the passed id.
 	 *
@@ -18,43 +18,43 @@ public interface TableDao {
 	 * @return the table with said id.
 	 */
 	Table findById(final long id);
-	
+
 	/**
 	 * Updates the table.
 	 *
 	 * @param table The table to be updated.
 	 */
 	void update(Table table);
-	
-	/**
+
+    /**
 	 * Returns all the tables.
 	 *
 	 * @return all the tables.
 	 */
 	Collection<Table> findAll();
-	
-	/**
-	 * Returns all the tables based on QueryParams qp.
-	 *
-	 * @return all the tables based on QueryParams qp.
+
+    /**
+     * Returns all the tables paginated.
+     *
+     * @return all the tables
 	 */
-	Collection<Table> findAll(QueryParams qp);
-	
+    Collection<Table> findAll(int maxResults, int offset);
+
 	/**
 	 * Returns all the active with the given status.
 	 *
 	 * @return all the active with the given status.
 	 */
 	Collection<Table> findTablesWithStatus(TableStatus tableStatus);
-	
-	int getTotalTables();
-	
-	/**
+
+    int getTotalTables();
+
+    /**
 	 * Returns true if a table exists with tableName.
 	 */
 	boolean tableNameExists(String tableName);
-	
-	/**
+
+    /**
 	 * Creates a Table.
 	 *
 	 * @param name  Name of the table.
@@ -64,22 +64,22 @@ public interface TableDao {
 	 * @throws TableWithNullOrderException when a order not in the DB or null is passed.
 	 */
 	Table create(String name, TableStatus ts, Order order) throws PersistenceException;
-	
-	/**
+
+    /**
 	 * Gets number of tables with status tableStatus.
 	 *
 	 * @return umber of tables with status tableStatus.
 	 */
 	int getNumberOfTablesWithState(TableStatus tableStatus);
-	
-	/**
+
+    /**
 	 * Deletes a Table.
 	 *
 	 * @param id Id of the table.
 	 */
 	void delete(final long id);
-	
-	/**
+
+    /**
 	 * Returns tables with orders from the last given quantity of minutes.
 	 */
 	Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes);

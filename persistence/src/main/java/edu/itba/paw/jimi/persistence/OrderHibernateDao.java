@@ -18,50 +18,36 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 @Repository
 public class OrderHibernateDao implements OrderDao {
-	
+
 	@PersistenceContext(unitName = "testName")
 	private EntityManager em;
-	
+
 	public Order findById(long id) {
 		return em.find(Order.class, id);
 	}
-	
+
 	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners, float total) {
 		final Order order = new Order(openedAt, closedAt, status, diners, total);
 		em.persist(order);
 		return order;
 	}
-	
+
 	public void update(Order order) {
 		em.merge(order);
 	}
-	
+
 	public Collection<Order> findAll() {
 		final TypedQuery<Order> query = em.createQuery("from Order", Order.class);
 		return query.getResultList();
 	}
-	
-	public Collection<Order> findAll(QueryParams qp) {
-		
-		String ordering = "";
-		if (qp.getOrderBy() != null)
-			ordering += "order by " + qp.getOrderBy();
-		
-		if (qp.isAscending())
-			ordering += " ASC";
-		else
-			ordering += " DESC";
-		
-		final TypedQuery<Order> query = em.createQuery("from Order " + ordering, Order.class);
-		
-		if (qp.getStartAt() != QueryParams.NO_VALUE) {
-			query.setFirstResult(qp.getStartAt());
-			query.setMaxResults(qp.getPageSize());
-		}
-		
-		return query.getResultList();
+
+	public Collection<Order> findAll(int maxResults, int offset) {
+		return em.createQuery("from Order", Order.class)
+				.setFirstResult(offset)
+				.setMaxResults(maxResults)
+				.getResultList();
 	}
-	
+
 	public Map getMonthlyOrderTotal() {
 		Map<YearMonth, Double> response = new TreeMap<YearMonth, Double>() {
 		};
@@ -70,7 +56,7 @@ public class OrderHibernateDao implements OrderDao {
 						"FROM orders " +
 						"GROUP BY year, month " +
 						"ORDER BY year, month");
-		
+
 		List<Object[]> res = query.getResultList();
 		for (Object[] row : res) {
 			if (Arrays.asList(row).contains(null)) continue;
@@ -79,45 +65,32 @@ public class OrderHibernateDao implements OrderDao {
 		}
 		return response;
 	}
-	
+
 	@Override
-	public Collection<Order> findAllRelevant(QueryParams qp) {
-		String ordering = "";
-		if (qp.getOrderBy() != null)
-			ordering += " order by " + qp.getOrderBy();
-		
-		if (qp.isAscending())
-			ordering += " ASC";
-		else
-			ordering += " DESC";
-		
-		final TypedQuery<Order> query = em.createQuery("from Order as o where o.status = :closed or o.status = :canceled" + ordering, Order.class);
-		query.setParameter("closed", OrderStatus.CLOSED);
-		query.setParameter("canceled", OrderStatus.CANCELED);
-		
-		if (qp.getStartAt() != QueryParams.NO_VALUE) {
-			query.setFirstResult(qp.getStartAt());
-			query.setMaxResults(qp.getPageSize());
-		}
-		
-		return query.getResultList();
+	public Collection<Order> findAllRelevant(int maxResults, int offset) {
+		return em.createQuery("FROM Order AS o WHERE o.status = :closed OR o.status = :canceled", Order.class)
+				.setParameter("closed", OrderStatus.CLOSED)
+				.setParameter("canceled", OrderStatus.CANCELED)
+				.setFirstResult(offset)
+				.setMaxResults(maxResults)
+				.getResultList();
 	}
-	
+
 	@Override
 	public int getTotalRelevantOrders() {
-		Query query = em.createQuery("select count(*) from Order as o where o.status = :closed or o.status = :canceled");
-		query.setParameter("closed", OrderStatus.CLOSED);
-		query.setParameter("canceled", OrderStatus.CANCELED);
-		return ((Long) query.getSingleResult()).intValue();
+		return ((Long) em.createQuery("select count(*) from Order as o where o.status = :closed or o.status = :canceled")
+				.setParameter("closed", OrderStatus.CLOSED)
+				.setParameter("canceled", OrderStatus.CANCELED)
+				.getSingleResult()).intValue();
 	}
-	
+
 	@Override
 	public int getTotalActiveOrders() {
-		Query query = em.createQuery("select count(*) from Order as o where o.status = :opened");
-		query.setParameter("opened", OrderStatus.OPEN);
-		return ((Long) query.getSingleResult()).intValue();
+		return ((Long) em.createQuery("select count(*) from Order as o where o.status = :opened")
+				.setParameter("opened", OrderStatus.OPEN)
+				.getSingleResult()).intValue();
 	}
-	
+
 	@Override
 	public Map getMonthlyOrderCancelled() {
 		Map<YearMonth, Integer> response = new TreeMap<YearMonth, Integer>() {
@@ -128,7 +101,7 @@ public class OrderHibernateDao implements OrderDao {
 						"WHERE status = " + OrderStatus.CANCELED.ordinal() + " " +
 						"GROUP BY year, month " +
 						"ORDER BY year, month");
-		
+
 		List<Object[]> res = query.getResultList();
 		for (Object[] row : res) {
 			if (Arrays.asList(row).contains(null)) continue;
@@ -137,31 +110,31 @@ public class OrderHibernateDao implements OrderDao {
 		}
 		return response;
 	}
-	
+
 	@Override
-	public Collection<Order> getActiveOrders(QueryParams qp) {
-		final TypedQuery<Order> query = em.createQuery("FROM Order o WHERE o.status = :opened ORDER BY o.openedAt ASC", Order.class);
-		query.setParameter("opened", OrderStatus.OPEN);
-		query.setFirstResult(qp.getStartAt());
-		query.setMaxResults(qp.getPageSize());
-		return query.getResultList();
+	public Collection<Order> getActiveOrders(int maxResults, int offset) {
+		return em.createQuery("FROM Order o WHERE o.status = :opened ORDER BY o.openedAt ASC", Order.class)
+				.setParameter("opened", OrderStatus.OPEN)
+				.setFirstResult(offset)
+				.setMaxResults(maxResults)
+				.getResultList();
 	}
-	
+
 	@Override
 	public Collection<Order> getOrdersFromLastMinutes(int minutes) {
 		final TypedQuery<Order> query = em.createQuery(
 				"from Order as o join o.unDoneDishes as ud WHERE o.status = :opened and ud.orderedAt < :lastMinutes " +
 						"order by o.openedAt ASC", Order.class);
 		query.setParameter("opened", OrderStatus.OPEN);
-		
+
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		cal.add(Calendar.MINUTE, -minutes);
 		query.setParameter("lastMinutes", cal.getTime());
-		
+
 		return query.getResultList();
 	}
-	
+
 	@Override
 	public Map<Dish, Long> getAllUndoneDishesFromAllActiveOrders() {
 		TypedQuery<Object[]> query = em.createQuery(

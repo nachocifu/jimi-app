@@ -17,46 +17,46 @@ public class StatsServiceImpl implements StatsService {
 
 	private static final int infBound = 50;
 
-    @Autowired
+	@Autowired
 	private DishService dishService;
 
-    @Autowired
+	@Autowired
 	private TableService tableService;
 
-    @Autowired
+	@Autowired
 	private OrderService orderService;
 
-    @Override
+	@Override
 	public int getBusyTablesUnits() {
 		return tableService.getNumberOfTablesWithState(TableStatus.BUSY);
 	}
 
-    @Override
+	@Override
 	public int getBusyTables() {
 		return (int) ((getBusyTablesUnits() * 100.0) / tableService.getTotalTables());
 	}
 
-    @Override
+	@Override
 	public int getFreeTablesUnits() {
 		return tableService.getNumberOfTablesWithState(TableStatus.FREE);
 	}
 
-    @Override
+	@Override
 	public int getFreeTables() {
 		return (int) ((getFreeTablesUnits() * 100.0) / tableService.getTotalTables());
 	}
 
-    @Override
+	@Override
 	public int getPayingTablesUnits() {
 		return tableService.getNumberOfTablesWithState(TableStatus.PAYING);
 	}
 
-    @Override
+	@Override
 	public int getPayingTables() {
 		return (int) ((getPayingTablesUnits() * 100.0) / tableService.getTotalTables());
 	}
 
-    @Override
+	@Override
 	public int getStockState() {
 		int underBound = 0;
 		for (Dish d : dishService.findAll()) {
@@ -66,17 +66,17 @@ public class StatsServiceImpl implements StatsService {
 		return (int) ((underBound * 100.0) / dishService.getTotalDishes());
 	}
 
-    @Override
+	@Override
 	public Map getMonthlyOrderTotal() {
 		return orderService.getMonthlyOrderTotal();
 	}
 
-    @Override
+	@Override
 	public Map getMonthlyOrderCancelled() {
 		return orderService.getMonthlyOrderCancelled();
 	}
 
-    @Override
+	@Override
 	public int getDiscontinuedDishes() {
 		return dishService.getDiscontinuedDishes();
 	}
