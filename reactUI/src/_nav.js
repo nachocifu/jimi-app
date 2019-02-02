@@ -42,7 +42,7 @@ export default {
     {
       name: 'Kitchen',
       class: '',
-      url: '/users',
+      url: '/kitchen',
       icon: 'icon-people',
       badge: {
         variant: 'info',
