@@ -19,34 +19,34 @@ import java.util.Map;
 @Controller
 @RequestMapping("/kitchen")
 public class KitchenController {
-	
+
 	@Autowired
-	@Qualifier(value = "userOrderService")
+    @Qualifier(value = "adminOrderService")
 	private OrderService orderService;
-	
-	@Autowired
+
+    @Autowired
 	private DishService dishService;
-	
-	@Autowired
+
+    @Autowired
 	private TableService tableService;
-	
-	@RequestMapping("")
+
+    @RequestMapping("")
 	public ModelAndView view() {
 		final ModelAndView mav = new ModelAndView("kitchen/view");
-		
-		Map totalDishes = orderService.getAllUndoneDishesFromAllActiveOrders();
-		
-		Collection<Table> busyTables = tableService.findTablesWithStatus(TableStatus.BUSY);
+
+        Map totalDishes = orderService.getAllUndoneDishesFromAllActiveOrders();
+
+        Collection<Table> busyTables = tableService.findTablesWithStatus(TableStatus.BUSY);
 		Collection<Table> urgentTables = tableService.getTablesWithOrdersFromLastMinutes(30);
-		
-		mav.addObject("tables", busyTables);
+
+        mav.addObject("tables", busyTables);
 		mav.addObject("urgentTables", urgentTables);
 		mav.addObject("totalDishes", totalDishes);
-		
-		return mav;
+
+        return mav;
 	}
-	
-	@RequestMapping(value = "done", method = RequestMethod.POST)
+
+    @RequestMapping(value = "done", method = RequestMethod.POST)
 	public ModelAndView done(@RequestParam(value = "orderid") long orderid, @RequestParam(value = "dishid") long dishid) {
 		orderService.setDishAsDone(orderService.findById(orderid), dishService.findById(dishid));
 		return new ModelAndView("redirect:/kitchen");
