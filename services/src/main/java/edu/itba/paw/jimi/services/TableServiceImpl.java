@@ -27,20 +27,19 @@ import java.util.LinkedList;
 @Service
 public class TableServiceImpl implements TableService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TableServiceImpl.class);
-	
+
 	@Autowired
 	private TableDao tableDao;
-	
+
 	@Autowired
-	@Qualifier(value = "userOrderService")
 	private OrderService orderService;
-	
-	@Override
+
+    @Override
 	public Table findById(final long id) {
 		return tableDao.findById(id);
 	}
-	
-	@Override
+
+    @Override
 	public Table create(String name) {
 		Order order = orderService.create(OrderStatus.INACTIVE, null, null, 0);
 		LOGGER.info("Created table {}", name);
@@ -53,8 +52,8 @@ public class TableServiceImpl implements TableService {
 		}
 		return table;
 	}
-	
-	@Override
+
+    @Override
 	public Collection<Table> findAll() {
 		Collection<Table> tables = tableDao.findAll();
 		if (tables != null)
@@ -62,8 +61,8 @@ public class TableServiceImpl implements TableService {
 		else
 			return new HashSet<Table>();
 	}
-	
-	@Override
+
+    @Override
 	public Collection<Table> findAll(QueryParams qp) {
 		Collection<Table> tables = tableDao.findAll(qp);
 		if (tables != null)
@@ -71,36 +70,36 @@ public class TableServiceImpl implements TableService {
 		else
 			return new HashSet<Table>();
 	}
-	
-	@Override
+
+    @Override
 	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
 		return tableDao.findTablesWithStatus(tableStatus);
 	}
-	
-	@Override
+
+    @Override
 	public boolean tableNameExists(String tableName) {
 		return tableDao.tableNameExists(tableName);
 	}
-	
-	@Override
+
+    @Override
 	public int getTotalTables() {
 		return tableDao.getTotalTables();
 	}
-	
-	@Override
+
+    @Override
 	public void changeStatus(Table table, TableStatus status) {
-		
-		if (table.getStatus().equals(TableStatus.BUSY) && (!status.equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE)))
+
+        if (table.getStatus().equals(TableStatus.BUSY) && (!status.equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE)))
 			throw new TableStatusTransitionInvalid(TableStatus.PAYING, status);
-		
-		if (table.getStatus().equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE))
+
+        if (table.getStatus().equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE))
 			throw new TableStatusTransitionInvalid(TableStatus.FREE, status);
-		
-		if (table.getStatus().equals(TableStatus.FREE) && !status.equals(TableStatus.BUSY))
+
+        if (table.getStatus().equals(TableStatus.FREE) && !status.equals(TableStatus.BUSY))
 			throw new TableStatusTransitionInvalid(TableStatus.BUSY, status);
-		
-		
-		switch (status) {
+
+
+        switch (status) {
 			case BUSY: {
 				orderService.open(table.getOrder());
 				break;
@@ -118,26 +117,26 @@ public class TableServiceImpl implements TableService {
 				break;
 			}
 		}
-		
-		table.setStatus(status);
+
+        table.setStatus(status);
 		table.setStatus(status);
 		tableDao.update(table);
 		LOGGER.info("Updated table {}", table);
 	}
-	
-	@Override
+
+    @Override
 	public int getNumberOfTablesWithState(TableStatus tableStatus) {
 		return tableDao.getNumberOfTablesWithState(tableStatus);
 	}
-	
-	@Override
+
+    @Override
 	public void setName(Table table, String name) {
 		table.setName(name);
 		tableDao.update(table);
 		LOGGER.info("Updated table name {}", table);
 	}
-	
-	@Override
+
+    @Override
 	public void delete(long id) {
 		Table table = tableDao.findById(id);
 		if (table.getStatus() != TableStatus.FREE) {
@@ -147,12 +146,12 @@ public class TableServiceImpl implements TableService {
 			LOGGER.info("Deleted table {}", table);
 		}
 	}
-	
-	@Override
+
+    @Override
 	public Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes) {
 		if (minutes < 0)
 			return new LinkedList<>();
 		return tableDao.getTablesWithOrdersFromLastMinutes(minutes);
 	}
-	
+
 }
