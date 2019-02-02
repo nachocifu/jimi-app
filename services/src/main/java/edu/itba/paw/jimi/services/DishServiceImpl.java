@@ -45,7 +45,7 @@ public class DishServiceImpl implements DishService {
 		dishDao.update(dish);
 		LOGGER.info("Updated dish name {}", dish);
 	}
-	
+
 	@Override
 	public void setName(Dish dish, String name) {
 		dish.setName(name);
@@ -139,9 +139,9 @@ public class DishServiceImpl implements DishService {
 	}
 
 	/**
-	 * @deprecated
 	 * @param qp
 	 * @return
+	 * @deprecated
 	 */
 	@Override
 	public Collection<Dish> findAllAvailable(QueryParams qp) {
