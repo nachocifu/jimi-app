@@ -5,7 +5,7 @@ import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 import dishData from './DishData'
 import Button from "reactstrap/es/Button";
 
-function UserRow(props) {
+function DishRow(props) {
   const dish = props.dish;
   const dishLink = `/dishes/${dish.id}`;
 
@@ -53,7 +53,7 @@ class Dishes extends Component {
                   </thead>
                   <tbody>
                   {dishList.map((dish, index) =>
-                    <UserRow key={index} dish={dish}/>
+                    <DishRow key={index} dish={dish}/>
                   )}
                   </tbody>
                 </Table>

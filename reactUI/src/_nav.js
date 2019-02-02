@@ -39,5 +39,25 @@ export default {
         text: 'NEW',
       },
     },
+    {
+      name: 'Kitchen',
+      class: '',
+      url: '/users',
+      icon: 'icon-people',
+      badge: {
+        variant: 'info',
+        text: 'NEW',
+      },
+    },
+    {
+      name: 'Tables',
+      class: '',
+      url: '/tables',
+      icon: 'icon-people',
+      badge: {
+        variant: 'info',
+        text: 'NEW',
+      },
+    },
   ],
 };

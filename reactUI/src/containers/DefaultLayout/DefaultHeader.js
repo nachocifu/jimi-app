@@ -20,15 +20,6 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile/>
         <AppSidebarToggler className="d-md-down-none" display="lg"/>
-
-        <Nav className="d-md-down-none" navbar>
-          <NavItem className="px-3">
-            <NavLink href="#">Tables</NavLink>
-          </NavItem>
-          <NavItem className="px-3">
-            <NavLink href="#">Kitchen</NavLink>
-          </NavItem>
-        </Nav>
         <Nav className="ml-auto" navbar>
           <NavItem className="px-3">
             <NavLink href="#">
