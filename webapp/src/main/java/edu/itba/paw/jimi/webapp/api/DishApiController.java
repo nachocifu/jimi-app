@@ -117,16 +117,6 @@ public class DishApiController extends BaseApiController {
 					.build();
 		}
 		
-		if (dish.getStock() != setDishStockForm.getOldStock()) {
-			LOGGER.warn("Cannot update dish stock: existing stock {} does not coincide with client old stock", setDishStockForm.getOldStock());
-			final URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(dish.getId())).build();
-			return Response
-					.status(Response.Status.CONFLICT)
-					.header("Location", location)
-					.entity(messageSource.getMessage("dish.error.409.stock.conflict", null, LocaleContextHolder.getLocale()))
-					.build();
-		}
-		
 		dishService.setStock(dish, setDishStockForm.getNewStock());
 		return Response.noContent().build();
 	}
