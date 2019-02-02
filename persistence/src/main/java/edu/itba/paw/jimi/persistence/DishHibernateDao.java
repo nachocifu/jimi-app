@@ -31,8 +31,7 @@ public class DishHibernateDao implements DishDao {
 
 	@Override
 	public Collection<Dish> findAll() {
-		final TypedQuery<Dish> query = em.createQuery("from Dish order by name", Dish.class);
-		return query.getResultList();
+        return em.createQuery("from Dish order by name", Dish.class).getResultList();
 	}
 
 	@Override
@@ -49,11 +48,10 @@ public class DishHibernateDao implements DishDao {
 	 */
 	@Override
 	public Collection<Dish> findAll(int pageSize, int offset) {
-		final TypedQuery<Dish> query = em.createQuery("from Dish order by name", Dish.class);
-		query.setFirstResult(offset);
-		query.setMaxResults(pageSize);
-
-		return query.getResultList();
+        return em.createQuery("from Dish order by name", Dish.class)
+                .setFirstResult(offset)
+                .setMaxResults(pageSize)
+                .getResultList();
 	}
 
 	@Override
@@ -80,9 +78,9 @@ public class DishHibernateDao implements DishDao {
 
 	@Override
 	public Collection<Dish> findAllAvailable(int pageSize, int offset) {
-		final TypedQuery<Dish> query = em.createQuery("from Dish as d where d.stock > 0 and d.discontinued = false order by name", Dish.class);
-		query.setFirstResult(offset);
-		query.setMaxResults(pageSize);
-		return query.getResultList();
+        return em.createQuery("from Dish as d where d.stock > 0 and d.discontinued = false order by name", Dish.class)
+                .setFirstResult(offset)
+                .setMaxResults(pageSize)
+                .getResultList();
 	}
 }

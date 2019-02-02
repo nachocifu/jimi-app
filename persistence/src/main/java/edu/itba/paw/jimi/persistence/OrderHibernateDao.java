@@ -78,17 +78,17 @@ public class OrderHibernateDao implements OrderDao {
 
 	@Override
 	public int getTotalRelevantOrders() {
-		Query query = em.createQuery("select count(*) from Order as o where o.status = :closed or o.status = :canceled");
-		query.setParameter("closed", OrderStatus.CLOSED);
-		query.setParameter("canceled", OrderStatus.CANCELED);
-		return ((Long) query.getSingleResult()).intValue();
+		return ((Long) em.createQuery("select count(*) from Order as o where o.status = :closed or o.status = :canceled")
+				.setParameter("closed", OrderStatus.CLOSED)
+				.setParameter("canceled", OrderStatus.CANCELED)
+				.getSingleResult()).intValue();
 	}
 
 	@Override
 	public int getTotalActiveOrders() {
-		Query query = em.createQuery("select count(*) from Order as o where o.status = :opened");
-		query.setParameter("opened", OrderStatus.OPEN);
-		return ((Long) query.getSingleResult()).intValue();
+		return ((Long) em.createQuery("select count(*) from Order as o where o.status = :opened")
+				.setParameter("opened", OrderStatus.OPEN)
+				.getSingleResult()).intValue();
 	}
 
 	@Override
@@ -113,11 +113,11 @@ public class OrderHibernateDao implements OrderDao {
 
 	@Override
 	public Collection<Order> getActiveOrders(int maxResults, int offset) {
-		final TypedQuery<Order> query = em.createQuery("FROM Order o WHERE o.status = :opened ORDER BY o.openedAt ASC", Order.class);
-		query.setParameter("opened", OrderStatus.OPEN);
-		query.setFirstResult(offset);
-		query.setMaxResults(maxResults);
-		return query.getResultList();
+		return em.createQuery("FROM Order o WHERE o.status = :opened ORDER BY o.openedAt ASC", Order.class)
+				.setParameter("opened", OrderStatus.OPEN)
+				.setFirstResult(offset)
+				.setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	@Override

@@ -42,24 +42,22 @@ public class TableHibernateDao implements TableDao {
 	}
 
 	public Collection<Table> findAll(int maxResults, int offset) {
-		final TypedQuery<Table> query = em.createQuery("from Table order by name", Table.class);
-		query.setFirstResult(offset);
-		query.setMaxResults(maxResults);
-
-		return query.getResultList();
+        return em.createQuery("from Table order by name", Table.class)
+                .setFirstResult(offset)
+                .setMaxResults(maxResults)
+                .getResultList();
 	}
 
 	@Override
 	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
-		final TypedQuery<Table> query = em.createQuery("from Table as t where t.status = :tableStatus order by t.order.openedAt", Table.class);
-		query.setParameter("tableStatus", tableStatus);
-		return query.getResultList();
+        return em.createQuery("from Table as t where t.status = :tableStatus order by t.order.openedAt", Table.class)
+                .setParameter("tableStatus", tableStatus)
+                .getResultList();
 	}
 
 	@Override
 	public int getTotalTables() {
-		Long query = em.createQuery("select count(*) from Table", Long.class).getSingleResult();
-		return query.intValue();
+        return em.createQuery("select count(*) from Table", Long.class).getSingleResult().intValue();
 	}
 
 	public Table create(String name, TableStatus ts, Order order) {
@@ -72,9 +70,9 @@ public class TableHibernateDao implements TableDao {
 
 	@Override
 	public int getNumberOfTablesWithState(TableStatus tableStatus) {
-		final TypedQuery<Long> query = em.createQuery("select count(*) from Table as t where t.status = :tableStatus", Long.class);
-		query.setParameter("tableStatus", tableStatus);
-		return query.getSingleResult().intValue();
+        return em.createQuery("select count(*) from Table as t where t.status = :tableStatus", Long.class)
+                .setParameter("tableStatus", tableStatus)
+                .getSingleResult().intValue();
 	}
 
 	@Override
@@ -102,9 +100,7 @@ public class TableHibernateDao implements TableDao {
 	}
 
 	public boolean tableNameExists(String tableName) {
-		final TypedQuery<Table> query = em.createQuery("from Table as t where t.name = :tableName", Table.class);
-		query.setParameter("tableName", tableName);
-		List<Table> l = query.getResultList();
-		return !l.isEmpty();
+        return !em.createQuery("from Table as t where t.name = :tableName", Table.class)
+                .setParameter("tableName", tableName).getResultList().isEmpty();
 	}
 }

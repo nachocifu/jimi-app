@@ -25,17 +25,15 @@ public class UserHibernateDao implements UserDao {
 
 	@Override
 	public Collection<User> findAll() {
-		final TypedQuery<User> query = em.createQuery("from User", User.class);
-		return query.getResultList();
+		return em.createQuery("from User", User.class).getResultList();
 	}
 
 	@Override
 	public Collection<User> findAll(int maxResults, int offset) {
-		final TypedQuery<User> query = em.createQuery("from User order by username", User.class);
-		query.setFirstResult(offset);
-		query.setMaxResults(maxResults);
-
-		return query.getResultList();
+		return em.createQuery("from User order by username", User.class)
+				.setFirstResult(offset)
+				.setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	@Override
@@ -67,7 +65,6 @@ public class UserHibernateDao implements UserDao {
 
 	@Override
 	public int getTotalUsers() {
-		Long query = em.createQuery("select count(*) from User", Long.class).getSingleResult();
-		return query.intValue();
+		return em.createQuery("select count(*) from User", Long.class).getSingleResult().intValue();
 	}
 }
