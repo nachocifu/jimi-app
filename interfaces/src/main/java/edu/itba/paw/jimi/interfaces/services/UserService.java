@@ -6,9 +6,9 @@ import edu.itba.paw.jimi.models.utils.QueryParams;
 import java.util.Collection;
 
 public interface UserService {
-	
+
 	User findById(final long id);
-	
+
 	/**
 	 * Finds the User by the username.
 	 *
@@ -16,22 +16,30 @@ public interface UserService {
 	 * @return the user with said username.
 	 */
 	User findByUsername(String username);
-	
+
 	/**
 	 * Returns all the users.
 	 *
 	 * @return all the users.
 	 */
 	Collection<User> findAll();
-	
+
 	/**
 	 * Returns all the users.
 	 *
-	 * @param qp the QueryParams.
+	 * @param maxResults Max results allowed. Alias page size
+	 * @param offset First result start. Alias first result
 	 * @return all the users.
 	 */
-	Collection<User> findAll(QueryParams qp);
-	
+	Collection<User> findAll(int maxResults, int offset);
+
+	/**
+	 * @param queryParams
+	 * @return
+	 * @deprecated
+	 */
+	Collection<User> findAll(QueryParams queryParams);
+
 	/**
 	 * Create a new user.
 	 *
@@ -40,8 +48,8 @@ public interface UserService {
 	 * @return The created user.
 	 */
 	User create(String username, String password);
-	
-	
+
+
 	/**
 	 * Creates a user with admin privileges.
 	 *
@@ -50,7 +58,7 @@ public interface UserService {
 	 * @return the created user.
 	 */
 	User createAdmin(String username, String password);
-	
+
 	int getTotalUsers();
-	
+
 }

@@ -15,22 +15,22 @@ import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-	
+
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Override
 	public User findById(final long id) {
 		return userDao.findById(id);
 	}
-	
+
 	@Override
 	public User findByUsername(String username) {
 		return userDao.findByUsername(username);
 	}
-	
+
 	@Override
 	public Collection<User> findAll() {
 		Collection<User> users = userDao.findAll();
@@ -39,16 +39,24 @@ public class UserServiceImpl implements UserService {
 		else
 			return new HashSet<User>();
 	}
-	
+
 	@Override
-	public Collection<User> findAll(QueryParams qp) {
-		Collection<User> users = userDao.findAll(qp);
+	public Collection<User> findAll(int maxResults, int offset) {
+		Collection<User> users = userDao.findAll(maxResults, offset);
 		if (users != null)
 			return users;
 		else
 			return new HashSet<User>();
 	}
-	
+
+	/**
+	 * @deprecated
+	 */
+	@Override
+	public Collection<User> findAll(QueryParams qp) {
+		return findAll(qp.getPageSize(), qp.getStartAt());
+	}
+
 	@Override
 	public User create(final String username, String password) {
 		Set<String> roles = new HashSet<String>();
@@ -56,7 +64,7 @@ public class UserServiceImpl implements UserService {
 		LOGGER.info("Created user {}", username);
 		return userDao.create(username, password, roles);
 	}
-	
+
 	@Override
 	public User createAdmin(String username, String password) {
 		Set<String> roles = new HashSet<String>();
@@ -65,10 +73,10 @@ public class UserServiceImpl implements UserService {
 		LOGGER.info("Created admin user {}", username);
 		return userDao.create(username, password, roles);
 	}
-	
+
 	@Override
 	public int getTotalUsers() {
 		return userDao.getTotalUsers();
 	}
-	
+
 }
