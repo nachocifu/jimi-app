@@ -275,7 +275,7 @@ public class TableApiController extends BaseApiController {
 		if (currentAmount < newAmount) {
 			orderService.addDishes(order, currentDish, newAmount - currentAmount);
 		} else if (currentAmount > newAmount) {
-			orderService.removeDishes(order, currentDish, currentAmount - newAmount);
+			orderService.removeUndoneDish(order, currentDish, currentAmount - newAmount);
 		}
 		return Response.noContent().build();
 	}
@@ -303,7 +303,7 @@ public class TableApiController extends BaseApiController {
 		}
 		
 		final Order order = table.getOrder();
-		orderService.removeAllDish(order, orderService.getDishById(order, dishId));
+		orderService.removeAllUndoneDish(order, orderService.getDishById(order, dishId));
 		return Response.noContent().build();
 	}
 	
