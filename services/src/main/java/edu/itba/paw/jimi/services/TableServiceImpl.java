@@ -2,7 +2,7 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.FreeTableDeletionAttemptException;
-import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
+import edu.itba.paw.jimi.interfaces.exceptions.TableStatusInvalidTransitionException;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Order;
@@ -27,18 +27,18 @@ import java.util.LinkedList;
 @Service
 public class TableServiceImpl implements TableService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TableServiceImpl.class);
-
+	
 	@Autowired
 	private TableDao tableDao;
-
+	
 	@Autowired
 	private OrderService orderService;
-
+	
 	@Override
 	public Table findById(final long id) {
 		return tableDao.findById(id);
 	}
-
+	
 	@Override
 	public Table create(String name) {
 		Order order = orderService.create(OrderStatus.INACTIVE, null, null, 0);
@@ -52,7 +52,7 @@ public class TableServiceImpl implements TableService {
 		}
 		return table;
 	}
-
+	
 	@Override
 	public Collection<Table> findAll() {
 		Collection<Table> tables = tableDao.findAll();
@@ -61,7 +61,7 @@ public class TableServiceImpl implements TableService {
 		else
 			return new HashSet<Table>();
 	}
-
+	
 	@Override
 	public Collection<Table> findAll(QueryParams qp) {
 		return findAll(qp.getPageSize(), qp.getStartAt());
@@ -75,42 +75,42 @@ public class TableServiceImpl implements TableService {
 		else
 			return new HashSet<Table>();
 	}
-
+	
 	@Override
 	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
 		return tableDao.findTablesWithStatus(tableStatus);
 	}
-
+	
 	@Override
 	public boolean tableNameExists(String tableName) {
 		return tableDao.tableNameExists(tableName);
 	}
-
+	
 	@Override
 	public int getTotalTables() {
 		return tableDao.getTotalTables();
 	}
-
+	
 	@Override
 	public void changeStatus(Table table, TableStatus status) {
-
+		
 		if (table.getStatus().equals(TableStatus.BUSY) && (!status.equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE)))
-			throw new TableStatusTransitionInvalid(TableStatus.PAYING, status);
-
+			throw new TableStatusInvalidTransitionException(TableStatus.PAYING, status);
+		
 		if (table.getStatus().equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE))
-			throw new TableStatusTransitionInvalid(TableStatus.FREE, status);
-
+			throw new TableStatusInvalidTransitionException(TableStatus.FREE, status);
+		
 		if (table.getStatus().equals(TableStatus.FREE) && !status.equals(TableStatus.BUSY))
-			throw new TableStatusTransitionInvalid(TableStatus.BUSY, status);
-
-
+			throw new TableStatusInvalidTransitionException(TableStatus.BUSY, status);
+		
+		
 		switch (status) {
 			case BUSY: {
 				orderService.open(table.getOrder());
 				break;
 			}
 			case FREE: {
-				if (table.getStatus().equals(TableStatus.BUSY)) {//Cancel order!
+				if (table.getStatus().equals(TableStatus.BUSY)) {
 					orderService.cancel(table.getOrder());
 				}
 				Order newOrder = orderService.create(OrderStatus.INACTIVE, null, null, 0);
@@ -122,25 +122,25 @@ public class TableServiceImpl implements TableService {
 				break;
 			}
 		}
-
+		
 		table.setStatus(status);
 		table.setStatus(status);
 		tableDao.update(table);
 		LOGGER.info("Updated table {}", table);
 	}
-
+	
 	@Override
 	public int getNumberOfTablesWithState(TableStatus tableStatus) {
 		return tableDao.getNumberOfTablesWithState(tableStatus);
 	}
-
+	
 	@Override
 	public void setName(Table table, String name) {
 		table.setName(name);
 		tableDao.update(table);
 		LOGGER.info("Updated table name {}", table);
 	}
-
+	
 	@Override
 	public void delete(long id) {
 		Table table = tableDao.findById(id);
@@ -151,12 +151,12 @@ public class TableServiceImpl implements TableService {
 			LOGGER.info("Deleted table {}", table);
 		}
 	}
-
+	
 	@Override
 	public Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes) {
 		if (minutes < 0)
 			return new LinkedList<>();
 		return tableDao.getTablesWithOrdersFromLastMinutes(minutes);
 	}
-
+	
 }

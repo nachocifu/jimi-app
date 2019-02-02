@@ -36,7 +36,7 @@ public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViol
 		JsonArrayBuilder jsonArrayBuilderErrors = Json.createArrayBuilder();
 		jsonArrayBuilderErrors.add(jsonObjectBuilderErrors);
 		return Json.createObjectBuilder()
-				.add("errors", jsonArrayBuilderErrors)
+				.add("formErrors", jsonArrayBuilderErrors)
 				.build()
 				.toString();
 	}
