@@ -1,10 +1,7 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
-import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
-import edu.itba.paw.jimi.interfaces.exceptions.DishAddedToInactiveOrderException;
-import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
-import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
+import edu.itba.paw.jimi.interfaces.exceptions.*;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
@@ -26,7 +23,6 @@ import java.util.HashSet;
 import java.util.Map;
 
 @Service
-@Qualifier(value = "orderService")
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
@@ -98,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
 	public int removeOneDish(Order order, Dish dish) {
         if (!order.getStatus().equals(OrderStatus.OPEN))
-            throw new DishAddedToInactiveOrderException();
+			throw new DishSetToInactiveTableException();
 
 		int previousAmount;
 		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish).getAmount() != 0) {
@@ -131,7 +127,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
 	public int removeAllDish(Order order, Dish dish) {
         if (!order.getStatus().equals(OrderStatus.OPEN))
-            throw new DishAddedToInactiveOrderException();
+			throw new DishSetToInactiveTableException();
 
 		// Update dish stock
 		if (order.getDishes().containsKey(dish)) {
@@ -155,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
 	public int setDiners(Order order, int diners) {
         if (!order.getStatus().equals(OrderStatus.OPEN))
-            throw new DishAddedToInactiveOrderException();
+			throw new DinersSetOnNotOpenOrderException();
 
 		if (diners >= 0) {
             order.setDiners(diners);

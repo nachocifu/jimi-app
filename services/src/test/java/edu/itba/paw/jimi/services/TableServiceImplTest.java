@@ -37,7 +37,6 @@ public class TableServiceImplTest {
 	private TableDao tableDao;
 
     @Mock
-    @Qualifier(value = "orderService")
 	private OrderService orderService;
 
     @Before

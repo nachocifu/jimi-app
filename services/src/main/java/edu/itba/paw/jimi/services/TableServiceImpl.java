@@ -32,7 +32,6 @@ public class TableServiceImpl implements TableService {
 	private TableDao tableDao;
 
 	@Autowired
-	@Qualifier(value = "orderService")
 	private OrderService orderService;
 
     @Override

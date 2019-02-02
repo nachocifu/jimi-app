@@ -561,7 +561,7 @@ public class OrderServiceImplTest {
 		assertEquals(expectedUrgentOrders, actualUrgentOrders);
 	}
 
-    @Test(expected = DishAddedToInactiveOrderException.class)
+	@Test(expected = DinersSetOnNotOpenOrderException.class)
     public void setDinersOnNotActiveOrderTest() {
         Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 
@@ -572,7 +572,7 @@ public class OrderServiceImplTest {
         orderService.setDiners(order, 5);
     }
 
-    @Test(expected = DishAddedToInactiveOrderException.class)
+	@Test(expected = DishSetToInactiveTableException.class)
     public void addDishTwiceThenRemoveOnceNotOpenOrderTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
@@ -598,7 +598,7 @@ public class OrderServiceImplTest {
 
     }
 
-    @Test(expected = DishAddedToInactiveOrderException.class)
+	@Test(expected = DishSetToInactiveTableException.class)
     public void addDishTwiceThenRemoveAllNotOpenOrderTest() {
 
         Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
