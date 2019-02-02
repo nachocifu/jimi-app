@@ -21,7 +21,7 @@ import java.util.Map;
 public class KitchenController {
 
 	@Autowired
-    @Qualifier(value = "adminOrderService")
+    @Qualifier(value = "orderService")
 	private OrderService orderService;
 
     @Autowired

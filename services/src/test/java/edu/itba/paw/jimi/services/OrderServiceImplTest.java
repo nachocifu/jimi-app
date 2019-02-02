@@ -19,7 +19,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class OrderServiceBaseImplTest {
+public class OrderServiceImplTest {
 
 	private static final String DISH_NAME = "Cambuchá";
 	private static final float DISH_PRICE = 5.25F;
@@ -34,7 +34,7 @@ public class OrderServiceBaseImplTest {
 	private DishService dishService;
 
 	@InjectMocks
-    private OrderServiceBaseImpl orderService;
+	private OrderServiceImpl orderService;
 
 	@Before
 	public void setUp() {

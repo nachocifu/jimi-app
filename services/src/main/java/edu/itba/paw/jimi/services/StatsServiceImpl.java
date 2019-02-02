@@ -24,7 +24,7 @@ public class StatsServiceImpl implements StatsService {
 	private TableService tableService;
 
     @Autowired
-    @Qualifier(value = "adminOrderService")
+	@Qualifier(value = "orderService")
 	private OrderService orderService;
 
     @Override

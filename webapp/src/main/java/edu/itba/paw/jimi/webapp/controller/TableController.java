@@ -35,7 +35,7 @@ public class TableController {
 	private TableService tableService;
 
 	@Autowired
-	@Qualifier(value = "adminOrderService")
+	@Qualifier(value = "orderService")
 	private OrderService orderService;
 
 	@Autowired
