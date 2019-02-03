@@ -97,6 +97,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int removeUndoneDish(Order order, Dish dish, int amount) {
+		if (!order.getStatus().equals(OrderStatus.OPEN))
+			throw new DishSetToInactiveOrderException();
+
 		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish).getAmount() != 0) {
 			//Here logic to remove undone dishes.
 			int previousAmount = order.getUnDoneDishes().get(dish).getAmount();
