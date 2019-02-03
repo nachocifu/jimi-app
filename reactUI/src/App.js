@@ -3,6 +3,10 @@ import {HashRouter, Route, Switch} from 'react-router-dom';
 // import { renderRoutes } from 'react-router-config';
 import Loadable from 'react-loadable';
 import './App.scss';
+import Reactotron from 'reactotron-react-js';
+import {Provider} from "react-redux";
+import rootReducer from './redux/reducers'
+import {reactotronRedux} from 'reactotron-redux'
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -35,17 +39,33 @@ const Page500 = Loadable({
 
 class App extends Component {
 
+  store = null;
+
+  constructor(props) {
+    super(props);
+    Reactotron.configure().use(reactotronRedux());
+    // eslint-disable-next-line
+    if (process.env.NODE_ENV != 'production') Reactotron.connect();
+    Reactotron.log(process.env.NODE_ENV);
+
+
+    this.store = Reactotron.createStore(rootReducer);
+
+  }
+
   render() {
     return (
-      <HashRouter>
-        <Switch>
-          <Route exact path="/login" name="Login Page" component={Login}/>
-          <Route exact path="/register" name="Register Page" component={Register}/>
-          <Route exact path="/404" name="Page 404" component={Page404}/>
-          <Route exact path="/500" name="Page 500" component={Page500}/>
-          <Route path="/" name="Stadistics" component={DefaultLayout}/>
-        </Switch>
-      </HashRouter>
+      <Provider store={this.store}>
+        <HashRouter>
+          <Switch>
+            <Route exact path="/login" name="Login Page" component={Login}/>
+            <Route exact path="/register" name="Register Page" component={Register}/>
+            <Route exact path="/404" name="Page 404" component={Page404}/>
+            <Route exact path="/500" name="Page 500" component={Page500}/>
+            <Route path="/" name="Stadistics" component={DefaultLayout}/>
+          </Switch>
+        </HashRouter>
+      </Provider>
     );
   }
 }

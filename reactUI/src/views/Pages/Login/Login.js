@@ -13,9 +13,12 @@ import {
   InputGroupText,
   Row
 } from 'reactstrap';
+import {connect} from "react-redux";
+import {LOGIN_PENDING} from "../../../redux/actions/actionTypes";
 
 class Login extends Component {
   render() {
+    this.props.dispatch({type: LOGIN_PENDING});
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -60,4 +63,8 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => {
+  return {status: state.authentication.status};
+};
+
+export default connect(mapStateToProps)(Login);

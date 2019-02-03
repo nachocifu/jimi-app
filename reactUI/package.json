@@ -31,14 +31,18 @@
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.7.0",
     "react-loadable": "^5.5.0",
+    "react-redux": "^6.0.0",
     "react-router-config": "^4.4.0-beta.6",
     "react-router-dom": "^4.3.1",
     "react-test-renderer": "^16.7.0",
     "reactstrap": "^7.0.2",
+    "redux": "^4.0.1",
     "simple-line-icons": "^2.4.1"
   },
   "devDependencies": {
-    "react-scripts": "2.1.3"
+    "react-scripts": "2.1.3",
+    "reactotron-react-js": "^2.1.4",
+    "reactotron-redux": "^2.1.3"
   },
   "scripts": {
     "start": "react-scripts start",
