@@ -1,7 +1,6 @@
 package edu.itba.paw.jimi.interfaces.daos;
 
 import edu.itba.paw.jimi.models.User;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import java.util.Collection;
 import java.util.Set;

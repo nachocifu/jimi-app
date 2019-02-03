@@ -5,8 +5,8 @@ import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.DishDTO;
 import edu.itba.paw.jimi.webapp.dto.DishListDTO;
-import edu.itba.paw.jimi.webapp.dto.form.DishForm;
-import edu.itba.paw.jimi.webapp.dto.form.SetDishStockForm;
+import edu.itba.paw.jimi.webapp.dto.form.dish.DishForm;
+import edu.itba.paw.jimi.webapp.dto.form.dish.SetDishStockForm;
 import edu.itba.paw.jimi.webapp.utils.PaginationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ import java.util.LinkedList;
 @Controller
 public class DishApiController extends BaseApiController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(BaseApiController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DishApiController.class);
 	
 	@Autowired
 	private DishService dishService;
@@ -79,14 +79,19 @@ public class DishApiController extends BaseApiController {
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateDish(@PathParam("id") final int dishId,
+	public Response updateDish(@PathParam("id") final int id,
 	                           @Valid final DishForm dishForm) {
 		if (dishForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		
-		Dish dish = dishService.findById(dishId);
-		if (dish == null)
-			return Response.status(Response.Status.NOT_FOUND).build();
+		final Dish dish = dishService.findById(id);
+		if (dish == null) {
+			LOGGER.warn("Dish with id {} not found", id);
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
+					.build();
+		}
 		
 		dishService.setName(dish, dishForm.getName());
 		dishService.setStock(dish, dishForm.getStock());
@@ -96,24 +101,19 @@ public class DishApiController extends BaseApiController {
 		return Response.noContent().build();
 	}
 	
-	@PUT
+	@POST
 	@Path("/{id}/stock")
-	public Response setDishStock(@PathParam("id") final int dishId,
+	public Response setDishStock(@PathParam("id") final int id,
 	                             @Valid final SetDishStockForm setDishStockForm) {
 		if (setDishStockForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		
-		final Dish dish = dishService.findById(dishId);
-		if (dish == null)
-			return Response.status(Response.Status.NOT_FOUND).build();
-		
-		if (dishService.findById(dishId).getStock() != setDishStockForm.getOldStock()) {
-			LOGGER.warn("Cannot update dish stock: existing stock {} does not coincide with client old stock", setDishStockForm.getOldStock());
-			final URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(dish.getId())).build();
+		final Dish dish = dishService.findById(id);
+		if (dish == null) {
+			LOGGER.warn("Dish with id {} not found", id);
 			return Response
-					.status(Response.Status.CONFLICT)
-					.header("Location", location)
-					.entity(messageSource.getMessage("dish.error.409.stock.conflict", null, LocaleContextHolder.getLocale()))
+					.status(Response.Status.NOT_FOUND)
+					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
 					.build();
 		}
 		
@@ -148,5 +148,4 @@ public class DishApiController extends BaseApiController {
 				.header("Content-Type", "application/vnd.ms-excel")
 				.build();
 	}
-	
 }

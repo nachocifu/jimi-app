@@ -25,288 +25,270 @@ import java.util.Map;
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-    @Autowired
-    private OrderDao orderDao;
+	@Autowired
+	private OrderDao orderDao;
 
-    @Autowired
-    private DishService dishService;
+	@Autowired
+	private DishService dishService;
 
-    /**
-     * Updates the total value of the object. Does not touch the DB!
-     *
-     * @param order The order to update.
-     */
-    private void updateTotal(Order order) {
-        float total = 0f;
-        for (Map.Entry<Dish, DishData> d : order.getDishes().entrySet())
-            total += d.getKey().getPrice() * d.getValue().getAmount();
+	/**
+	 * Updates the total value of the object. Does not touch the DB!
+	 *
+	 * @param order The order to update.
+	 */
+	private void updateTotal(Order order) {
+		float total = 0f;
+		for (Map.Entry<Dish, DishData> d : order.getDishes().entrySet())
+			total += d.getKey().getPrice() * d.getValue().getAmount();
 
-        order.setTotal(total);
-    }
+		order.setTotal(total);
+	}
 
-    @Override
-    public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners) {
-        LOGGER.info("Create order: {} | {} | {} | {}", status, openedAt, closedAt, diners);
-        return orderDao.create(status, openedAt, closedAt, diners, 0f);
-    }
+	@Override
+	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners) {
+		LOGGER.info("Create order: {} | {} | {} | {}", status, openedAt, closedAt, diners);
+		return orderDao.create(status, openedAt, closedAt, diners, 0f);
+	}
 
-    @Override
-    public int addDish(Order order, Dish dish) {
-        LOGGER.info("Add dish: {} | {}", order, dish);
-        return addDishes(order, dish, 1);
-    }
+	@Override
+	public int addDish(Order order, Dish dish) {
+		LOGGER.info("Add dish: {} | {}", order, dish);
+		return addDishes(order, dish, 1);
+	}
 
-    @Override
-    public int addDishes(Order order, Dish dish, int amount) {
-        if (amount > dish.getStock())
-            throw new StockHandlingException("Amount of dishes exceeds available dish stock.");
+	@Override
+	public int addDishes(Order order, Dish dish, int amount) {
+		if (amount > dish.getStock())
+			throw new StockHandlingException("Amount of dishes exceeds available dish stock.");
 
-        if (!order.getStatus().equals(OrderStatus.OPEN))
-            throw new DishAddedToInactiveOrderException();
+		if (!order.getStatus().equals(OrderStatus.OPEN))
+			throw new DishSetToInactiveOrderException();
 
-        if (dish.isDiscontinued())
-            throw new AddingDiscontinuedDishException();
+		if (dish.isDiscontinued())
+			throw new AddingDiscontinuedDishException();
 
-        int previousAmount;
-        if (order.getUnDoneDishes().containsKey(dish))
-            previousAmount = order.getUnDoneDishes().get(dish).getAmount();
-        else
-            previousAmount = 0;
+		int previousAmount;
+		if (order.getUnDoneDishes().containsKey(dish))
+			previousAmount = order.getUnDoneDishes().get(dish).getAmount();
+		else
+			previousAmount = 0;
 
-        order.setDish(dish, previousAmount + amount);
-        updateTotal(order);
-        orderDao.update(order);
+		order.setDish(dish, previousAmount + amount);
+		updateTotal(order);
+		orderDao.update(order);
 
-        LOGGER.info("Updated order (add dishes): {}", order);
+		LOGGER.info("Updated order (add dishes): {}", order);
 
-        // Update dish stock
-        dishService.setStock(dish, dish.getStock() - amount);
+		// Update dish stock
+		dishService.setStock(dish, dish.getStock() - amount);
 
-        if (order.getDishes().containsKey(dish))
-            return order.getDishes().get(dish).getAmount();
-        else
-            return 0;
-    }
+		if (order.getDishes().containsKey(dish))
+			return order.getDishes().get(dish).getAmount();
+		else
+			return 0;
+	}
 
-    @Override
-    public int removeOneDish(Order order, Dish dish) {
-        if (!order.getStatus().equals(OrderStatus.OPEN))
-            throw new DishSetToInactiveOrderException();
+	@Override
+	public int removeOneUndoneDish(Order order, Dish dish) {
+		return removeUndoneDish(order, dish, 1);
+	}
 
-        int previousAmount;
-        if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish).getAmount() != 0) {
-            //Here logic to remove undone dishes.
-            previousAmount = order.getUnDoneDishes().get(dish).getAmount();
-            order.setDish(dish, previousAmount - 1);
-            updateTotal(order);
-            orderDao.update(order);
+	@Override
+	public int removeUndoneDish(Order order, Dish dish, int amount) {
+		if (!order.getStatus().equals(OrderStatus.OPEN))
+			throw new DishSetToInactiveOrderException();
 
-            // Update dish stock
-            dishService.setStock(dish, dish.getStock() + 1);
-        } else {
-            //Here logic to remove doneDishes.
-            if (order.getDoneDishes().containsKey(dish) && order.getDoneDishes().get(dish) != 0) {
-                previousAmount = order.getDoneDishes().get(dish);
-                order.setDoneDish(dish, previousAmount - 1);
-                updateTotal(order);
-                orderDao.update(order); //TODO: Aca hace falta poner tests de que stock queda igual si sacas dishes done. y este caso y demas. pensa.
-            }
-        }
+		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish).getAmount() != 0) {
+			//Here logic to remove undone dishes.
+			int previousAmount = order.getUnDoneDishes().get(dish).getAmount();
+			order.setDish(dish, previousAmount - amount);
+			updateTotal(order);
 
-        LOGGER.info("Updated order (remove one dish): {}", order);
+			// Update dish stock
+			dishService.setStock(dish, dish.getStock() + amount);
 
-        if (order.getDishes().containsKey(dish))
-            return order.getDishes().get(dish).getAmount();
-        else
-            return 0;
-    }
+			orderDao.update(order);
 
-    @Override
-    public int removeAllDish(Order order, Dish dish) {
-        if (!order.getStatus().equals(OrderStatus.OPEN))
-            throw new DishSetToInactiveOrderException();
+			LOGGER.info("Updated order (remove dish amount): {}", order);
+		}
 
-        // Update dish stock
-        if (order.getDishes().containsKey(dish)) {
-            int previousValue = order.getDishes().get(dish).getAmount();
-            dishService.setStock(dish, dish.getStock() + previousValue);
-        }
+		if (order.getDishes().containsKey(dish))
+			return order.getDishes().get(dish).getAmount();
+		else
+			return 0;
+	}
 
-        order.setDish(dish, 0);
-        order.setDoneDish(dish, 0);
-        updateTotal(order);
-        orderDao.update(order);
+	@Override
+	public int removeAllUndoneDish(Order order, Dish dish) {
+		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish).getAmount() != 0) {
+			return removeUndoneDish(order, dish, order.getDishes().get(dish).getAmount());
+		}
+		return 0;
+	}
 
-        LOGGER.info("Updated order (remove all dish): {}", order);
+	@Override
+	public void setNewUndoneDishAmount(Order order, Dish dish, int newAmount) {
+		final int currentAmount = order.getDishes().get(dish).getAmount();
+		if (currentAmount < newAmount) {
+			addDishes(order, dish, newAmount - currentAmount);
+		} else if (currentAmount > newAmount) {
+			removeUndoneDish(order, dish, currentAmount - newAmount);
+		}
+	}
 
-        if (order.getDishes().containsKey(dish))
-            return order.getDishes().get(dish).getAmount();
-        else
-            return 0;
-    }
+	@Override
+	public boolean containsDish(Order order, int dishId) {
+		return getDishById(order, dishId) != null;
+	}
 
-    @Override
-    public int setDiners(Order order, int diners) {
-        if (!order.getStatus().equals(OrderStatus.OPEN))
-            throw new DinersSetOnNotOpenOrderException();
+	@Override
+	public Dish getDishById(Order order, int dishId) {
+		return orderDao.findById(order.getId()).getDishes().keySet().stream()
+				.filter(d -> d.getId() == dishId)
+				.findFirst()
+				.orElse(null);
+	}
 
-        if (diners >= 0) {
-            order.setDiners(diners);
-            order.setDiners(diners);
-            orderDao.update(order);
+	@Override
+	public int setDiners(Order order, int diners) {
+		if (!order.getStatus().equals(OrderStatus.OPEN))
+			throw new DinersSetOnNotOpenOrderException();
 
-            LOGGER.info("Updated order (set diners): {}", order);
+		if (diners >= 0) {
+			order.setDiners(diners);
+			orderDao.update(order);
 
-            return diners;
-        }
-        return 0;
-    }
+			LOGGER.info("Updated order (set diners): {}", order);
 
-    @Override
-    public Order findById(long id) {
-        return orderDao.findById(id);
-    }
+			return diners;
+		}
+		return 0;
+	}
 
-    @Override
-    public void open(Order order) {
-        if (!order.getStatus().equals(OrderStatus.INACTIVE))
-            throw new OrderStatusException(OrderStatus.INACTIVE, order.getStatus());
+	@Override
+	public Order findById(long id) {
+		return orderDao.findById(id);
+	}
 
-        order.setOpenedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
-        order.setStatus(OrderStatus.OPEN);
-        orderDao.update(order);
+	@Override
+	public void open(Order order) {
+		if (!order.getStatus().equals(OrderStatus.INACTIVE))
+			throw new OrderStatusException(OrderStatus.INACTIVE, order.getStatus());
 
-        LOGGER.info("Opened order {}", order);
-    }
+		order.setOpenedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+		order.setStatus(OrderStatus.OPEN);
+		orderDao.update(order);
 
-    @Override
-    public void close(Order order) {
-        if (!order.getStatus().equals(OrderStatus.OPEN))
-            throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
+		LOGGER.info("Opened order {}", order);
+	}
 
-        order.setStatus(OrderStatus.CLOSED);
-        order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
-        orderDao.update(order);
+	@Override
+	public void close(Order order) {
+		if (!order.getStatus().equals(OrderStatus.OPEN))
+			throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
 
-        LOGGER.info("Closed order {}", order);
-    }
+		order.setStatus(OrderStatus.CLOSED);
+		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+		orderDao.update(order);
 
-    @Override
-    public void cancel(Order order) {
-        if (!order.getStatus().equals(OrderStatus.OPEN))
-            throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
+		LOGGER.info("Closed order {}", order);
+	}
 
-        order.setStatus(OrderStatus.CANCELED);
-        order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
-        orderDao.update(order);
+	@Override
+	public void cancel(Order order) {
+		if (!order.getStatus().equals(OrderStatus.OPEN))
+			throw new OrderStatusException(OrderStatus.OPEN, order.getStatus());
 
-        LOGGER.info("Canceled order {}", order);
-    }
+		order.setStatus(OrderStatus.CANCELED);
+		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+		orderDao.update(order);
 
-    @Override
-    public Collection<Order> findAll() {
-        Collection<Order> orders = orderDao.findAll();
-        if (orders != null)
-            return orders;
-        else
-            return new HashSet<Order>();
-    }
+		LOGGER.info("Canceled order {}", order);
+	}
 
-    @Override
-    public Collection<Order> findAll(QueryParams qp) {
-        return findAll(qp.getPageSize(), qp.getStartAt());
-    }
+	@Override
+	public Collection<Order> findAll() {
+		Collection<Order> orders = orderDao.findAll();
+		if (orders != null)
+			return orders;
+		else
+			return new HashSet<Order>();
+	}
 
-    /**
-     * Finds all closed orders.
-     *
-     * @param maxResults
-     * @param offset
-     * @return A collection of said orders.
-     */
-    @Override
-    public Collection<Order> findAll(int maxResults, int offset) {
-        Collection<Order> orders = orderDao.findAll(maxResults, offset);
-        if (orders != null)
-            return orders;
-        else
-            return new HashSet<Order>();
-    }
+	@Override
+	public Collection<Order> findAll(QueryParams qp) {
+		return findAll(qp.getPageSize(), qp.getStartAt());
+	}
 
-    @Override
-    public Collection<Order> findAllRelevant(QueryParams qp) {
-        return findAll(qp.getPageSize(), qp.getStartAt());
-    }
+	@Override
+	public Collection<Order> findAll(int maxResults, int offset) {
+		Collection<Order> orders = orderDao.findAll(maxResults, offset);
+		if (orders != null)
+			return orders;
+		else
+			return new HashSet<Order>();
+	}
 
-    /**
-     * Finds all closed orders.
-     *
-     * @param maxResults
-     * @param offset
-     * @return A collection of said orders.
-     */
-    @Override
-    public Collection<Order> findAllRelevant(int maxResults, int offset) {
-        return orderDao.findAllRelevant(maxResults, offset);
-    }
+	@Override
+	public Collection<Order> findAllRelevant(QueryParams qp) {
+		return findAll(qp.getPageSize(), qp.getStartAt());
+	}
 
-    @Override
-    public Map getMonthlyOrderTotal() {
-        return orderDao.getMonthlyOrderTotal();
-    }
+	@Override
+	public Collection<Order> findAllRelevant(int maxResults, int offset) {
+		return orderDao.findAllRelevant(maxResults, offset);
+	}
 
-    @Override
-    public Map getMonthlyOrderCancelled() {
-        return orderDao.getMonthlyOrderCancelled();
-    }
+	@Override
+	public Map getMonthlyOrderTotal() {
+		return orderDao.getMonthlyOrderTotal();
+	}
 
-    @Override
-    public void setDishAsDone(Order order, Dish dish) {
-        if (order.getUnDoneDishes().containsKey(dish)) {
-            int amount = order.getDishes().get(dish).getAmount();
-            order.setDish(dish, 0);
-            order.setDoneDish(dish, amount);
-            orderDao.update(order);
-        }
-    }
+	@Override
+	public Map getMonthlyOrderCancelled() {
+		return orderDao.getMonthlyOrderCancelled();
+	}
 
-    @Override
-    public int getTotalRelevantOrders() {
-        return orderDao.getTotalRelevantOrders();
-    }
+	@Override
+	public void setDishAsDone(Order order, Dish dish) {
+		if (order.getUnDoneDishes().containsKey(dish)) {
+			int amount = order.getDishes().get(dish).getAmount();
+			order.setDish(dish, 0);
+			order.setDoneDish(dish, amount);
+			orderDao.update(order);
+		}
+	}
 
-    @Override
-    public Collection<Order> getActiveOrders(QueryParams qp) {
-        return getActiveOrders(qp.getPageSize(), qp.getStartAt());
-    }
+	@Override
+	public int getTotalRelevantOrders() {
+		return orderDao.getTotalRelevantOrders();
+	}
 
-    /**
-     * Finds all open orders.
-     *
-     * @param maxResults
-     * @param offset
-     * @return A collection of said orders in ascending order by open timestamp.
-     */
-    @Override
-    public Collection<Order> getActiveOrders(int maxResults, int offset) {
-        return orderDao.getActiveOrders(maxResults, offset);
-    }
+	@Override
+	public Collection<Order> getActiveOrders(QueryParams qp) {
+		return getActiveOrders(qp.getPageSize(), qp.getStartAt());
+	}
 
-    @Override
-    public int getTotalActiveOrders() {
-        return orderDao.getTotalActiveOrders();
-    }
+	@Override
+	public Collection<Order> getActiveOrders(int maxResults, int offset) {
+		return orderDao.getActiveOrders(maxResults, offset);
+	}
 
-    @Override
-    public Collection<Order> getOrdersFromLastMinutes(int minutes) {
-        return orderDao.getOrdersFromLastMinutes(minutes);
-    }
+	@Override
+	public int getTotalActiveOrders() {
+		return orderDao.getTotalActiveOrders();
+	}
 
-    @Override
-    public Map getAllUndoneDishesFromAllActiveOrders() {
-        return orderDao.getAllUndoneDishesFromAllActiveOrders();
-    }
+	@Override
+	public Collection<Order> getOrdersFromLastMinutes(int minutes) {
+		return orderDao.getOrdersFromLastMinutes(minutes);
+	}
+
+	@Override
+	public Map getAllUndoneDishesFromAllActiveOrders() {
+		return orderDao.getAllUndoneDishesFromAllActiveOrders();
+	}
 
 }

@@ -1,12 +1,10 @@
-package edu.itba.paw.jimi.webapp.dto.form;
+package edu.itba.paw.jimi.webapp.dto.form.user;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class UserForm {
 	
 	@Size(min = 6, max = 40)

@@ -1,20 +1,20 @@
-package edu.itba.paw.jimi.webapp.dto.form;
+package edu.itba.paw.jimi.webapp.dto.form.table;
 
 import javax.validation.constraints.DecimalMin;
 
 public class TableAddDishForm {
 	
-	private int dishid;
+	private int dishId;
 	
 	@DecimalMin(value = "1")
 	private int amount;
 	
-	public int getDishid() {
-		return dishid;
+	public int getDishId() {
+		return dishId;
 	}
 	
-	public void setDishid(int dishid) {
-		this.dishid = dishid;
+	public void setDishId(int dishId) {
+		this.dishId = dishId;
 	}
 	
 	public int getAmount() {

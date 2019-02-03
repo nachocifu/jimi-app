@@ -45,7 +45,7 @@ public class DishServiceImpl implements DishService {
 		dishDao.update(dish);
 		LOGGER.info("Updated dish name {}", dish);
 	}
-	
+
 	@Override
 	public int setStock(Dish dish, int stock) {
 		if (stock < 0) {
@@ -132,9 +132,9 @@ public class DishServiceImpl implements DishService {
 	}
 
 	/**
-	 * @deprecated
 	 * @param qp
 	 * @return
+	 * @deprecated
 	 */
 	@Override
 	public Collection<Dish> findAllAvailable(QueryParams qp) {

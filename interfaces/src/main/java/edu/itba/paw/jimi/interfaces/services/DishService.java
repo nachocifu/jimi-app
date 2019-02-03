@@ -25,7 +25,7 @@ public interface DishService {
 	 * @param name The new name of stock.
 	 */
 	void setName(Dish dish, String name);
-	
+
 	/**
 	 * Sets the value of stock of the dish.
 	 *
@@ -76,9 +76,10 @@ public interface DishService {
 
 	/**
 	 * Returns all the dishes.
-	 * @deprecated
+	 *
 	 * @param qp the QueryParams.
 	 * @return all the dishes.
+	 * @deprecated
 	 */
 	Collection<Dish> findAll(QueryParams qp);
 
@@ -100,8 +101,9 @@ public interface DishService {
 
 	/**
 	 * Returns all available, that is, stock greater than 0, dishes.
-	 * @deprecated
+	 *
 	 * @return all the dishes.
+	 * @deprecated
 	 */
 	Collection<Dish> findAllAvailable(QueryParams qp);
 

@@ -11,7 +11,7 @@ import java.util.Map;
 
 
 public interface OrderService {
-
+	
 	/**
 	 * This creates a Order.
 	 *
@@ -22,7 +22,7 @@ public interface OrderService {
 	 * @return created order
 	 */
 	Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners);
-
+	
 	/**
 	 * Adds a dish to the order, if it is already there it increments the amount of said dish.
 	 *
@@ -31,7 +31,7 @@ public interface OrderService {
 	 * @return The resulting amount of passed dish.
 	 */
 	int addDish(Order order, Dish dish);
-
+	
 	/**
 	 * Adds n dishes to the order, if it is already there it increments the amount of said dish.
 	 *
@@ -41,18 +41,27 @@ public interface OrderService {
 	 * @return The resulting amount of passed dish.
 	 */
 	int addDishes(Order order, Dish dish, int amount);
-
+	
 	/**
 	 * Removes a dish from the order, only one. If there was 2 of passed dish, 1 will remain.
-	 * To remove all dishes of the same kind see removeAllDish.
+	 * To remove all dishes of the same kind see removeAllUndoneDish.
 	 *
 	 * @param order The order in which to operate.
 	 * @param dish  The dish to remove.
 	 * @return The resulting amount of passed dish.
 	 */
-	int removeOneDish(Order order, Dish dish);
+	int removeOneUndoneDish(Order order, Dish dish);
 
-
+	/**
+	 * Removes amount dishes from the order.
+	 *
+	 * @param order  The order in which to operate.
+	 * @param dish   The dish to remove from.
+	 * @param amount The amount to remove.
+	 * @return The resulting amount of passed dish.
+	 */
+	int removeUndoneDish(Order order, Dish dish, int amount);
+	
 	/**
 	 * Removes all instances of a dish from the order.
 	 *
@@ -60,30 +69,56 @@ public interface OrderService {
 	 * @param dish  The dish to remove completely.
 	 * @return the amount of dishes left of this dish. (should be 0).
 	 */
-	int removeAllDish(Order order, Dish dish);
-
-
+	int removeAllUndoneDish(Order order, Dish dish);
+	
+	/**
+	 * Updates an undone dish amount in an order.
+	 *
+	 * @param order  The order in which to operate.
+	 * @param dish   The dish to update.
+	 * @param amount The new amount to set to the undone dish in the order.
+	 */
+	void setNewUndoneDishAmount(Order order, Dish dish, int amount);
+	
+	/**
+	 * Find out of given order contains a given dishId.
+	 *
+	 * @param order  The order in which to operate.
+	 * @param dishId The dish id to look for.
+	 * @return true if order contains dish with dishId.
+	 */
+	boolean containsDish(Order order, int dishId);
+	
+	/**
+	 * Get dish when a given order contains a given dishId.
+	 *
+	 * @param order  The order in which to operate.
+	 * @param dishId The dish id to look for.
+	 * @return true if order contains dish with dishId.
+	 */
+	Dish getDishById(Order order, int dishId);
+	
 	/**
 	 * Sets the timestamp for openedAt and changes the status open.
 	 *
 	 * @param order the order to open.
 	 */
 	void open(Order order);
-
+	
 	/**
 	 * Sets the timestamp for closedAt and changes the status to closed.
 	 *
 	 * @param order
 	 */
 	void close(Order order);
-
+	
 	/**
 	 * Sets the timestamp for closedAt and changes the status to canceled.
 	 *
 	 * @param order
 	 */
 	void cancel(Order order);
-
+	
 	/**
 	 * Sets the amount of dinners.
 	 *
@@ -92,7 +127,7 @@ public interface OrderService {
 	 * @return The amount of diners saved.
 	 */
 	int setDiners(Order order, int diners);
-
+	
 	/**
 	 * Returns the order with id.
 	 *
@@ -100,22 +135,22 @@ public interface OrderService {
 	 * @return
 	 */
 	Order findById(long id);
-
+	
 	/**
 	 * Finds all closed orders.
 	 *
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll();
-
-
+	
+	
 	/**
 	 * Finds all closed orders.
 	 * @deprecated
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll(QueryParams qp);
-
+	
 	/**
 	 * Finds all closed orders.
 	 *
@@ -143,24 +178,24 @@ public interface OrderService {
 	 * @return A collection of said orders.
 	 */
 	Map getMonthlyOrderTotal();
-
+	
 	/**
 	 * Finds all cancelled orders' total by month.
 	 *
 	 * @return A collection of said orders.
 	 */
 	Map getMonthlyOrderCancelled();
-
+	
 	/**
 	 * Sets dish from order as done.
 	 */
 	void setDishAsDone(Order order, Dish dish);
-
+	
 	/**
 	 * @return count of cancelled or closed orders.
 	 */
 	int getTotalRelevantOrders();
-
+	
 	/**
 	 * Finds all open orders.
 	 * @deprecated
@@ -179,14 +214,14 @@ public interface OrderService {
 	 * @return count of open orders.
 	 */
 	int getTotalActiveOrders();
-
+	
 	/**
 	 * Finds all orders from the last given amount of minutes.
 	 *
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> getOrdersFromLastMinutes(int minutes);
-
+	
 	/**
 	 * Finds all undone dishes from all active orders.
 	 *

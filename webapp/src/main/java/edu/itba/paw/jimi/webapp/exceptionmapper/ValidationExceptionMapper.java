@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -32,8 +33,10 @@ public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViol
 		for (ConstraintViolation<?> cv : exception.getConstraintViolations()) {
 			jsonObjectBuilderErrors.add(getPropertyName(cv), cv.getMessage());
 		}
-		return Json.createArrayBuilder()
-				.add(jsonObjectBuilderErrors)
+		JsonArrayBuilder jsonArrayBuilderErrors = Json.createArrayBuilder();
+		jsonArrayBuilderErrors.add(jsonObjectBuilderErrors);
+		return Json.createObjectBuilder()
+				.add("formErrors", jsonArrayBuilderErrors)
 				.build()
 				.toString();
 	}

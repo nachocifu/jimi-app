@@ -8,39 +8,39 @@ import javax.persistence.*;
 @Entity
 @javax.persistence.Table(name = "tables")
 public class Table {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tables_tableid_seq")
-    @SequenceGenerator(sequenceName = "tables_tableid_seq", name = "tables_tableid_seq", allocationSize = 1)
-    @Column(name = "tableid")
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tables_tableid_seq")
+	@SequenceGenerator(sequenceName = "tables_tableid_seq", name = "tables_tableid_seq", allocationSize = 1)
+	@Column(name = "tableid")
 	private long id;
-
-    @Column(length = 20, nullable = false, unique = true)
+	
+	@Column(length = 20, nullable = false, unique = true)
 	private String name;
-
-    @Enumerated(EnumType.ORDINAL)
+	
+	@Enumerated(EnumType.ORDINAL)
 	private TableStatus status;
-
-    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = false)
-    @Where(clause = "statusid = 0")
+	
+	@OneToOne(fetch = FetchType.EAGER, orphanRemoval = false)
+	@Where(clause = "statusid = 0")
 	private Order order;
-
-    public Table() {
-    }
-
-    public Table(String name, TableStatus status, Order order) {
-        this.name = name;
-        this.status = status;
-        this.order = order;
-    }
-
-    public Table(String name, long id, TableStatus status, Order order) {
+	
+	public Table() {
+	}
+	
+	public Table(String name, TableStatus status, Order order) {
+		this.name = name;
+		this.status = status;
+		this.order = order;
+	}
+	
+	public Table(String name, long id, TableStatus status, Order order) {
 		this.id = id;
 		this.name = name;
 		this.status = status;
 		this.order = order;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Table{" +
@@ -49,7 +49,7 @@ public class Table {
 				", order=" + order +
 				'}';
 	}
-
+	
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -57,7 +57,7 @@ public class Table {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public void setStatus(TableStatus status) {
 		this.status = status;
 	}

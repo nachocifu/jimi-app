@@ -8,10 +8,9 @@ import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.utils.QueryParams;
-import edu.itba.paw.jimi.webapp.dto.form.TableAddDishForm;
-import edu.itba.paw.jimi.webapp.dto.form.TableSetDinersForm;
+import edu.itba.paw.jimi.webapp.dto.form.table.TableAddDishForm;
+import edu.itba.paw.jimi.webapp.dto.form.table.TableSetDinersForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
@@ -33,7 +32,6 @@ public class AdminController {
 	private TableService tableService;
 
 	@Autowired
-	@Qualifier(value = "orderService")
 	private OrderService orderService;
 
 	@Autowired
@@ -125,7 +123,7 @@ public class AdminController {
 		}
 
 		Order order = orderService.findById(id);
-		Dish dish = dishService.findById(form.getDishid());
+		Dish dish = dishService.findById(form.getDishId());
 		orderService.addDishes(order, dish, form.getAmount());
 
 		return new ModelAndView("redirect:/admin/order_edit/" + order.getId());
@@ -146,7 +144,7 @@ public class AdminController {
 
 		Order order = orderService.findById(id);
 		Dish dish = dishService.findById(dishid);
-		orderService.removeOneDish(order, dish);
+		orderService.removeOneUndoneDish(order, dish);
 
 		return new ModelAndView("redirect:/admin/order_edit/" + order.getId());
 	}
@@ -156,7 +154,7 @@ public class AdminController {
 
 		Order order = orderService.findById(id);
 		Dish dish = dishService.findById(dishid);
-		orderService.removeAllDish(order, dish);
+		orderService.removeAllUndoneDish(order, dish);
 
 		return new ModelAndView("redirect:/admin/order_edit/" + order.getId());
 	}

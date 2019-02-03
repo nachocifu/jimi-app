@@ -3,7 +3,7 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.FreeTableDeletionAttemptException;
-import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
+import edu.itba.paw.jimi.interfaces.exceptions.TableStatusInvalidTransitionException;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
@@ -18,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -75,7 +74,7 @@ public class TableServiceImplTest {
 		assertEquals(TableStatus.BUSY, table.getStatus());
 	}
 
-	@Test(expected = TableStatusTransitionInvalid.class)
+	@Test(expected = TableStatusInvalidTransitionException.class)
 	public void setStatusFromFreeToNOTBusyTest() {
 		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.FREE, order);
@@ -116,7 +115,7 @@ public class TableServiceImplTest {
 		assertEquals(TableStatus.FREE, table.getStatus());
 	}
 
-	@Test(expected = TableStatusTransitionInvalid.class)
+	@Test(expected = TableStatusInvalidTransitionException.class)
 	public void setStatusFromBusyToNOTCleaningORFreeTest() {
 		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.BUSY, order);
@@ -143,7 +142,7 @@ public class TableServiceImplTest {
 		assertEquals(TableStatus.FREE, table.getStatus());
 	}
 
-	@Test(expected = TableStatusTransitionInvalid.class)
+	@Test(expected = TableStatusInvalidTransitionException.class)
 	public void setStatusFromCleaningToNOTFreeTest() {
 		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
 		Table table = new Table(TABLE_NAME, 1, TableStatus.PAYING, order);
