@@ -4,7 +4,6 @@ import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

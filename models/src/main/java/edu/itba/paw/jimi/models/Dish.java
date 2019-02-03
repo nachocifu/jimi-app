@@ -29,8 +29,7 @@ public class Dish {
 	
 	private Boolean discontinued = false;
 	
-	/* package */ Dish() {
-		// Just for Hibernate, we love you!
+	public Dish() {
 	}
 	
 	public Dish(String name, float price, int stock) {

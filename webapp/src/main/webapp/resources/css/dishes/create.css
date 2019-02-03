@@ -1,5 +1,0 @@
-[type="checkbox"]:not(:checked), [type="checkbox"]:checked {
-    position: inherit;
-    opacity: 1;
-    pointer-events: all;
-}
