@@ -12,9 +12,9 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 public class OrderStatusExceptionMapper implements ExceptionMapper<OrderStatusException> {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrderStatusExceptionMapper.class);
-	
+
 	@Override
 	public Response toResponse(final OrderStatusException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());

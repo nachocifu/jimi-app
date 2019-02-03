@@ -29,27 +29,27 @@ import java.util.LinkedList;
 @Controller
 @Produces(value = {MediaType.APPLICATION_JSON})
 public class UserApiController extends BaseApiController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserApiController.class);
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private MessageSource messageSource;
-	
+
 	@Autowired
 	private PaginationHelper paginationHelper;
-	
+
 	@Context
 	private UriInfo uriInfo;
-	
+
 	private static final int DEFAULT_PAGE_SIZE = 10;
 	private static final int MAX_PAGE_SIZE = 30;
-	
+
 	@GET
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response listUsers(@QueryParam("page") @DefaultValue("1") Integer page,
@@ -61,14 +61,14 @@ public class UserApiController extends BaseApiController {
 				.links(paginationHelper.getPaginationLinks(uriInfo, page, userService.getTotalUsers()))
 				.build();
 	}
-	
+
 	@POST
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response createUser(@Valid final UserForm userForm) {
-		
+
 		if (userForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
-		
+
 		if (userService.findByUsername(userForm.getUsername()) != null) {
 			LOGGER.warn("Cannot create user: existing username {} found", userForm.getUsername());
 			return Response
@@ -76,17 +76,17 @@ public class UserApiController extends BaseApiController {
 					.entity(messageSource.getMessage("user.error.repeated.body", null, LocaleContextHolder.getLocale()))
 					.build();
 		}
-		
+
 		final User user = userService.create(userForm.getUsername(), passwordEncoder.encode(userForm.getPassword()));
 		final URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(user.getId())).build();
 		return Response.created(location).entity(new UserDTO(user, buildBaseURI(uriInfo))).build();
 	}
-	
+
 	@GET
 	@Path("/{id}")
 	public Response getUserById(@PathParam("id") final long id) {
 		final User user = userService.findById(id);
-		
+
 		if (user == null) {
 			LOGGER.warn("User with id {} not found", id);
 			return Response
@@ -94,8 +94,8 @@ public class UserApiController extends BaseApiController {
 					.entity(messageSource.getMessage("user.error.not.found.body", null, LocaleContextHolder.getLocale()))
 					.build();
 		}
-		
+
 		return Response.ok(new UserDTO(user, buildBaseURI(uriInfo))).build();
 	}
-	
+
 }
