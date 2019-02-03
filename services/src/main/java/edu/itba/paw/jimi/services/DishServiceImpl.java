@@ -47,13 +47,6 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public void setName(Dish dish, String name) {
-		dish.setName(name);
-		dishDao.update(dish);
-		LOGGER.info("Updated dish name {}", dish);
-	}
-	
-	@Override
 	public int setStock(Dish dish, int stock) {
 		if (stock < 0) {
 			return 0;
