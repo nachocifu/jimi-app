@@ -4,7 +4,7 @@ import edu.itba.paw.jimi.form.DishForm;
 import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -61,6 +61,8 @@ public class DishController {
 		form.setPrice(dish.getPrice());
 		form.setStock(dish.getStock());
 		form.setMinStock(dish.getMinStock());
+		form.setMinStock(dish.getMinStock());
+		form.setDiscontinued(dish.isDiscontinued());
 		
 		ModelAndView mv = new ModelAndView("dishes/edit");
 		mv.addObject("dish", dish);
@@ -80,6 +82,7 @@ public class DishController {
 		dishService.setStock(dish, form.getStock());
 		dishService.setPrice(dish, form.getPrice());
 		dishService.setMinStock(dish, form.getMinStock());
+		dishService.setDiscontinued(dish, form.isDiscontinued());
 		
 		return new ModelAndView("redirect:/admin/dishes");
 	}

@@ -1,13 +1,14 @@
 package edu.itba.paw.jimi.models;
 
 import javax.persistence.*;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 
 @Entity
-@javax.persistence.Table(name = "orders")
+@Table(name = "orders")
 public class Order {
 	
 	@Id
@@ -22,7 +23,7 @@ public class Order {
 	private Float total;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	private Map<Dish, Integer> unDoneDishes;
+	private Map<Dish, DishData> unDoneDishes;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Dish, Integer> doneDishes;
@@ -37,7 +38,7 @@ public class Order {
 	private OrderStatus status;
 	
 	public Order() {
-		this.unDoneDishes = new HashMap<Dish, Integer>();
+		this.unDoneDishes = new HashMap<Dish, DishData>();
 		this.doneDishes = new HashMap<Dish, Integer>();
 	}
 	
@@ -46,7 +47,7 @@ public class Order {
 		this.openedAt = openedAt;
 		this.closedAt = closedAt;
 		this.status = status;
-		this.unDoneDishes = new HashMap<Dish, Integer>();
+		this.unDoneDishes = new HashMap<Dish, DishData>();
 		this.doneDishes = new HashMap<Dish, Integer>();
 		this.diners = diners;
 		this.total = total;
@@ -56,13 +57,13 @@ public class Order {
 		this.openedAt = openedAt;
 		this.closedAt = closedAt;
 		this.status = status;
-		this.unDoneDishes = new HashMap<Dish, Integer>();
+		this.unDoneDishes = new HashMap<Dish, DishData>();
 		this.doneDishes = new HashMap<Dish, Integer>();
 		this.diners = diners;
 		this.total = total;
 	}
 	
-	public void setDishes(Map<Dish, Integer> dishes) {
+	public void setDishes(Map<Dish, DishData> dishes) {
 		this.unDoneDishes = dishes;
 	}
 	
@@ -75,7 +76,11 @@ public class Order {
 	 */
 	public Integer setDish(Dish dish, int amount) {
 		if (amount > 0) {
-			this.unDoneDishes.put(dish, amount);
+			if (!this.unDoneDishes.containsKey(dish))
+				this.unDoneDishes.put(dish, new DishData(amount));
+			DishData currentDishData = this.unDoneDishes.get(dish);
+			currentDishData.setAmount(amount);
+			this.unDoneDishes.put(dish, currentDishData);
 			return amount;
 		} else {
 			this.unDoneDishes.remove(dish);
@@ -109,19 +114,20 @@ public class Order {
 		return id;
 	}
 	
-	public Map<Dish, Integer> getDishes() {
-		Map<Dish, Integer> undone = new HashMap<Dish, Integer>(this.unDoneDishes);
+	public Map<Dish, DishData> getDishes() {
+		Map<Dish, DishData> undone = new HashMap<Dish, DishData>(this.unDoneDishes);
 		Map<Dish, Integer> done = new HashMap<Dish, Integer>(this.doneDishes);
 		for (Dish d : done.keySet()) {
-			if (undone.containsKey(d))
-				undone.put(d, undone.get(d) + done.get(d));
-			else
-				undone.put(d, done.get(d));
+			if (undone.containsKey(d)) {
+				undone.put(d, new DishData(undone.get(d).getAmount() + done.get(d)));
+			} else {
+				undone.put(d, new DishData(done.get(d)));
+			}
 		}
 		return undone;
 	}
 	
-	public Map<Dish, Integer> getUnDoneDishes() {
+	public Map<Dish, DishData> getUnDoneDishes() {
 		return unDoneDishes;
 	}
 	
@@ -178,10 +184,6 @@ public class Order {
 	
 	public void setTotal(Float total) {
 		this.total = total;
-	}
-	
-	public void setDoneDishes(Map<Dish, Integer> doneDishes) {
-		this.doneDishes = doneDishes;
 	}
 	
 	public Map<Dish, Integer> getDoneDishes() {

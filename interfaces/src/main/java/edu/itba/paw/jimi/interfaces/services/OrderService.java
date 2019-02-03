@@ -3,7 +3,7 @@ package edu.itba.paw.jimi.interfaces.services;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.Utilities.QueryParams;
+import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 
 public interface OrderService {
-	
+
 	/**
 	 * This creates a Order.
 	 *
@@ -19,10 +19,10 @@ public interface OrderService {
 	 * @param openedAt The timestamp when this order became opened.
 	 * @param closedAt The timestamp when this order became closed.
 	 * @param diners   The diners of the order.
-	 * @return
+	 * @return created order
 	 */
 	Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners);
-	
+
 	/**
 	 * Adds a dish to the order, if it is already there it increments the amount of said dish.
 	 *
@@ -31,7 +31,7 @@ public interface OrderService {
 	 * @return The resulting amount of passed dish.
 	 */
 	int addDish(Order order, Dish dish);
-	
+
 	/**
 	 * Adds n dishes to the order, if it is already there it increments the amount of said dish.
 	 *
@@ -41,7 +41,7 @@ public interface OrderService {
 	 * @return The resulting amount of passed dish.
 	 */
 	int addDishes(Order order, Dish dish, int amount);
-	
+
 	/**
 	 * Removes a dish from the order, only one. If there was 2 of passed dish, 1 will remain.
 	 * To remove all dishes of the same kind see removeAllDish.
@@ -51,8 +51,8 @@ public interface OrderService {
 	 * @return The resulting amount of passed dish.
 	 */
 	int removeOneDish(Order order, Dish dish);
-	
-	
+
+
 	/**
 	 * Removes all instances of a dish from the order.
 	 *
@@ -61,15 +61,15 @@ public interface OrderService {
 	 * @return the amount of dishes left of this dish. (should be 0).
 	 */
 	int removeAllDish(Order order, Dish dish);
-	
-	
+
+
 	/**
 	 * Sets the timestamp for openedAt and changes the status open.
 	 *
 	 * @param order the order to open.
 	 */
 	void open(Order order);
-	
+
 	/**
 	 * Sets the timestamp for closedAt and changes the status to closed.
 	 *
@@ -83,7 +83,7 @@ public interface OrderService {
 	 * @param order
 	 */
 	void cancel(Order order);
-	
+
 	/**
 	 * Sets the amount of dinners.
 	 *
@@ -93,11 +93,12 @@ public interface OrderService {
 	 */
 	int setDiners(Order order, int diners);
 
-    /**
-     * Returns the order with id.
-     * @param id the id.
-     * @return
-     */
+	/**
+	 * Returns the order with id.
+	 *
+	 * @param id the id.
+	 * @return
+	 */
 	Order findById(long id);
 
 	/**
@@ -110,7 +111,7 @@ public interface OrderService {
 
 	/**
 	 * Finds all closed orders.
-	 *
+	 * @deprecated
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> findAll(QueryParams qp);
@@ -120,22 +121,76 @@ public interface OrderService {
 	 *
 	 * @return A collection of said orders.
 	 */
+	Collection<Order> findAll(int maxResults, int offset);
+
+	/**
+	 * Finds all closed orders.
+	 * @deprecated
+	 * @return A collection of said orders.
+	 */
 	Collection<Order> findAllRelevant(QueryParams qp);
 
-    /**
-     * Finds all closed orders' total by month.
-     *
+	/**
+	 * Finds all closed orders.
+	 *
 	 * @return A collection of said orders.
-     */
-    Map getMonthlyOrderTotal();
+	 */
+	Collection<Order> findAllRelevant(int maxResults, int offset);
 
+	/**
+	 * Finds all closed orders' total by month.
+	 *
+	 * @return A collection of said orders.
+	 */
+	Map getMonthlyOrderTotal();
+
+	/**
+	 * Finds all cancelled orders' total by month.
+	 *
+	 * @return A collection of said orders.
+	 */
 	Map getMonthlyOrderCancelled();
 
-    void setDishAsDone(Order order, Dish dish);
+	/**
+	 * Sets dish from order as done.
+	 */
+	void setDishAsDone(Order order, Dish dish);
 
-    int getTotalRelevantOrders();
+	/**
+	 * @return count of cancelled or closed orders.
+	 */
+	int getTotalRelevantOrders();
 
-    Collection<Order> getActiveOrders(QueryParams qp);
+	/**
+	 * Finds all open orders.
+	 * @deprecated
+	 * @return A collection of said orders in ascending order by open timestamp.
+	 */
+	Collection<Order> getActiveOrders(QueryParams qp);
 
-    int getTotalActiveOrders();
+	/**
+	 * Finds all open orders.
+	 *
+	 * @return A collection of said orders in ascending order by open timestamp.
+	 */
+	Collection<Order> getActiveOrders(int maxResults, int offset);
+
+	/**
+	 * @return count of open orders.
+	 */
+	int getTotalActiveOrders();
+
+	/**
+	 * Finds all orders from the last given amount of minutes.
+	 *
+	 * @return A collection of said orders.
+	 */
+	Collection<Order> getOrdersFromLastMinutes(int minutes);
+
+	/**
+	 * Finds all undone dishes from all active orders.
+	 *
+	 * @return A collection of said dishes.
+	 */
+	Map getAllUndoneDishesFromAllActiveOrders();
 }
