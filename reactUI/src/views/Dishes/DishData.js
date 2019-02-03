@@ -1,0 +1,31 @@
+const dishData = [
+  {id: 0, name: 'Milanesa', price: 23.5, stock: '5', status: 'Active', desired: 5},
+  {id: 1, name: 'Pastel de carne', price: 23.5, stock: '7', status: 'Active', desired: 5},
+  {id: 2, name: 'Ensalada', price: 100, stock: '4', status: 'Inactive', desired: 5},
+  {id: 3, name: 'Agua Mineral', price: 100, stock: '2', status: 'Inactive', desired: 5},
+  {id: 4, name: 'Manzana', price: 150, stock: '7', status: 'Active', desired: 5},
+  {id: 5, name: 'Kansas Ribs', price: 299.99, stock: '4', status: 'Active', desired: 5},
+  {id: 6, name: 'Tripas', price: 23.5, stock: '7', status: 'Active', desired: 5},
+  {id: 7, name: 'Caomida 1', price: 100, stock: '4', status: 'Inactive', desired: 5},
+  {id: 8, name: 'Comida 2', price: 100, stock: '2', status: 'Inactive', desired: 5},
+  {id: 9, name: 'Scon de queso', price: 150, stock: '7', status: 'Active', desired: 5},
+  {id: 10, name: 'Agapetus Tadeáš', price: 299.99, stock: '4', status: 'Active', desired: 5},
+  {id: 11, name: 'Carwyn Fachtna', price: 23.5, stock: '7', status: 'Active', desired: 5},
+  {id: 12, name: 'Nehemiah Tatius', price: 100, stock: '4', status: 'Inactive', desired: 5},
+  {id: 13, name: 'Ebbe Gemariah', price: 100, stock: '2', status: 'Inactive', desired: 5},
+  {id: 14, name: 'Eustorgios Amulius', price: 150, stock: '7', status: 'Active', desired: 5},
+  {id: 15, name: 'Leopold Gáspár', price: 299.99, stock: '4', status: 'Active', desired: 5},
+  {id: 16, name: 'Pompeius René', price: 23.5, stock: '7', status: 'Active', desired: 5},
+  {id: 17, name: 'Paĉjo Jadon', price: 100, stock: '4', status: 'Inactive', desired: 5},
+  {id: 18, name: 'Micheal Mercurius', price: 100, stock: '2', status: 'Inactive', desired: 5},
+  {id: 19, name: 'Ganesha Dubhghall', price: 150, stock: '7', status: 'Active', desired: 5},
+  {id: 20, name: 'Hiroto Šimun', price: 299.99, stock: '4', status: 'Active', desired: 5},
+  {id: 21, name: 'Vishnu Serghei', price: 23.5, stock: '7', status: 'Active', desired: 5},
+  {id: 22, name: 'Zbyněk Phoibos', price: 100, stock: '4', status: 'Inactive', desired: 5},
+  {id: 23, name: 'Einar Randall', price: 100, stock: '2', status: 'Inactive', desired: 5},
+  {id: 24, name: 'Félix Troels', price: 300, stock: '4', status: 'Active', desired: 5},
+  {id: 25, name: 'Aulus Agmundr', price: 23.5, stock: '7', status: 'Active', desired: 5},
+  {id: 42, name: 'Ford Prefex', price: 500, stock: '1', status: 'Don\'t panic!'}
+]
+
+export default dishData
