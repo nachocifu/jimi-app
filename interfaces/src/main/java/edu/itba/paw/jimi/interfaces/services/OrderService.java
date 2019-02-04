@@ -228,4 +228,6 @@ public interface OrderService {
 	 * @return A collection of said dishes.
 	 */
 	Map getAllUndoneDishesFromAllActiveOrders();
+
+	Map getAllUndoneDishesFromAllActiveOrders(QueryParams qp);
 }
