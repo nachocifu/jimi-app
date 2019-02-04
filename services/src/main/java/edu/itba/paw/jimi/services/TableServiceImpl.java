@@ -2,7 +2,7 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.FreeTableDeletionAttemptException;
-import edu.itba.paw.jimi.interfaces.exceptions.TableStatusTransitionInvalid;
+import edu.itba.paw.jimi.interfaces.exceptions.TableStatusInvalidTransitionException;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Order;
@@ -14,7 +14,6 @@ import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,13 +94,13 @@ public class TableServiceImpl implements TableService {
 	public void changeStatus(Table table, TableStatus status) {
 
 		if (table.getStatus().equals(TableStatus.BUSY) && (!status.equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE)))
-			throw new TableStatusTransitionInvalid(TableStatus.PAYING, status);
+			throw new TableStatusInvalidTransitionException(TableStatus.PAYING, status);
 
 		if (table.getStatus().equals(TableStatus.PAYING) && !status.equals(TableStatus.FREE))
-			throw new TableStatusTransitionInvalid(TableStatus.FREE, status);
+			throw new TableStatusInvalidTransitionException(TableStatus.FREE, status);
 
 		if (table.getStatus().equals(TableStatus.FREE) && !status.equals(TableStatus.BUSY))
-			throw new TableStatusTransitionInvalid(TableStatus.BUSY, status);
+			throw new TableStatusInvalidTransitionException(TableStatus.BUSY, status);
 
 
 		switch (status) {
@@ -110,7 +109,7 @@ public class TableServiceImpl implements TableService {
 				break;
 			}
 			case FREE: {
-				if (table.getStatus().equals(TableStatus.BUSY)) {//Cancel order!
+				if (table.getStatus().equals(TableStatus.BUSY)) {
 					orderService.cancel(table.getOrder());
 				}
 				Order newOrder = orderService.create(OrderStatus.INACTIVE, null, null, 0);
