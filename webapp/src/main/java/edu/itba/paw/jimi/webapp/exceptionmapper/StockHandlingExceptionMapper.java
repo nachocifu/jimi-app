@@ -11,13 +11,17 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class StockHandlingExceptionMapper implements ExceptionMapper<StockHandlingException> {
-	
+public class StockHandlingExceptionMapper extends BusinessExceptionMapper implements ExceptionMapper<StockHandlingException> {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(StockHandlingExceptionMapper.class);
-	
-	@Override
+
 	public Response toResponse(final StockHandlingException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		return Response.status(Response.Status.CONFLICT).entity(new ExceptionDTO(exception.getMessage())).type(MediaType.APPLICATION_JSON).build();
+		String message = messageByLocaleServiceImpl.getMessage("exception.stock.handling", localeResolver.resolveLocale(request));
+		return Response
+				.status(Response.Status.CONFLICT)
+				.entity(new ExceptionDTO(message))
+				.type(MediaType.APPLICATION_JSON)
+				.build();
 	}
 }
