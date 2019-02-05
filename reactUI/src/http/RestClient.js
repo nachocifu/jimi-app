@@ -1,5 +1,5 @@
 import axios from 'axios';
-import vars from '../../.env';
+import vars from '../.env';
 
 export default class RestClient {
   protocol;
