@@ -1,5 +1,5 @@
 import axios from 'axios';
-import vars from '../.env';
+import conf from '../conf'
 
 export default class RestClient {
   protocol;
@@ -9,9 +9,9 @@ export default class RestClient {
 
   constructor() {
     // Get Values From environment
-    this.protocol = vars.API_PROTOCOL;
-    this.domain = vars.API_DOMAIN;
-    this.port = vars.API_PORT;
+    this.protocol = conf.API_PROTOCOL;
+    this.domain = conf.API_DOMAIN;
+    this.port = conf.API_PORT;
 
     // Create axios instance
     this.instance = axios.create({
