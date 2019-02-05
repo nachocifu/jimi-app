@@ -56,7 +56,7 @@ public class KitchenApiController extends BaseApiController{
     private UriInfo uriInfo;
 
     @PUT
-    @Path("/{orderId}/{dishId]")
+    @Path("/{orderId}/{dishId}")
     public Response done(@PathParam("orderId") final long orderId,
                          @PathParam("dishId") final long dishId) {
 
