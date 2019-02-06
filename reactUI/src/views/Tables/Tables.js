@@ -4,6 +4,10 @@ import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 
 import tableData from './TableData'
 import Button from "reactstrap/es/Button";
+import {connect} from "react-redux";
+import UserRestClient from "../../http/clients/UserRestClient";
+import Reactotron from "reactotron-react-js";
+import TableRestClient from "../../http/clients/TableRestClient";
 
 function TableRow(props) {
   const table = props.table;
@@ -24,9 +28,26 @@ function TableRow(props) {
 
 class Tables extends Component {
 
-  render() {
+  tableClient;
 
-    const tableList = tableData.filter((table) => table.id < 10);
+
+  constructor(props) {
+    super(props);
+    this.tableClient = new TableRestClient(props.token);
+    this.state ={tables: [], loading: true};
+  }
+
+  componentDidMount() {
+    this.tableClient.get(0,10)
+      .then((val) => {
+        this.setState({tables: val.data.tables, loading: false});
+      }).catch((error)=>{
+      Reactotron.error("Failed to retrieve tables", error);
+    });
+
+  }
+
+  render() {
 
     return (
       <div className="animated fadeIn">
@@ -46,7 +67,7 @@ class Tables extends Component {
                   </tr>
                   </thead>
                   <tbody>
-                  {tableList.map((table, index) =>
+                  {this.state.tables.map((table, index) =>
                     <TableRow key={index} table={table}/>
                   )}
                   </tbody>
@@ -60,4 +81,8 @@ class Tables extends Component {
   }
 }
 
-export default Tables;
+const mapStateToProps = state => {
+  return {token: state.authentication.token};
+};
+
+export default connect(mapStateToProps)(Tables);
