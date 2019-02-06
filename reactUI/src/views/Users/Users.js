@@ -12,21 +12,15 @@ function UserRow(props) {
   const user = props.user
   const userLink = `/users/${user.id}`
 
-  const getBadge = (status) => {
-    return status === 'Active' ? 'success' :
-      status === 'Inactive' ? 'secondary' :
-        status === 'Pending' ? 'warning' :
-          status === 'Banned' ? 'danger' :
-            'primary'
+  const getBadge = (role) => {
+    return role === 'Active' ? 'success' : 'primary'
   }
 
   return (
     <tr key={user.id.toString()}>
       <th scope="row"><Link to={userLink}>{user.id}</Link></th>
       <td><Link to={userLink}>{user.username}</Link></td>
-      <td>{user.registered}</td>
-      <td>{user.role}</td>
-      <td><Link to={userLink}><Badge color={getBadge(user.status)}>{user.status}</Badge></Link></td>
+      <td><Badge color={getBadge(user.role)}>{user.role}</Badge></td>
     </tr>
   )
 }
@@ -43,11 +37,12 @@ class Users extends Component {
   }
 
   componentDidMount() {
-    this.usersClient.get(0,10).then((val) => {
-      this.setState({users: val.data.users, loading: false});
-    }).catch((error)=>{
-      Reactotron.error("Failed to retrieve users", error);
-    });
+    this.usersClient.get(0,10)
+      .then((val) => {
+        this.setState({users: val.data.users, loading: false});
+      }).catch((error)=>{
+        Reactotron.error("Failed to retrieve users", error);
+      });
 
   }
 
@@ -68,9 +63,7 @@ class Users extends Component {
                   <tr>
                     <th scope="col">id</th>
                     <th scope="col">name</th>
-                    <th scope="col">registered</th>
                     <th scope="col">role</th>
-                    <th scope="col">status</th>
                   </tr>
                   </thead>
                   <tbody>
