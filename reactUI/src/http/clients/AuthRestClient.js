@@ -1,4 +1,5 @@
 import RestClient from "../RestClient";
+import querystring from 'querystring'
 
 export default class AuthRestClient extends RestClient {
 
@@ -14,10 +15,7 @@ export default class AuthRestClient extends RestClient {
   login(username: string, password: string) {
     return this.instance.post(
       'api/login',
-      {
-        username: username,
-        password: password,
-      }
+      querystring.stringify({username: username, password: password})
     );
   }
 

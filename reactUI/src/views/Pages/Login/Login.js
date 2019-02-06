@@ -17,6 +17,7 @@ import Reactotron from 'reactotron-react-js';
 import {connect} from "react-redux";
 import {LOGIN_ERRORED, LOGIN_PENDING, LOGIN_REQUESTED, LOGIN_SUCCESSFULL} from "../../../redux/actions/actionTypes";
 import AuthRestClient from "../../../http/clients/AuthRestClient";
+import {Redirect} from "react-router-dom";
 
 class Login extends Component {
 
@@ -35,9 +36,10 @@ class Login extends Component {
     this.props.dispatch({type: LOGIN_REQUESTED});
     authCli.login(this.state.username, this.state.password)
       .then(value => {
-        this.props.dispatch({type: LOGIN_SUCCESSFULL, payload: {token: value.token}});
-        Reactotron.log(value);
-
+        this.props.dispatch({type: LOGIN_SUCCESSFULL, payload: {token: value.headers['x-auth-token']}});
+        // window.location.replace("/stats");
+        this.props.history.push("/stats");
+        // return <Redirect to="/#/stats"/>;
       }).catch(error => {
       if (!error.response) error.response = "ERROR";
       this.props.dispatch({type: LOGIN_ERRORED, payload: {info: error.response}});
