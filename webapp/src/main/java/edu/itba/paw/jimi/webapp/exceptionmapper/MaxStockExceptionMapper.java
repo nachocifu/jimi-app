@@ -11,13 +11,18 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class MaxStockExceptionMapper implements ExceptionMapper<MaxStockException> {
-	
+public class MaxStockExceptionMapper extends BusinessExceptionMapper implements ExceptionMapper<MaxStockException> {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(MaxStockExceptionMapper.class);
-	
+
 	@Override
 	public Response toResponse(final MaxStockException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		return Response.status(Response.Status.CONFLICT).entity(new ExceptionDTO(exception.getMessage())).type(MediaType.APPLICATION_JSON).build();
+		String message = messageSource.getMessage("exception.max.stock", null, localeResolver.resolveLocale(request));
+		return Response
+				.status(Response.Status.CONFLICT)
+				.entity(new ExceptionDTO(message))
+				.type(MediaType.APPLICATION_JSON)
+				.build();
 	}
 }

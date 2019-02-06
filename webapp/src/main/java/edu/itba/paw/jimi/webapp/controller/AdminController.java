@@ -1,6 +1,5 @@
 package edu.itba.paw.jimi.webapp.controller;
 
-import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.StatsService;
@@ -12,7 +11,6 @@ import edu.itba.paw.jimi.webapp.dto.form.table.TableAddDishForm;
 import edu.itba.paw.jimi.webapp.dto.form.table.TableSetDinersForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -89,11 +87,11 @@ public class AdminController {
 		Order order = orderService.findById(id);
 
 
-		if (order == null) {
-			throw new Http404Error(messageSource.getMessage("order.error.not.found.title",
-					null, LocaleContextHolder.getLocale()), messageSource.getMessage("order.error.not.found.body",
-					null, LocaleContextHolder.getLocale()));
-		}
+//		if (order == null) {
+//			throw new Http404Error(messageSource.getMessage("order.error.not.found.title",
+//					null, LocaleContextHolder.getLocale()), messageSource.getMessage("order.error.not.found.body",
+//					null, LocaleContextHolder.getLocale()));
+//		}
 
 		final ModelAndView mav;
 		mav = new ModelAndView("tables/order_edit");

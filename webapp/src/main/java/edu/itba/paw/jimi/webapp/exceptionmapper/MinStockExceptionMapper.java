@@ -1,6 +1,6 @@
 package edu.itba.paw.jimi.webapp.exceptionmapper;
 
-import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
+import edu.itba.paw.jimi.interfaces.exceptions.MinStockException;
 import edu.itba.paw.jimi.webapp.dto.ExceptionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +11,14 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class StockHandlingExceptionMapper extends BusinessExceptionMapper implements ExceptionMapper<StockHandlingException> {
+public class MinStockExceptionMapper extends BusinessExceptionMapper implements ExceptionMapper<MinStockException> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(StockHandlingExceptionMapper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MinStockExceptionMapper.class);
 
-	public Response toResponse(final StockHandlingException exception) {
+	@Override
+	public Response toResponse(final MinStockException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		String message = messageSource.getMessage("exception.stock.handling", null, localeResolver.resolveLocale(request));
+		String message = messageSource.getMessage("exception.min.stock", null, localeResolver.resolveLocale(request));
 		return Response
 				.status(Response.Status.CONFLICT)
 				.entity(new ExceptionDTO(message))

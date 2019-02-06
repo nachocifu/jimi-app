@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int addDishes(Order order, Dish dish, int amount) {
 		if (amount > dish.getStock())
-			throw new StockHandlingException("Amount of dishes exceeds available dish stock.");
+			throw new StockHandlingException();
 
 		if (!order.getStatus().equals(OrderStatus.OPEN))
 			throw new DishSetToInactiveOrderException();

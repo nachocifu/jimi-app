@@ -3,7 +3,21 @@ package edu.itba.paw.jimi.interfaces.exceptions;
 import edu.itba.paw.jimi.models.TableStatus;
 
 public class TableStatusInvalidTransitionException extends RuntimeException {
-	public TableStatusInvalidTransitionException(TableStatus expected, TableStatus got) {
-		super("Expected status was: " + expected.name() + ", and got status: " + got.name());
+
+	private TableStatus expected;
+	private TableStatus actual;
+
+	public TableStatusInvalidTransitionException(TableStatus expected, TableStatus actual) {
+		super();
+		this.expected = expected;
+		this.actual = actual;
+	}
+
+	public TableStatus getExpected() {
+		return expected;
+	}
+
+	public TableStatus getActual() {
+		return actual;
 	}
 }

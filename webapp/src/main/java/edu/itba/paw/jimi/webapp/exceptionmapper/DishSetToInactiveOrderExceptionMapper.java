@@ -11,13 +11,18 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class DishSetToInactiveOrderExceptionMapper implements ExceptionMapper<DishSetToInactiveOrderException> {
+public class DishSetToInactiveOrderExceptionMapper extends BusinessExceptionMapper implements ExceptionMapper<DishSetToInactiveOrderException> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DishSetToInactiveOrderExceptionMapper.class);
 
 	@Override
 	public Response toResponse(final DishSetToInactiveOrderException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		return Response.status(Response.Status.CONFLICT).entity(new ExceptionDTO(exception.getMessage())).type(MediaType.APPLICATION_JSON).build();
+		String message = messageSource.getMessage("exception.orders.inactive.set.dish", null, localeResolver.resolveLocale(request));
+		return Response
+				.status(Response.Status.CONFLICT)
+				.entity(new ExceptionDTO(message))
+				.type(MediaType.APPLICATION_JSON)
+				.build();
 	}
 }
