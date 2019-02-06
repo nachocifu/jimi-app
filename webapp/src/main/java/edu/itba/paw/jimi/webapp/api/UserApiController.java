@@ -65,9 +65,14 @@ public class UserApiController extends BaseApiController {
 	@POST
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response createUser(@Valid final UserForm userForm) {
-
 		if (userForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
+
+		if (!passwordEncoder.matches(userForm.getPassword(), userForm.getRepeatPassword()))
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(messageSource.getMessage("non_matching_passwords", null, LocaleContextHolder.getLocale()))
+					.build();
 
 		if (userService.findByUsername(userForm.getUsername()) != null) {
 			LOGGER.warn("Cannot create user: existing username {} found", userForm.getUsername());
