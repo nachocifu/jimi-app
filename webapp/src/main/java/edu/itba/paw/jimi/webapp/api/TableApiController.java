@@ -273,6 +273,34 @@ public class TableApiController extends BaseApiController {
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
 	}
 
+	@POST
+	@Path("/{id}/undonedishes/{dishId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response setDishAsDone(@PathParam("id") final long id,
+	                              @PathParam("dishId") final int dishId) {
+		final Table table = tableService.findById(id);
+		if (table == null) {
+			LOGGER.warn("Table with id {} not found", id);
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
+					.build();
+		}
+
+		if (!orderService.containsDish(table.getOrder(), dishId)) {
+			LOGGER.warn("From table with id {}, dish id {} not found", id, dishId);
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale()))
+					.build();
+		}
+
+		final Order order = table.getOrder();
+		final Dish currentDish = orderService.getDishById(order, dishId);
+		orderService.setDishAsDone(order, currentDish);
+		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
+	}
+	
 	@DELETE
 	@Path("/{id}/dishes/{dishId}")
 	@Consumes(MediaType.APPLICATION_JSON)
