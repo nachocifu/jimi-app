@@ -76,8 +76,8 @@ public class TableServiceImpl implements TableService {
 	}
 
 	@Override
-	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
-		return tableDao.findTablesWithStatus(tableStatus);
+	public Collection<Table> findTablesWithStatus(TableStatus tableStatus, int maxResults, int offset) {
+		return tableDao.findTablesWithStatus(tableStatus, maxResults, offset);
 	}
 
 	@Override

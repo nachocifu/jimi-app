@@ -47,10 +47,12 @@ public class TableHibernateDao implements TableDao {
 	}
 
 	@Override
-	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
+	public Collection<Table> findTablesWithStatus(TableStatus tableStatus, int maxResults, int offset) {
         return em.createQuery("from Table as t where t.status = :tableStatus order by t.order.openedAt", Table.class)
                 .setParameter("tableStatus", tableStatus)
-                .getResultList();
+		        .setFirstResult(offset)
+		        .setMaxResults(maxResults)
+		        .getResultList();
 	}
 
 	@Override

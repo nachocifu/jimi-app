@@ -35,16 +35,16 @@ public interface TableDao {
     /**
      * Returns all the tables paginated.
      *
-     * @return all the tables
+     * @return all the tables paginated.
 	 */
     Collection<Table> findAll(int maxResults, int offset);
 
 	/**
-	 * Returns all the active with the given status.
+	 * Returns all the active with the given status paginated.
 	 *
-	 * @return all the active with the given status.
+	 * @return all the active with the given status paginated.
 	 */
-	Collection<Table> findTablesWithStatus(TableStatus tableStatus);
+	Collection<Table> findTablesWithStatus(TableStatus tableStatus, int maxResults, int offset);
 
     int getTotalTables();
 

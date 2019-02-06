@@ -40,6 +40,7 @@ public class TableDaoTest {
 	private static final int DISH_STOCK = 5;
 	private static final Timestamp OPENEDAT = new Timestamp(1525467178);
 	private static final Timestamp CLOSEDAT = new Timestamp(1525467178 + 60 * 60);
+	private static final int offset = 0;
 	private Dish testDish;
 	private Order testOrder;
 	private Table testTable;
@@ -116,9 +117,9 @@ public class TableDaoTest {
 	
 	@Test
 	public void testFindTablesWithStatus() {
-		Collection<Table> freeStatusTables = tableDao.findTablesWithStatus(TableStatus.FREE);
-		Collection<Table> busyStatusTables = tableDao.findTablesWithStatus(TableStatus.BUSY);
-		Collection<Table> payingStatusTables = tableDao.findTablesWithStatus(TableStatus.PAYING);
+		Collection<Table> freeStatusTables = tableDao.findTablesWithStatus(TableStatus.FREE, freeTables.size(), offset);
+		Collection<Table> busyStatusTables = tableDao.findTablesWithStatus(TableStatus.BUSY, busyTables.size(), offset);
+		Collection<Table> payingStatusTables = tableDao.findTablesWithStatus(TableStatus.PAYING, payingTables.size(), offset);
 		
 		Assert.assertTrue(freeTables.containsAll(freeStatusTables));
 		Assert.assertTrue(busyTables.containsAll(busyStatusTables));
@@ -127,7 +128,7 @@ public class TableDaoTest {
 	
 	@Test
 	public void testFindTablesWithStatusBusySorted() {
-		Collection<Table> actualBusyTables = tableDao.findTablesWithStatus(TableStatus.BUSY);
+		Collection<Table> actualBusyTables = tableDao.findTablesWithStatus(TableStatus.BUSY, busyTables.size(), offset);
 		assertEquals(busyTables, actualBusyTables);
 	}
 	
