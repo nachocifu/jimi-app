@@ -5,7 +5,7 @@ import javax.validation.constraints.*;
 public class DishForm {
 	
 	@Size(min = 1, max = 25)
-	@Pattern(regexp = "^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$", message = "{Pattern.message.include.space}")
+	@Pattern(regexp = "^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$")
 	private String name;
 	
 	@Digits(integer = 10, fraction = 2)

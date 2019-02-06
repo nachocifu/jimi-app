@@ -20,7 +20,7 @@ public class OrderStatusExceptionMapper extends BusinessExceptionMapper implemen
 	public Response toResponse(final OrderStatusException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
 		String message = MessageFormat
-				.format(messageByLocaleServiceImpl.getMessage("exception.order.status", localeResolver.resolveLocale(request)),
+				.format(messageSource.getMessage("exception.order.status", null, localeResolver.resolveLocale(request)),
 						exception.getExpected(),
 						exception.getActual());
 		return Response

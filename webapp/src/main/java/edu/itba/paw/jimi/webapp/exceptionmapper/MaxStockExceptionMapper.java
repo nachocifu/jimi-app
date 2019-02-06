@@ -18,7 +18,7 @@ public class MaxStockExceptionMapper extends BusinessExceptionMapper implements 
 	@Override
 	public Response toResponse(final MaxStockException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		String message = messageByLocaleServiceImpl.getMessage("exception.max.stock", localeResolver.resolveLocale(request));
+		String message = messageSource.getMessage("exception.max.stock", null, localeResolver.resolveLocale(request));
 		return Response
 				.status(Response.Status.CONFLICT)
 				.entity(new ExceptionDTO(message))

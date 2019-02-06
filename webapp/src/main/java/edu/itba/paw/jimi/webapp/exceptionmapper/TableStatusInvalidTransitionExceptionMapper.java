@@ -20,7 +20,7 @@ public class TableStatusInvalidTransitionExceptionMapper extends BusinessExcepti
 	public Response toResponse(final TableStatusInvalidTransitionException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
 		String message = MessageFormat
-				.format(messageByLocaleServiceImpl.getMessage("exception.table.status", localeResolver.resolveLocale(request)),
+				.format(messageSource.getMessage("exception.table.status", null, localeResolver.resolveLocale(request)),
 						exception.getExpected(),
 						exception.getActual());
 		return Response

@@ -17,7 +17,7 @@ public class StockHandlingExceptionMapper extends BusinessExceptionMapper implem
 
 	public Response toResponse(final StockHandlingException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		String message = messageByLocaleServiceImpl.getMessage("exception.stock.handling", localeResolver.resolveLocale(request));
+		String message = messageSource.getMessage("exception.stock.handling", null, localeResolver.resolveLocale(request));
 		return Response
 				.status(Response.Status.CONFLICT)
 				.entity(new ExceptionDTO(message))

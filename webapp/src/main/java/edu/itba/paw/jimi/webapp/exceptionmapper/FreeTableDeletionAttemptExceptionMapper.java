@@ -18,7 +18,7 @@ public class FreeTableDeletionAttemptExceptionMapper extends BusinessExceptionMa
 	@Override
 	public Response toResponse(final FreeTableDeletionAttemptException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		String message = messageByLocaleServiceImpl.getMessage("exception.table.free.deletion", localeResolver.resolveLocale(request));
+		String message = messageSource.getMessage("exception.table.free.deletion", null, localeResolver.resolveLocale(request));
 		return Response
 				.status(Response.Status.CONFLICT)
 				.entity(new ExceptionDTO(message))

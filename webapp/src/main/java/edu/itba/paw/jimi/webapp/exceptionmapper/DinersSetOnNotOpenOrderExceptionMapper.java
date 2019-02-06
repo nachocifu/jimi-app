@@ -18,7 +18,7 @@ public class DinersSetOnNotOpenOrderExceptionMapper extends BusinessExceptionMap
 	@Override
 	public Response toResponse(final DinersSetOnNotOpenOrderException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		String message = messageByLocaleServiceImpl.getMessage("exception.orders.not.open.set.diners", localeResolver.resolveLocale(request));
+		String message = messageSource.getMessage("exception.orders.not.open.set.diners", null, localeResolver.resolveLocale(request));
 		return Response
 				.status(Response.Status.CONFLICT)
 				.entity(new ExceptionDTO(message))

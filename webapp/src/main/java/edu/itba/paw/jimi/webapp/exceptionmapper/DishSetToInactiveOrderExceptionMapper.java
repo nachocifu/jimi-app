@@ -18,7 +18,7 @@ public class DishSetToInactiveOrderExceptionMapper extends BusinessExceptionMapp
 	@Override
 	public Response toResponse(final DishSetToInactiveOrderException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		String message = messageByLocaleServiceImpl.getMessage("exception.orders.inactive.set.dish", localeResolver.resolveLocale(request));
+		String message = messageSource.getMessage("exception.orders.inactive.set.dish", null, localeResolver.resolveLocale(request));
 		return Response
 				.status(Response.Status.CONFLICT)
 				.entity(new ExceptionDTO(message))

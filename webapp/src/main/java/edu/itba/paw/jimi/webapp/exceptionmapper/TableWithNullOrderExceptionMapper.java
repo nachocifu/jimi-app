@@ -18,7 +18,7 @@ public class TableWithNullOrderExceptionMapper extends BusinessExceptionMapper i
 	@Override
 	public Response toResponse(final TableWithNullOrderException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		String message = messageByLocaleServiceImpl.getMessage("exception.table.null.order", localeResolver.resolveLocale(request));
+		String message = messageSource.getMessage("exception.table.null.order", null, localeResolver.resolveLocale(request));
 		return Response
 				.status(Response.Status.CONFLICT)
 				.entity(new ExceptionDTO(message))

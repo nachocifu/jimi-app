@@ -18,7 +18,7 @@ public class MaxPriceExceptionMapper extends BusinessExceptionMapper implements 
 	@Override
 	public Response toResponse(final MaxPriceException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		String message = messageByLocaleServiceImpl.getMessage("exception.max.price", localeResolver.resolveLocale(request));
+		String message = messageSource.getMessage("exception.max.price", null, localeResolver.resolveLocale(request));
 		return Response
 				.status(Response.Status.CONFLICT)
 				.entity(new ExceptionDTO(message))

@@ -24,8 +24,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
@@ -68,17 +66,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public LocaleResolver localeResolver() {
-		return new SmartLocaleResolver();
-	}
-
-	@Bean
 	public MessageSource messageSource() {
 		final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename("classpath:i18n/messages");
 		messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
 		messageSource.setCacheSeconds(5);
 		return messageSource;
+	}
+
+	@Bean
+	public LocaleResolver localeResolver() {
+		return new SmartLocaleResolver();
 	}
 
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -112,11 +110,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
 		return new JpaTransactionManager(emf);
-	}
-
-	@Bean
-	public Validator validator() {
-		return Validation.buildDefaultValidatorFactory().getValidator();
 	}
 
 }
