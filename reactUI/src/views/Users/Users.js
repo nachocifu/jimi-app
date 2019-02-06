@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
+import UserRestClient from '../../http/clients/UserRestClient';
+import Reactotron from 'reactotron-react-js';
+import {connect} from "react-redux";
 
 import usersData from './UsersData'
+import Spinner from "reactstrap/es/Spinner";
 
 function UserRow(props) {
   const user = props.user
@@ -19,7 +23,7 @@ function UserRow(props) {
   return (
     <tr key={user.id.toString()}>
       <th scope="row"><Link to={userLink}>{user.id}</Link></th>
-      <td><Link to={userLink}>{user.name}</Link></td>
+      <td><Link to={userLink}>{user.username}</Link></td>
       <td>{user.registered}</td>
       <td>{user.role}</td>
       <td><Link to={userLink}><Badge color={getBadge(user.status)}>{user.status}</Badge></Link></td>
@@ -29,9 +33,26 @@ function UserRow(props) {
 
 class Users extends Component {
 
-  render() {
+  usersClient;
 
-    const userList = usersData.filter((user) => user.id < 10)
+
+  constructor(props) {
+    super(props);
+    this.usersClient = new UserRestClient(props.token);
+    this.state ={users: [], loading: true};
+  }
+
+  componentDidMount() {
+    this.usersClient.get(0,10).then((val) => {
+      this.setState({users: val.data.users, loading: false});
+    }).catch((error)=>{
+      Reactotron.error("Failed to retrieve users", error);
+    });
+
+  }
+
+  render() {
+    if(this.state.loading === true) return <Spinner style={{ width: '3rem', height: '3rem' }} />;
 
     return (
       <div className="animated fadeIn">
@@ -39,7 +60,7 @@ class Users extends Component {
           <Col xl={6}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Users <small className="text-muted">example</small>
+                <i className="fa fa-align-justify"/> Users <small className="text-muted"/>
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
@@ -53,7 +74,7 @@ class Users extends Component {
                   </tr>
                   </thead>
                   <tbody>
-                  {userList.map((user, index) =>
+                  {this.state.users.map((user, index) =>
                     <UserRow key={index} user={user}/>
                   )}
                   </tbody>
@@ -64,7 +85,12 @@ class Users extends Component {
         </Row>
       </div>
     )
+
   }
 }
 
-export default Users;
+const mapStateToProps = state => {
+  return {token: state.authentication.token};
+};
+
+export default connect(mapStateToProps)(Users);
