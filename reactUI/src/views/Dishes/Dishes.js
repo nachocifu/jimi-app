@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
-
+import DishRestClient from '../../http/clients/DishRestClient'
 import dishData from './DishData'
 import Button from "reactstrap/es/Button";
+import Reactotron from "reactotron-react-js";
+import {connect} from "react-redux";
 
 function DishRow(props) {
   const dish = props.dish;
@@ -22,14 +24,31 @@ function DishRow(props) {
       <td><Button color={'success'}><i className="fa fa-plus-circle"/></Button></td>
       <td><Button color={'danger'}><i className="fa fa-minus-circle"/></Button></td>
     </tr>
-  )
+  );
 }
 
 class Dishes extends Component {
 
-  render() {
+  dishClient;
 
-    const dishList = dishData.filter((dish) => dish.id < 10);
+  constructor(props) {
+    super(props);
+    this.dishClient = new DishRestClient(props.token);
+    this.state = {dishes: [], loading: true};
+  }
+
+  componentDidMount() {
+    this.dishClient.get(0, 10)
+      .then((val) => {
+        this.setState({dishes: val.data.dishes, loading: false});
+      }).catch((error) => {
+      Reactotron.error("Failed to retrieve dishes", error);
+    });
+
+  }
+
+
+  render() {
 
     return (
       <div className="animated fadeIn">
@@ -52,7 +71,7 @@ class Dishes extends Component {
                   </tr>
                   </thead>
                   <tbody>
-                  {dishList.map((dish, index) =>
+                  {this.state.dishes.map((dish, index) =>
                     <DishRow key={index} dish={dish}/>
                   )}
                   </tbody>
@@ -66,4 +85,8 @@ class Dishes extends Component {
   }
 }
 
-export default Dishes;
+const mapStateToProps = state => {
+  return {token: state.authentication.token};
+};
+
+export default connect(mapStateToProps)(Dishes);
