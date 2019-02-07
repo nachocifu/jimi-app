@@ -31,13 +31,13 @@ public class DishServiceImplTest {
 	private static final int TEST_NEGATIVE_STOCK = -1;
 	private static final float e = 0.00001f;
 	private static final int MAX_STOCK = 1000000;
+	private int offset = 0;
 
 	@Mock
 	private DishDao dishDao;
 
 	@InjectMocks
 	private DishServiceImpl dishServiceImpl;
-	private int offset = 0;
 
 	@Test
 	public void findByIdTest() {
@@ -244,9 +244,9 @@ public class DishServiceImplTest {
 		dishes.add(new Dish(NAME, PRICE, 1, 10));
 		dishes.add(new Dish(NAME, PRICE, 2, 10));
 		dishes.add(new Dish(NAME, PRICE, 3, 10));
-		Mockito.when(dishDao.findAllAvailable()).thenReturn(dishes);
+		Mockito.when(dishDao.findAllAvailable(any(Integer.class), any(Integer.class))).thenReturn(dishes);
 
-		Collection<Dish> dbDishes = dishServiceImpl.findAllAvailable();
+		Collection<Dish> dbDishes = dishServiceImpl.findAllAvailable(dishes.size(), offset);
 
 		assertNotNull(dbDishes);
 
@@ -258,17 +258,15 @@ public class DishServiceImplTest {
 
 	@Test
 	public void findAllAvailableNotNullEmptyTest() {
-
-		Mockito.when(dishDao.findAll()).thenReturn(new HashSet<Dish>());
-		Collection<Dish> dbDishes = dishServiceImpl.findAllAvailable();
-		assertNotNull(dbDishes);
+		Mockito.when(dishDao.findAllAvailable(any(Integer.class), any(Integer.class))).thenReturn(new HashSet<Dish>());
+		Collection<Dish> dbDishes = dishServiceImpl.findAllAvailable(100, offset);
+		assertEquals(0, dbDishes.size());
 	}
 
 	@Test
 	public void findAllAvailableNotNullTest() {
-
-		Mockito.when(dishDao.findAll()).thenReturn(null);
-		Collection<Dish> dbDishes = dishServiceImpl.findAllAvailable();
+		Mockito.when(dishDao.findAllAvailable(any(Integer.class), any(Integer.class))).thenReturn(null);
+		Collection<Dish> dbDishes = dishServiceImpl.findAllAvailable(100, offset);
 		assertNotNull(dbDishes);
 	}
 
@@ -279,9 +277,9 @@ public class DishServiceImplTest {
 		dishes.add(new Dish(NAME, PRICE, 0, 10)); // Duplicated, should return 1 less.
 		dishes.add(new Dish(NAME, PRICE, 2, 10));
 		dishes.add(new Dish(NAME, PRICE, 3, 10));
-		Mockito.when(dishDao.findAllAvailable()).thenReturn(dishes);
+		Mockito.when(dishDao.findAllAvailable(any(Integer.class), any(Integer.class))).thenReturn(dishes);
 
-		Collection<Dish> dbDishes = dishServiceImpl.findAllAvailable();
+		Collection<Dish> dbDishes = dishServiceImpl.findAllAvailable(dishes.size(), offset);
 
 		assertNotNull(dbDishes);
 

@@ -118,23 +118,12 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public Collection<Dish> findAllAvailable() {
-		return dishDao.findAllAvailable();
-	}
-
-	/**
-	 * @param qp
-	 * @return
-	 * @deprecated
-	 */
-	@Override
-	public Collection<Dish> findAllAvailable(QueryParams qp) {
-		return findAllAvailable(qp.getPageSize(), qp.getStartAt());
-	}
-
-	@Override
 	public Collection<Dish> findAllAvailable(int pageSize, int offset) {
-		return dishDao.findAllAvailable(pageSize, offset);
+		Collection<Dish> dishes = dishDao.findAllAvailable(pageSize, offset);
+		if (dishes != null)
+			return dishes;
+		else
+			return new HashSet<Dish>();
 	}
 
 	@Override

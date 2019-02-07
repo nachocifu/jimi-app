@@ -90,21 +90,6 @@ public interface DishService {
 	 *
 	 * @return all the dishes.
 	 */
-	Collection<Dish> findAllAvailable();
-
-	/**
-	 * Returns all available, that is, stock greater than 0, dishes.
-	 *
-	 * @return all the dishes.
-	 * @deprecated
-	 */
-	Collection<Dish> findAllAvailable(QueryParams qp);
-
-	/**
-	 * Returns all available, that is, stock greater than 0, dishes.
-	 *
-	 * @return all the dishes.
-	 */
 	Collection<Dish> findAllAvailable(int pageSize, int offset);
 
 	/**
