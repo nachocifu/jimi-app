@@ -66,7 +66,7 @@ public class OrderHibernateDao implements OrderDao {
 	}
 
 	@Override
-	public Collection<Order> findAllRelevant(int maxResults, int offset) {
+	public Collection<Order> findCancelledOrClosedOrders(int maxResults, int offset) {
 		return em.createQuery("FROM Order AS o WHERE o.status = :closed OR o.status = :canceled", Order.class)
 				.setParameter("closed", OrderStatus.CLOSED)
 				.setParameter("canceled", OrderStatus.CANCELED)

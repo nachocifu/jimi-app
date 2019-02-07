@@ -39,12 +39,12 @@ public interface OrderDao {
 	 */
 	Collection<Order> findAll();
 
-    /**
+	/**
 	 * Find all closed orders, ordered decreased by closed timestamp.
 	 *
 	 * @return List of said orders.
 	 */
-    Collection<Order> findAll(int maxResults, int offset);
+	Collection<Order> findAll(int maxResults, int offset);
 
 	/**
 	 * Find all closed orders' total by month, ordered decreased by closed timestamp.
@@ -53,30 +53,29 @@ public interface OrderDao {
 	 */
 	Map getMonthlyOrderTotal();
 
-    Collection<Order> findAllRelevant(int maxResults, int offset);
+	Collection<Order> findCancelledOrClosedOrders(int maxResults, int offset);
 
 	int getTotalRelevantOrders();
 
-    /**
+	/**
 	 * Find all active orders.
 	 *
 	 * @return List of said orders.
 	 */
-    Collection<Order> getActiveOrders(int maxResults, int offset);
+	Collection<Order> getActiveOrders(int maxResults, int offset);
 
 	int getTotalActiveOrders();
 
-    Map getMonthlyOrderCancelled();
+	Map getMonthlyOrderCancelled();
 
-    /**
+	/**
 	 * Finds all orders from the last given amount of minutes.
 	 *
 	 * @return A collection of said orders.
 	 */
 	Collection<Order> getOrdersFromLastMinutes(int minutes);
 
-
-    /**
+	/**
 	 * Finds all undone dishes from active orders.
 	 *
 	 * @return A collection of said dishes.
