@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.webapp.api;
 
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.DishDTO;
 import edu.itba.paw.jimi.webapp.dto.DishListDTO;
 import edu.itba.paw.jimi.webapp.dto.form.dish.DishForm;
@@ -56,7 +55,7 @@ public class DishApiController extends BaseApiController {
 	                           @QueryParam("pageSize") @DefaultValue("" + DEFAULT_PAGE_SIZE) Integer pageSize) {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
-		final Collection<Dish> allDishes = dishService.findAll(new QueryParams((page - 1) * pageSize, pageSize)); //TODO: change for paginated
+		final Collection<Dish> allDishes = dishService.findAll(pageSize, (page - 1) * pageSize);
 		return Response.ok(new DishListDTO(new LinkedList<>(allDishes), buildBaseURI(uriInfo)))
 				.links(paginationHelper.getPaginationLinks(uriInfo, page, dishService.getTotalDishes()))
 				.build();

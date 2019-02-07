@@ -6,7 +6,6 @@ import edu.itba.paw.jimi.interfaces.exceptions.MaxStockException;
 import edu.itba.paw.jimi.interfaces.exceptions.MinStockException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,16 +95,6 @@ public class DishServiceImpl implements DishService {
 		dish.setDiscontinued(discontinued);
 		dishDao.update(dish);
 		LOGGER.info("Updated dish discontinued {}", dish);
-	}
-
-	/**
-	 * @param qp the QueryParams.
-	 * @return
-	 * @deprecated
-	 */
-	@Override
-	public Collection<Dish> findAll(QueryParams qp) {
-		return findAll(qp.getPageSize(), qp.getStartAt());
 	}
 
 	@Override

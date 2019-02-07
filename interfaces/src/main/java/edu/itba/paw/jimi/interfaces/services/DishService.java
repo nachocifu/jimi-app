@@ -1,7 +1,6 @@
 package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import java.util.Collection;
 
@@ -66,15 +65,6 @@ public interface DishService {
 	 * @param discontinued the new value
 	 */
 	void setDiscontinued(Dish dish, boolean discontinued);
-
-	/**
-	 * Returns all the dishes.
-	 *
-	 * @param qp the QueryParams.
-	 * @return all the dishes.
-	 * @deprecated
-	 */
-	Collection<Dish> findAll(QueryParams qp);
 
 	/**
 	 * Returns all the dishes.

@@ -28,22 +28,10 @@ public class DishHibernateDao implements DishDao {
 	}
 
 	@Override
-	public Collection<Dish> findAll() {
-		return em.createQuery("from Dish order by name", Dish.class).getResultList();
-	}
-
-	@Override
 	public Dish findById(long id) {
 		return em.find(Dish.class, (int) id);
 	}
 
-	/**
-	 * Returns all the dishes.
-	 *
-	 * @param pageSize
-	 * @param offset
-	 * @return all the dishes.
-	 */
 	@Override
 	public Collection<Dish> findAll(int pageSize, int offset) {
 		return em.createQuery("from Dish order by name", Dish.class)

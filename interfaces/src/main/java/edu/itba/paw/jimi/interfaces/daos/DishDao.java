@@ -31,13 +31,6 @@ public interface DishDao {
 	 *
 	 * @return all the dishes.
 	 */
-	Collection<Dish> findAll();
-
-	/**
-	 * Returns all the dishes.
-	 *
-	 * @return all the dishes.
-	 */
 	Collection<Dish> findAll(int pageSize, int offset);
 
 	/**
