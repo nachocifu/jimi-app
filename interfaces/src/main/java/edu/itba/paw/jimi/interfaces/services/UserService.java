@@ -20,15 +20,8 @@ public interface UserService {
 	/**
 	 * Returns all the users.
 	 *
-	 * @return all the users.
-	 */
-	Collection<User> findAll();
-
-	/**
-	 * Returns all the users.
-	 *
 	 * @param maxResults Max results allowed. Alias page size
-	 * @param offset First result start. Alias first result
+	 * @param offset     First result start. Alias first result
 	 * @return all the users.
 	 */
 	Collection<User> findAll(int maxResults, int offset);

@@ -34,15 +34,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Collection<User> findAll() {
-		Collection<User> users = userDao.findAll();
-		if (users != null)
-			return users;
-		else
-			return new HashSet<User>();
-	}
-
-	@Override
 	public Collection<User> findAll(int maxResults, int offset) {
 		Collection<User> users = userDao.findAll(maxResults, offset);
 		if (users != null)
