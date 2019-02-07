@@ -142,8 +142,9 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public Collection<Dish> findDishesMissingStock() {
-		return dishDao.findDishesMissingStock();
+
+	public Collection<Dish> findDishesMissingStock(int pageSize, int offset) {
+		return dishDao.findDishesMissingStock(pageSize, offset);
 	}
 
 }

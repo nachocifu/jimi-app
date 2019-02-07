@@ -154,7 +154,7 @@ public class DishDaoTest {
 
 	@Test
 	public void testFindDishesMissingStock() {
-		Collection<Dish> dishes = dishDao.findDishesMissingStock();
+		Collection<Dish> dishes = dishDao.findDishesMissingStock(100, offset);
 		Assert.assertEquals(1, dishes.size());
 		Assert.assertEquals(dishMissingStock, dishes.toArray()[0]);
 	}

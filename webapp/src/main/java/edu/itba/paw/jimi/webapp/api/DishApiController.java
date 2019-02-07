@@ -135,7 +135,10 @@ public class DishApiController extends BaseApiController {
 		csvWriter.writeHeader(headerT);
 
 		String[] header = {"name", "price", "stock", "minStock"};
-		for (Dish dish : dishService.findDishesMissingStock())
+		for (Dish dish : dishService.findDishesMissingStock(
+				dishService.getTotalDishes(),
+				0
+		))
 			csvWriter.write(dish, header);
 
 		csvWriter.flush();

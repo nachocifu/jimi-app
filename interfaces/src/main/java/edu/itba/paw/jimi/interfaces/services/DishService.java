@@ -67,28 +67,26 @@ public interface DishService {
 	void setDiscontinued(Dish dish, boolean discontinued);
 
 	/**
-	 * Returns all the dishes.
+	 * Returns all the dishes paginated.
 	 *
-	 * @param pageSize
-	 * @param offset
-	 * @return all the dishes.
+	 * @return all the dishes paginated.
 	 */
 	Collection<Dish> findAll(int pageSize, int offset);
 
 	/**
-	 * Returns all available, that is, stock greater than 0, dishes.
+	 * Returns all available paginated dishes, that is, stock greater than 0.
 	 *
-	 * @return all the dishes.
+	 * @return all the available dishes paginated.
 	 */
 	Collection<Dish> findAllAvailable(int pageSize, int offset);
 
 	/**
-	 * Returns all dishes with missing stock, that is, their stock lower than their
+	 * Returns all paginated dishes with missing stock, that is, their stock lower than their
 	 * minimum stock.
 	 *
-	 * @return dishes missing stock.
+	 * @return dishes missing stock dishes paginated.
 	 */
-	Collection<Dish> findDishesMissingStock();
+	Collection<Dish> findDishesMissingStock(int pageSize, int offset);
 
 	/**
 	 * Returns the amount of all dishes in the database.

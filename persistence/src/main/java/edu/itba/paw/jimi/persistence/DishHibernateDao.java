@@ -41,8 +41,11 @@ public class DishHibernateDao implements DishDao {
 	}
 
 	@Override
-	public Collection<Dish> findDishesMissingStock() {
-		return em.createQuery("from Dish as d where d.stock < d.minStock and d.discontinued = false", Dish.class).getResultList();
+	public Collection<Dish> findDishesMissingStock(int pageSize, int offset) {
+		return em.createQuery("from Dish as d where d.stock < d.minStock and d.discontinued = false", Dish.class)
+				.setFirstResult(offset)
+				.setMaxResults(pageSize)
+				.getResultList();
 	}
 
 	@Override
