@@ -141,21 +141,6 @@ public interface OrderService {
 	 *
 	 * @return A collection of said orders.
 	 */
-	Collection<Order> findAll();
-
-	/**
-	 * Finds all closed orders.
-	 *
-	 * @return A collection of said orders.
-	 * @deprecated
-	 */
-	Collection<Order> findAll(QueryParams qp);
-
-	/**
-	 * Finds all closed orders.
-	 *
-	 * @return A collection of said orders.
-	 */
 	Collection<Order> findAll(int maxResults, int offset);
 
 	/**

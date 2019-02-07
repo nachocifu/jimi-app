@@ -209,20 +209,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Collection<Order> findAll() {
-		Collection<Order> orders = orderDao.findAll();
-		if (orders != null)
-			return orders;
-		else
-			return new HashSet<Order>();
-	}
-
-	@Override
-	public Collection<Order> findAll(QueryParams qp) {
-		return findAll(qp.getPageSize(), qp.getStartAt());
-	}
-
-	@Override
 	public Collection<Order> findAll(int maxResults, int offset) {
 		Collection<Order> orders = orderDao.findAll(maxResults, offset);
 		if (orders != null)

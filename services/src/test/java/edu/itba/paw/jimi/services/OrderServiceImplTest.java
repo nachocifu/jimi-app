@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 
 public class OrderServiceImplTest {
 
@@ -26,6 +27,7 @@ public class OrderServiceImplTest {
 	private static final int DISH_STOCK = 5;
 	private static final float DELTA = 0.001F;
 	private static final Timestamp OPENEDAT = new Timestamp(1525467178);
+	private static final int offset = 0;
 
 	@Mock
 	private OrderDao orderDao;
@@ -499,14 +501,15 @@ public class OrderServiceImplTest {
 
 	@Test
 	public void findAllNotNullEmpty() {
-		Mockito.when(orderService.findAll()).thenReturn(new LinkedList<Order>());
-		Assert.assertNotNull(orderService.findAll());
+		Mockito.when(orderService.findAll(any(Integer.class), any(Integer.class))).thenReturn(new LinkedList<Order>());
+		Assert.assertNotNull(orderService.findAll(100, offset));
+		Assert.assertEquals(0, orderService.findAll(100, offset).size());
 	}
 
 	@Test
 	public void findAllNotNull() {
-		Mockito.when(orderService.findAll()).thenReturn(null);
-		Assert.assertNotNull(orderService.findAll());
+		Mockito.when(orderService.findAll(any(Integer.class), any(Integer.class))).thenReturn(null);
+		Assert.assertNotNull(orderService.findAll(100, offset));
 	}
 
 	@Test
