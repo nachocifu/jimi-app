@@ -89,6 +89,11 @@ public interface TableService {
 	Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes);
 
 	/**
+	 * Returns tables with orders from the last given quantity of minutes.
+	 */
+	Collection<Table> getBusyTablesWithOrdersOrderedByOrderedAt(int maxResults, int offset);
+
+	/**
 	 * Deletes a Table.
 	 *
 	 * @param id Id of the table.

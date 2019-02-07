@@ -158,4 +158,9 @@ public class TableServiceImpl implements TableService {
 		return tableDao.getTablesWithOrdersFromLastMinutes(minutes);
 	}
 
+	@Override
+	public Collection<Table> getBusyTablesWithOrdersOrderedByOrderedAt(int maxResults, int offset) {
+		Collection<Table> tables = tableDao.getBusyTablesWithOrdersOrderedByOrderedAt(maxResults, offset);
+		return tables != null ? tables : new HashSet<Table>();
+	}
 }

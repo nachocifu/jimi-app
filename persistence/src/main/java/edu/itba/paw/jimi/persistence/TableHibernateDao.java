@@ -13,7 +13,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 @Repository
 public class TableHibernateDao implements TableDao {

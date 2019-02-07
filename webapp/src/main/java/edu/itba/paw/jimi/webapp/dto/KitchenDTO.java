@@ -1,6 +1,5 @@
 package edu.itba.paw.jimi.webapp.dto;
 
-import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Table;
 
 import java.net.URI;
@@ -8,41 +7,21 @@ import java.util.List;
 
 public class KitchenDTO {
 
-    private TableListDTO tables;
-    private TableListDTO urgentTables;
-    private DishListDTO dishes;
+	private TableListDTO busyTables;
 
-    public KitchenDTO(){
-    }
+	public KitchenDTO() {
+	}
 
-    public KitchenDTO(List<Dish> dishes, List<Table> tables, List<Table> urgentTables, URI uri){
-        this.dishes = new DishListDTO(dishes, uri);
-        this.tables = new TableListDTO(tables, uri);
-        this.urgentTables = new TableListDTO(urgentTables, uri);
-    }
+	public KitchenDTO(List<Table> busyTables, URI uri) {
+		this.busyTables = new TableListDTO(busyTables, uri);
+	}
 
-    public TableListDTO getTables() {
-        return tables;
-    }
+	public TableListDTO getBusyTables() {
+		return busyTables;
+	}
 
-    public void setTables(TableListDTO tables) {
-        this.tables = tables;
-    }
+	public void setBusyTables(TableListDTO busyTables) {
+		this.busyTables = busyTables;
 
-    public TableListDTO getUrgentTables() {
-        return urgentTables;
-    }
-
-    public void setUrgentTables(TableListDTO urgentTables) {
-        this.urgentTables = urgentTables;
-    }
-
-    public DishListDTO getDishes() {
-        return dishes;
-    }
-
-    public void setDishes(DishListDTO dishes) {
-        this.dishes = dishes;
-    }
-
- }
+	}
+}

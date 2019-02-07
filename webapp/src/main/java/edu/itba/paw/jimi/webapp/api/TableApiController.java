@@ -300,7 +300,7 @@ public class TableApiController extends BaseApiController {
 		orderService.setDishAsDone(order, currentDish);
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
 	}
-	
+
 	@DELETE
 	@Path("/{id}/dishes/{dishId}")
 	@Consumes(MediaType.APPLICATION_JSON)
