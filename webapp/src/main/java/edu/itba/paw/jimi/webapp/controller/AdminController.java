@@ -46,7 +46,7 @@ public class AdminController {
 		mav.addObject("payingTables", statsService.getPayingTablesUnits());
 		mav.addObject("totalTables", tableService.findAll().size());
 		mav.addObject("freeTablesPercentage", statsService.getFreeTables());
-		mav.addObject("stockStatePercentage", statsService.getStockState());
+		mav.addObject("stockStatePercentage", statsService.getStockState(50));
 		mav.addObject("monthOrderTotals", statsService.getMonthlyOrderTotal());
 		mav.addObject("monthlyOrdersCancelled", statsService.getMonthlyOrderCancelled());
 

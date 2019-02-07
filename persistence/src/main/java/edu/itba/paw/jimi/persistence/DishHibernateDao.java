@@ -30,7 +30,7 @@ public class DishHibernateDao implements DishDao {
 
 	@Override
 	public Collection<Dish> findAll() {
-        return em.createQuery("from Dish order by name", Dish.class).getResultList();
+		return em.createQuery("from Dish order by name", Dish.class).getResultList();
 	}
 
 	@Override
@@ -47,10 +47,10 @@ public class DishHibernateDao implements DishDao {
 	 */
 	@Override
 	public Collection<Dish> findAll(int pageSize, int offset) {
-        return em.createQuery("from Dish order by name", Dish.class)
-                .setFirstResult(offset)
-                .setMaxResults(pageSize)
-                .getResultList();
+		return em.createQuery("from Dish order by name", Dish.class)
+				.setFirstResult(offset)
+				.setMaxResults(pageSize)
+				.getResultList();
 	}
 
 	@Override
@@ -77,9 +77,17 @@ public class DishHibernateDao implements DishDao {
 
 	@Override
 	public Collection<Dish> findAllAvailable(int pageSize, int offset) {
-        return em.createQuery("from Dish as d where d.stock > 0 and d.discontinued = false order by name", Dish.class)
-                .setFirstResult(offset)
-                .setMaxResults(pageSize)
-                .getResultList();
+		return em.createQuery("from Dish as d where d.stock > 0 and d.discontinued = false order by name", Dish.class)
+				.setFirstResult(offset)
+				.setMaxResults(pageSize)
+				.getResultList();
+	}
+
+	@Override
+	public int getAllDishesWithStockLessThanLimit(int limit) {
+		return em.createQuery("select count(*) from Dish as d where d.stock < :limit and d.discontinued = false", Long.class)
+				.setParameter("limit", limit)
+				.getSingleResult()
+				.intValue();
 	}
 }

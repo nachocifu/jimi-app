@@ -70,13 +70,6 @@ public interface DishService {
 	/**
 	 * Returns all the dishes.
 	 *
-	 * @return all the dishes.
-	 */
-	Collection<Dish> findAll();
-
-	/**
-	 * Returns all the dishes.
-	 *
 	 * @param qp the QueryParams.
 	 * @return all the dishes.
 	 * @deprecated
@@ -145,4 +138,10 @@ public interface DishService {
 	 */
 	int setMinStock(Dish dish, int minStock);
 
+	/**
+	 * Returns all dishes with stock less than limit
+	 *
+	 * @return number of dishes with stock less than limit.
+	 */
+	int getAllDishesWithStockLessThanLimit(int limit);
 }

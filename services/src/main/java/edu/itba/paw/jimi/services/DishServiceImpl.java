@@ -98,15 +98,6 @@ public class DishServiceImpl implements DishService {
 		LOGGER.info("Updated dish discontinued {}", dish);
 	}
 
-	@Override
-	public Collection<Dish> findAll() {
-		Collection<Dish> dishes = dishDao.findAll();
-		if (dishes != null)
-			return dishes;
-		else
-			return new HashSet<Dish>();
-	}
-
 	/**
 	 * @param qp the QueryParams.
 	 * @return
@@ -164,6 +155,12 @@ public class DishServiceImpl implements DishService {
 		dishDao.update(dish);
 		LOGGER.info("Updated dish minstock {}", dish);
 		return dish.getMinStock();
+	}
+
+	@Override
+	public int getAllDishesWithStockLessThanLimit(int limit) {
+		return dishDao.getAllDishesWithStockLessThanLimit(limit);
+
 	}
 
 	@Override

@@ -4,7 +4,6 @@ import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.StatsService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
-import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.TableStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,6 @@ import java.util.Map;
 
 @Service
 public class StatsServiceImpl implements StatsService {
-
-	private static final int infBound = 50;
 
 	@Autowired
 	private DishService dishService;
@@ -56,13 +53,8 @@ public class StatsServiceImpl implements StatsService {
 	}
 
 	@Override
-	public int getStockState() {
-		int underBound = 0;
-		for (Dish d : dishService.findAll()) {
-			if (d.getStock() <= infBound)
-				underBound += 1;
-		}
-		return (int) ((underBound * 100.0) / dishService.getTotalDishes());
+	public int getStockState(int limit) {
+		return (int) ((dishService.getAllDishesWithStockLessThanLimit(limit) * 100.0) / dishService.getTotalDishes());
 	}
 
 	@Override

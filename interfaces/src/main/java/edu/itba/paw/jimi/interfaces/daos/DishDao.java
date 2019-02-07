@@ -18,7 +18,7 @@ public interface DishDao {
 	 */
 	Dish create(String name, float price, int stock);
 
-    /**
+	/**
 	 * Updates the dish.
 	 *
 	 * @param dish The dish to be updated.
@@ -26,19 +26,19 @@ public interface DishDao {
 	 */
 	int update(Dish dish);
 
-    /**
+	/**
 	 * Returns all the dishes.
 	 *
 	 * @return all the dishes.
 	 */
 	Collection<Dish> findAll();
 
-    /**
+	/**
 	 * Returns all the dishes.
 	 *
 	 * @return all the dishes.
 	 */
-    Collection<Dish> findAll(int pageSize, int offset);
+	Collection<Dish> findAll(int pageSize, int offset);
 
 	/**
 	 * Returns all dishes with missing stock, that is, their stock lower than their
@@ -48,27 +48,34 @@ public interface DishDao {
 	 */
 	Collection<Dish> findDishesMissingStock();
 
-    /**
+	/**
 	 * Returns all discontinued dishes.
 	 *
 	 * @return discontinued dishes.
 	 */
 	Collection<Dish> findDiscontinuedDishes();
 
-    /**
+	/**
 	 * Returns the amount of dishes in the database.
 	 *
 	 * @return a positive integer.
 	 */
 	int getTotalDishes();
 
-    /**
+	/**
 	 * Returns all the dishes that are not discontinued and are in stock.
 	 */
 	Collection<Dish> findAllAvailable();
 
-    /**
+	/**
 	 * Returns all the dishes that are not discontinued and are in stock.
 	 */
-    Collection<Dish> findAllAvailable(int pageSize, int offset);
+	Collection<Dish> findAllAvailable(int pageSize, int offset);
+
+	/**
+	 * Returns all dishes with stock less than limit
+	 *
+	 * @return number of dishes with stock less than limit.
+	 */
+	int getAllDishesWithStockLessThanLimit(int limit);
 }
