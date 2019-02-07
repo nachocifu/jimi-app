@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.Collection;
 
 @Repository
@@ -67,12 +66,6 @@ public class DishHibernateDao implements DishDao {
 	public int getTotalDishes() {
 		Long query = em.createQuery("select count(*) from Dish", Long.class).getSingleResult();
 		return query.intValue();
-	}
-
-	@Override
-	public Collection<Dish> findAllAvailable() {
-		final TypedQuery<Dish> query = em.createQuery("from Dish as d where d.stock > 0 and d.discontinued = false order by name", Dish.class);
-		return query.getResultList();
 	}
 
 	@Override

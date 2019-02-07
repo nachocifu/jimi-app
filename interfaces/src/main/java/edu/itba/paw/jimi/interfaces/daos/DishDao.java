@@ -65,11 +65,6 @@ public interface DishDao {
 	/**
 	 * Returns all the dishes that are not discontinued and are in stock.
 	 */
-	Collection<Dish> findAllAvailable();
-
-	/**
-	 * Returns all the dishes that are not discontinued and are in stock.
-	 */
 	Collection<Dish> findAllAvailable(int pageSize, int offset);
 
 	/**

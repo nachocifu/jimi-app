@@ -39,6 +39,7 @@ public class DishDaoTest {
 	private static final Float DISH_PRICE = 5.25F;
 	private static final int DISH_STOCK = 5;
 	private static final int MIN_STOCK = 5;
+	private static final int offset = 0;
 	private Dish dishEqualStock;
 	private Dish dishMissingStock;
 	private Dish dishOverStock;
@@ -140,7 +141,7 @@ public class DishDaoTest {
 
 	@Test
 	public void testFindAllAvailable() {
-		List<Dish> dishes = (List<Dish>) dishDao.findAllAvailable();
+		List<Dish> dishes = (List<Dish>) dishDao.findAllAvailable(100, offset);
 		assertEquals(4, dishes.size());
 	}
 
