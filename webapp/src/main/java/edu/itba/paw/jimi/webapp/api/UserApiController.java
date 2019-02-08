@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.webapp.api;
 
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.UserDTO;
 import edu.itba.paw.jimi.webapp.dto.UserListDTO;
 import edu.itba.paw.jimi.webapp.dto.form.user.UserForm;
@@ -56,7 +55,7 @@ public class UserApiController extends BaseApiController {
 	                          @QueryParam("pageSize") @DefaultValue("" + DEFAULT_PAGE_SIZE) Integer pageSize) {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
-		final Collection<User> allUsers = userService.findAll(new QueryParams((page - 1) * pageSize, pageSize));
+		final Collection<User> allUsers = userService.findAll(pageSize, (page - 1) * pageSize);
 		return Response.ok(new UserListDTO(new LinkedList<>(allUsers), buildBaseURI(uriInfo)))
 				.links(paginationHelper.getPaginationLinks(uriInfo, page, userService.getTotalUsers()))
 				.build();
