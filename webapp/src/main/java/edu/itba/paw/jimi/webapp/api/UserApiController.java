@@ -67,7 +67,7 @@ public class UserApiController extends BaseApiController {
 		if (userForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		if (!passwordEncoder.matches(userForm.getPassword(), userForm.getRepeatPassword()))
+		if (!userForm.getPassword().equals(userForm.getRepeatPassword()))
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(messageSource.getMessage("non_matching_passwords", null, LocaleContextHolder.getLocale()))
