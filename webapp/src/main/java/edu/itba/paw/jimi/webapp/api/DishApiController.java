@@ -121,6 +121,22 @@ public class DishApiController extends BaseApiController {
 	}
 
 	@POST
+	@Path("/{id}/discontinued")
+	public Response setDishAsDiscontinued(@PathParam("id") final int id) {
+		final Dish dish = dishService.findById(id);
+		if (dish == null) {
+			LOGGER.warn("Dish with id {} not found", id);
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
+					.build();
+		}
+
+		dishService.setDiscontinued(dish, true);
+		return Response.ok(new DishDTO(dish, buildBaseURI(uriInfo))).build();
+	}
+
+	@POST
 	@Path("/downloadCSV")
 	@Produces({"text/csv"})
 	public Response downloadDishesMissingStockCSV(@Context HttpServletResponse response) throws IOException {
