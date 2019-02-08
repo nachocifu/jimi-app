@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 
 import javax.json.Json;
@@ -22,7 +21,6 @@ import javax.ws.rs.ext.Provider;
 import java.util.Iterator;
 
 @Provider
-@Component
 public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ValidationExceptionMapper.class);

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,6 @@ import javax.ws.rs.ext.Provider;
 import java.text.MessageFormat;
 
 @Provider
-@Component
 public class OrderStatusExceptionMapper implements ExceptionMapper<OrderStatusException> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrderStatusExceptionMapper.class);
