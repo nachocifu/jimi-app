@@ -28,10 +28,3 @@ CREATE TABLE IF NOT EXISTS "orders"
   diners   INTEGER,
   total    FLOAT
 );
-
-CREATE TABLE IF NOT EXISTS orders_items
-(
-  orderid  INTEGER NOT NULL,
-  dishid   INTEGER NOT NULL,
-  quantity INTEGER NOT NULL
-);
