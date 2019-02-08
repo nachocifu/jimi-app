@@ -218,11 +218,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Collection<Order> findCancelledOrClosedOrders(QueryParams qp) {
-		return findAll(qp.getPageSize(), qp.getStartAt());
-	}
-
-	@Override
 	public Collection<Order> findCancelledOrClosedOrders(int maxResults, int offset) {
 		return orderDao.findCancelledOrClosedOrders(maxResults, offset);
 	}

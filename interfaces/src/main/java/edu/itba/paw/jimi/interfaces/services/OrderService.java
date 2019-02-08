@@ -144,14 +144,6 @@ public interface OrderService {
 	Collection<Order> findAll(int maxResults, int offset);
 
 	/**
-	 * Finds all closed orders.
-	 *
-	 * @return A collection of said orders.
-	 * @deprecated
-	 */
-	Collection<Order> findCancelledOrClosedOrders(QueryParams qp);
-
-	/**
 	 * Finds all cancelled or closed orders paginated.
 	 *
 	 * @return A collection of said orders paginated.
