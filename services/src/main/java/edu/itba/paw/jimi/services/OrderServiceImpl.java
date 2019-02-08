@@ -8,7 +8,6 @@ import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.DishData;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -245,11 +244,6 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int getTotalCancelledOrClosedOrders() {
 		return orderDao.getTotalRelevantOrders();
-	}
-
-	@Override
-	public Collection<Order> getActiveOrders(QueryParams qp) {
-		return getActiveOrders(qp.getPageSize(), qp.getStartAt());
 	}
 
 	@Override

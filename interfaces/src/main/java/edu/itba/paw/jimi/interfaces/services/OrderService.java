@@ -3,7 +3,6 @@ package edu.itba.paw.jimi.interfaces.services;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -173,14 +172,6 @@ public interface OrderService {
 	 * @return count of cancelled or closed orders.
 	 */
 	int getTotalCancelledOrClosedOrders();
-
-	/**
-	 * Finds all open orders.
-	 *
-	 * @return A collection of said orders in ascending order by open timestamp.
-	 * @deprecated
-	 */
-	Collection<Order> getActiveOrders(QueryParams qp);
 
 	/**
 	 * Finds all open orders.
