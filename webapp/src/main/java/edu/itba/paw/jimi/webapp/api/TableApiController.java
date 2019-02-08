@@ -7,7 +7,6 @@ import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.OrderDTO;
 import edu.itba.paw.jimi.webapp.dto.TableDTO;
 import edu.itba.paw.jimi.webapp.dto.TableListDTO;
@@ -63,7 +62,7 @@ public class TableApiController extends BaseApiController {
 	                           @QueryParam("pageSize") @DefaultValue("" + DEFAULT_PAGE_SIZE) Integer pageSize) {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
-		final Collection<Table> allTables = tableService.findAll(new QueryParams((page - 1) * pageSize, pageSize)); //TODO: change for paginated
+		final Collection<Table> allTables = tableService.findAll(pageSize, (page - 1) * pageSize);
 		return Response.ok(new TableListDTO(new LinkedList<>(allTables), buildBaseURI(uriInfo)))
 				.build();
 	}

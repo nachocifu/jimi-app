@@ -9,7 +9,6 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,11 +58,6 @@ public class TableServiceImpl implements TableService {
 			return tables;
 		else
 			return new HashSet<Table>();
-	}
-
-	@Override
-	public Collection<Table> findAll(QueryParams qp) {
-		return findAll(qp.getPageSize(), qp.getStartAt());
 	}
 
 	@Override
