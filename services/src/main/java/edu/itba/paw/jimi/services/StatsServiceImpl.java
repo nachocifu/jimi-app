@@ -8,6 +8,7 @@ import edu.itba.paw.jimi.models.TableStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.YearMonth;
 import java.util.Map;
 
 @Service
@@ -58,12 +59,12 @@ public class StatsServiceImpl implements StatsService {
 	}
 
 	@Override
-	public Map getMonthlyOrderTotal() {
+	public Map<YearMonth, Double> getMonthlyOrderTotal() {
 		return orderService.getMonthlyOrderTotal();
 	}
 
 	@Override
-	public Map getMonthlyOrderCancelled() {
+	public Map<YearMonth, Integer> getMonthlyOrderCancelled() {
 		return orderService.getMonthlyOrderCancelled();
 	}
 

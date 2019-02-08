@@ -5,6 +5,7 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 
 import java.sql.Timestamp;
+import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Map;
 
@@ -154,14 +155,14 @@ public interface OrderService {
 	 *
 	 * @return A collection of said orders.
 	 */
-	Map getMonthlyOrderTotal();
+	Map<YearMonth, Double> getMonthlyOrderTotal();
 
 	/**
 	 * Finds all cancelled orders' total by month.
 	 *
 	 * @return A collection of said orders.
 	 */
-	Map getMonthlyOrderCancelled();
+	Map<YearMonth, Integer> getMonthlyOrderCancelled();
 
 	/**
 	 * Sets dish from order as done.
