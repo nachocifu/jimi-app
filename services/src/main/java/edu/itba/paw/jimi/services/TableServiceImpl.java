@@ -52,15 +52,6 @@ public class TableServiceImpl implements TableService {
 	}
 
 	@Override
-	public Collection<Table> findAll() {
-		Collection<Table> tables = tableDao.findAll();
-		if (tables != null)
-			return tables;
-		else
-			return new HashSet<Table>();
-	}
-
-	@Override
 	public Collection<Table> findAll(int maxResults, int offset) {
 		Collection<Table> tables = tableDao.findAll(maxResults, offset);
 		if (tables != null)

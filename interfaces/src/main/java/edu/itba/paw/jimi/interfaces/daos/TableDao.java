@@ -25,19 +25,12 @@ public interface TableDao {
 	 */
 	void update(Table table);
 
-    /**
-	 * Returns all the tables.
+	/**
+	 * Returns all the tables paginated.
 	 *
-	 * @return all the tables.
+	 * @return all the tables
 	 */
-	Collection<Table> findAll();
-
-    /**
-     * Returns all the tables paginated.
-     *
-     * @return all the tables
-	 */
-    Collection<Table> findAll(int maxResults, int offset);
+	Collection<Table> findAll(int maxResults, int offset);
 
 	/**
 	 * Returns all the active with the given status.
@@ -45,15 +38,20 @@ public interface TableDao {
 	 * @return all the active with the given status.
 	 */
 	Collection<Table> findTablesWithStatus(TableStatus tableStatus);
+	
+	/**
+	 * Returns the total number of tables.
+	 *
+	 * @return the total number of tables.
+	 */
+	int getTotalTables();
 
-    int getTotalTables();
-
-    /**
+	/**
 	 * Returns true if a table exists with tableName.
 	 */
 	boolean tableNameExists(String tableName);
 
-    /**
+	/**
 	 * Creates a Table.
 	 *
 	 * @param name  Name of the table.
@@ -64,21 +62,21 @@ public interface TableDao {
 	 */
 	Table create(String name, TableStatus ts, Order order) throws PersistenceException;
 
-    /**
+	/**
 	 * Gets number of tables with status tableStatus.
 	 *
 	 * @return umber of tables with status tableStatus.
 	 */
 	int getNumberOfTablesWithState(TableStatus tableStatus);
 
-    /**
+	/**
 	 * Deletes a Table.
 	 *
 	 * @param id Id of the table.
 	 */
 	void delete(final long id);
 
-    /**
+	/**
 	 * Returns tables with orders from the last given quantity of minutes.
 	 */
 	Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes);

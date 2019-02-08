@@ -23,11 +23,13 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TableServiceImplTest {
 
 	private static final String TABLE_NAME = "Table 1";
+	private static final int offset = 0;
 
 	@InjectMocks
 	private TableServiceImpl tableServiceImpl;
@@ -156,14 +158,14 @@ public class TableServiceImplTest {
 
 	@Test
 	public void findAllNotNullEmptyTest() {
-		Mockito.when(tableServiceImpl.findAll()).thenReturn(new LinkedList<Table>());
-		Assert.assertNotNull(tableServiceImpl.findAll());
+		Mockito.when(tableServiceImpl.findAll(any(Integer.class), any(Integer.class))).thenReturn(new LinkedList<Table>());
+		assertEquals(0, tableServiceImpl.findAll(100, offset).size());
 	}
 
 	@Test
 	public void findAllNotNullTest() {
-		Mockito.when(tableServiceImpl.findAll()).thenReturn(null);
-		Assert.assertNotNull(tableServiceImpl.findAll());
+		Mockito.when(tableServiceImpl.findAll(any(Integer.class), any(Integer.class))).thenReturn(null);
+		Assert.assertNotNull(tableServiceImpl.findAll(100, offset));
 	}
 
 	@Test

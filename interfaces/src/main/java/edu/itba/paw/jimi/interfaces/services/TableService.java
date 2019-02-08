@@ -19,13 +19,6 @@ public interface TableService {
 	Table create(String name) throws ServiceException;
 
 	/**
-	 * Returns all the tables.
-	 *
-	 * @return all the tables.
-	 */
-	Collection<Table> findAll();
-
-	/**
 	 * Returns all the tables paginated
 	 *
 	 * @return all the tables based
