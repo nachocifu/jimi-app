@@ -46,9 +46,17 @@ public interface OrderDao {
 	 */
 	Map getMonthlyOrderTotal();
 
+	/**
+	 * Find all cancelled or closed orders.
+	 *
+	 * @return List of said orders.
+	 */
 	Collection<Order> findCancelledOrClosedOrders(int maxResults, int offset);
 
-	int getTotalRelevantOrders();
+	/**
+	 * Calculates the total amount of cancelled or closed orders.
+	 */
+	int getTotalCancelledOrClosedOrders();
 
 	/**
 	 * Find all active orders.
@@ -59,6 +67,11 @@ public interface OrderDao {
 
 	int getTotalActiveOrders();
 
+	/**
+	 * Find all cancelled orders' total by month.
+	 *
+	 * @return List of said orders.
+	 */
 	Map getMonthlyOrderCancelled();
 
 	/**

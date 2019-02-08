@@ -243,7 +243,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int getTotalCancelledOrClosedOrders() {
-		return orderDao.getTotalRelevantOrders();
+		return orderDao.getTotalCancelledOrClosedOrders();
 	}
 
 	@Override
