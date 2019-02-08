@@ -1,7 +1,10 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
-import edu.itba.paw.jimi.interfaces.exceptions.*;
+import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
+import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotOpenOrderException;
+import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
+import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
@@ -62,9 +65,6 @@ public class OrderServiceImpl implements OrderService {
 		if (amount > dish.getStock())
 			throw new StockHandlingException();
 
-		if (!order.getStatus().equals(OrderStatus.OPEN))
-			throw new DishSetToInactiveOrderException();
-
 		if (dish.isDiscontinued())
 			throw new AddingDiscontinuedDishException();
 
@@ -76,12 +76,13 @@ public class OrderServiceImpl implements OrderService {
 
 		order.setDish(dish, previousAmount + amount);
 		updateTotal(order);
-		orderDao.update(order);
 
 		LOGGER.info("Updated order (add dishes): {}", order);
 
 		// Update dish stock
 		dishService.setStock(dish, dish.getStock() - amount);
+
+		orderDao.update(order);
 
 		if (order.getDishes().containsKey(dish))
 			return order.getDishes().get(dish).getAmount();
@@ -96,9 +97,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int removeUndoneDish(Order order, Dish dish, int amount) {
-		if (!order.getStatus().equals(OrderStatus.OPEN))
-			throw new DishSetToInactiveOrderException();
-
 		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish).getAmount() != 0) {
 			//Here logic to remove undone dishes.
 			int previousAmount = order.getUnDoneDishes().get(dish).getAmount();
