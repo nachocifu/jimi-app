@@ -37,13 +37,6 @@ public interface OrderDao {
 	 *
 	 * @return List of said orders.
 	 */
-	Collection<Order> findAll();
-
-	/**
-	 * Find all closed orders, ordered decreased by closed timestamp.
-	 *
-	 * @return List of said orders.
-	 */
 	Collection<Order> findAll(int maxResults, int offset);
 
 	/**

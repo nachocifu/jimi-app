@@ -21,25 +21,24 @@ public class OrderHibernateDao implements OrderDao {
 	@PersistenceContext(unitName = "testName")
 	private EntityManager em;
 
+	@Override
 	public Order findById(long id) {
 		return em.find(Order.class, id);
 	}
 
+	@Override
 	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners, float total) {
 		final Order order = new Order(openedAt, closedAt, status, diners, total);
 		em.persist(order);
 		return order;
 	}
 
+	@Override
 	public void update(Order order) {
 		em.merge(order);
 	}
 
-	public Collection<Order> findAll() {
-		final TypedQuery<Order> query = em.createQuery("from Order", Order.class);
-		return query.getResultList();
-	}
-
+	@Override
 	public Collection<Order> findAll(int maxResults, int offset) {
 		return em.createQuery("from Order", Order.class)
 				.setFirstResult(offset)
@@ -47,6 +46,7 @@ public class OrderHibernateDao implements OrderDao {
 				.getResultList();
 	}
 
+	@Override
 	public Map getMonthlyOrderTotal() {
 		Map<YearMonth, Double> response = new TreeMap<YearMonth, Double>() {
 		};
