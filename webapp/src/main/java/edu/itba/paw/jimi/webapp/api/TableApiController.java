@@ -3,10 +3,8 @@ package edu.itba.paw.jimi.webapp.api;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
-import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Order;
-import edu.itba.paw.jimi.models.Table;
-import edu.itba.paw.jimi.models.TableStatus;
+import edu.itba.paw.jimi.interfaces.utils.UserAuthenticationService;
+import edu.itba.paw.jimi.models.*;
 import edu.itba.paw.jimi.webapp.dto.OrderDTO;
 import edu.itba.paw.jimi.webapp.dto.TableDTO;
 import edu.itba.paw.jimi.webapp.dto.TableListDTO;
@@ -49,6 +47,9 @@ public class TableApiController extends BaseApiController {
 
 	@Autowired
 	private PaginationHelper paginationHelper;
+
+	@Autowired
+	private UserAuthenticationService userAuthenticationService;
 
 	@Context
 	private UriInfo uriInfo;
@@ -266,6 +267,14 @@ public class TableApiController extends BaseApiController {
 		}
 
 		final Order order = table.getOrder();
+		if (!order.getStatus().equals(OrderStatus.OPEN) && !userAuthenticationService.currentUserHasRole(User.ROLE_ADMIN)) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale()))
+					.build();
+
+		}
+
 		final Dish currentDish = orderService.getDishById(order, dishId);
 		final int newAmount = tableDishAmountForm.getAmount();
 		orderService.setNewUndoneDishAmount(order, currentDish, newAmount);
