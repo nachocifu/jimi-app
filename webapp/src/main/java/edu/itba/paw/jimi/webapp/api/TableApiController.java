@@ -197,7 +197,16 @@ public class TableApiController extends BaseApiController {
 					.build();
 		}
 
-		orderService.setDiners(table.getOrder(), tableDinersForm.getDiners());
+		final Order order = table.getOrder();
+		if (!order.getStatus().equals(OrderStatus.OPEN) && !userAuthenticationService.currentUserHasRole(User.ROLE_ADMIN)) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale()))
+					.build();
+
+		}
+
+		orderService.setDiners(order, tableDinersForm.getDiners());
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
 	}
 

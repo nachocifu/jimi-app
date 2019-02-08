@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
-import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotOpenOrderException;
 import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
 import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
@@ -548,16 +547,5 @@ public class OrderServiceImplTest {
 
 		List<Order> actualUrgentOrders = (List<Order>) orderService.getOrdersFromLastMinutes(30);
 		assertEquals(expectedUrgentOrders, actualUrgentOrders);
-	}
-
-	@Test(expected = DinersSetOnNotOpenOrderException.class)
-	public void setDinersOnNotActiveOrderTest() {
-		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
-
-		// Mockito mocking
-		Mockito.when(orderService.findById(order.getId())).thenReturn(order);
-		// Mockito mocking
-
-		orderService.setDiners(order, 5);
 	}
 }

@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
 import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
-import edu.itba.paw.jimi.interfaces.exceptions.DinersSetOnNotOpenOrderException;
 import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
 import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
@@ -150,9 +149,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int setDiners(Order order, int diners) {
-		if (!order.getStatus().equals(OrderStatus.OPEN))
-			throw new DinersSetOnNotOpenOrderException();
-
 		if (diners >= 0) {
 			order.setDiners(diners);
 			orderDao.update(order);

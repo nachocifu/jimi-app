@@ -131,7 +131,6 @@ public interface OrderService {
 	 * Returns the order with id.
 	 *
 	 * @param id the id.
-	 * @return
 	 */
 	Order findById(long id);
 
