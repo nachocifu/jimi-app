@@ -4,16 +4,32 @@ import edu.itba.paw.jimi.interfaces.exceptions.MaxStockException;
 import edu.itba.paw.jimi.webapp.dto.ExceptionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.LocaleResolver;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class MaxStockExceptionMapper extends BusinessExceptionMapper implements ExceptionMapper<MaxStockException> {
+@Component
+public class MaxStockExceptionMapper implements ExceptionMapper<MaxStockException> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MaxStockExceptionMapper.class);
+
+	@Autowired
+	private MessageSource messageSource;
+
+	@Autowired
+	private LocaleResolver localeResolver;
+
+	@Context
+	private HttpServletRequest request;
 
 	@Override
 	public Response toResponse(final MaxStockException exception) {

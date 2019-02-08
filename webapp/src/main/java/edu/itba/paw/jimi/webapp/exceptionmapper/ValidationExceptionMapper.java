@@ -2,23 +2,39 @@ package edu.itba.paw.jimi.webapp.exceptionmapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.LocaleResolver;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import java.util.Iterator;
 
 @Provider
-public class ValidationExceptionMapper extends BusinessExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
+@Component
+public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ValidationExceptionMapper.class);
+
+	@Autowired
+	private MessageSource messageSource;
+
+	@Autowired
+	private LocaleResolver localeResolver;
+
+	@Context
+	private HttpServletRequest request;
 
 	@Override
 	public Response toResponse(ConstraintViolationException exception) {
