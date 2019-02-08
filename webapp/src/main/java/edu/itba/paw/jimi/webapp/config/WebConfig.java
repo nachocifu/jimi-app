@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 @EnableWebMvc
-@ComponentScan({"edu.itba.paw.jimi.webapp.api", "edu.itba.paw.jimi.webapp.validators", "edu.itba.paw.jimi.webapp.utils", "edu.itba.paw.jimi.webapp.controller", "edu.itba.paw.jimi.services", "edu.itba.paw.jimi.persistence", "edu.itba.paw.jimi.models"})
+@ComponentScan({"edu.itba.paw.jimi.webapp.api", "edu.itba.paw.jimi.webapp.utils", "edu.itba.paw.jimi.webapp.controller", "edu.itba.paw.jimi.services", "edu.itba.paw.jimi.persistence", "edu.itba.paw.jimi.models"})
 @Configuration
 @EnableTransactionManagement
 @PropertySource({"classpath:application.properties"})

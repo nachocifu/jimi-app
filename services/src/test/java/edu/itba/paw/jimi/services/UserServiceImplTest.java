@@ -76,8 +76,8 @@ public class UserServiceImplTest {
 		assertEquals(PASSWORD, user.getPassword());
 
 		assertEquals(2, user.getRoles().size());
-		assertEquals(true, user.getRoles().contains(User.ROLE_USER));
-		assertEquals(true, user.getRoles().contains(User.ROLE_ADMIN));
+		assertTrue(user.getRoles().contains(User.ROLE_USER));
+		assertTrue(user.getRoles().contains(User.ROLE_ADMIN));
 	}
 
 	@Test
