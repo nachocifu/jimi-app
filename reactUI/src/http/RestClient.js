@@ -21,7 +21,7 @@ export default class RestClient {
 
     // Create axios instance
     this.instance = axios.create({
-      baseURL: `${this.protocol}://${this.domain}:${this.port}`,
+      baseURL: `${this.protocol}${this.domain}${this.port}`,
       timeout: 60000,
       headers: headers,
     });
