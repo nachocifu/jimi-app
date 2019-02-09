@@ -13,7 +13,7 @@ public abstract class BaseApiController {
 				"/");
 	}
 
-	String messageToJSON(String message) {
+	String errorMessageToJSON(String message) {
 		return Json.createObjectBuilder()
 				.add("errors", message)
 				.build()
