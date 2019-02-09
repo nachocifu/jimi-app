@@ -26,19 +26,17 @@ public class TableHibernateDao implements TableDao {
 	@Autowired
 	private OrderDao orderDao;
 
+	@Override
 	public Table findById(long id) {
 		return em.find(Table.class, id);
 	}
 
+	@Override
 	public void update(Table table) {
 		em.merge(table);
 	}
 
-	public Collection<Table> findAll() {
-		final TypedQuery<Table> query = em.createQuery("from Table order by name", Table.class);
-		return query.getResultList();
-	}
-
+	@Override
 	public Collection<Table> findAll(int maxResults, int offset) {
 		return em.createQuery("from Table order by name", Table.class)
 				.setFirstResult(offset)
@@ -60,6 +58,7 @@ public class TableHibernateDao implements TableDao {
 		return em.createQuery("select count(*) from Table", Long.class).getSingleResult().intValue();
 	}
 
+	@Override
 	public Table create(String name, TableStatus ts, Order order) {
 		if (order == null || orderDao.findById(order.getId()) == null)
 			throw new TableWithNullOrderException();
@@ -113,6 +112,7 @@ public class TableHibernateDao implements TableDao {
 				.getResultList();
 	}
 
+	@Override
 	public boolean tableNameExists(String tableName) {
 		return !em.createQuery("from Table as t where t.name = :tableName", Table.class)
 				.setParameter("tableName", tableName).getResultList().isEmpty();

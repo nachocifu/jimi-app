@@ -1,7 +1,9 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
-import edu.itba.paw.jimi.interfaces.exceptions.*;
+import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
+import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
+import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
@@ -18,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 
 public class OrderServiceImplTest {
 
@@ -26,6 +29,7 @@ public class OrderServiceImplTest {
 	private static final int DISH_STOCK = 5;
 	private static final float DELTA = 0.001F;
 	private static final Timestamp OPENEDAT = new Timestamp(1525467178);
+	private static final int offset = 0;
 
 	@Mock
 	private OrderDao orderDao;
@@ -499,14 +503,15 @@ public class OrderServiceImplTest {
 
 	@Test
 	public void findAllNotNullEmpty() {
-		Mockito.when(orderService.findAll()).thenReturn(new LinkedList<Order>());
-		Assert.assertNotNull(orderService.findAll());
+		Mockito.when(orderService.findAll(any(Integer.class), any(Integer.class))).thenReturn(new LinkedList<Order>());
+		Assert.assertNotNull(orderService.findAll(100, offset));
+		Assert.assertEquals(0, orderService.findAll(100, offset).size());
 	}
 
 	@Test
 	public void findAllNotNull() {
-		Mockito.when(orderService.findAll()).thenReturn(null);
-		Assert.assertNotNull(orderService.findAll());
+		Mockito.when(orderService.findAll(any(Integer.class), any(Integer.class))).thenReturn(null);
+		Assert.assertNotNull(orderService.findAll(100, offset));
 	}
 
 	@Test
@@ -542,59 +547,5 @@ public class OrderServiceImplTest {
 
 		List<Order> actualUrgentOrders = (List<Order>) orderService.getOrdersFromLastMinutes(30);
 		assertEquals(expectedUrgentOrders, actualUrgentOrders);
-	}
-
-	@Test(expected = DinersSetOnNotOpenOrderException.class)
-	public void setDinersOnNotActiveOrderTest() {
-		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
-
-		// Mockito mocking
-		Mockito.when(orderService.findById(order.getId())).thenReturn(order);
-		// Mockito mocking
-
-		orderService.setDiners(order, 5);
-	}
-
-	@Test(expected = DishSetToInactiveOrderException.class)
-	public void addDishTwiceThenRemoveOnceNotOpenOrderTest() {
-		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-		Order orderNotOpen = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
-
-		orderNotOpen.setDish(dish, 2);
-
-		orderService.addDish(orderNotOpen, dish);
-		orderService.removeOneUndoneDish(orderNotOpen, dish);
-	}
-
-	@Test(expected = DishSetToInactiveOrderException.class)
-	public void addDishTwiceThenRemoveAllNotOpenOrderTest() {
-		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-		Order orderNotOpen = new Order(1, OPENEDAT, null, OrderStatus.INACTIVE, 0, 0);
-
-		orderNotOpen.setDish(dish, 2);
-
-		// Mockito mocking
-		Mockito.when(orderService.findById(orderNotOpen.getId())).thenReturn(orderNotOpen);
-		// Mockito mocking
-
-		orderService.addDish(orderNotOpen, dish);
-		orderService.addDish(orderNotOpen, dish);
-		orderService.removeAllUndoneDish(orderNotOpen, dish);
-	}
-
-	@Test(expected = DishSetToInactiveOrderException.class)
-	public void addDishesToInactiveOrderTest() {
-
-		Dish dish = new Dish(DISH_NAME, DISH_PRICE, 1, DISH_STOCK);
-		Order order = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
-
-		// Mockito mocking
-		Order returnOrder = new Order(1, null, null, OrderStatus.INACTIVE, 0, 0);
-		returnOrder.setDish(dish, 4);
-
-		Mockito.when(orderService.findById(order.getId())).thenReturn(returnOrder);
-		// Mockito mocking
-
-		orderService.addDishes(order, dish, 5);
 	}
 }

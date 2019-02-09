@@ -6,7 +6,6 @@ import edu.itba.paw.jimi.interfaces.exceptions.MaxStockException;
 import edu.itba.paw.jimi.interfaces.exceptions.MinStockException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,25 +98,6 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public Collection<Dish> findAll() {
-		Collection<Dish> dishes = dishDao.findAll();
-		if (dishes != null)
-			return dishes;
-		else
-			return new HashSet<Dish>();
-	}
-
-	/**
-	 * @param qp the QueryParams.
-	 * @return
-	 * @deprecated
-	 */
-	@Override
-	public Collection<Dish> findAll(QueryParams qp) {
-		return findAll(qp.getPageSize(), qp.getStartAt());
-	}
-
-	@Override
 	public Collection<Dish> findAll(int pageSize, int offset) {
 		Collection<Dish> dishes = dishDao.findAll(pageSize, offset);
 		if (dishes != null)
@@ -127,23 +107,12 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public Collection<Dish> findAllAvailable() {
-		return dishDao.findAllAvailable();
-	}
-
-	/**
-	 * @param qp
-	 * @return
-	 * @deprecated
-	 */
-	@Override
-	public Collection<Dish> findAllAvailable(QueryParams qp) {
-		return findAllAvailable(qp.getPageSize(), qp.getStartAt());
-	}
-
-	@Override
 	public Collection<Dish> findAllAvailable(int pageSize, int offset) {
-		return dishDao.findAllAvailable(pageSize, offset);
+		Collection<Dish> dishes = dishDao.findAllAvailable(pageSize, offset);
+		if (dishes != null)
+			return dishes;
+		else
+			return new HashSet<Dish>();
 	}
 
 	@Override
@@ -167,8 +136,15 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public Collection<Dish> findDishesMissingStock() {
-		return dishDao.findDishesMissingStock();
+	public int getAllDishesWithStockLessThanLimit(int limit) {
+		return dishDao.getAllDishesWithStockLessThanLimit(limit);
+
+	}
+
+	@Override
+
+	public Collection<Dish> findDishesMissingStock(int pageSize, int offset) {
+		return dishDao.findDishesMissingStock(pageSize, offset);
 	}
 
 }

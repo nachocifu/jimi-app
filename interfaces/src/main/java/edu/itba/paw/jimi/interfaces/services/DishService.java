@@ -1,7 +1,6 @@
 package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import java.util.Collection;
 
@@ -68,59 +67,26 @@ public interface DishService {
 	void setDiscontinued(Dish dish, boolean discontinued);
 
 	/**
-	 * Returns all the dishes.
+	 * Returns all the dishes paginated.
 	 *
-	 * @return all the dishes.
-	 */
-	Collection<Dish> findAll();
-
-	/**
-	 * Returns all the dishes.
-	 *
-	 * @param qp the QueryParams.
-	 * @return all the dishes.
-	 * @deprecated
-	 */
-	Collection<Dish> findAll(QueryParams qp);
-
-	/**
-	 * Returns all the dishes.
-	 *
-	 * @param pageSize
-	 * @param offset
-	 * @return all the dishes.
+	 * @return all the dishes paginated.
 	 */
 	Collection<Dish> findAll(int pageSize, int offset);
 
 	/**
-	 * Returns all available, that is, stock greater than 0, dishes.
+	 * Returns all available paginated dishes, that is, stock greater than 0.
 	 *
-	 * @return all the dishes.
-	 */
-	Collection<Dish> findAllAvailable();
-
-	/**
-	 * Returns all available, that is, stock greater than 0, dishes.
-	 *
-	 * @return all the dishes.
-	 * @deprecated
-	 */
-	Collection<Dish> findAllAvailable(QueryParams qp);
-
-	/**
-	 * Returns all available, that is, stock greater than 0, dishes.
-	 *
-	 * @return all the dishes.
+	 * @return all the available dishes paginated.
 	 */
 	Collection<Dish> findAllAvailable(int pageSize, int offset);
 
 	/**
-	 * Returns all dishes with missing stock, that is, their stock lower than their
+	 * Returns all paginated dishes with missing stock, that is, their stock lower than their
 	 * minimum stock.
 	 *
-	 * @return dishes missing stock.
+	 * @return dishes missing stock dishes paginated.
 	 */
-	Collection<Dish> findDishesMissingStock();
+	Collection<Dish> findDishesMissingStock(int pageSize, int offset);
 
 	/**
 	 * Returns the amount of all dishes in the database.
@@ -145,4 +111,10 @@ public interface DishService {
 	 */
 	int setMinStock(Dish dish, int minStock);
 
+	/**
+	 * Returns all dishes with stock less than limit
+	 *
+	 * @return number of dishes with stock less than limit.
+	 */
+	int getAllDishesWithStockLessThanLimit(int limit);
 }

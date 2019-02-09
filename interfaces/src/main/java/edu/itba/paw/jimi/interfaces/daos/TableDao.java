@@ -26,16 +26,9 @@ public interface TableDao {
 	void update(Table table);
 
 	/**
-	 * Returns all the tables.
-	 *
-	 * @return all the tables.
-	 */
-	Collection<Table> findAll();
-
-	/**
 	 * Returns all the tables paginated.
 	 *
-	 * @return all the tables paginated.
+	 * @return all the tables
 	 */
 	Collection<Table> findAll(int maxResults, int offset);
 
@@ -46,6 +39,11 @@ public interface TableDao {
 	 */
 	Collection<Table> findTablesWithStatus(TableStatus tableStatus, int maxResults, int offset);
 
+	/**
+	 * Returns the total number of tables.
+	 *
+	 * @return the total number of tables.
+	 */
 	int getTotalTables();
 
 	/**
