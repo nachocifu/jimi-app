@@ -56,6 +56,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/users/**").hasRole("ADMIN")
 				.antMatchers("/api/kitchen/**").authenticated()
 				.antMatchers("/api/**").authenticated()
+				.anyRequest().authenticated()
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
