@@ -1,7 +1,6 @@
 package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.User;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import java.util.Collection;
 
@@ -20,25 +19,11 @@ public interface UserService {
 	/**
 	 * Returns all the users.
 	 *
-	 * @return all the users.
-	 */
-	Collection<User> findAll();
-
-	/**
-	 * Returns all the users.
-	 *
 	 * @param maxResults Max results allowed. Alias page size
-	 * @param offset First result start. Alias first result
+	 * @param offset     First result start. Alias first result
 	 * @return all the users.
 	 */
 	Collection<User> findAll(int maxResults, int offset);
-
-	/**
-	 * @param queryParams
-	 * @return
-	 * @deprecated
-	 */
-	Collection<User> findAll(QueryParams queryParams);
 
 	/**
 	 * Create a new user.

@@ -3,9 +3,9 @@ package edu.itba.paw.jimi.interfaces.services;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 
 import java.sql.Timestamp;
+import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Map;
 
@@ -132,7 +132,6 @@ public interface OrderService {
 	 * Returns the order with id.
 	 *
 	 * @param id the id.
-	 * @return
 	 */
 	Order findById(long id);
 
@@ -141,30 +140,7 @@ public interface OrderService {
 	 *
 	 * @return A collection of said orders.
 	 */
-	Collection<Order> findAll();
-
-	/**
-	 * Finds all closed orders.
-	 *
-	 * @return A collection of said orders.
-	 * @deprecated
-	 */
-	Collection<Order> findAll(QueryParams qp);
-
-	/**
-	 * Finds all closed orders.
-	 *
-	 * @return A collection of said orders.
-	 */
 	Collection<Order> findAll(int maxResults, int offset);
-
-	/**
-	 * Finds all closed orders.
-	 *
-	 * @return A collection of said orders.
-	 * @deprecated
-	 */
-	Collection<Order> findCancelledOrClosedOrders(QueryParams qp);
 
 	/**
 	 * Finds all cancelled or closed orders paginated.
@@ -178,14 +154,14 @@ public interface OrderService {
 	 *
 	 * @return A collection of said orders.
 	 */
-	Map getMonthlyOrderTotal();
+	Map<YearMonth, Double> getMonthlyOrderTotal();
 
 	/**
 	 * Finds all cancelled orders' total by month.
 	 *
 	 * @return A collection of said orders.
 	 */
-	Map getMonthlyOrderCancelled();
+	Map<YearMonth, Integer> getMonthlyOrderCancelled();
 
 	/**
 	 * Sets dish from order as done.
@@ -196,14 +172,6 @@ public interface OrderService {
 	 * @return count of cancelled or closed orders.
 	 */
 	int getTotalCancelledOrClosedOrders();
-
-	/**
-	 * Finds all open orders.
-	 *
-	 * @return A collection of said orders in ascending order by open timestamp.
-	 * @deprecated
-	 */
-	Collection<Order> getActiveOrders(QueryParams qp);
 
 	/**
 	 * Finds all open orders.

@@ -21,25 +21,24 @@ public class OrderHibernateDao implements OrderDao {
 	@PersistenceContext(unitName = "testName")
 	private EntityManager em;
 
+	@Override
 	public Order findById(long id) {
 		return em.find(Order.class, id);
 	}
 
+	@Override
 	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners, float total) {
 		final Order order = new Order(openedAt, closedAt, status, diners, total);
 		em.persist(order);
 		return order;
 	}
 
+	@Override
 	public void update(Order order) {
 		em.merge(order);
 	}
 
-	public Collection<Order> findAll() {
-		final TypedQuery<Order> query = em.createQuery("from Order", Order.class);
-		return query.getResultList();
-	}
-
+	@Override
 	public Collection<Order> findAll(int maxResults, int offset) {
 		return em.createQuery("from Order", Order.class)
 				.setFirstResult(offset)
@@ -47,7 +46,8 @@ public class OrderHibernateDao implements OrderDao {
 				.getResultList();
 	}
 
-	public Map getMonthlyOrderTotal() {
+	@Override
+	public Map<YearMonth, Double> getMonthlyOrderTotal() {
 		Map<YearMonth, Double> response = new TreeMap<YearMonth, Double>() {
 		};
 		Query query = em.createNativeQuery(
@@ -76,7 +76,7 @@ public class OrderHibernateDao implements OrderDao {
 	}
 
 	@Override
-	public int getTotalRelevantOrders() {
+	public int getTotalCancelledOrClosedOrders() {
 		return ((Long) em.createQuery("select count(*) from Order as o where o.status = :closed or o.status = :canceled")
 				.setParameter("closed", OrderStatus.CLOSED)
 				.setParameter("canceled", OrderStatus.CANCELED)
@@ -91,7 +91,7 @@ public class OrderHibernateDao implements OrderDao {
 	}
 
 	@Override
-	public Map getMonthlyOrderCancelled() {
+	public Map<YearMonth, Integer> getMonthlyOrderCancelled() {
 		Map<YearMonth, Integer> response = new TreeMap<YearMonth, Integer>() {
 		};
 		Query query = em.createNativeQuery(

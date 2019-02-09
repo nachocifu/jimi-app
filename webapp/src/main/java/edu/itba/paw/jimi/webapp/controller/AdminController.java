@@ -44,9 +44,9 @@ public class AdminController {
 		mav.addObject("busyTables", statsService.getBusyTablesUnits());
 		mav.addObject("freeTables", statsService.getFreeTablesUnits());
 		mav.addObject("payingTables", statsService.getPayingTablesUnits());
-		mav.addObject("totalTables", tableService.findAll().size());
+		mav.addObject("totalTables", tableService.getTotalTables());
 		mav.addObject("freeTablesPercentage", statsService.getFreeTables());
-		mav.addObject("stockStatePercentage", statsService.getStockState());
+		mav.addObject("stockStatePercentage", statsService.getStockState(50));
 		mav.addObject("monthOrderTotals", statsService.getMonthlyOrderTotal());
 		mav.addObject("monthlyOrdersCancelled", statsService.getMonthlyOrderCancelled());
 
@@ -79,22 +79,12 @@ public class AdminController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/order_edit/{tableId}/add_dish", method = {RequestMethod.GET})
-	public ModelAndView addDish(@PathVariable("tableId") Integer id, @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
-
-		ModelAndView mav = new ModelAndView("tables/add_dish_edit_order");
-		mav.addObject("dishes", dishService.findAllAvailable());
-		mav.addObject("order", orderService.findById(id));
-
-		return mav;
-	}
-
 	@RequestMapping(value = "/order_edit/{tableId}/add_dish", method = {RequestMethod.POST})
 	public ModelAndView addDishPost(@PathVariable("tableId") Integer id, @Valid @ModelAttribute("tableAddDishForm") final TableAddDishForm form, final BindingResult errors) {
 
-		if (errors.hasErrors()) {
-			return addDish(id, form);
-		}
+//		if (errors.hasErrors()) {
+//			return addDish(id, form);
+//		}
 
 		Order order = orderService.findById(id);
 		Dish dish = dishService.findById(form.getDishId());

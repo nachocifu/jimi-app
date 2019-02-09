@@ -9,13 +9,6 @@ public interface UserDao {
 
 	User findById(final long id);
 
-    /**
-     * Returns all the users
-     *
-     * @return all the users
-     */
-	Collection<User> findAll();
-
 	/**
 	 * Create a new user.
 	 *

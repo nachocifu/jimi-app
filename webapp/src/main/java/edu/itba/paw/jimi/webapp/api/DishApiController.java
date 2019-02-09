@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.webapp.api;
 
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.DishDTO;
 import edu.itba.paw.jimi.webapp.dto.DishListDTO;
 import edu.itba.paw.jimi.webapp.dto.form.dish.DishForm;
@@ -56,10 +55,26 @@ public class DishApiController extends BaseApiController {
 	                           @QueryParam("pageSize") @DefaultValue("" + DEFAULT_PAGE_SIZE) Integer pageSize) {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
-		final Collection<Dish> allDishes = dishService.findAll(new QueryParams((page - 1) * pageSize, pageSize)); //TODO: change for paginated
+		final Collection<Dish> allDishes = dishService.findAll(pageSize, (page - 1) * pageSize);
 		return Response.ok(new DishListDTO(new LinkedList<>(allDishes), buildBaseURI(uriInfo)))
 				.links(paginationHelper.getPaginationLinks(uriInfo, page, dishService.getTotalDishes()))
 				.build();
+	}
+
+	@GET
+	@Path("/{id}")
+	public Response getDishById(@PathParam("id") final long id) {
+		final Dish dish = dishService.findById(id);
+
+		if (dish == null) {
+			LOGGER.warn("Dish with id {} not found", id);
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
+					.build();
+		}
+
+		return Response.ok(new DishDTO(dish, buildBaseURI(uriInfo))).build();
 	}
 
 	@POST
@@ -87,10 +102,7 @@ public class DishApiController extends BaseApiController {
 		final Dish dish = dishService.findById(id);
 		if (dish == null) {
 			LOGGER.warn("Dish with id {} not found", id);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
-					.build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 		dishService.setName(dish, dishForm.getName());
@@ -111,13 +123,26 @@ public class DishApiController extends BaseApiController {
 		final Dish dish = dishService.findById(id);
 		if (dish == null) {
 			LOGGER.warn("Dish with id {} not found", id);
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
+		dishService.setStock(dish, setDishStockForm.getNewStock());
+		return Response.ok(new DishDTO(dish, buildBaseURI(uriInfo))).build();
+	}
+
+	@POST
+	@Path("/{id}/discontinued")
+	public Response setDishAsDiscontinued(@PathParam("id") final int id) {
+		final Dish dish = dishService.findById(id);
+		if (dish == null) {
+			LOGGER.warn("Dish with id {} not found", id);
 			return Response
 					.status(Response.Status.NOT_FOUND)
 					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
 					.build();
 		}
 
-		dishService.setStock(dish, setDishStockForm.getNewStock());
+		dishService.setDiscontinued(dish, true);
 		return Response.ok(new DishDTO(dish, buildBaseURI(uriInfo))).build();
 	}
 
@@ -136,7 +161,10 @@ public class DishApiController extends BaseApiController {
 		csvWriter.writeHeader(headerT);
 
 		String[] header = {"name", "price", "stock", "minStock"};
-		for (Dish dish : dishService.findDishesMissingStock())
+		for (Dish dish : dishService.findDishesMissingStock(
+				dishService.getTotalDishes(),
+				0
+		))
 			csvWriter.write(dish, header);
 
 		csvWriter.flush();

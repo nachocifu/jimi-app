@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.hibernate.service.spi.ServiceException;
 
 import java.util.Collection;
@@ -18,21 +17,6 @@ public interface TableService {
 	 * @return created table
 	 */
 	Table create(String name) throws ServiceException;
-
-	/**
-	 * Returns all the tables.
-	 *
-	 * @return all the tables.
-	 */
-	Collection<Table> findAll();
-
-	/**
-	 * Returns all the tables based on QueryParams qp.
-	 *
-	 * @return all the tables based on QueryParams qp.
-	 * @deprecated
-	 */
-	Collection<Table> findAll(QueryParams qp);
 
 	/**
 	 * Returns all the tables paginated

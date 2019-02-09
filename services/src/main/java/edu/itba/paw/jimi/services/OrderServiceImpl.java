@@ -1,14 +1,15 @@
 package edu.itba.paw.jimi.services;
 
 import edu.itba.paw.jimi.interfaces.daos.OrderDao;
-import edu.itba.paw.jimi.interfaces.exceptions.*;
+import edu.itba.paw.jimi.interfaces.exceptions.AddingDiscontinuedDishException;
+import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
+import edu.itba.paw.jimi.interfaces.exceptions.StockHandlingException;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.DishData;
 import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +64,6 @@ public class OrderServiceImpl implements OrderService {
 		if (amount > dish.getStock())
 			throw new StockHandlingException();
 
-		if (!order.getStatus().equals(OrderStatus.OPEN))
-			throw new DishSetToInactiveOrderException();
-
 		if (dish.isDiscontinued())
 			throw new AddingDiscontinuedDishException();
 
@@ -77,12 +75,13 @@ public class OrderServiceImpl implements OrderService {
 
 		order.setDish(dish, previousAmount + amount);
 		updateTotal(order);
-		orderDao.update(order);
 
 		LOGGER.info("Updated order (add dishes): {}", order);
 
 		// Update dish stock
 		dishService.setStock(dish, dish.getStock() - amount);
+
+		orderDao.update(order);
 
 		if (order.getDishes().containsKey(dish))
 			return order.getDishes().get(dish).getAmount();
@@ -97,9 +96,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int removeUndoneDish(Order order, Dish dish, int amount) {
-		if (!order.getStatus().equals(OrderStatus.OPEN))
-			throw new DishSetToInactiveOrderException();
-
 		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish).getAmount() != 0) {
 			//Here logic to remove undone dishes.
 			int previousAmount = order.getUnDoneDishes().get(dish).getAmount();
@@ -153,9 +149,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int setDiners(Order order, int diners) {
-		if (!order.getStatus().equals(OrderStatus.OPEN))
-			throw new DinersSetOnNotOpenOrderException();
-
 		if (diners >= 0) {
 			order.setDiners(diners);
 			orderDao.update(order);
@@ -209,31 +202,12 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Collection<Order> findAll() {
-		Collection<Order> orders = orderDao.findAll();
-		if (orders != null)
-			return orders;
-		else
-			return new HashSet<Order>();
-	}
-
-	@Override
-	public Collection<Order> findAll(QueryParams qp) {
-		return findAll(qp.getPageSize(), qp.getStartAt());
-	}
-
-	@Override
 	public Collection<Order> findAll(int maxResults, int offset) {
 		Collection<Order> orders = orderDao.findAll(maxResults, offset);
 		if (orders != null)
 			return orders;
 		else
 			return new HashSet<Order>();
-	}
-
-	@Override
-	public Collection<Order> findCancelledOrClosedOrders(QueryParams qp) {
-		return findAll(qp.getPageSize(), qp.getStartAt());
 	}
 
 	@Override
@@ -263,12 +237,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int getTotalCancelledOrClosedOrders() {
-		return orderDao.getTotalRelevantOrders();
-	}
-
-	@Override
-	public Collection<Order> getActiveOrders(QueryParams qp) {
-		return getActiveOrders(qp.getPageSize(), qp.getStartAt());
+		return orderDao.getTotalCancelledOrClosedOrders();
 	}
 
 	@Override
