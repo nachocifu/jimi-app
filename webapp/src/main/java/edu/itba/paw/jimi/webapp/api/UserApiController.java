@@ -70,14 +70,14 @@ public class UserApiController extends BaseApiController {
 		if (!userForm.getPassword().equals(userForm.getRepeatPassword()))
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity(messageSource.getMessage("non_matching_passwords", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("non_matching_passwords", null, LocaleContextHolder.getLocale())))
 					.build();
 
 		if (userService.findByUsername(userForm.getUsername()) != null) {
 			LOGGER.warn("Cannot create user: existing username {} found", userForm.getUsername());
 			return Response
 					.status(Response.Status.CONFLICT)
-					.entity(messageSource.getMessage("user.error.repeated.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("user.error.repeated.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 

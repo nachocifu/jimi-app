@@ -77,7 +77,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("Cannot create table: existing name {} found", tableForm.getName());
 			return Response
 					.status(Response.Status.CONFLICT)
-					.entity(messageSource.getMessage("table.error.existing.name.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("table.error.existing.name.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -112,7 +112,7 @@ public class TableApiController extends BaseApiController {
 		if (table.getStatus() != TableStatus.FREE) {
 			Response
 					.status(Response.Status.CONFLICT)
-					.entity(messageSource.getMessage("table.error.not.free.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("table.error.not.free.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -139,7 +139,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("Cannot rename table: existing name {} found", tableForm.getName());
 			return Response
 					.status(Response.Status.CONFLICT)
-					.entity(messageSource.getMessage("table.error.existing.name.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("table.error.existing.name.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -198,7 +198,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("Table with id {} not found", id);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -207,7 +207,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("Dish with id {} not found", tableAddDishForm.getDishId());
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -215,7 +215,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("From table with id {}, dish id {} already exists", id, dish.getId());
 			return Response
 					.status(Response.Status.CONFLICT)
-					.entity(messageSource.getMessage("table.error.dish.exists.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("table.error.dish.exists.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -238,7 +238,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("Table with id {} not found", id);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -246,7 +246,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("From table with id {}, dish id {} not found", id, dishId);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -267,7 +267,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("Table with id {} not found", id);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -275,7 +275,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("From table with id {}, dish id {} not found", id, dishId);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale()))
+					.entity(messageToJSON(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
