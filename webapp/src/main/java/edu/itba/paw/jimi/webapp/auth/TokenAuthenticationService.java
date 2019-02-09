@@ -24,7 +24,7 @@ public class TokenAuthenticationService {
 	public Authentication getAuthentication(final HttpServletRequest request) {
 		final String token = request.getHeader(AUTH_HEADER_NAME);
 		if (token != null && Jwts.parser().isSigned(token)) {
-			final UserDetails user = tokenHandler.parseUserFromToken(token);
+			final UserDetails user = tokenHandler.parseUserDetailsFromToken(token);
 			if (user != null)
 				return new UserDetailsAuthentication(user);
 		}
