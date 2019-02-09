@@ -26,11 +26,11 @@ public interface TableService {
 	Collection<Table> findAll(int pageSize, int offset);
 
 	/**
-	 * Returns all the tables with the given status.
+	 * Returns all the tables with the given status paginated.
 	 *
-	 * @return all the active with the given status.
+	 * @return all the active with the given status paginated.
 	 */
-	Collection<Table> findTablesWithStatus(TableStatus tableStatus);
+	Collection<Table> findTablesWithStatus(TableStatus tableStatus, int pageSize, int offset);
 
 	/**
 	 * Returns true if a table exists with tableName.
@@ -71,6 +71,11 @@ public interface TableService {
 	 * If minutes is less than 0, empty collection is returned.
 	 */
 	Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes);
+
+	/**
+	 * Returns tables with orders from the last given quantity of minutes.
+	 */
+	Collection<Table> getBusyTablesWithOrdersOrderedByOrderedAt(int maxResults, int offset);
 
 	/**
 	 * Deletes a Table.

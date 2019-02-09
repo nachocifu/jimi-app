@@ -45,9 +45,11 @@ public class TableHibernateDao implements TableDao {
 	}
 
 	@Override
-	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
+	public Collection<Table> findTablesWithStatus(TableStatus tableStatus, int maxResults, int offset) {
 		return em.createQuery("from Table as t where t.status = :tableStatus order by t.order.openedAt", Table.class)
 				.setParameter("tableStatus", tableStatus)
+				.setFirstResult(offset)
+				.setMaxResults(maxResults)
 				.getResultList();
 	}
 
@@ -94,6 +96,20 @@ public class TableHibernateDao implements TableDao {
 		query.setParameter("lastMinutes", cal.getTime());
 
 		return query.getResultList();
+	}
+
+	@Override
+	public Collection<Table> getBusyTablesWithOrdersOrderedByOrderedAt(int maxResults, int offset) {
+		return em.createQuery("from Table as t where t.status = :tableStatus " +
+				"and t.order in " +
+				"(from Order as o join o.unDoneDishes as ud " +
+				"where o.status = :opened " +
+				"order by ud.orderedAt)", Table.class)
+				.setParameter("tableStatus", TableStatus.BUSY)
+				.setParameter("opened", OrderStatus.OPEN)
+				.setFirstResult(offset)
+				.setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	@Override

@@ -61,8 +61,8 @@ public class TableServiceImpl implements TableService {
 	}
 
 	@Override
-	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
-		return tableDao.findTablesWithStatus(tableStatus);
+	public Collection<Table> findTablesWithStatus(TableStatus tableStatus, int maxResults, int offset) {
+		return tableDao.findTablesWithStatus(tableStatus, maxResults, offset);
 	}
 
 	@Override
@@ -143,4 +143,9 @@ public class TableServiceImpl implements TableService {
 		return tableDao.getTablesWithOrdersFromLastMinutes(minutes);
 	}
 
+	@Override
+	public Collection<Table> getBusyTablesWithOrdersOrderedByOrderedAt(int maxResults, int offset) {
+		Collection<Table> tables = tableDao.getBusyTablesWithOrdersOrderedByOrderedAt(maxResults, offset);
+		return tables != null ? tables : new HashSet<Table>();
+	}
 }
