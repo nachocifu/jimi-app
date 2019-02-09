@@ -1,7 +1,7 @@
 const conf = {
-  API_DOMAIN:'',
-  API_PROTOCOL:'', // format http://
-  API_PORT:'', // format :80
+  API_DOMAIN:'localhost',
+  API_PROTOCOL:'http://', // format http://
+  API_PORT:':8080', // format :80
 };
 
 export default conf;
