@@ -1,18 +1,15 @@
 package edu.itba.paw.jimi.webapp.controller;
 
-import edu.itba.paw.jimi.interfaces.exceptions.Http404Error;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.StatsService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.form.table.TableAddDishForm;
 import edu.itba.paw.jimi.webapp.dto.form.table.TableSetDinersForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +44,9 @@ public class AdminController {
 		mav.addObject("busyTables", statsService.getBusyTablesUnits());
 		mav.addObject("freeTables", statsService.getFreeTablesUnits());
 		mav.addObject("payingTables", statsService.getPayingTablesUnits());
-		mav.addObject("totalTables", tableService.findAll().size());
+		mav.addObject("totalTables", tableService.getTotalTables());
 		mav.addObject("freeTablesPercentage", statsService.getFreeTables());
-		mav.addObject("stockStatePercentage", statsService.getStockState());
+		mav.addObject("stockStatePercentage", statsService.getStockState(50));
 		mav.addObject("monthOrderTotals", statsService.getMonthlyOrderTotal());
 		mav.addObject("monthlyOrdersCancelled", statsService.getMonthlyOrderCancelled());
 
@@ -57,29 +54,6 @@ public class AdminController {
 	}
 
 	private static final int PAGE_SIZE = 10;
-
-	@RequestMapping("/bills")
-	public ModelAndView bills() {
-		final ModelAndView mav = new ModelAndView("admin/bills");
-
-		QueryParams qp = new QueryParams(0, PAGE_SIZE, orderService.getTotalRelevantOrders(), "closedat", false);
-		mav.addObject("lastOrders", orderService.findAllRelevant(qp));
-		mav.addObject("qp", qp);
-
-		return mav;
-	}
-
-	@RequestMapping("bills/page/{page}")
-	public ModelAndView billsPages(@PathVariable("page") Integer page) {
-		final ModelAndView mav = new ModelAndView("admin/bills");
-
-		QueryParams qp = new QueryParams((page - 1) * PAGE_SIZE, PAGE_SIZE, orderService.getTotalRelevantOrders(), "closedat", false);
-
-		mav.addObject("lastOrders", orderService.findAllRelevant(qp));
-		mav.addObject("qp", qp);
-
-		return mav;
-	}
 
 	@RequestMapping("/order_edit/{id}")
 	public ModelAndView indexEdit(@PathVariable("id") Integer id,
@@ -89,11 +63,11 @@ public class AdminController {
 		Order order = orderService.findById(id);
 
 
-		if (order == null) {
-			throw new Http404Error(messageSource.getMessage("order.error.not.found.title",
-					null, LocaleContextHolder.getLocale()), messageSource.getMessage("order.error.not.found.body",
-					null, LocaleContextHolder.getLocale()));
-		}
+//		if (order == null) {
+//			throw new Http404Error(messageSource.getMessage("order.error.not.found.title",
+//					null, LocaleContextHolder.getLocale()), messageSource.getMessage("order.error.not.found.body",
+//					null, LocaleContextHolder.getLocale()));
+//		}
 
 		final ModelAndView mav;
 		mav = new ModelAndView("tables/order_edit");
@@ -105,22 +79,12 @@ public class AdminController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/order_edit/{tableId}/add_dish", method = {RequestMethod.GET})
-	public ModelAndView addDish(@PathVariable("tableId") Integer id, @ModelAttribute("tableAddDishForm") final TableAddDishForm form) {
-
-		ModelAndView mav = new ModelAndView("tables/add_dish_edit_order");
-		mav.addObject("dishes", dishService.findAllAvailable());
-		mav.addObject("order", orderService.findById(id));
-
-		return mav;
-	}
-
 	@RequestMapping(value = "/order_edit/{tableId}/add_dish", method = {RequestMethod.POST})
 	public ModelAndView addDishPost(@PathVariable("tableId") Integer id, @Valid @ModelAttribute("tableAddDishForm") final TableAddDishForm form, final BindingResult errors) {
 
-		if (errors.hasErrors()) {
-			return addDish(id, form);
-		}
+//		if (errors.hasErrors()) {
+//			return addDish(id, form);
+//		}
 
 		Order order = orderService.findById(id);
 		Dish dish = dishService.findById(form.getDishId());

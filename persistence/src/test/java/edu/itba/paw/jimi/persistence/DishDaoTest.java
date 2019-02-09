@@ -39,10 +39,12 @@ public class DishDaoTest {
 	private static final Float DISH_PRICE = 5.25F;
 	private static final int DISH_STOCK = 5;
 	private static final int MIN_STOCK = 5;
+	private static final int offset = 0;
 	private Dish dishEqualStock;
 	private Dish dishMissingStock;
 	private Dish dishOverStock;
 	private Dish dishDiscontinued;
+	private Dish dishLessThanLimit;
 
 	@Autowired
 	private DataSource ds;
@@ -71,6 +73,7 @@ public class DishDaoTest {
 		dishDiscontinued = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		dishDiscontinued.setDiscontinued(true);
 		dishDao.update(dishDiscontinued);
+		dishLessThanLimit = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK - 4);
 	}
 
 	@After
@@ -133,31 +136,13 @@ public class DishDaoTest {
 	@Test
 	public void testFindAll() {
 		List<Dish> dishes = (List<Dish>) dishDao.findAll(10, 0);
-		assertEquals(4, dishes.size());
-
-		assertEquals(dishEqualStock.getName(), DISH_NAME);
-		assertEquals(dishMissingStock.getName(), DISH_NAME_MISS_STOCK);
-		assertEquals(dishOverStock.getName(), DISH_NAME_OVER_STOCK);
-
-		assertEquals(dishEqualStock.getPrice(), DISH_PRICE);
-		assertEquals(dishMissingStock.getPrice(), DISH_PRICE);
-		assertEquals(dishOverStock.getPrice(), DISH_PRICE);
-
-		assertEquals(dishEqualStock.getStock(), DISH_STOCK);
-		assertEquals(dishMissingStock.getStock(), DISH_STOCK - 3);
-		assertEquals(dishOverStock.getStock(), DISH_STOCK + 3);
+		assertEquals(5, dishes.size());
 	}
-
-//	@Test
-//	public void testFindAllOffered() {
-//		List<Dish> dishes = (List<Dish>) dishDao.findAllOffered();
-//		assertEquals(3, dishes.size());
-//	}
 
 	@Test
 	public void testFindAllAvailable() {
-		List<Dish> dishes = (List<Dish>) dishDao.findAllAvailable();
-		assertEquals(3, dishes.size());
+		List<Dish> dishes = (List<Dish>) dishDao.findAllAvailable(100, offset);
+		assertEquals(4, dishes.size());
 	}
 
 	@Test
@@ -169,8 +154,15 @@ public class DishDaoTest {
 
 	@Test
 	public void testFindDishesMissingStock() {
-		Collection<Dish> dishes = dishDao.findDishesMissingStock();
+		Collection<Dish> dishes = dishDao.findDishesMissingStock(100, offset);
 		Assert.assertEquals(1, dishes.size());
 		Assert.assertEquals(dishMissingStock, dishes.toArray()[0]);
+	}
+
+	@Test
+	public void testGetAllDishesWithStockLessThanLimit() {
+		int limit = 2;
+		int dishesWithStockLessThanLimit = dishDao.getAllDishesWithStockLessThanLimit(limit);
+		Assert.assertEquals(1, dishesWithStockLessThanLimit);
 	}
 }

@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.interfaces.services;
 
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.hibernate.service.spi.ServiceException;
 
 import java.util.Collection;
@@ -20,20 +19,6 @@ public interface TableService {
 	Table create(String name) throws ServiceException;
 
 	/**
-	 * Returns all the tables.
-	 *
-	 * @return all the tables.
-	 */
-	Collection<Table> findAll();
-
-	/**
-	 * Returns all the tables based on QueryParams qp.
-	 * @deprecated
-	 * @return all the tables based on QueryParams qp.
-	 */
-	Collection<Table> findAll(QueryParams qp);
-
-	/**
 	 * Returns all the tables paginated
 	 *
 	 * @return all the tables based
@@ -41,11 +26,11 @@ public interface TableService {
 	Collection<Table> findAll(int pageSize, int offset);
 
 	/**
-	 * Returns all the tables with the given status.
+	 * Returns all the tables with the given status paginated.
 	 *
-	 * @return all the active with the given status.
+	 * @return all the active with the given status paginated.
 	 */
-	Collection<Table> findTablesWithStatus(TableStatus tableStatus);
+	Collection<Table> findTablesWithStatus(TableStatus tableStatus, int pageSize, int offset);
 
 	/**
 	 * Returns true if a table exists with tableName.
@@ -86,6 +71,11 @@ public interface TableService {
 	 * If minutes is less than 0, empty collection is returned.
 	 */
 	Collection<Table> getTablesWithOrdersFromLastMinutes(int minutes);
+
+	/**
+	 * Returns tables with orders from the last given quantity of minutes.
+	 */
+	Collection<Table> getBusyTablesWithOrdersOrderedByOrderedAt(int maxResults, int offset);
 
 	/**
 	 * Deletes a Table.

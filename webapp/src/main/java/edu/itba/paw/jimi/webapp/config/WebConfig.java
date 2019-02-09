@@ -3,10 +3,7 @@ package edu.itba.paw.jimi.webapp.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -20,22 +17,21 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 @EnableWebMvc
-@ComponentScan({"edu.itba.paw.jimi.webapp.api", "edu.itba.paw.jimi.webapp.validators", "edu.itba.paw.jimi.webapp.utils", "edu.itba.paw.jimi.webapp.controller", "edu.itba.paw.jimi.services", "edu.itba.paw.jimi.persistence", "edu.itba.paw.jimi.models"})
+@ComponentScan({"edu.itba.paw.jimi.webapp.api", "edu.itba.paw.jimi.webapp.exceptionmapper", "edu.itba.paw.jimi.webapp.utils", "edu.itba.paw.jimi.webapp.controller", "edu.itba.paw.jimi.services", "edu.itba.paw.jimi.persistence", "edu.itba.paw.jimi.models"})
 @Configuration
 @EnableTransactionManagement
+@PropertySource({"classpath:application.properties"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Value("classpath:schema.sql")
@@ -78,6 +74,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return messageSource;
 	}
 
+	@Bean
+	public LocaleResolver localeResolver() {
+		return new SmartLocaleResolver();
+	}
+
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
@@ -111,8 +112,4 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return new JpaTransactionManager(emf);
 	}
 
-	@Bean
-	public Validator validator() {
-		return Validation.buildDefaultValidatorFactory().getValidator();
-	}
 }

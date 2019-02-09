@@ -5,10 +5,7 @@ import edu.itba.paw.jimi.interfaces.daos.TableDao;
 import edu.itba.paw.jimi.interfaces.exceptions.FreeTableDeletionAttemptException;
 import edu.itba.paw.jimi.interfaces.exceptions.TableStatusInvalidTransitionException;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
-import edu.itba.paw.jimi.models.Order;
-import edu.itba.paw.jimi.models.OrderStatus;
-import edu.itba.paw.jimi.models.Table;
-import edu.itba.paw.jimi.models.TableStatus;
+import edu.itba.paw.jimi.models.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,15 +16,19 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TableServiceImplTest {
 
 	private static final String TABLE_NAME = "Table 1";
+	private static final int offset = 0;
 
 	@InjectMocks
 	private TableServiceImpl tableServiceImpl;
@@ -156,14 +157,14 @@ public class TableServiceImplTest {
 
 	@Test
 	public void findAllNotNullEmptyTest() {
-		Mockito.when(tableServiceImpl.findAll()).thenReturn(new LinkedList<Table>());
-		Assert.assertNotNull(tableServiceImpl.findAll());
+		Mockito.when(tableServiceImpl.findAll(any(Integer.class), any(Integer.class))).thenReturn(new LinkedList<Table>());
+		assertEquals(0, tableServiceImpl.findAll(100, offset).size());
 	}
 
 	@Test
 	public void findAllNotNullTest() {
-		Mockito.when(tableServiceImpl.findAll()).thenReturn(null);
-		Assert.assertNotNull(tableServiceImpl.findAll());
+		Mockito.when(tableServiceImpl.findAll(any(Integer.class), any(Integer.class))).thenReturn(null);
+		Assert.assertNotNull(tableServiceImpl.findAll(100, offset));
 	}
 
 	@Test
@@ -190,6 +191,30 @@ public class TableServiceImplTest {
 	@Test
 	public void getTablesWithOrdersFromLastInvalidMinutesTest() {
 		assertEquals(0, tableServiceImpl.getTablesWithOrdersFromLastMinutes(-1).size());
+	}
+
+	@Test
+	public void getBusyTablesWithOrdersOrderedByOrderedAtTest() {
+		Dish testDish = new Dish("dish name", 1.0F, 10);
+		Order firstOrder = new Order(1, null, null, OrderStatus.OPEN, 0, 0);
+		Order secondOrder = new Order(2, null, null, OrderStatus.OPEN, 0, 0);
+		firstOrder.setDish(testDish, 1);
+		firstOrder.getUnDoneDishes().get(testDish).setOrderedAt(new Timestamp(1525467178));
+		secondOrder.setDish(testDish, 1);
+		secondOrder.getUnDoneDishes().get(testDish).setOrderedAt(new Timestamp(1525467180));
+		Table busyTable1 = new Table(TABLE_NAME, 1, TableStatus.BUSY, firstOrder);
+		Table busyTable2 = new Table(TABLE_NAME, 2, TableStatus.BUSY, secondOrder);
+		Collection<Table> expectedBusyTables = new LinkedList<>();
+		expectedBusyTables.add(busyTable1);
+		expectedBusyTables.add(busyTable2);
+		Mockito.when(tableServiceImpl.getBusyTablesWithOrdersOrderedByOrderedAt(expectedBusyTables.size(), 0)).thenReturn(expectedBusyTables);
+		assertEquals(expectedBusyTables, tableServiceImpl.getBusyTablesWithOrdersOrderedByOrderedAt(expectedBusyTables.size(), 0));
+	}
+
+	@Test
+	public void getBusyTablesWithOrdersOrderedByOrderedAtInvalidTest() {
+		Mockito.when(tableServiceImpl.getBusyTablesWithOrdersOrderedByOrderedAt(any(Integer.class), any(Integer.class))).thenReturn(new HashSet<>());
+		assertEquals(new HashSet<>(), tableServiceImpl.getBusyTablesWithOrdersOrderedByOrderedAt(any(Integer.class), any(Integer.class)));
 	}
 
 	@Test(expected = FreeTableDeletionAttemptException.class)

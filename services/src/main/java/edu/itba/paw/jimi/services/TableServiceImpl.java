@@ -9,7 +9,6 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,20 +52,6 @@ public class TableServiceImpl implements TableService {
 	}
 
 	@Override
-	public Collection<Table> findAll() {
-		Collection<Table> tables = tableDao.findAll();
-		if (tables != null)
-			return tables;
-		else
-			return new HashSet<Table>();
-	}
-
-	@Override
-	public Collection<Table> findAll(QueryParams qp) {
-		return findAll(qp.getPageSize(), qp.getStartAt());
-	}
-
-	@Override
 	public Collection<Table> findAll(int maxResults, int offset) {
 		Collection<Table> tables = tableDao.findAll(maxResults, offset);
 		if (tables != null)
@@ -76,8 +61,8 @@ public class TableServiceImpl implements TableService {
 	}
 
 	@Override
-	public Collection<Table> findTablesWithStatus(TableStatus tableStatus) {
-		return tableDao.findTablesWithStatus(tableStatus);
+	public Collection<Table> findTablesWithStatus(TableStatus tableStatus, int maxResults, int offset) {
+		return tableDao.findTablesWithStatus(tableStatus, maxResults, offset);
 	}
 
 	@Override
@@ -158,4 +143,9 @@ public class TableServiceImpl implements TableService {
 		return tableDao.getTablesWithOrdersFromLastMinutes(minutes);
 	}
 
+	@Override
+	public Collection<Table> getBusyTablesWithOrdersOrderedByOrderedAt(int maxResults, int offset) {
+		Collection<Table> tables = tableDao.getBusyTablesWithOrdersOrderedByOrderedAt(maxResults, offset);
+		return tables != null ? tables : new HashSet<Table>();
+	}
 }

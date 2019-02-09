@@ -3,11 +3,8 @@ package edu.itba.paw.jimi.webapp.api;
 import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
-import edu.itba.paw.jimi.models.Dish;
-import edu.itba.paw.jimi.models.Order;
-import edu.itba.paw.jimi.models.Table;
-import edu.itba.paw.jimi.models.TableStatus;
-import edu.itba.paw.jimi.models.utils.QueryParams;
+import edu.itba.paw.jimi.interfaces.utils.UserAuthenticationService;
+import edu.itba.paw.jimi.models.*;
 import edu.itba.paw.jimi.webapp.dto.OrderDTO;
 import edu.itba.paw.jimi.webapp.dto.TableDTO;
 import edu.itba.paw.jimi.webapp.dto.TableListDTO;
@@ -51,6 +48,9 @@ public class TableApiController extends BaseApiController {
 	@Autowired
 	private PaginationHelper paginationHelper;
 
+	@Autowired
+	private UserAuthenticationService userAuthenticationService;
+
 	@Context
 	private UriInfo uriInfo;
 
@@ -63,7 +63,7 @@ public class TableApiController extends BaseApiController {
 	                           @QueryParam("pageSize") @DefaultValue("" + DEFAULT_PAGE_SIZE) Integer pageSize) {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
-		final Collection<Table> allTables = tableService.findAll(new QueryParams((page - 1) * pageSize, pageSize)); //TODO: change for paginated
+		final Collection<Table> allTables = tableService.findAll(pageSize, (page - 1) * pageSize);
 		return Response.ok(new TableListDTO(new LinkedList<>(allTables), buildBaseURI(uriInfo)))
 				.build();
 	}
@@ -78,7 +78,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("Cannot create table: existing name {} found", tableForm.getName());
 			return Response
 					.status(Response.Status.CONFLICT)
-					.entity(messageSource.getMessage("table.error.existing.name.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.existing.name.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -94,10 +94,7 @@ public class TableApiController extends BaseApiController {
 
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
-					.build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
@@ -110,16 +107,13 @@ public class TableApiController extends BaseApiController {
 
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
-					.build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 		if (table.getStatus() != TableStatus.FREE) {
 			Response
 					.status(Response.Status.CONFLICT)
-					.entity(messageSource.getMessage("table.error.not.free.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.free.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -139,17 +133,14 @@ public class TableApiController extends BaseApiController {
 		final Table table = tableService.findById(id);
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
-					.build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 		if (tableService.tableNameExists(tableForm.getName())) {
 			LOGGER.warn("Cannot rename table: existing name {} found", tableForm.getName());
 			return Response
 					.status(Response.Status.CONFLICT)
-					.entity(messageSource.getMessage("table.error.existing.name.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.existing.name.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -169,10 +160,7 @@ public class TableApiController extends BaseApiController {
 		final Table table = tableService.findById(id);
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
-					.build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 		tableService.changeStatus(table, tableStatusForm.getStatus());
@@ -191,13 +179,19 @@ public class TableApiController extends BaseApiController {
 		final Table table = tableService.findById(id);
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
-					.build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
-		orderService.setDiners(table.getOrder(), tableDinersForm.getDiners());
+		final Order order = table.getOrder();
+		if (!order.getStatus().equals(OrderStatus.OPEN) && !userAuthenticationService.currentUserHasRole(User.ROLE_ADMIN)) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale()))
+					.build();
+
+		}
+
+		orderService.setDiners(order, tableDinersForm.getDiners());
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
 	}
 
@@ -214,7 +208,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("Table with id {} not found", id);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -223,7 +217,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("Dish with id {} not found", tableAddDishForm.getDishId());
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -231,7 +225,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("From table with id {}, dish id {} already exists", id, dish.getId());
 			return Response
 					.status(Response.Status.CONFLICT)
-					.entity(messageSource.getMessage("table.error.dish.exists.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.dish.exists.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -254,7 +248,7 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("Table with id {} not found", id);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -262,22 +256,30 @@ public class TableApiController extends BaseApiController {
 			LOGGER.warn("From table with id {}, dish id {} not found", id, dishId);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
 		final Order order = table.getOrder();
+		if (!order.getStatus().equals(OrderStatus.OPEN) && !userAuthenticationService.currentUserHasRole(User.ROLE_ADMIN)) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale()))
+					.build();
+
+		}
+
 		final Dish currentDish = orderService.getDishById(order, dishId);
 		final int newAmount = tableDishAmountForm.getAmount();
 		orderService.setNewUndoneDishAmount(order, currentDish, newAmount);
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
 	}
 
-	@DELETE
-	@Path("/{id}/dishes/{dishId}")
+	@POST
+	@Path("/{id}/undonedishes/{dishId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeDish(@PathParam("id") final long id,
-	                           @PathParam("dishId") final int dishId) {
+	public Response setDishAsDone(@PathParam("id") final long id,
+	                              @PathParam("dishId") final int dishId) {
 		final Table table = tableService.findById(id);
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
@@ -292,6 +294,34 @@ public class TableApiController extends BaseApiController {
 			return Response
 					.status(Response.Status.NOT_FOUND)
 					.entity(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale()))
+					.build();
+		}
+
+		final Order order = table.getOrder();
+		final Dish currentDish = orderService.getDishById(order, dishId);
+		orderService.setDishAsDone(order, currentDish);
+		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
+	}
+
+	@DELETE
+	@Path("/{id}/dishes/{dishId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response removeDish(@PathParam("id") final long id,
+	                           @PathParam("dishId") final int dishId) {
+		final Table table = tableService.findById(id);
+		if (table == null) {
+			LOGGER.warn("Table with id {} not found", id);
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
+		}
+
+		if (!orderService.containsDish(table.getOrder(), dishId)) {
+			LOGGER.warn("From table with id {}, dish id {} not found", id, dishId);
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -307,10 +337,7 @@ public class TableApiController extends BaseApiController {
 		final Table table = tableService.findById(id);
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
-					.build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		return Response.ok(new OrderDTO(table.getOrder(), buildBaseURI(uriInfo))).build();
 	}

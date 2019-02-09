@@ -2,7 +2,6 @@ package edu.itba.paw.jimi.webapp.api;
 
 import edu.itba.paw.jimi.interfaces.services.UserService;
 import edu.itba.paw.jimi.models.User;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.UserDTO;
 import edu.itba.paw.jimi.webapp.dto.UserListDTO;
 import edu.itba.paw.jimi.webapp.dto.form.user.UserForm;
@@ -14,7 +13,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -29,7 +27,6 @@ import java.util.LinkedList;
 @Path("users")
 @Controller
 @Produces(value = {MediaType.APPLICATION_JSON})
-@CrossOrigin(origins = "*")
 public class UserApiController extends BaseApiController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserApiController.class);
@@ -58,7 +55,7 @@ public class UserApiController extends BaseApiController {
 	                          @QueryParam("pageSize") @DefaultValue("" + DEFAULT_PAGE_SIZE) Integer pageSize) {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
-		final Collection<User> allUsers = userService.findAll(new QueryParams((page - 1) * pageSize, pageSize));
+		final Collection<User> allUsers = userService.findAll(pageSize, (page - 1) * pageSize);
 		return Response.ok(new UserListDTO(new LinkedList<>(allUsers), buildBaseURI(uriInfo)))
 				.links(paginationHelper.getPaginationLinks(uriInfo, page, userService.getTotalUsers()))
 				.build();
@@ -67,15 +64,20 @@ public class UserApiController extends BaseApiController {
 	@POST
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response createUser(@Valid final UserForm userForm) {
-
 		if (userForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
+
+		if (!userForm.getPassword().equals(userForm.getRepeatPassword()))
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(errorMessageToJSON(messageSource.getMessage("non_matching_passwords", null, LocaleContextHolder.getLocale())))
+					.build();
 
 		if (userService.findByUsername(userForm.getUsername()) != null) {
 			LOGGER.warn("Cannot create user: existing username {} found", userForm.getUsername());
 			return Response
 					.status(Response.Status.CONFLICT)
-					.entity(messageSource.getMessage("user.error.repeated.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("user.error.repeated.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -91,10 +93,7 @@ public class UserApiController extends BaseApiController {
 
 		if (user == null) {
 			LOGGER.warn("User with id {} not found", id);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("user.error.not.found.body", null, LocaleContextHolder.getLocale()))
-					.build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 		return Response.ok(new UserDTO(user, buildBaseURI(uriInfo))).build();

@@ -88,6 +88,16 @@ UPDATE tables SET status = status-1;
 UPDATE orders SET status = status-1;
 ```
 
+## DB Migrations V2 to V3
+Migration queries should be run on database running V2 and **BEFORE** deploying V3 release.
+Queries should prepare database for new structure and migrate information, afterwards hibernate will generate
+missing constraints, foreign keys and else.
+
+```
+alter table dishes add discontinued boolean default false not null;
+```
+
+
 ## Development
 For development go to /reactUI/src/conf.js and setup the location of the development server with CORS enabled. Generaly
 will be `http://localhost:8080`. Then start tomcat and get workink :)
@@ -98,7 +108,4 @@ We will serve the api on the same domain as the page.
 Navigate to /reactUI and run `npm run build`. Then copy recursivly all content from /reactUI/* to /webapp/src/main/webapp.
 Finally on the root folder of the project package the application with `mvn package`.
 The final war will be in `/webapp/target/webapp.war`
-
-
-
 

@@ -2,13 +2,19 @@ package edu.itba.paw.jimi.webapp.exceptionmapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.web.servlet.LocaleResolver;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -16,9 +22,18 @@ import java.util.Iterator;
 
 @Provider
 public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ValidationExceptionMapper.class);
-	
+
+	@Autowired
+	private MessageSource messageSource;
+
+	@Autowired
+	private LocaleResolver localeResolver;
+
+	@Context
+	private HttpServletRequest request;
+
 	@Override
 	public Response toResponse(ConstraintViolationException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
@@ -27,11 +42,20 @@ public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViol
 				.type("text/plain")
 				.build();
 	}
-	
+
 	private String prepareMessage(ConstraintViolationException exception) {
 		JsonObjectBuilder jsonObjectBuilderErrors = Json.createObjectBuilder();
 		for (ConstraintViolation<?> cv : exception.getConstraintViolations()) {
-			jsonObjectBuilderErrors.add(getPropertyName(cv), cv.getMessage());
+			String message = "invalid constraint";
+			try {
+				String messageTemplate = cv.getMessageTemplate();
+				messageTemplate = messageTemplate.substring(1, messageTemplate.length() - 1);
+				message = messageSource.getMessage(messageTemplate, null, localeResolver.resolveLocale(request));
+			} catch (NoSuchMessageException e) {
+				message = cv.getMessage();
+			} finally {
+				jsonObjectBuilderErrors.add(getPropertyName(cv), message);
+			}
 		}
 		JsonArrayBuilder jsonArrayBuilderErrors = Json.createArrayBuilder();
 		jsonArrayBuilderErrors.add(jsonObjectBuilderErrors);
@@ -40,7 +64,7 @@ public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViol
 				.build()
 				.toString();
 	}
-	
+
 	private String getPropertyName(final ConstraintViolation<?> cv) {
 		final Iterator<Path.Node> iterator = cv.getPropertyPath().iterator();
 		Path.Node next = null;

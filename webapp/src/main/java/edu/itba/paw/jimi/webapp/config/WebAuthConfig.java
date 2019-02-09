@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -36,6 +37,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	private AuthenticationEntryPoint authenticationEntryPoint;
 
 	@Autowired
+	private AccessDeniedHandler accessDeniedHandler;
+
+	@Autowired
 	private StatelessLoginSuccessHandler statelessLoginSuccessHandler;
 
 	@Autowired
@@ -50,12 +54,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.addFilterBefore(corsFilter, ChannelProcessingFilter.class)
 				.csrf().disable()
-				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
 				.and().authorizeRequests()
 				.antMatchers("/api/dishes/**").hasRole("ADMIN")
 				.antMatchers("/api/admin/**").hasRole("ADMIN")
 				.antMatchers("/api/tables/**").hasAnyRole("ADMIN", "USER")
 				.antMatchers("/api/users/**").hasRole("ADMIN")
+				.antMatchers("/api/kitchen/**").authenticated()
 				.antMatchers("/api/**").authenticated()
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -89,9 +94,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 		authProvider.setPasswordEncoder(passwordEncoder());
 		return authProvider;
 	}
-
-
-
 
 	@Bean
 	public String tokenSigningKey() {

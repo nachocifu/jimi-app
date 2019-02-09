@@ -24,11 +24,6 @@ public class UserHibernateDao implements UserDao {
 	}
 
 	@Override
-	public Collection<User> findAll() {
-		return em.createQuery("from User", User.class).getResultList();
-	}
-
-	@Override
 	public Collection<User> findAll(int maxResults, int offset) {
 		return em.createQuery("from User order by username", User.class)
 				.setFirstResult(offset)

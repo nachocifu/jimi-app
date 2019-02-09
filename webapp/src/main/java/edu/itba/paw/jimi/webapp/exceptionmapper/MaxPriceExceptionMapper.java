@@ -1,6 +1,6 @@
 package edu.itba.paw.jimi.webapp.exceptionmapper;
 
-import edu.itba.paw.jimi.interfaces.exceptions.OrderStatusException;
+import edu.itba.paw.jimi.interfaces.exceptions.MaxPriceException;
 import edu.itba.paw.jimi.webapp.dto.ExceptionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +14,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import java.text.MessageFormat;
 
 @Provider
-public class OrderStatusExceptionMapper implements ExceptionMapper<OrderStatusException> {
+public class MaxPriceExceptionMapper implements ExceptionMapper<MaxPriceException> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(OrderStatusExceptionMapper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MaxPriceExceptionMapper.class);
 
 	@Autowired
 	private MessageSource messageSource;
@@ -31,12 +30,9 @@ public class OrderStatusExceptionMapper implements ExceptionMapper<OrderStatusEx
 	private HttpServletRequest request;
 
 	@Override
-	public Response toResponse(final OrderStatusException exception) {
+	public Response toResponse(final MaxPriceException exception) {
 		LOGGER.warn("Exception: {}", (Object[]) exception.getStackTrace());
-		String message = MessageFormat
-				.format(messageSource.getMessage("exception.order.status", null, localeResolver.resolveLocale(request)),
-						exception.getExpected(),
-						exception.getActual());
+		String message = messageSource.getMessage("exception.max.price", null, localeResolver.resolveLocale(request));
 		return Response
 				.status(Response.Status.CONFLICT)
 				.entity(new ExceptionDTO(message))
