@@ -37,7 +37,7 @@ public interface TableDao {
 	 *
 	 * @return all the active with the given status paginated.
 	 */
-	Collection<Table> findTablesWithStatus(TableStatus tableStatus);
+	Collection<Table> findTablesWithStatus(TableStatus tableStatus, int maxResults, int offset);
 
 	/**
 	 * Returns the total number of tables.
