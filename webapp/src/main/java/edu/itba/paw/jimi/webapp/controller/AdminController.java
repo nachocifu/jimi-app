@@ -6,7 +6,6 @@ import edu.itba.paw.jimi.interfaces.services.StatsService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.models.Order;
-import edu.itba.paw.jimi.models.utils.QueryParams;
 import edu.itba.paw.jimi.webapp.dto.form.table.TableAddDishForm;
 import edu.itba.paw.jimi.webapp.dto.form.table.TableSetDinersForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,29 +54,6 @@ public class AdminController {
 	}
 
 	private static final int PAGE_SIZE = 10;
-
-	@RequestMapping("/bills")
-	public ModelAndView bills() {
-		final ModelAndView mav = new ModelAndView("admin/bills");
-
-		QueryParams qp = new QueryParams(0, PAGE_SIZE, orderService.getTotalRelevantOrders(), "closedat", false);
-		mav.addObject("lastOrders", orderService.findAllRelevant(qp));
-		mav.addObject("qp", qp);
-
-		return mav;
-	}
-
-	@RequestMapping("bills/page/{page}")
-	public ModelAndView billsPages(@PathVariable("page") Integer page) {
-		final ModelAndView mav = new ModelAndView("admin/bills");
-
-		QueryParams qp = new QueryParams((page - 1) * PAGE_SIZE, PAGE_SIZE, orderService.getTotalRelevantOrders(), "closedat", false);
-
-		mav.addObject("lastOrders", orderService.findAllRelevant(qp));
-		mav.addObject("qp", qp);
-
-		return mav;
-	}
 
 	@RequestMapping("/order_edit/{id}")
 	public ModelAndView indexEdit(@PathVariable("id") Integer id,

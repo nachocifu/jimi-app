@@ -232,13 +232,13 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Collection<Order> findAllRelevant(QueryParams qp) {
+	public Collection<Order> findCancelledOrClosedOrders(QueryParams qp) {
 		return findAll(qp.getPageSize(), qp.getStartAt());
 	}
 
 	@Override
-	public Collection<Order> findAllRelevant(int maxResults, int offset) {
-		return orderDao.findAllRelevant(maxResults, offset);
+	public Collection<Order> findCancelledOrClosedOrders(int maxResults, int offset) {
+		return orderDao.findCancelledOrClosedOrders(maxResults, offset);
 	}
 
 	@Override
@@ -262,7 +262,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public int getTotalRelevantOrders() {
+	public int getTotalCancelledOrClosedOrders() {
 		return orderDao.getTotalRelevantOrders();
 	}
 

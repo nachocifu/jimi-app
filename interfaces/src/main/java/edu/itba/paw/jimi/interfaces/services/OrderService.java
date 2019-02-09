@@ -143,7 +143,6 @@ public interface OrderService {
 	 */
 	Collection<Order> findAll();
 
-
 	/**
 	 * Finds all closed orders.
 	 *
@@ -165,14 +164,14 @@ public interface OrderService {
 	 * @return A collection of said orders.
 	 * @deprecated
 	 */
-	Collection<Order> findAllRelevant(QueryParams qp);
+	Collection<Order> findCancelledOrClosedOrders(QueryParams qp);
 
 	/**
-	 * Finds all closed orders.
+	 * Finds all cancelled or closed orders paginated.
 	 *
-	 * @return A collection of said orders.
+	 * @return A collection of said orders paginated.
 	 */
-	Collection<Order> findAllRelevant(int maxResults, int offset);
+	Collection<Order> findCancelledOrClosedOrders(int maxResults, int offset);
 
 	/**
 	 * Finds all closed orders' total by month.
@@ -196,7 +195,7 @@ public interface OrderService {
 	/**
 	 * @return count of cancelled or closed orders.
 	 */
-	int getTotalRelevantOrders();
+	int getTotalCancelledOrClosedOrders();
 
 	/**
 	 * Finds all open orders.
