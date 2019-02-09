@@ -47,7 +47,7 @@ public class OrderHibernateDao implements OrderDao {
 	}
 
 	@Override
-	public Map getMonthlyOrderTotal() {
+	public Map<YearMonth, Double> getMonthlyOrderTotal() {
 		Map<YearMonth, Double> response = new TreeMap<YearMonth, Double>() {
 		};
 		Query query = em.createNativeQuery(
@@ -91,7 +91,7 @@ public class OrderHibernateDao implements OrderDao {
 	}
 
 	@Override
-	public Map getMonthlyOrderCancelled() {
+	public Map<YearMonth, Integer> getMonthlyOrderCancelled() {
 		Map<YearMonth, Integer> response = new TreeMap<YearMonth, Integer>() {
 		};
 		Query query = em.createNativeQuery(

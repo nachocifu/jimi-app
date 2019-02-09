@@ -1,5 +1,6 @@
 package edu.itba.paw.jimi.interfaces.services;
 
+import java.time.YearMonth;
 import java.util.Map;
 
 public interface StatsService {
@@ -58,14 +59,14 @@ public interface StatsService {
 	 *
 	 * @return map of month to total.
 	 */
-	Map getMonthlyOrderTotal();
+	Map<YearMonth, Double> getMonthlyOrderTotal();
 
 	/**
 	 * Calculates cancelled orders of a month.
 	 *
 	 * @return map of month to number of cancelled orders.
 	 */
-	Map getMonthlyOrderCancelled();
+	Map<YearMonth, Integer> getMonthlyOrderCancelled();
 
 	/**
 	 * Calculates discontinued dishes.
