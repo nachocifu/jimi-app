@@ -88,6 +88,15 @@ UPDATE tables SET status = status-1;
 UPDATE orders SET status = status-1;
 ```
 
+## DB Migrations V2 to V3
+Migration queries should be run on database running V2 and **BEFORE** deploying V3 release.
+Queries should prepare database for new structure and migrate information, afterwards hibernate will generate
+missing constraints, foreigein keys and else.
+
+```
+alter table dishes add discontinued boolean default false not null;
+```
+
 
 
 
