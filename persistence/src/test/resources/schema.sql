@@ -35,9 +35,3 @@
 --   dishid   INTEGER NOT NULL,
 --   quantity INTEGER NOT NULL
 -- );
---
--- CREATE TABLE IF NOT EXISTS "user_roles"
--- (
---   userid INTEGER NOT NULL,
---   role   VARCHAR(30)
--- );
