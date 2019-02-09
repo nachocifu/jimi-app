@@ -93,10 +93,7 @@ public class UserApiController extends BaseApiController {
 
 		if (user == null) {
 			LOGGER.warn("User with id {} not found", id);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("user.error.not.found.body", null, LocaleContextHolder.getLocale()))
-					.build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
 		return Response.ok(new UserDTO(user, buildBaseURI(uriInfo))).build();
