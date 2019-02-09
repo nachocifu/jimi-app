@@ -148,12 +148,6 @@ public class DishDaoTest {
 		assertEquals(dishOverStock.getStock(), DISH_STOCK + 3);
 	}
 
-//	@Test
-//	public void testFindAllOffered() {
-//		List<Dish> dishes = (List<Dish>) dishDao.findAllOffered();
-//		assertEquals(3, dishes.size());
-//	}
-
 	@Test
 	public void testFindAllAvailable() {
 		List<Dish> dishes = (List<Dish>) dishDao.findAllAvailable();
