@@ -30,4 +30,12 @@ export default class DishRestClient extends RestClient {
     );
   }
 
+  putStock(id, newStock) {
+    return this.instance.post(
+      'api/dishes/'+id+'/stock',
+      {newStock: newStock}
+      // querystring.stringify({oldStock: oldStock, newStock: newStock})
+    );
+  }
+
 }

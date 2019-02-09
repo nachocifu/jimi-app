@@ -32,24 +32,24 @@ import java.util.LinkedList;
 @Path("dishes")
 @Controller
 public class DishApiController extends BaseApiController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(DishApiController.class);
-	
+
 	@Autowired
 	private DishService dishService;
-	
+
 	@Autowired
 	private MessageSource messageSource;
-	
+
 	@Autowired
 	private PaginationHelper paginationHelper;
-	
+
 	@Context
 	private UriInfo uriInfo;
-	
+
 	private static final int DEFAULT_PAGE_SIZE = 5;
 	private static final int MAX_PAGE_SIZE = 20;
-	
+
 	@GET
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response listDishes(@QueryParam("page") @DefaultValue("1") Integer page,
@@ -61,21 +61,21 @@ public class DishApiController extends BaseApiController {
 				.links(paginationHelper.getPaginationLinks(uriInfo, page, dishService.getTotalDishes()))
 				.build();
 	}
-	
+
 	@POST
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response createDish(@Valid final DishForm dishForm) {
 		if (dishForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
-		
+
 		final Dish dish = dishService.create(dishForm.getName(), dishForm.getPrice());
 		dishService.setStock(dish, dishForm.getStock());
 		dishService.setMinStock(dish, dishForm.getMinStock());
-		
+
 		final URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(dish.getId())).build();
 		return Response.created(location).entity(new DishDTO(dish, buildBaseURI(uriInfo))).build();
 	}
-	
+
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -83,7 +83,7 @@ public class DishApiController extends BaseApiController {
 	                           @Valid final DishForm dishForm) {
 		if (dishForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
-		
+
 		final Dish dish = dishService.findById(id);
 		if (dish == null) {
 			LOGGER.warn("Dish with id {} not found", id);
@@ -92,22 +92,23 @@ public class DishApiController extends BaseApiController {
 					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
 					.build();
 		}
-		
+
 		dishService.setName(dish, dishForm.getName());
 		dishService.setStock(dish, dishForm.getStock());
 		dishService.setPrice(dish, dishForm.getPrice());
 		dishService.setMinStock(dish, dishForm.getMinStock());
-		
+
 		return Response.noContent().build();
 	}
-	
+
 	@POST
 	@Path("/{id}/stock")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response setDishStock(@PathParam("id") final int id,
-	                             @Valid final SetDishStockForm setDishStockForm) {
+	                             @BeanParam @Valid final SetDishStockForm setDishStockForm) {
 		if (setDishStockForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
-		
+
 		final Dish dish = dishService.findById(id);
 		if (dish == null) {
 			LOGGER.warn("Dish with id {} not found", id);
@@ -116,17 +117,17 @@ public class DishApiController extends BaseApiController {
 					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
 					.build();
 		}
-		
+
 		dishService.setStock(dish, setDishStockForm.getNewStock());
 		return Response.noContent().build();
 	}
-	
+
 	@POST
 	@Path("/downloadCSV")
 	@Produces({"text/csv"})
 	public Response downloadDishesMissingStockCSV(@Context HttpServletResponse response) throws IOException {
 		CsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
-		
+
 		String[] headerT = {
 				messageSource.getMessage("csv.name", null, LocaleContextHolder.getLocale()),
 				messageSource.getMessage("csv.price", null, LocaleContextHolder.getLocale()),
@@ -134,14 +135,14 @@ public class DishApiController extends BaseApiController {
 				messageSource.getMessage("csv.minStock", null, LocaleContextHolder.getLocale()),
 		};
 		csvWriter.writeHeader(headerT);
-		
+
 		String[] header = {"name", "price", "stock", "minStock"};
 		for (Dish dish : dishService.findDishesMissingStock())
 			csvWriter.write(dish, header);
-		
+
 		csvWriter.flush();
 		csvWriter.close();
-		
+
 		return Response
 				.ok()
 				.header("Content-Disposition", String.format("attachment; filename=\"%s\"", messageSource.getMessage("csv.file", null, LocaleContextHolder.getLocale())))

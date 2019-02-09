@@ -7,6 +7,7 @@ import Button from "reactstrap/es/Button";
 import Reactotron from "reactotron-react-js";
 import {connect} from "react-redux";
 
+
 function DishRow(props) {
   const dish = props.dish;
   const dishLink = `/dishes/${dish.id}`;
@@ -21,10 +22,22 @@ function DishRow(props) {
       <td>${dish.price}</td>
       <td><Badge color={getBadge(dish.status)}>{dish.status}</Badge></td>
       <td>{dish.stock}</td>
-      <td><Button color={'success'}><i className="fa fa-plus-circle"/></Button></td>
-      <td><Button color={'danger'}><i className="fa fa-minus-circle"/></Button></td>
+      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock + 1)} color={'success'}><i className="fa fa-plus-circle"/></Button></td>
+      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock - 1)} color={'danger'}><i className="fa fa-minus-circle"/></Button></td>
     </tr>
   );
+}
+
+function addStock(self, id, stock) {
+  Reactotron.debug([this, id, stock]);
+  self.dishClient.putStock(id, stock-1, stock)
+    .then((val) => {
+      Reactotron.debug(val);
+      self.updateList();
+    })
+    .catch((err) => {
+      Reactotron.error(err);
+    });
 }
 
 class Dishes extends Component {
@@ -37,14 +50,17 @@ class Dishes extends Component {
     this.state = {dishes: [], loading: true};
   }
 
-  componentDidMount() {
-    this.dishClient.get(0, 10)
+  updateList() {
+    this.dishClient.get(0, 100)
       .then((val) => {
         this.setState({dishes: val.data.dishes, loading: false});
       }).catch((error) => {
       Reactotron.error("Failed to retrieve dishes", error);
     });
+  }
 
+  componentDidMount() {
+    this.updateList();
   }
 
 
@@ -72,7 +88,8 @@ class Dishes extends Component {
                   </thead>
                   <tbody>
                   {this.state.dishes.map((dish, index) =>
-                    <DishRow key={index} dish={dish}/>
+                    // this.dishRow({dish: dish})
+                    <DishRow key={index} dish={dish} self={this}/>
                   )}
                   </tbody>
                 </Table>

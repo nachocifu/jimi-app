@@ -1,5 +1,6 @@
 import axios from 'axios';
-import conf from '../conf'
+import conf from '../conf';
+import querystring from 'querystring';
 
 export default class RestClient {
   protocol;
