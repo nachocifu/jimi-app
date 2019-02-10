@@ -12,14 +12,14 @@ function DishRow(props) {
   const dishLink = `/dishes/${dish.id}`;
 
   const getBadge = (status) => {
-    return status === 'Active' ? 'primary' : 'secondary'
+    return status ? 'primary' : 'success'
   };
 
   return (
     <tr key={dish.id.toString()}>
       <td><Link to={dishLink}>{dish.name}</Link></td>
       <td>${dish.price}</td>
-      <td><Badge color={getBadge(dish.status)}>{dish.status}</Badge></td>
+      <td><Badge color={getBadge(dish.discontinued)}>{dish.discontinued?'Discontinued':'In Production'}</Badge></td>
       <td>{dish.stock}</td>
       <td><Button onClick={() => addStock(props.self, dish.id, dish.stock + 1)} color={'success'}><i className="fa fa-plus-circle"/></Button></td>
       <td><Button onClick={() => addStock(props.self, dish.id, dish.stock - 1)} color={'danger'}><i className="fa fa-minus-circle"/></Button></td>

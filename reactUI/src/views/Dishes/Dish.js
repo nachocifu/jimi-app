@@ -160,7 +160,10 @@ class Dish extends Component {
               </CardBody>
               <CardFooter>
                 <Button color="secondary" onClick={this.toggle}>Edit</Button>
-                <Button color="danger" onClick={this.handleDiscontinue}>{this.state.dish.discontinued? 'SET IN PRODUCTION': 'SET DISCONTINUED'}</Button>
+                {!this.state.dish.discontinued? (
+                  <Button color="danger" style={{'marginLeft': '5px'}}  onClick={this.handleDiscontinue}>SET DISCONTINUED</Button>
+                  ):''
+                }
               </CardFooter>
             </Card>
           </Col>
