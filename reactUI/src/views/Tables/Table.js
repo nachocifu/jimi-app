@@ -108,7 +108,7 @@ class Table extends Component {
 
     if (this.state.loading === true) return (<Spinner style={{width: '3rem', height: '3rem'}}/>);
 
-    // if( !this.state.table.id) return [['id', (<span><i className="text-muted icon-ban"></i> Not found</span>)]];
+    if( !this.state.table.id) return [['id', (<span><i className="text-muted icon-ban"></i> Not found</span>)]];
 
     Reactotron.debug(this.state.table);
     return (
