@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
+import javax.json.Json;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -37,6 +38,9 @@ public class StatelessAuthenticationFilter extends GenericFilterBean {
 	}
 
 	private String convertMessageToJWTErrorJson(String message) {
-		return !message.isEmpty() ? "{ \"JWTerror\": \"" + message + "\" }" : null;
+		return Json.createObjectBuilder()
+				.add("JWTerror", message)
+				.build()
+				.toString();
 	}
 }
