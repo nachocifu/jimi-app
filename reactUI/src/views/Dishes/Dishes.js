@@ -1,35 +1,69 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
-
-import dishData from './DishData'
+import DishRestClient from '../../http/clients/DishRestClient'
 import Button from "reactstrap/es/Button";
+import Reactotron from "reactotron-react-js";
+import {connect} from "react-redux";
+
 
 function DishRow(props) {
   const dish = props.dish;
   const dishLink = `/dishes/${dish.id}`;
 
   const getBadge = (status) => {
-    return status === 'Active' ? 'primary' : 'secondary'
+    return status ? 'primary' : 'success'
   };
 
   return (
     <tr key={dish.id.toString()}>
       <td><Link to={dishLink}>{dish.name}</Link></td>
       <td>${dish.price}</td>
-      <td><Badge color={getBadge(dish.status)}>{dish.status}</Badge></td>
+      <td><Badge color={getBadge(dish.discontinued)}>{dish.discontinued?'Discontinued':'In Production'}</Badge></td>
       <td>{dish.stock}</td>
-      <td><Button color={'success'}><i className="fa fa-plus-circle"/></Button></td>
-      <td><Button color={'danger'}><i className="fa fa-minus-circle"/></Button></td>
+      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock + 1)} color={'success'}><i className="fa fa-plus-circle"/></Button></td>
+      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock - 1)} color={'danger'}><i className="fa fa-minus-circle"/></Button></td>
     </tr>
-  )
+  );
+}
+
+function addStock(self, id, stock) {
+  Reactotron.debug([this, id, stock]);
+  self.dishClient.putStock(id, stock)
+    .then((val) => {
+      Reactotron.debug(val);
+      self.updateList();
+    })
+    .catch((err) => {
+      Reactotron.error(err);
+    });
 }
 
 class Dishes extends Component {
 
-  render() {
+  dishClient;
 
-    const dishList = dishData.filter((dish) => dish.id < 10);
+  constructor(props) {
+    super(props);
+    this.dishClient = new DishRestClient(props.token);
+    this.state = {dishes: [], loading: true};
+  }
+
+  updateList() {
+    this.dishClient.get(0, 100)
+      .then((val) => {
+        this.setState({dishes: val.data.dishes, loading: false});
+      }).catch((error) => {
+      Reactotron.error("Failed to retrieve dishes", error);
+    });
+  }
+
+  componentDidMount() {
+    this.updateList();
+  }
+
+
+  render() {
 
     return (
       <div className="animated fadeIn">
@@ -52,8 +86,8 @@ class Dishes extends Component {
                   </tr>
                   </thead>
                   <tbody>
-                  {dishList.map((dish, index) =>
-                    <DishRow key={index} dish={dish}/>
+                  {this.state.dishes.map((dish, index) =>
+                    <DishRow key={index} dish={dish} self={this}/>
                   )}
                   </tbody>
                 </Table>
@@ -66,4 +100,8 @@ class Dishes extends Component {
   }
 }
 
-export default Dishes;
+const mapStateToProps = state => {
+  return {token: state.authentication.token};
+};
+
+export default connect(mapStateToProps)(Dishes);

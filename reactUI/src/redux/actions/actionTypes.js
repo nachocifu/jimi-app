@@ -1,0 +1,6 @@
+export const INIT = "INIT";
+export const LOGIN_REQUESTED = "LOGIN_REQUESTED";
+export const LOGIN_SUCCESSFULL = "LOGIN_SUCCESSFULL";
+export const LOGIN_ERRORED = "LOGIN_ERRORED";
+export const LOGIN_PENDING = "LOGIN_PENDING";
+

@@ -39,3 +39,5 @@ hs_err_pid*
 webapp/target/generated-sources/
 .idea
 .DS_Store
+webapp/src/main/webapp
+!webapp/src/main/webapp/WEB-INF/web.xml

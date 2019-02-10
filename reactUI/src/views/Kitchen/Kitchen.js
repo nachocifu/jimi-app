@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
+import {Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 
 import kitchenData from './KitchenData'
 import Button from "reactstrap/es/Button";

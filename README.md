@@ -98,5 +98,14 @@ alter table dishes add discontinued boolean default false not null;
 ```
 
 
+## Development
+For development go to /reactUI/src/conf.js and setup the location of the development server with CORS enabled. Generally
+it will be `http://localhost:8080`. Then start tomcat and get working :)
 
+## Production
+For production build go to /reactUI/src/conf.js and set all API data to blank. 
+We will serve the api on the same domain as the page.
+Navigate to /reactUI and run `npm run build`. Then copy recursively all content from /reactUI/* to /webapp/src/main/webapp.
+Finally on the root folder of the project package the application with `mvn package`.
+The final war will be in `/webapp/target/webapp.war`
 

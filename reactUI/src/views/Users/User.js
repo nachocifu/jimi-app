@@ -1,15 +1,39 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
-
-import usersData from './UsersData'
+import {connect} from "react-redux";
+import UserRestClient from "../../http/clients/UserRestClient";
+import Reactotron from "reactotron-react-js";
+import Spinner from "reactstrap/es/Spinner";
 
 class User extends Component {
 
+  usersClient;
+  constructor(props) {
+    super(props);
+    this.usersClient = new UserRestClient(this.props.token);
+    this.state = {
+      user: null,
+      loading: true,
+    };
+  }
+
+  componentDidMount(){
+
+    this.usersClient.getUser(this.props.match.params.id)
+      .then((val) => {
+        Reactotron.debug(val);
+        this.setState({user: val.data, loading: false});
+      }).catch((error)=>{
+        this.setState({loading: false});
+      Reactotron.error("Failed to retrieve user", error);
+    });
+
+  }
+
   render() {
+    if(this.state.loading === true) return <Spinner style={{ width: '3rem', height: '3rem' }} />;
 
-    const user = usersData.find(user => user.id.toString() === this.props.match.params.id)
-
-    const userDetails = user ? Object.entries(user) : [['id', (
+    const userDetails = this.state.user ? Object.entries(this.state.user) : [['id', (
       <span><i className="text-muted icon-ban"></i> Not found</span>)]]
 
     return (
@@ -44,4 +68,8 @@ class User extends Component {
   }
 }
 
-export default User;
+const mapStateToProps = state => {
+  return {token: state.authentication.token};
+};
+
+export default connect(mapStateToProps)(User);
