@@ -18,7 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Base64;
@@ -39,6 +39,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private StatelessLoginSuccessHandler statelessLoginSuccessHandler;
+
+	@Autowired
+	private AuthenticationFailureHandler statelessLoginFailureHandler;
 
 	@Autowired
 	private StatelessAuthenticationFilter statelessAuthenticationFilter;
@@ -62,14 +65,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.formLogin().usernameParameter("username").passwordParameter("password").loginProcessingUrl("/api/login")
 				.successHandler(statelessLoginSuccessHandler)
-				.failureHandler(new SimpleUrlAuthenticationFailureHandler())
+				.failureHandler(statelessLoginFailureHandler)
 				.and()
 				.addFilterBefore(statelessAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override
 	public void configure(final WebSecurity web) throws Exception {
-		web.ignoring().antMatchers( "/resources/css/**", "/resources/js/**", "/resources/img/**", "/resources/plugins/**", "/favicon.ico", "/error/403");
+		web.ignoring().antMatchers("/resources/css/**", "/resources/js/**", "/resources/img/**", "/resources/plugins/**", "/favicon.ico", "/error/403");
 	}
 
 	@Bean
