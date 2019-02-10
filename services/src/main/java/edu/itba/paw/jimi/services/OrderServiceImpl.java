@@ -127,12 +127,25 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void setNewUndoneDishAmount(Order order, Dish dish, int newAmount) {
-		final int currentAmount = order.getDishes().get(dish).getAmount();
+		final int currentAmount = order.getUnDoneDishes().get(dish).getAmount();
 		if (currentAmount < newAmount) {
 			addDishes(order, dish, newAmount - currentAmount);
 		} else if (currentAmount > newAmount) {
 			removeUndoneDish(order, dish, currentAmount - newAmount);
 		}
+	}
+
+	@Override
+	public boolean containsUndoneDish(Order order, int dishId) {
+		return getUndoneDishById(order, dishId) != null;
+	}
+
+	@Override
+	public Dish getUndoneDishById(Order order, int dishId) {
+		return orderDao.findById(order.getId()).getUnDoneDishes().keySet().stream()
+				.filter(d -> d.getId() == dishId)
+				.findFirst()
+				.orElse(null);
 	}
 
 	@Override

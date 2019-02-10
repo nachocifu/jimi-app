@@ -81,6 +81,24 @@ public interface OrderService {
 	void setNewUndoneDishAmount(Order order, Dish dish, int amount);
 
 	/**
+	 * Find out of given order contains a given undone dishId.
+	 *
+	 * @param order  The order in which to operate.
+	 * @param dishId The undone dish id to look for.
+	 * @return true if order contains undone dish with dishId.
+	 */
+	boolean containsUndoneDish(Order order, int dishId);
+
+	/**
+	 * Get undone dish when a given order contains a given undone dishId.
+	 *
+	 * @param order  The order in which to operate.
+	 * @param dishId The undone dish id to look for.
+	 * @return true if order contains undone dish with dishId.
+	 */
+	Dish getUndoneDishById(Order order, int dishId);
+
+	/**
 	 * Find out of given order contains a given dishId.
 	 *
 	 * @param order  The order in which to operate.
