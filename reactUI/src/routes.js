@@ -41,6 +41,7 @@ const Dish = React.lazy(() => import('./views/Dishes/Dish'));
 const Tables = React.lazy(() => import('./views/Tables/Tables'));
 const Table = React.lazy(() => import('./views/Tables/Table'));
 const Kitchen = React.lazy(() => import('./views/Kitchen/Kitchen'));
+const Bills = React.lazy(() => import('./views/Bills/Bills'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -90,6 +91,7 @@ const routes = [
   {path: '/tables', exact: true, name: 'Dishes', component: Tables},
   {path: '/tables/:id', exact: true, name: 'Dish Details', component: Table},
   {path: '/kitchen', exact: true, name: 'Kitchen', component: Kitchen},
+  {path: '/bills', exact: true, name: 'Bills', component: Bills},
 ];
 
 export default routes;

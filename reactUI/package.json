@@ -25,6 +25,7 @@
     "enzyme-adapter-react-16": "^1.7.1",
     "flag-icon-css": "^3.2.1",
     "font-awesome": "^4.7.0",
+    "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "prop-types": "^15.6.2",
     "querystring": "^0.2.0",

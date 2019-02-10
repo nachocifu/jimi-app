@@ -88,7 +88,6 @@ class Dishes extends Component {
                   </thead>
                   <tbody>
                   {this.state.dishes.map((dish, index) =>
-                    // this.dishRow({dish: dish})
                     <DishRow key={index} dish={dish} self={this}/>
                   )}
                   </tbody>
