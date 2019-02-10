@@ -69,13 +69,26 @@ export default class TableRestClient extends RestClient {
    *
    * @param id
    * @param dishId
-   * @param count
+   * @param amount
    * @returns Promise
    */
   addDish(id, dishId, amount){
     return this.instance.post(
       'api/tables/'+id+'/dishes',
       {dishId: dishId, amount: amount}
+    );
+  }
+
+  /**
+   *
+   * @param id
+   * @param nextStatus
+   * @return Promise
+   */
+  setStatus(id, nextStatus) {
+    return this.instance.post(
+      'api/tables/'+id+'/status',
+      {status: nextStatus}
     );
   }
 

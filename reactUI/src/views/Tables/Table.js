@@ -31,6 +31,7 @@ class Table extends Component {
 
   tableClient;
   dishClient;
+
   constructor(props) {
     super(props);
     this.tableClient = new TableRestClient(this.props.token);
@@ -63,6 +64,7 @@ class Table extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.setDiners = this.setDiners.bind(this);
     this.addDishes = this.addDishes.bind(this);
+    this.getAvailableOperations = this.getAvailableOperations.bind(this);
   }
 
   componentDidMount() {
@@ -111,14 +113,22 @@ class Table extends Component {
   preToggleAddDish() {
     // Reactotron.display({name: 'Table Dishes to add Requesting', preview: 'Table Dishes to add Requesting', value: this.state.dishes});
     this.setState({loading: true});
-    this.dishClient.get(0,100)
+    this.dishClient.get(0, 100)
       .then((val) => {
-        Reactotron.display({name: 'Table Dishes to add SUCCESS', preview: 'Table Dishes to add SUCCESS', value: val.data});
+        Reactotron.display({
+          name: 'Table Dishes to add SUCCESS',
+          preview: 'Table Dishes to add SUCCESS',
+          value: val.data
+        });
         this.setState({loading: false, dishes: val.data.dishes});
       })
-      .then(() => this.toggleAddDish() )
-      .catch( () => {
-        Reactotron.display({name: 'Table Dishes to add FAIL', preview: 'Table Dishes to add FAIL', value: this.state.dishes});
+      .then(() => this.toggleAddDish())
+      .catch(() => {
+        Reactotron.display({
+          name: 'Table Dishes to add FAIL',
+          preview: 'Table Dishes to add FAIL',
+          value: this.state.dishes
+        });
         this.setState({loading: false});
       })
   }
@@ -158,13 +168,21 @@ class Table extends Component {
   }
 
   setDiners(diners) {
-    Reactotron.display({name: 'Table Set Diners Requesting', preview: 'Table Set Diners Requesting', value: this.state.table});
+    Reactotron.display({
+      name: 'Table Set Diners Requesting',
+      preview: 'Table Set Diners Requesting',
+      value: this.state.table
+    });
     this.tableClient.setDiners(this.state.table.id, diners)
       .then(() => {
         let table = {...this.state.table};
         table.diners = diners;
         this.setState({table});
-        Reactotron.display({name: 'Table Set Diners Success', preview: 'Table Set Diners Success', value: this.state.table});
+        Reactotron.display({
+          name: 'Table Set Diners Success',
+          preview: 'Table Set Diners Success',
+          value: this.state.table
+        });
       })
       .catch((error) =>
         Reactotron.display({name: 'Table Set Diners Fail', preview: 'Table Set Diners Fail', value: this.state.table})
@@ -176,7 +194,53 @@ class Table extends Component {
     this.tableClient.addDish(this.state.table.id, this.state.dishSelection, this.state.dishSelectionNum)
       .then(this.toggleAddDishAll())
       .then(() => this.loadTable())
-      .catch(() => Reactotron.display({name: 'Table add dish Fail', preview: 'Table add dish Fail', value: this.state.table}))
+      .catch(() => Reactotron.display({
+        name: 'Table add dish Fail',
+        preview: 'Table add dish Fail',
+        value: this.state.table
+      }));
+  }
+
+  handleStatusChange(nextStatus) {
+    this.setState({loading: true});
+    this.tableClient.setStatus(this.state.table.id, nextStatus)
+      .then(() => this.loadTable())
+      .catch(() => Reactotron.display({
+        name: 'Table change status Fail',
+        preview: 'Table change status Fail',
+        value: this.state.table
+      }));
+  }
+
+  getAvailableOperations() {
+    switch (this.state.table.status) {
+      case 'FREE':
+        return <Button color={'success'} onClick={()=> this.handleStatusChange("BUSY")} block>SET OCCUPIED</Button>;
+      case 'BUSY':
+        return (
+          <div>
+            <Button onClick={this.preToggleAddDish} color={"success"} block>ADD DISH</Button>
+            <ButtonGroup style={{'width': '100%', 'margin-top': '5px'}}>
+              <Button onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"} block><i
+                className="fa fa-minus"/> Dinner</Button>
+              <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"} block><i
+                className="fa fa-plus"/> Dinner</Button>
+            </ButtonGroup>
+            <Button onClick={()=> this.handleStatusChange("PAYING")} color={"danger"} block style={{'margin-top': '5px'}}>CHARGE</Button>
+          </div>
+        );
+      case 'PAYING':
+        return (
+          <div>
+            <Button  color={"success"} block>PRINT</Button>
+            <Button
+              onClick={()=> this.handleStatusChange("FREE")}
+              color={"success"} block style={{'margin-top': '5px'}}>CHARGED</Button>
+          </div>
+        );
+      default:
+        return this.state.table.status;
+    }
   }
 
   render() {
@@ -185,7 +249,7 @@ class Table extends Component {
 
     if (this.state.loading === true) return (<Spinner style={{width: '3rem', height: '3rem'}}/>);
 
-    if( !this.state.table.id) return [['id', (<span><i className="text-muted icon-ban"/> Not found</span>)]];
+    if (!this.state.table.id) return [['id', (<span><i className="text-muted icon-ban"/> Not found</span>)]];
 
     Reactotron.debug(this.state.table);
     return (
@@ -231,12 +295,7 @@ class Table extends Component {
                 <strong><i className="icon-info pr-1"/>Operations</strong>
               </CardHeader>
               <CardBody>
-                <Button onClick={this.preToggleAddDish} color={"success"} block>ADD DISH</Button>
-                <ButtonGroup style={{'width': '100%', 'margin-top': '5px'}}>
-                  <Button onClick={()=>this.setDiners(this.state.table.diners - 1)} color={"warning"} block><i className="fa fa-minus"/> Dinner</Button>
-                  <Button onClick={()=>this.setDiners(this.state.table.diners + 1)} color={"warning"} block><i className="fa fa-plus"/> Dinner</Button>
-                </ButtonGroup>
-                <Button color={"danger"} block style={{'margin-top': '5px'}}>CHARGE</Button>
+                {this.getAvailableOperations()}
               </CardBody>
             </Card>
           </Col>
@@ -265,8 +324,6 @@ class Table extends Component {
         </Modal>
 
 
-
-
         <Modal isOpen={this.state.modalAddDish} toggle={this.toggleAddDish} size={'xl'}>
           <ModalHeader toggle={this.toggleAddDish}>Select Dish</ModalHeader>
           <ModalBody>
@@ -274,7 +331,7 @@ class Table extends Component {
               {this.state.dishes.map((dish) =>
                 <Col lg={3}>
                   <Button size={'lg'} color={'info'} lg={3} block style={{margin: '2.5px'}}
-                          onClick={ () => {
+                          onClick={() => {
                             this.setState({dishSelection: dish.id});
                             this.toggleAddDishNested();
                           }}
@@ -285,7 +342,8 @@ class Table extends Component {
               )}
             </Row>
 
-            <Modal isOpen={this.state.addDishModalNested} toggle={this.toggleAddDishNested} onClosed={this.state.addDishCloseAll ? this.toggleAddDish : undefined}>
+            <Modal isOpen={this.state.addDishModalNested} toggle={this.toggleAddDishNested}
+                   onClosed={this.state.addDishCloseAll ? this.toggleAddDish : undefined}>
               <ModalHeader>How Many?</ModalHeader>
               <Form>
                 <ModalBody>
@@ -293,7 +351,7 @@ class Table extends Component {
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">#</InputGroupAddon>
                       <Input placeholder="Amount" type="number" step="1"
-                           onChange={e => this.setState({dishSelectionNum: e.target.value})}/>
+                             onChange={e => this.setState({dishSelectionNum: e.target.value})}/>
                     </InputGroup>
                   </InputGroup>
                 </ModalBody>
@@ -311,9 +369,6 @@ class Table extends Component {
             <Button color="secondary" onClick={this.toggleAddDish} block>Cancel</Button>
           </ModalFooter>
         </Modal>
-
-
-
 
 
       </div>
