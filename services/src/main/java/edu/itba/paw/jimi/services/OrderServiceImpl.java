@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
@@ -207,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
 		if (orders != null)
 			return orders;
 		else
-			return new HashSet<Order>();
+			return new HashSet<>();
 	}
 
 	@Override
@@ -216,12 +217,12 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Map getMonthlyOrderTotal() {
+	public Map<YearMonth, Double> getMonthlyOrderTotal() {
 		return orderDao.getMonthlyOrderTotal();
 	}
 
 	@Override
-	public Map getMonthlyOrderCancelled() {
+	public Map<YearMonth, Integer> getMonthlyOrderCancelled() {
 		return orderDao.getMonthlyOrderCancelled();
 	}
 
