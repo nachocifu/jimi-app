@@ -7,10 +7,7 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.webapp.dto.OrderListDTO;
 import edu.itba.paw.jimi.webapp.dto.StatsDTO;
 import edu.itba.paw.jimi.webapp.utils.PaginationHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
@@ -27,8 +24,6 @@ import java.util.Map;
 @Controller
 public class AdminApiController extends BaseApiController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdminApiController.class);
-
 	@Autowired
 	private TableService tableService;
 
@@ -37,9 +32,6 @@ public class AdminApiController extends BaseApiController {
 
 	@Autowired
 	private StatsService statsService;
-
-	@Autowired
-	private MessageSource messageSource;
 
 	@Autowired
 	private PaginationHelper paginationHelper;
