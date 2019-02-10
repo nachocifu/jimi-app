@@ -62,6 +62,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/users/**").hasRole("ADMIN")
 				.antMatchers("/api/kitchen/**").authenticated()
 				.antMatchers("/api/**").authenticated()
+				.anyRequest().authenticated()
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
@@ -74,7 +75,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(final WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/webjars/**", "/resources/css/**", "/resources/js/**", "/resources/img/**", "/resources/plugins/**", "/favicon.ico", "/error/403");
+		web.ignoring().antMatchers( "/resources/css/**", "/resources/js/**", "/resources/img/**", "/resources/plugins/**", "/favicon.ico", "/error/403");
 	}
 
 	@Bean

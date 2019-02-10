@@ -94,7 +94,9 @@ public class TableApiController extends BaseApiController {
 
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
 		}
 
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
@@ -107,7 +109,9 @@ public class TableApiController extends BaseApiController {
 
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
 		}
 
 		if (table.getStatus() != TableStatus.FREE) {
@@ -133,7 +137,9 @@ public class TableApiController extends BaseApiController {
 		final Table table = tableService.findById(id);
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
 		}
 
 		if (tableService.tableNameExists(tableForm.getName())) {
@@ -160,7 +166,9 @@ public class TableApiController extends BaseApiController {
 		final Table table = tableService.findById(id);
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
 		}
 
 		tableService.changeStatus(table, tableStatusForm.getStatus());
@@ -179,7 +187,9 @@ public class TableApiController extends BaseApiController {
 		final Table table = tableService.findById(id);
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
 		}
 
 		final Order order = table.getOrder();
@@ -337,7 +347,9 @@ public class TableApiController extends BaseApiController {
 		final Table table = tableService.findById(id);
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
 		}
 		return Response.ok(new OrderDTO(table.getOrder(), buildBaseURI(uriInfo))).build();
 	}
