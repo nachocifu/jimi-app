@@ -5,8 +5,8 @@ import edu.itba.paw.jimi.models.Dish;
 import edu.itba.paw.jimi.webapp.dto.DishDTO;
 import edu.itba.paw.jimi.webapp.dto.DishListDTO;
 import edu.itba.paw.jimi.webapp.dto.form.dish.DishForm;
-import edu.itba.paw.jimi.webapp.dto.form.dish.SetDishStockForm;
 import edu.itba.paw.jimi.webapp.utils.PaginationHelper;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,8 @@ import org.supercsv.prefs.CsvPreference;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -78,27 +80,21 @@ public class DishApiController extends BaseApiController {
 	}
 
 	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(value = {MediaType.APPLICATION_JSON})
-	public Response createDish(@Valid final DishForm dishForm) {
-		if (dishForm == null)
-			return Response.status(Response.Status.BAD_REQUEST).build();
-
+	public Response createDish(@BeanParam @Valid final DishForm dishForm) {
 		final Dish dish = dishService.create(dishForm.getName(), dishForm.getPrice());
 		dishService.setStock(dish, dishForm.getStock());
 		dishService.setMinStock(dish, dishForm.getMinStock());
-
 		final URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(dish.getId())).build();
 		return Response.created(location).entity(new DishDTO(dish, buildBaseURI(uriInfo))).build();
 	}
 
 	@PUT
 	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response updateDish(@PathParam("id") final int id,
-	                           @Valid final DishForm dishForm) {
-		if (dishForm == null)
-			return Response.status(Response.Status.BAD_REQUEST).build();
-
+	                           @BeanParam @Valid final DishForm dishForm) {
 		final Dish dish = dishService.findById(id);
 		if (dish == null) {
 			LOGGER.warn("Dish with id {} not found", id);
@@ -115,18 +111,18 @@ public class DishApiController extends BaseApiController {
 
 	@POST
 	@Path("/{id}/stock")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response setDishStock(@PathParam("id") final int id,
-	                             @Valid final SetDishStockForm setDishStockForm) {
-		if (setDishStockForm == null)
-			return Response.status(Response.Status.BAD_REQUEST).build();
-
+	                             @DecimalMin(value = "1")
+	                             @DecimalMax(value = "10000")
+	                             @FormDataParam("newStock") final int newStock) {
 		final Dish dish = dishService.findById(id);
 		if (dish == null) {
 			LOGGER.warn("Dish with id {} not found", id);
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
-		dishService.setStock(dish, setDishStockForm.getNewStock());
+		dishService.setStock(dish, newStock);
 		return Response.ok(new DishDTO(dish, buildBaseURI(uriInfo))).build();
 	}
 
