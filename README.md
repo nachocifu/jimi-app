@@ -99,7 +99,7 @@ alter table dishes add discontinued boolean default false not null;
 
 
 ## Development
-For development go to /reactUI/src/conf.js and setup the location of the development server with CORS enabled. Generaly
+For development go to /reactUI/src/conf.js and setup the location of the development server with CORS enabled. Generally
 it will be `http://localhost:8080`. Then start tomcat and get working :)
 
 ## Production
