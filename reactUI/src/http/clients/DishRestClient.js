@@ -36,4 +36,17 @@ export default class DishRestClient extends RestClient {
     );
   }
 
+  update(id, name, price, stock, minStock) {
+    return this.instance.put(
+      'api/dishes/'+id,
+      {name: name, price: price, stock: stock, minStock: minStock}
+    );
+  }
+
+  discontinue(id) {
+    return this.instance.post(
+      'api/dishes/'+id+"/discontinued"
+    );
+  }
+
 }
