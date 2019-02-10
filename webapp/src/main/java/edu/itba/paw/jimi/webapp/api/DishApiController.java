@@ -70,7 +70,7 @@ public class DishApiController extends BaseApiController {
 			LOGGER.warn("Dish with id {} not found", id);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
@@ -102,7 +102,9 @@ public class DishApiController extends BaseApiController {
 		final Dish dish = dishService.findById(id);
 		if (dish == null) {
 			LOGGER.warn("Dish with id {} not found", id);
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale())))
+					.build();
 		}
 
 		dishService.setName(dish, dishForm.getName());
@@ -123,7 +125,9 @@ public class DishApiController extends BaseApiController {
 		final Dish dish = dishService.findById(id);
 		if (dish == null) {
 			LOGGER.warn("Dish with id {} not found", id);
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale())))
+					.build();
 		}
 
 		dishService.setStock(dish, setDishStockForm.getNewStock());
@@ -138,7 +142,7 @@ public class DishApiController extends BaseApiController {
 			LOGGER.warn("Dish with id {} not found", id);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
