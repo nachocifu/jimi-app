@@ -28,6 +28,12 @@ export default class TableRestClient extends RestClient {
     );
   }
 
+  /**
+   *
+   * @param id
+   * @param name
+   * @returns Promise
+   */
   setName(id, name) {
     return this.instance.post(
       'api/tables/'+id+'/name',
@@ -35,9 +41,41 @@ export default class TableRestClient extends RestClient {
     );
   }
 
+  /**
+   *
+   * @param id
+   * @returns Promise
+   */
   delete(id) {
     return this.instance.delete(
       'api/tables/'+id
+    );
+  }
+
+  /**
+   *
+   * @param id
+   * @param diners
+   * @return Promise
+   */
+  setDiners(id, diners) {
+    return this.instance.post(
+      'api/tables/'+id+'/diners',
+      {diners: diners}
+    )
+  }
+
+  /**
+   *
+   * @param id
+   * @param dishId
+   * @param count
+   * @returns Promise
+   */
+  addDish(id, dishId, amount){
+    return this.instance.post(
+      'api/tables/'+id+'/dishes',
+      {dishId: dishId, amount: amount}
     );
   }
 
