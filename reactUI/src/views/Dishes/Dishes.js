@@ -29,7 +29,7 @@ function DishRow(props) {
 
 function addStock(self, id, stock) {
   Reactotron.debug([this, id, stock]);
-  self.dishClient.putStock(id, stock-1, stock)
+  self.dishClient.putStock(id, stock)
     .then((val) => {
       Reactotron.debug(val);
       self.updateList();
