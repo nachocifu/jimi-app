@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
-
-import usersData from './UsersData'
 import {connect} from "react-redux";
 import UserRestClient from "../../http/clients/UserRestClient";
 import Reactotron from "reactotron-react-js";

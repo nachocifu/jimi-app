@@ -17,7 +17,6 @@ import Reactotron from 'reactotron-react-js';
 import {connect} from "react-redux";
 import {LOGIN_ERRORED, LOGIN_PENDING, LOGIN_REQUESTED, LOGIN_SUCCESSFULL} from "../../../redux/actions/actionTypes";
 import AuthRestClient from "../../../http/clients/AuthRestClient";
-import {Redirect} from "react-router-dom";
 
 class Login extends Component {
 

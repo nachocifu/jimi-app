@@ -1,6 +1,4 @@
 import RestClient from "../RestClient";
-import querystring from 'querystring'
-import Reactotron from 'reactotron-react-js';
 
 export default class TableRestClient extends RestClient {
 
@@ -26,6 +24,19 @@ export default class TableRestClient extends RestClient {
    */
   getTable(id) {
     return this.instance.get(
+      'api/tables/'+id
+    );
+  }
+
+  setName(id, name) {
+    return this.instance.post(
+      'api/tables/'+id+'/name',
+      {name: name}
+    );
+  }
+
+  delete(id) {
+    return this.instance.delete(
       'api/tables/'+id
     );
   }

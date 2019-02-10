@@ -4,8 +4,6 @@ import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 import UserRestClient from '../../http/clients/UserRestClient';
 import Reactotron from 'reactotron-react-js';
 import {connect} from "react-redux";
-
-import usersData from './UsersData'
 import Spinner from "reactstrap/es/Spinner";
 
 function UserRow(props) {

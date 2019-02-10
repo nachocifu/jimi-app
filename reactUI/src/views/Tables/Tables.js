@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
-
-import tableData from './TableData'
-import Button from "reactstrap/es/Button";
 import {connect} from "react-redux";
-import UserRestClient from "../../http/clients/UserRestClient";
 import Reactotron from "reactotron-react-js";
 import TableRestClient from "../../http/clients/TableRestClient";
 

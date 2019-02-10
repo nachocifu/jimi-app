@@ -1,4 +1,3 @@
-import {combineReducers} from "redux";
 import {LOGIN_ERRORED, LOGIN_PENDING, LOGIN_REQUESTED, LOGIN_SUCCESSFULL} from "../actions/actionTypes";
 
 

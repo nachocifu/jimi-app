@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 import DishRestClient from '../../http/clients/DishRestClient'
-import dishData from './DishData'
 import Button from "reactstrap/es/Button";
 import Reactotron from "reactotron-react-js";
 import {connect} from "react-redux";

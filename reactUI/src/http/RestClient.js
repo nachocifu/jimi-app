@@ -1,6 +1,5 @@
 import axios from 'axios';
 import conf from '../conf';
-import querystring from 'querystring';
 
 export default class RestClient {
   protocol;
@@ -16,7 +15,7 @@ export default class RestClient {
 
     // Handle Headers
     const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
       'X-AUTH-TOKEN': token
       };
 

@@ -22,7 +22,7 @@ public class CorsFilter extends GenericFilterBean {
 		HttpServletRequest request = (HttpServletRequest) req;
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
-		response.setHeader("Access-Control-Allow-Headers", "X-AUTH-TOKEN");
+		response.setHeader("Access-Control-Allow-Headers", "X-AUTH-TOKEN, Content-Type");
 		response.setHeader("Access-Control-Expose-Headers", "X-AUTH-TOKEN");
 		response.setHeader("Access-Control-Max-Age", "3600");
 

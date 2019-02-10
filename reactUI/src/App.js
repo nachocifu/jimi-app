@@ -6,7 +6,7 @@ import Reactotron from 'reactotron-react-js';
 import {Provider} from "react-redux";
 import rootReducer from './redux/reducers'
 import {reactotronRedux} from 'reactotron-redux'
-import {INIT, LOGIN_SUCCESSFULL} from "./redux/actions/actionTypes";
+import {LOGIN_SUCCESSFULL} from "./redux/actions/actionTypes";
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -19,11 +19,6 @@ const DefaultLayout = Loadable({
 // Pages
 const Login = Loadable({
   loader: () => import('./views/Pages/Login'),
-  loading
-});
-
-const Register = Loadable({
-  loader: () => import('./views/Pages/Register'),
   loading
 });
 

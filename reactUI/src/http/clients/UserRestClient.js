@@ -1,6 +1,4 @@
 import RestClient from "../RestClient";
-import querystring from 'querystring'
-import Reactotron from 'reactotron-react-js';
 
 export default class UserRestClient extends RestClient {
 

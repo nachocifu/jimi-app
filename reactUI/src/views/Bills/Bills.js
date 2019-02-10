@@ -3,13 +3,11 @@ import {Badge, Card, CardBody, CardHeader, Col, Row, Table} from 'reactstrap';
 import Reactotron from "reactotron-react-js";
 import {connect} from "react-redux";
 import BillRestClient from "../../http/clients/BillRestClient";
-import {Link} from "react-router-dom";
 import moment from "moment";
 
 
 function BillRow(props) {
   const bill = props.bill;
-  const billLink = `/admin/bills/${bill.id}`;
 
   const getBadge = (status) => {
     return status === 'Active' ? 'primary' : 'secondary'
