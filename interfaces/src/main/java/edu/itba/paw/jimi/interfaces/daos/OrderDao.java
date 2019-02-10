@@ -5,6 +5,7 @@ import edu.itba.paw.jimi.models.Order;
 import edu.itba.paw.jimi.models.OrderStatus;
 
 import java.sql.Timestamp;
+import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public interface OrderDao {
 	 *
 	 * @return List of said orders.
 	 */
-	Map getMonthlyOrderTotal();
+	Map<YearMonth, Double> getMonthlyOrderTotal();
 
 	/**
 	 * Find all cancelled or closed orders.
@@ -72,7 +73,7 @@ public interface OrderDao {
 	 *
 	 * @return List of said orders.
 	 */
-	Map getMonthlyOrderCancelled();
+	Map<YearMonth, Integer> getMonthlyOrderCancelled();
 
 	/**
 	 * Finds all orders from the last given amount of minutes.
