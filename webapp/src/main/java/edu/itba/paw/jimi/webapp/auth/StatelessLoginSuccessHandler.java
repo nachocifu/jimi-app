@@ -16,34 +16,34 @@ import java.io.IOException;
 
 @Component
 public class StatelessLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-	
+
 	@Autowired
 	private TokenAuthenticationService tokenAuthenticationService;
-	
+
 	private RequestCache requestCache = new HttpSessionRequestCache();
-	
+
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
 			throws ServletException, IOException {
-		
+
 		tokenAuthenticationService.addAuthentication(response, authentication);
-		
+
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 		if (savedRequest == null) {
 			clearAuthenticationAttributes(request);
 			return;
 		}
-		
+
 		String targetUrlParam = getTargetUrlParameter();
 		if (isAlwaysUseDefaultTargetUrl() || (targetUrlParam != null && StringUtils.hasText(request.getParameter(targetUrlParam)))) {
 			requestCache.removeRequest(request, response);
 			clearAuthenticationAttributes(request);
 			return;
 		}
-		
+
 		clearAuthenticationAttributes(request);
 	}
-	
+
 	public void setRequestCache(RequestCache requestCache) {
 		this.requestCache = requestCache;
 	}

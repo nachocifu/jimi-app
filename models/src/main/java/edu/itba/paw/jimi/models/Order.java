@@ -74,7 +74,7 @@ public class Order {
 	 * @param amount the amount the dish is set to.
 	 * @return the resulting quantity of this dish in this order.
 	 */
-	public Integer setDish(Dish dish, int amount) {
+	public Integer setUndoneDish(Dish dish, int amount) {
 		if (amount > 0) {
 			if (!this.unDoneDishes.containsKey(dish))
 				this.unDoneDishes.put(dish, new DishData(amount));

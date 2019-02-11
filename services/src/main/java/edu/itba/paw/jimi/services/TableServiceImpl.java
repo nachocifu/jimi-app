@@ -108,7 +108,6 @@ public class TableServiceImpl implements TableService {
 		}
 
 		table.setStatus(status);
-		table.setStatus(status);
 		tableDao.update(table);
 		LOGGER.info("Updated table {}", table);
 	}

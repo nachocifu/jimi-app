@@ -24,13 +24,13 @@ public interface OrderService {
 	Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners);
 
 	/**
-	 * Adds a dish to the order, if it is already there it increments the amount of said dish.
+	 * Adds a dish to the order, only one.
 	 *
 	 * @param order The order in which to operate.
 	 * @param dish  The dish to add.
 	 * @return The resulting amount of passed dish.
 	 */
-	int addDish(Order order, Dish dish);
+	int addOneUndoneDish(Order order, Dish dish);
 
 	/**
 	 * Adds n dishes to the order, if it is already there it increments the amount of said dish.
@@ -40,7 +40,9 @@ public interface OrderService {
 	 * @param amount The amount to add.
 	 * @return The resulting amount of passed dish.
 	 */
-	int addDishes(Order order, Dish dish, int amount);
+	int addUndoneDishes(Order order, Dish dish, int amount);
+
+	int addDoneDishes(Order order, Dish dish, int amount);
 
 	/**
 	 * Removes a dish from the order, only one. If there was 2 of passed dish, 1 will remain.
@@ -71,6 +73,8 @@ public interface OrderService {
 	 */
 	int removeAllUndoneDish(Order order, Dish dish);
 
+	int removeDoneDish(Order order, Dish dish, int amount);
+
 	/**
 	 * Updates an undone dish amount in an order.
 	 *
@@ -81,13 +85,22 @@ public interface OrderService {
 	void setNewUndoneDishAmount(Order order, Dish dish, int amount);
 
 	/**
-	 * Find out of given order contains a given dishId.
+	 * Find out of given order contains a given undone dishId.
 	 *
 	 * @param order  The order in which to operate.
-	 * @param dishId The dish id to look for.
-	 * @return true if order contains dish with dishId.
+	 * @param dishId The undone dish id to look for.
+	 * @return true if order contains undone dish with dishId.
 	 */
-	boolean containsDish(Order order, int dishId);
+	boolean containsUndoneDish(Order order, int dishId);
+
+	/**
+	 * Get undone dish when a given order contains a given undone dishId.
+	 *
+	 * @param order  The order in which to operate.
+	 * @param dishId The undone dish id to look for.
+	 * @return true if order contains undone dish with dishId.
+	 */
+	Dish getUndoneDishById(Order order, int dishId);
 
 	/**
 	 * Get dish when a given order contains a given dishId.
@@ -174,16 +187,11 @@ public interface OrderService {
 	int getTotalCancelledOrClosedOrders();
 
 	/**
-	 * Finds all open orders.
+	 * Returns the cancelled or closed order with id.
 	 *
-	 * @return A collection of said orders in ascending order by open timestamp.
+	 * @param id the id.
 	 */
-	Collection<Order> getActiveOrders(int maxResults, int offset);
-
-	/**
-	 * @return count of open orders.
-	 */
-	int getTotalActiveOrders();
+	Order findCancelledOrClosedOrderById(long id);
 
 	/**
 	 * Finds all orders from the last given amount of minutes.
@@ -198,4 +206,6 @@ public interface OrderService {
 	 * @return A collection of said dishes.
 	 */
 	Map getAllUndoneDishesFromAllActiveOrders();
+
+	void setDoneDishAmount(Order cancelledOrClosedOrder, Dish currentDish, int newAmount);
 }
