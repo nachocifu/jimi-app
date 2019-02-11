@@ -95,6 +95,9 @@ missing constraints, foreign keys and else.
 
 ```
 alter table dishes add discontinued boolean default false not null;
+alter table order_undonedishes add amount integer not null default 0;
+alter table order_undonedishes add orderedat timestamp;
+drop table orders_items;
 ```
 
 
@@ -103,8 +106,8 @@ For development go to /reactUI/src/conf.js and setup the location of the develop
 it will be `http://localhost:8080`. Then start tomcat and get working :)
 
 ## Production
-For production build go to /reactUI/src/conf.js and set all API data to blank. 
-We will serve the api on the same domain as the page.
+For production build go to /reactUI/src/conf.js and set all API data to production API. 
+On package.json set the field homepage to the url where SPA will be hosted.
 Navigate to /reactUI and run `npm run build`. Then copy recursively all content from /reactUI/* to /webapp/src/main/webapp.
 Finally on the root folder of the project package the application with `mvn package`.
 The final war will be in `/webapp/target/webapp.war`
