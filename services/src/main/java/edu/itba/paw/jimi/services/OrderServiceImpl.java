@@ -115,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
 
 			orderDao.update(order);
 
-			LOGGER.info("Updated order (remove dish amount): {}", order);
+			LOGGER.info("Updated order (remove undone dish amount): {}", order);
 		}
 
 		if (order.getDishes().containsKey(dish))
@@ -130,6 +130,25 @@ public class OrderServiceImpl implements OrderService {
 			return removeUndoneDish(order, dish, order.getDishes().get(dish).getAmount());
 		}
 		return 0;
+	}
+
+	@Override
+	public int removeDoneDish(Order order, Dish dish, int amount) {
+		if (order.getDoneDishes().containsKey(dish) && order.getDoneDishes().get(dish) != 0) {
+			//Here logic to remove done dishes.
+			int previousAmount = order.getDoneDishes().get(dish);
+			order.setDoneDish(dish, previousAmount - amount);
+			updateTotal(order);
+
+			// Update dish stock
+			dishService.setStock(dish, dish.getStock() + amount);
+
+			orderDao.update(order);
+
+			LOGGER.info("Updated order (remove done dish amount): {}", order);
+		}
+
+		return order.getDoneDishes().getOrDefault(dish, 0);
 	}
 
 	@Override
@@ -283,4 +302,26 @@ public class OrderServiceImpl implements OrderService {
 		return orderDao.getAllUndoneDishesFromAllActiveOrders();
 	}
 
+	@Override
+	public void setDoneDishAmount(Order cancelledOrClosedOrder, Dish currentDish, int newAmount) {
+		final int currentAmount = cancelledOrClosedOrder.getDishes().get(currentDish).getAmount();
+		if (currentAmount < newAmount) {
+			addDoneDishes(cancelledOrClosedOrder, currentDish, newAmount - currentAmount);
+		} else if (currentAmount > newAmount) {
+			removeDoneDish(cancelledOrClosedOrder, currentDish, currentAmount - newAmount);
+		}
+	}
+
+	/**
+	 * Updates the total value of the object. Does not touch the DB!
+	 *
+	 * @param order The order to update.
+	 */
+	private void updateTotal(Order order) {
+		float total = 0f;
+		for (Map.Entry<Dish, DishData> d : order.getDishes().entrySet())
+			total += d.getKey().getPrice() * d.getValue().getAmount();
+
+		order.setTotal(total);
+	}
 }

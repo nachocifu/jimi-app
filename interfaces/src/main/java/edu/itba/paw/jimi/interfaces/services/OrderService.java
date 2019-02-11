@@ -73,6 +73,8 @@ public interface OrderService {
 	 */
 	int removeAllUndoneDish(Order order, Dish dish);
 
+	int removeDoneDish(Order order, Dish dish, int amount);
+
 	/**
 	 * Updates an undone dish amount in an order.
 	 *
@@ -204,4 +206,6 @@ public interface OrderService {
 	 * @return A collection of said dishes.
 	 */
 	Map getAllUndoneDishesFromAllActiveOrders();
+
+	void setDoneDishAmount(Order cancelledOrClosedOrder, Dish currentDish, int newAmount);
 }

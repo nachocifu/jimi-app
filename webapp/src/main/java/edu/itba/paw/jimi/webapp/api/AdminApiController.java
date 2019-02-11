@@ -10,6 +10,7 @@ import edu.itba.paw.jimi.webapp.dto.OrderDTO;
 import edu.itba.paw.jimi.webapp.dto.OrderListDTO;
 import edu.itba.paw.jimi.webapp.dto.StatsDTO;
 import edu.itba.paw.jimi.webapp.dto.form.table.TableAddDishForm;
+import edu.itba.paw.jimi.webapp.dto.form.table.TableDishAmountForm;
 import edu.itba.paw.jimi.webapp.utils.PaginationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,36 +163,42 @@ public class AdminApiController extends BaseApiController {
 		return Response.ok(billDTO).build();
 	}
 
+	@POST
+	@Path("/bills/{id}/dishes/{dishId}/amount")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response setDoneDishAmount(@PathParam("id") final long id,
+	                                  @PathParam("dishId") final int dishId,
+	                                  @Valid final TableDishAmountForm tableDishAmountForm) {
+		if (tableDishAmountForm == null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
-//	@POST
-//	@Path("/bills/{id}/dishes/{dishId}/amount")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public Response setDishAmount(@PathParam("id") final long id,
-//	                              @PathParam("dishId") final int dishId,
-//	                              @Valid final TableDishAmountForm tableDishAmountForm) {
-//		if (tableDishAmountForm == null)
-//			return Response.status(Response.Status.BAD_REQUEST).build();
-//
-//		final Order cancelledOrClosedOrder = orderService.findCancelledOrClosedOrderById(id);
-//		if (cancelledOrClosedOrder == null) {
-//			LOGGER.warn("Closed or cancelled order with id {} not found", id);
-//			return Response.status(Response.Status.NOT_FOUND)
-//					.entity(errorMessageToJSON(messageSource.getMessage("order.error.closed.cancelled.not.found.body", null, LocaleContextHolder.getLocale())))
-//					.build();
-//		}
-//
-//		final Dish currentDish = orderService.getDishById(cancelledOrClosedOrder, dishId);
-//		if (currentDish == null) {
-//			LOGGER.warn("From order with id {}, dish id {} not found", id, dishId);
-//			return Response
-//					.status(Response.Status.NOT_FOUND)
-//					.entity(errorMessageToJSON(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale())))
-//					.build();
-//		}
-//
-//		final int newAmount = tableDishAmountForm.getAmount();
-//		orderService.setDishAmount(cancelledOrClosedOrder, currentDish, newAmount);
-//		LOGGER.info("Set new dish amount {} with id {} from table with id {}", newAmount, dishId, id);
-//		return Response.ok(new TableDTO(tableService.findById(id), buildBaseURI(uriInfo))).build();
-//	}
+		final Order cancelledOrClosedOrder = orderService.findCancelledOrClosedOrderById(id);
+		if (cancelledOrClosedOrder == null) {
+			LOGGER.warn("Closed or cancelled order with id {} not found", id);
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("order.error.closed.cancelled.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
+		}
+
+		final Dish currentDish = orderService.getDishById(cancelledOrClosedOrder, dishId);
+		if (currentDish == null) {
+			LOGGER.warn("From order with id {}, dish id {} not found", id, dishId);
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("dish.error.404.body", null, LocaleContextHolder.getLocale())))
+					.build();
+		}
+
+		final int newAmount = tableDishAmountForm.getAmount();
+		orderService.setDoneDishAmount(cancelledOrClosedOrder, currentDish, newAmount);
+		final Order updatedCancelledOrClosedOrder = orderService.findCancelledOrClosedOrderById(id); // To see dish stock updates
+
+		LOGGER.info("Set new done dish amount {} with id {} from bill with id {}", newAmount, dishId, id);
+		URI billsURI = URI.create(String.valueOf(uriInfo.getBaseUri()) +
+				UriBuilder.fromResource(AdminApiController.class).build() +
+				"/bills" +
+				"/");
+		final OrderDTO billDTO = new OrderDTO(updatedCancelledOrClosedOrder, billsURI);
+		return Response.ok(billDTO).build();
+	}
 }
