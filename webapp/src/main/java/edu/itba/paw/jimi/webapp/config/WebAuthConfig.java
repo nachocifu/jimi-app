@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,7 +56,15 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.and().authorizeRequests()
 				.antMatchers("/api/dishes/**").hasRole("ADMIN")
 				.antMatchers("/api/admin/**").hasRole("ADMIN")
-				.antMatchers("/api/tables/**").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.GET, "/api/tables/**").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, "/api/tables").hasRole("ADMIN")
+				.antMatchers(HttpMethod.POST, "/api/tables/{id:[\\d+]}/name").hasAnyRole("ADMIN")
+				.antMatchers(HttpMethod.POST, "/api/tables/{id:[\\d+]}/undoneDishes").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, "/api/tables/{id:[\\d+]}/diners").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, "/api/tables/{id:[\\d+]}/status").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, "/api/tables/{id:[\\d+]}/undoneDishes/{dishId:[\\d+]}/amount").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.DELETE, "/api/tables/{id:[\\d+]}/undoneDishes/{dishId:[\\d+]}").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.DELETE, "/api/tables/{id:[\\d+]}").hasAnyRole("ADMIN")
 				.antMatchers("/api/users/**").hasRole("ADMIN")
 				.antMatchers("/api/kitchen/**").authenticated()
 				.antMatchers("/api/**").authenticated()
