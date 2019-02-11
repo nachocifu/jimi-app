@@ -1,12 +1,9 @@
 package edu.itba.paw.jimi.webapp.api;
 
-import edu.itba.paw.jimi.interfaces.services.DishService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Table;
 import edu.itba.paw.jimi.webapp.dto.KitchenDTO;
 import edu.itba.paw.jimi.webapp.utils.PaginationHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -22,13 +19,8 @@ import java.util.LinkedList;
 @Path("kitchen")
 public class KitchenApiController extends BaseApiController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(KitchenApiController.class);
-
 	private static final int DEFAULT_PAGE_SIZE = 10;
 	private static final int MAX_PAGE_SIZE = 20;
-
-	@Autowired
-	private DishService dishService;
 
 	@Autowired
 	private TableService tableService;
