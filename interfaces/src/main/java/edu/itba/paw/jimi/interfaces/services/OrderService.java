@@ -42,6 +42,8 @@ public interface OrderService {
 	 */
 	int addUndoneDishes(Order order, Dish dish, int amount);
 
+	int addDoneDishes(Order order, Dish dish, int amount);
+
 	/**
 	 * Removes a dish from the order, only one. If there was 2 of passed dish, 1 will remain.
 	 * To remove all dishes of the same kind see removeAllUndoneDish.
@@ -97,6 +99,15 @@ public interface OrderService {
 	 * @return true if order contains undone dish with dishId.
 	 */
 	Dish getUndoneDishById(Order order, int dishId);
+
+	/**
+	 * Get dish when a given order contains a given dishId.
+	 *
+	 * @param order  The order in which to operate.
+	 * @param dishId The dish id to look for.
+	 * @return true if order contains dish with dishId.
+	 */
+	Dish getDishById(Order order, int dishId);
 
 	/**
 	 * Sets the timestamp for openedAt and changes the status open.

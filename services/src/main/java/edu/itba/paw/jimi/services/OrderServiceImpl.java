@@ -75,6 +75,29 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public int addDoneDishes(Order order, Dish dish, int amount) {
+		if (amount > dish.getStock())
+			throw new StockHandlingException();
+
+		if (dish.isDiscontinued())
+			throw new AddingDiscontinuedDishException();
+
+		int previousAmount = order.getDoneDishes().getOrDefault(dish, 0);
+
+		order.setDoneDish(dish, previousAmount + amount);
+		updateTotal(order);
+
+		LOGGER.info("Updated order (add done dish): {}", order);
+
+		// Update dish stock
+		dishService.setStock(dish, dish.getStock() - amount);
+
+		orderDao.update(order);
+
+		return order.getDoneDishes().getOrDefault(dish, 0);
+	}
+
+	@Override
 	public int removeOneUndoneDish(Order order, Dish dish) {
 		return removeUndoneDish(order, dish, 1);
 	}
@@ -127,6 +150,14 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Dish getUndoneDishById(Order order, int dishId) {
 		return orderDao.findById(order.getId()).getUnDoneDishes().keySet().stream()
+				.filter(d -> d.getId() == dishId)
+				.findFirst()
+				.orElse(null);
+	}
+
+	@Override
+	public Dish getDishById(Order order, int dishId) {
+		return orderDao.findById(order.getId()).getDishes().keySet().stream()
 				.filter(d -> d.getId() == dishId)
 				.findFirst()
 				.orElse(null);
