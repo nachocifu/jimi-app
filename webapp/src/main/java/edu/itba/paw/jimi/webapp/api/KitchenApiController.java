@@ -48,7 +48,7 @@ public class KitchenApiController extends BaseApiController {
 		Collection<Table> busyTables = tableService.getBusyTablesWithOrdersOrderedByOrderedAt(pageSize, (page - 1) * pageSize);
 		KitchenDTO kitchen = new KitchenDTO(new LinkedList<>(busyTables), buildBaseURI(uriInfo));
 		return Response.ok(kitchen)
-				.links(paginationHelper.getPaginationLinks(uriInfo, page, dishService.getTotalDishes()))
+				.links(paginationHelper.getPaginationLinks(uriInfo, page, busyTables.size()))
 				.build();
 	}
 }
