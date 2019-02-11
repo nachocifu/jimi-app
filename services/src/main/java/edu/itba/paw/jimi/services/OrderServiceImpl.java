@@ -18,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.YearMonth;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -172,6 +169,12 @@ public class OrderServiceImpl implements OrderService {
 
 		order.setStatus(OrderStatus.CLOSED);
 		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+
+		if (!order.getUnDoneDishes().isEmpty()) {
+			Set<Dish> dishesToRemove = order.getUnDoneDishes().keySet();
+			dishesToRemove.forEach(d -> removeAllUndoneDish(order, d));
+		}
+
 		orderDao.update(order);
 
 		LOGGER.info("Closed order {}", order);
@@ -184,6 +187,12 @@ public class OrderServiceImpl implements OrderService {
 
 		order.setStatus(OrderStatus.CANCELED);
 		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+
+		if (!order.getUnDoneDishes().isEmpty()) {
+			Set<Dish> dishesToRemove = order.getUnDoneDishes().keySet();
+			dishesToRemove.forEach(d -> removeAllUndoneDish(order, d));
+		}
+
 		orderDao.update(order);
 
 		LOGGER.info("Canceled order {}", order);
