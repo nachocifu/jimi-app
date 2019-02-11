@@ -35,6 +35,9 @@ public class DishServiceImpl implements DishService {
 	@Override
 	public Dish create(String name, float price) {
 		LOGGER.info("Create dish {} {}", name, price);
+		if (price >= MAX_PRICE) {
+			throw new MaxPriceException();
+		}
 		return dishDao.create(name, price, 0);
 	}
 

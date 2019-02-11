@@ -63,8 +63,10 @@ public class TableApiController extends BaseApiController {
 	                           @QueryParam("pageSize") @DefaultValue("" + DEFAULT_PAGE_SIZE) Integer pageSize) {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
+		int maxPage = paginationHelper.maxPage(tableService.getTotalTables(), pageSize);
 		final Collection<Table> allTables = tableService.findAll(pageSize, (page - 1) * pageSize);
 		return Response.ok(new TableListDTO(new LinkedList<>(allTables), buildBaseURI(uriInfo)))
+				.links(paginationHelper.getPaginationLinks(uriInfo, page, maxPage))
 				.build();
 	}
 
@@ -91,7 +93,6 @@ public class TableApiController extends BaseApiController {
 	@Path("/{id}")
 	public Response getTableById(@PathParam("id") final long id) {
 		final Table table = tableService.findById(id);
-
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
 			return Response.status(Response.Status.NOT_FOUND)
@@ -106,7 +107,6 @@ public class TableApiController extends BaseApiController {
 	@Path("/{id}")
 	public Response deleteTable(@PathParam("id") final long id) {
 		final Table table = tableService.findById(id);
-
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
 			return Response.status(Response.Status.NOT_FOUND)
@@ -115,7 +115,7 @@ public class TableApiController extends BaseApiController {
 		}
 
 		if (table.getStatus() != TableStatus.FREE) {
-			Response
+			return Response
 					.status(Response.Status.CONFLICT)
 					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.free.body", null, LocaleContextHolder.getLocale())))
 					.build();
@@ -151,6 +151,7 @@ public class TableApiController extends BaseApiController {
 		}
 
 		tableService.setName(table, tableForm.getName());
+		LOGGER.info("Renamed table with id {}", id);
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
 	}
 
@@ -172,6 +173,7 @@ public class TableApiController extends BaseApiController {
 		}
 
 		tableService.changeStatus(table, tableStatusForm.getStatus());
+		LOGGER.info("Changed table status with id {} to {}", id, tableStatusForm.getStatus());
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
 	}
 
@@ -196,20 +198,20 @@ public class TableApiController extends BaseApiController {
 		if (!order.getStatus().equals(OrderStatus.OPEN) && !userAuthenticationService.currentUserHasRole(User.ROLE_ADMIN)) {
 			return Response
 					.status(Response.Status.UNAUTHORIZED)
-					.entity(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale())))
 					.build();
-
 		}
 
 		orderService.setDiners(order, tableDinersForm.getDiners());
+		LOGGER.info("Changed table diners with id {} to {}", id, tableDinersForm.getDiners());
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
 	}
 
 	@POST
-	@Path("/{id}/dishes")
+	@Path("/{id}/undoneDishes")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addDish(@PathParam("id") final long id,
-	                        @Valid final TableAddDishForm tableAddDishForm) {
+	public Response addUndoneDish(@PathParam("id") final long id,
+	                              @Valid final TableAddDishForm tableAddDishForm) {
 		if (tableAddDishForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
@@ -231,7 +233,7 @@ public class TableApiController extends BaseApiController {
 					.build();
 		}
 
-		if (orderService.containsDish(table.getOrder(), dish.getId())) {
+		if (orderService.containsUndoneDish(table.getOrder(), dish.getId())) {
 			LOGGER.warn("From table with id {}, dish id {} already exists", id, dish.getId());
 			return Response
 					.status(Response.Status.CONFLICT)
@@ -239,17 +241,24 @@ public class TableApiController extends BaseApiController {
 					.build();
 		}
 
-		final Order order = table.getOrder();
-		orderService.addDishes(order, dish, tableAddDishForm.getAmount());
+		if (!table.getOrder().getStatus().equals(OrderStatus.OPEN) && !userAuthenticationService.currentUserHasRole(User.ROLE_ADMIN)) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity(errorMessageToJSON(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale())))
+					.build();
+		}
+
+		orderService.addUndoneDishes(table.getOrder(), dish, tableAddDishForm.getAmount());
+		LOGGER.info("Added undone dish {} to table with id {}", dish.getId(), id);
 		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
 	}
 
 	@POST
-	@Path("/{id}/dishes/{dishId}/amount")
+	@Path("/{id}/undoneDishes/{dishId}/amount")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response setDishAmount(@PathParam("id") final long id,
-	                              @PathParam("dishId") final int dishId,
-	                              @Valid final TableDishAmountForm tableDishAmountForm) {
+	public Response setUndoneDishAmount(@PathParam("id") final long id,
+	                                    @PathParam("dishId") final int dishId,
+	                                    @Valid final TableDishAmountForm tableDishAmountForm) {
 		if (tableDishAmountForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
@@ -262,62 +271,34 @@ public class TableApiController extends BaseApiController {
 					.build();
 		}
 
-		if (!orderService.containsDish(table.getOrder(), dishId)) {
+		final Order order = table.getOrder();
+		final Dish currentUndoneDish = orderService.getUndoneDishById(order, dishId);
+		if (currentUndoneDish == null) {
 			LOGGER.warn("From table with id {}, dish id {} not found", id, dishId);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(errorMessageToJSON(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale())))
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.undone.dish.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
-		final Order order = table.getOrder();
 		if (!order.getStatus().equals(OrderStatus.OPEN) && !userAuthenticationService.currentUserHasRole(User.ROLE_ADMIN)) {
 			return Response
 					.status(Response.Status.UNAUTHORIZED)
-					.entity(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale()))
+					.entity(errorMessageToJSON(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale())))
 					.build();
-
 		}
 
-		final Dish currentDish = orderService.getDishById(order, dishId);
 		final int newAmount = tableDishAmountForm.getAmount();
-		orderService.setNewUndoneDishAmount(order, currentDish, newAmount);
-		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
+		orderService.setNewUndoneDishAmount(order, currentUndoneDish, newAmount);
+		LOGGER.info("Set new undone dish amount {} with id {} from table with id {}", newAmount, dishId, id);
+		return Response.ok(new TableDTO(tableService.findById(id), buildBaseURI(uriInfo))).build();
 	}
 
 	@POST
-	@Path("/{id}/undonedishes/{dishId}")
+	@Path("/{id}/undoneDishes/{dishId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response setDishAsDone(@PathParam("id") final long id,
-	                              @PathParam("dishId") final int dishId) {
-		final Table table = tableService.findById(id);
-		if (table == null) {
-			LOGGER.warn("Table with id {} not found", id);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale()))
-					.build();
-		}
-
-		if (!orderService.containsDish(table.getOrder(), dishId)) {
-			LOGGER.warn("From table with id {}, dish id {} not found", id, dishId);
-			return Response
-					.status(Response.Status.NOT_FOUND)
-					.entity(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale()))
-					.build();
-		}
-
-		final Order order = table.getOrder();
-		final Dish currentDish = orderService.getDishById(order, dishId);
-		orderService.setDishAsDone(order, currentDish);
-		return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
-	}
-
-	@DELETE
-	@Path("/{id}/dishes/{dishId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeDish(@PathParam("id") final long id,
-	                           @PathParam("dishId") final int dishId) {
+	public Response setUndoneDishAsDone(@PathParam("id") final long id,
+	                                    @PathParam("dishId") final int dishId) {
 		final Table table = tableService.findById(id);
 		if (table == null) {
 			LOGGER.warn("Table with id {} not found", id);
@@ -327,16 +308,61 @@ public class TableApiController extends BaseApiController {
 					.build();
 		}
 
-		if (!orderService.containsDish(table.getOrder(), dishId)) {
+		final Order order = table.getOrder();
+		final Dish currentUndoneDish = orderService.getUndoneDishById(order, dishId);
+		if (currentUndoneDish == null) {
 			LOGGER.warn("From table with id {}, dish id {} not found", id, dishId);
 			return Response
 					.status(Response.Status.NOT_FOUND)
-					.entity(errorMessageToJSON(messageSource.getMessage("table.error.dish.not.found.body", null, LocaleContextHolder.getLocale())))
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.undone.dish.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
+		}
+
+		if (!order.getStatus().equals(OrderStatus.OPEN) && !userAuthenticationService.currentUserHasRole(User.ROLE_ADMIN)) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity(errorMessageToJSON(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale())))
+					.build();
+		}
+
+		orderService.setDishAsDone(order, currentUndoneDish);
+		LOGGER.info("Set undone dish with id {} from table with id {}", dishId, id);
+		return Response.ok(new TableDTO(tableService.findById(id), buildBaseURI(uriInfo))).build();
+	}
+
+	@DELETE
+	@Path("/{id}/undoneDishes/{dishId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response removeUndoneDish(@PathParam("id") final long id,
+	                                 @PathParam("dishId") final int dishId) {
+		final Table table = tableService.findById(id);
+		if (table == null) {
+			LOGGER.warn("Table with id {} not found", id);
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 
 		final Order order = table.getOrder();
-		orderService.removeAllUndoneDish(order, orderService.getDishById(order, dishId));
+		final Dish currentUndoneDish = orderService.getUndoneDishById(order, dishId);
+		if (currentUndoneDish == null) {
+			LOGGER.warn("From table with id {}, dish id {} not found", id, dishId);
+			return Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("table.error.undone.dish.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
+		}
+
+		if (!order.getStatus().equals(OrderStatus.OPEN) && !userAuthenticationService.currentUserHasRole(User.ROLE_ADMIN)) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity(errorMessageToJSON(messageSource.getMessage("user.not.authorized", null, LocaleContextHolder.getLocale())))
+					.build();
+		}
+
+		orderService.removeAllUndoneDish(order, currentUndoneDish);
+		LOGGER.info("Removed all undone dish with id {} from table with id {}", dishId, id);
 		return Response.noContent().build();
 	}
 
@@ -351,6 +377,8 @@ public class TableApiController extends BaseApiController {
 					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
-		return Response.ok(new OrderDTO(table.getOrder(), buildBaseURI(uriInfo))).build();
+		final OrderDTO orderDTO = new OrderDTO(table.getOrder(), buildBaseURI(uriInfo));
+		orderDTO.setUri(URI.create(orderDTO.getUri() + "/order"));
+		return Response.ok(orderDTO).build();
 	}
 }

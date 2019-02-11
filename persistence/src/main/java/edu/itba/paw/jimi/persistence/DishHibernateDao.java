@@ -55,8 +55,9 @@ public class DishHibernateDao implements DishDao {
 
 	@Override
 	public int getTotalDishes() {
-		Long query = em.createQuery("select count(*) from Dish", Long.class).getSingleResult();
-		return query.intValue();
+		return em.createQuery("select count(*) from Dish", Long.class)
+				.getSingleResult()
+				.intValue();
 	}
 
 	@Override

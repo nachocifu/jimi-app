@@ -19,17 +19,17 @@ public class PaginationHelper implements PaginationService {
 	private static final String LAST = "last";
 	private static final String PAGE = "page";
 
-	public Link[] getPaginationLinks(UriInfo requestUriInfo, int page, int lastPage) {
+	public Link[] getPaginationLinks(UriInfo requestUriInfo, int page, int maxPage) {
 		UriBuilder uriBuilder = requestUriInfo.getRequestUriBuilder();
 
 		List<Link> links = new ArrayList<>();
 		links.add(Link.fromUriBuilder(uriBuilder.replaceQueryParam(PAGE, 1)).rel(FIRST).build());
-		links.add(Link.fromUriBuilder(uriBuilder.replaceQueryParam(PAGE, lastPage)).rel(LAST).build());
+		links.add(Link.fromUriBuilder(uriBuilder.replaceQueryParam(PAGE, maxPage)).rel(LAST).build());
 
 		if (page > 1)
 			links.add(Link.fromUriBuilder(uriBuilder.replaceQueryParam(PAGE, page - 1)).rel(PREV).build());
 
-		if (page < lastPage)
+		if (page < maxPage)
 			links.add(Link.fromUriBuilder(uriBuilder.replaceQueryParam(PAGE, page + 1)).rel(NEXT).build());
 
 		return links.toArray(new Link[0]);
@@ -41,5 +41,9 @@ public class PaginationHelper implements PaginationService {
 
 	public int getPageSizeAsDefaultSizeIfOutOfRange(int pageSize, int defaultSize, int maxSize) {
 		return (pageSize < 1 || pageSize > maxSize) ? defaultSize : pageSize;
+	}
+
+	public int maxPage(final int total, final int pageSize) {
+		return (int) Math.ceil((float) total / pageSize);
 	}
 }
