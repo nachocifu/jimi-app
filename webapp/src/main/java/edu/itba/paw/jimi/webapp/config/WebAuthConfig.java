@@ -1,5 +1,6 @@
 package edu.itba.paw.jimi.webapp.config;
 
+import edu.itba.paw.jimi.webapp.auth.CorsFilter;
 import edu.itba.paw.jimi.webapp.auth.StatelessAuthenticationFilter;
 import edu.itba.paw.jimi.webapp.auth.StatelessLoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -47,10 +49,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private StatelessAuthenticationFilter statelessAuthenticationFilter;
 
+	@Autowired
+	private CorsFilter corsFilter;
+
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.userDetailsService(userDetailsService).sessionManagement()
 				.and()
+				.addFilterBefore(corsFilter, ChannelProcessingFilter.class)
 				.csrf().disable()
 				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
 				.and().authorizeRequests()
