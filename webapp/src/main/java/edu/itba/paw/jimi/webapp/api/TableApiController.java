@@ -376,6 +376,8 @@ public class TableApiController extends BaseApiController {
 					.entity(errorMessageToJSON(messageSource.getMessage("table.error.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
-		return Response.ok(new OrderDTO(table.getOrder(), buildBaseURI(uriInfo))).build();
+		final OrderDTO orderDTO = new OrderDTO(table.getOrder(), buildBaseURI(uriInfo));
+		orderDTO.setUri(URI.create(orderDTO.getUri() + "/order"));
+		return Response.ok(orderDTO).build();
 	}
 }
