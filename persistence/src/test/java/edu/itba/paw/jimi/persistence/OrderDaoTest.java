@@ -384,4 +384,18 @@ public class OrderDaoTest {
 	public void testGetAllUndoneDishesFromAllActiveOrders() {
 		assertEquals(expectedUndoneDishes, orderDao.getAllUndoneDishesFromAllActiveOrders());
 	}
+
+	@Test
+	public void testFindCancelledOrderById() {
+		Order cancelledOrder = orderDao.create(OrderStatus.CANCELED, OPENEDAT, CLOSEDAT, 2, 2);
+		Order actualCancelledOrder = orderDao.findCancelledOrClosedOrderById(cancelledOrder.getId());
+		assertEquals(cancelledOrder, actualCancelledOrder);
+	}
+
+	@Test
+	public void testFindClosedOrderById() {
+		Order closedOrder = orderDao.create(OrderStatus.CLOSED, OPENEDAT, CLOSEDAT, 2, 2);
+		Order actualClosedOrder = orderDao.findCancelledOrClosedOrderById(closedOrder.getId());
+		assertEquals(closedOrder, actualClosedOrder);
+	}
 }

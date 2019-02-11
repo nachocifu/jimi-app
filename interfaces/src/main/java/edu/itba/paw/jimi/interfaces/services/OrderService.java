@@ -174,6 +174,13 @@ public interface OrderService {
 	int getTotalCancelledOrClosedOrders();
 
 	/**
+	 * Returns the cancelled or closed order with id.
+	 *
+	 * @param id the id.
+	 */
+	Order findCancelledOrClosedOrderById(long id);
+
+	/**
 	 * Finds all orders from the last given amount of minutes.
 	 *
 	 * @return A collection of said orders.

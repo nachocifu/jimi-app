@@ -58,12 +58,12 @@ public class AdminApiController extends BaseApiController {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
 		int maxPage = paginationHelper.maxPage(orderService.getTotalCancelledOrClosedOrders(), pageSize);
-		final Collection<Order> closedOrders = orderService.findCancelledOrClosedOrders(pageSize, (page - 1) * pageSize);
+		final Collection<Order> cancelledOrClosedOrders = orderService.findCancelledOrClosedOrders(pageSize, (page - 1) * pageSize);
 		URI billsURI = URI.create(String.valueOf(uriInfo.getBaseUri()) +
 				UriBuilder.fromResource(AdminApiController.class).build() +
 				"/bills" +
 				"/");
-		final OrderListDTO billsDTO = new OrderListDTO(new LinkedList<>(closedOrders), billsURI);
+		final OrderListDTO billsDTO = new OrderListDTO(new LinkedList<>(cancelledOrClosedOrders), billsURI);
 		return Response.ok(billsDTO)
 				.links(paginationHelper.getPaginationLinks(uriInfo, page, maxPage))
 				.build();
@@ -73,18 +73,18 @@ public class AdminApiController extends BaseApiController {
 	@Path("/bills/{id}")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	public Response getBillById(@PathParam("id") final long id) {
-		final Order bill = orderService.findById(id);
-		if (bill == null) {
-			LOGGER.warn("Order with id {} not found", id);
+		final Order cancelledOrClosedOrder = orderService.findCancelledOrClosedOrderById(id);
+		if (cancelledOrClosedOrder == null) {
+			LOGGER.warn("Closed or cancelled order with id {} not found", id);
 			return Response.status(Response.Status.NOT_FOUND)
-					.entity(errorMessageToJSON(messageSource.getMessage("order.error.not.found.body", null, LocaleContextHolder.getLocale())))
+					.entity(errorMessageToJSON(messageSource.getMessage("order.error.closed.cancelled.not.found.body", null, LocaleContextHolder.getLocale())))
 					.build();
 		}
 		URI billsURI = URI.create(String.valueOf(uriInfo.getBaseUri()) +
 				UriBuilder.fromResource(AdminApiController.class).build() +
 				"/bills" +
 				"/");
-		final OrderDTO billDTO = new OrderDTO(bill, billsURI);
+		final OrderDTO billDTO = new OrderDTO(cancelledOrClosedOrder, billsURI);
 		return Response.ok(billDTO).build();
 	}
 

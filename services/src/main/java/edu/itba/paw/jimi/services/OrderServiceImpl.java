@@ -35,19 +35,6 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private DishService dishService;
 
-	/**
-	 * Updates the total value of the object. Does not touch the DB!
-	 *
-	 * @param order The order to update.
-	 */
-	private void updateTotal(Order order) {
-		float total = 0f;
-		for (Map.Entry<Dish, DishData> d : order.getDishes().entrySet())
-			total += d.getKey().getPrice() * d.getValue().getAmount();
-
-		order.setTotal(total);
-	}
-
 	@Override
 	public Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners) {
 		LOGGER.info("Create order: {} | {} | {} | {}", status, openedAt, closedAt, diners);
@@ -239,6 +226,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int getTotalCancelledOrClosedOrders() {
 		return orderDao.getTotalCancelledOrClosedOrders();
+	}
+
+	@Override
+	public Order findCancelledOrClosedOrderById(long id) {
+		return orderDao.findCancelledOrClosedOrderById(id);
 	}
 
 	@Override

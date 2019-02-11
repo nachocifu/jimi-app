@@ -60,6 +60,13 @@ public interface OrderDao {
 	int getTotalCancelledOrClosedOrders();
 
 	/**
+	 * Returns the cancelled or closed order with id.
+	 *
+	 * @param id the id.
+	 */
+	Order findCancelledOrClosedOrderById(long id);
+
+	/**
 	 * Find all active orders.
 	 *
 	 * @return List of said orders.
