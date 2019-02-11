@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Base64;
@@ -43,6 +44,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 	private StatelessLoginSuccessHandler statelessLoginSuccessHandler;
 
 	@Autowired
+	private AuthenticationFailureHandler statelessLoginFailureHandler;
+
+	@Autowired
 	private StatelessAuthenticationFilter statelessAuthenticationFilter;
 
 	@Autowired
@@ -58,7 +62,15 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.and().authorizeRequests()
 				.antMatchers("/api/dishes/**").hasRole("ADMIN")
 				.antMatchers("/api/admin/**").hasRole("ADMIN")
-				.antMatchers("/api/tables/**").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.GET, "/api/tables/**").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, "/api/tables").hasRole("ADMIN")
+				.antMatchers(HttpMethod.POST, "/api/tables/{id:[\\d+]}/name").hasAnyRole("ADMIN")
+				.antMatchers(HttpMethod.POST, "/api/tables/{id:[\\d+]}/undoneDishes").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, "/api/tables/{id:[\\d+]}/diners").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, "/api/tables/{id:[\\d+]}/status").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.POST, "/api/tables/{id:[\\d+]}/undoneDishes/{dishId:[\\d+]}/amount").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.DELETE, "/api/tables/{id:[\\d+]}/undoneDishes/{dishId:[\\d+]}").hasAnyRole("ADMIN", "USER")
+				.antMatchers(HttpMethod.DELETE, "/api/tables/{id:[\\d+]}").hasAnyRole("ADMIN")
 				.antMatchers("/api/users/**").hasRole("ADMIN")
 				.antMatchers("/api/kitchen/**").authenticated()
 				.antMatchers("/api/**").authenticated()
@@ -68,14 +80,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.formLogin().usernameParameter("username").passwordParameter("password").loginProcessingUrl("/api/login")
 				.successHandler(statelessLoginSuccessHandler)
-				.failureHandler(new SimpleUrlAuthenticationFailureHandler())
+				.failureHandler(statelessLoginFailureHandler)
 				.and()
 				.addFilterBefore(statelessAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override
 	public void configure(final WebSecurity web) throws Exception {
-		web.ignoring().antMatchers( "/resources/css/**", "/resources/js/**", "/resources/img/**", "/resources/plugins/**", "/favicon.ico", "/error/403");
+		web.ignoring().antMatchers("/resources/css/**", "/resources/js/**", "/resources/img/**", "/resources/plugins/**", "/favicon.ico", "/error/403");
 	}
 
 	@Bean

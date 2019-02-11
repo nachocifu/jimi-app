@@ -84,6 +84,16 @@ public class OrderHibernateDao implements OrderDao {
 	}
 
 	@Override
+	public Order findCancelledOrClosedOrderById(long id) {
+		final TypedQuery<Order> query = em.createQuery("FROM Order AS o WHERE o.id = :orderId AND (o.status = :closed OR o.status = :canceled)", Order.class)
+				.setParameter("orderId", id)
+				.setParameter("closed", OrderStatus.CLOSED)
+				.setParameter("canceled", OrderStatus.CANCELED);
+		List<Order> l = query.getResultList();
+		return l.isEmpty() ? null : l.get(0);
+	}
+
+	@Override
 	public int getTotalActiveOrders() {
 		return ((Long) em.createQuery("select count(*) from Order as o where o.status = :opened")
 				.setParameter("opened", OrderStatus.OPEN)
