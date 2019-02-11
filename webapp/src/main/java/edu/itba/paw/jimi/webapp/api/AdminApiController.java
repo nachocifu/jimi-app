@@ -4,17 +4,20 @@ import edu.itba.paw.jimi.interfaces.services.OrderService;
 import edu.itba.paw.jimi.interfaces.services.StatsService;
 import edu.itba.paw.jimi.interfaces.services.TableService;
 import edu.itba.paw.jimi.models.Order;
+import edu.itba.paw.jimi.webapp.dto.OrderDTO;
 import edu.itba.paw.jimi.webapp.dto.OrderListDTO;
 import edu.itba.paw.jimi.webapp.dto.StatsDTO;
 import edu.itba.paw.jimi.webapp.utils.PaginationHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
+import java.net.URI;
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -24,6 +27,8 @@ import java.util.Map;
 @Controller
 public class AdminApiController extends BaseApiController {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdminApiController.class);
+
 	@Autowired
 	private TableService tableService;
 
@@ -32,6 +37,9 @@ public class AdminApiController extends BaseApiController {
 
 	@Autowired
 	private StatsService statsService;
+
+	@Autowired
+	private MessageSource messageSource;
 
 	@Autowired
 	private PaginationHelper paginationHelper;
@@ -50,9 +58,33 @@ public class AdminApiController extends BaseApiController {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
 		final Collection<Order> closedOrders = orderService.findCancelledOrClosedOrders(pageSize, (page - 1) * pageSize);
-		return Response.ok(new OrderListDTO(new LinkedList<>(closedOrders), buildBaseURI(uriInfo)))
+		URI billsURI = URI.create(String.valueOf(uriInfo.getBaseUri()) +
+				UriBuilder.fromResource(AdminApiController.class).build() +
+				"/bills" +
+				"/");
+		final OrderListDTO billsDTO = new OrderListDTO(new LinkedList<>(closedOrders), billsURI);
+		return Response.ok(billsDTO)
 				.links(paginationHelper.getPaginationLinks(uriInfo, page, orderService.getTotalCancelledOrClosedOrders()))
 				.build();
+	}
+
+	@GET
+	@Path("/bills/{id}")
+	@Produces(value = {MediaType.APPLICATION_JSON})
+	public Response getBillById(@PathParam("id") final long id) {
+		final Order bill = orderService.findById(id);
+		if (bill == null) {
+			LOGGER.warn("Order with id {} not found", id);
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("order.error.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
+		}
+		URI billsURI = URI.create(String.valueOf(uriInfo.getBaseUri()) +
+				UriBuilder.fromResource(AdminApiController.class).build() +
+				"/bills" +
+				"/");
+		final OrderDTO billDTO = new OrderDTO(bill, billsURI);
+		return Response.ok(billDTO).build();
 	}
 
 	@GET
