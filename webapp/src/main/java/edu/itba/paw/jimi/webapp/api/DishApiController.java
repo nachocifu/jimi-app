@@ -55,9 +55,10 @@ public class DishApiController extends BaseApiController {
 	                           @QueryParam("pageSize") @DefaultValue("" + DEFAULT_PAGE_SIZE) Integer pageSize) {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
+		int maxPage = paginationHelper.maxPage(dishService.getTotalDishes(), pageSize);
 		final Collection<Dish> allDishes = dishService.findAll(pageSize, (page - 1) * pageSize);
 		return Response.ok(new DishListDTO(new LinkedList<>(allDishes), buildBaseURI(uriInfo)))
-				.links(paginationHelper.getPaginationLinks(uriInfo, page, dishService.getTotalDishes()))
+				.links(paginationHelper.getPaginationLinks(uriInfo, page, maxPage))
 				.build();
 	}
 

@@ -63,9 +63,10 @@ public class TableApiController extends BaseApiController {
 	                           @QueryParam("pageSize") @DefaultValue("" + DEFAULT_PAGE_SIZE) Integer pageSize) {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
+		int maxPage = paginationHelper.maxPage(tableService.getTotalTables(), pageSize);
 		final Collection<Table> allTables = tableService.findAll(pageSize, (page - 1) * pageSize);
 		return Response.ok(new TableListDTO(new LinkedList<>(allTables), buildBaseURI(uriInfo)))
-				.links(paginationHelper.getPaginationLinks(uriInfo, page, tableService.getTotalTables()))
+				.links(paginationHelper.getPaginationLinks(uriInfo, page, maxPage))
 				.build();
 	}
 

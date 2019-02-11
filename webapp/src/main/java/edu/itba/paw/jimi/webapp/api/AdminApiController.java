@@ -57,6 +57,7 @@ public class AdminApiController extends BaseApiController {
 	                          @QueryParam("pageSize") @DefaultValue("" + DEFAULT_PAGE_SIZE) Integer pageSize) {
 		page = paginationHelper.getPageAsOneIfZeroOrLess(page);
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
+		int maxPage = paginationHelper.maxPage(orderService.getTotalCancelledOrClosedOrders(), pageSize);
 		final Collection<Order> closedOrders = orderService.findCancelledOrClosedOrders(pageSize, (page - 1) * pageSize);
 		URI billsURI = URI.create(String.valueOf(uriInfo.getBaseUri()) +
 				UriBuilder.fromResource(AdminApiController.class).build() +
@@ -64,7 +65,7 @@ public class AdminApiController extends BaseApiController {
 				"/");
 		final OrderListDTO billsDTO = new OrderListDTO(new LinkedList<>(closedOrders), billsURI);
 		return Response.ok(billsDTO)
-				.links(paginationHelper.getPaginationLinks(uriInfo, page, orderService.getTotalCancelledOrClosedOrders()))
+				.links(paginationHelper.getPaginationLinks(uriInfo, page, maxPage))
 				.build();
 	}
 
