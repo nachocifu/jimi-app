@@ -95,6 +95,9 @@ missing constraints, foreign keys and else.
 
 ```
 alter table dishes add discontinued boolean default false not null;
+alter table order_undonedishes add amount integer not null default 0;
+alter table order_undonedishes add orderedat timestamp;
+drop table orders_items;
 ```
 
 
