@@ -24,13 +24,13 @@ public interface OrderService {
 	Order create(OrderStatus status, Timestamp openedAt, Timestamp closedAt, int diners);
 
 	/**
-	 * Adds a dish to the order, if it is already there it increments the amount of said dish.
+	 * Adds a dish to the order, only one.
 	 *
 	 * @param order The order in which to operate.
 	 * @param dish  The dish to add.
 	 * @return The resulting amount of passed dish.
 	 */
-	int addDish(Order order, Dish dish);
+	int addOneUndoneDish(Order order, Dish dish);
 
 	/**
 	 * Adds n dishes to the order, if it is already there it increments the amount of said dish.
@@ -40,7 +40,7 @@ public interface OrderService {
 	 * @param amount The amount to add.
 	 * @return The resulting amount of passed dish.
 	 */
-	int addDishes(Order order, Dish dish, int amount);
+	int addUndoneDishes(Order order, Dish dish, int amount);
 
 	/**
 	 * Removes a dish from the order, only one. If there was 2 of passed dish, 1 will remain.
@@ -97,24 +97,6 @@ public interface OrderService {
 	 * @return true if order contains undone dish with dishId.
 	 */
 	Dish getUndoneDishById(Order order, int dishId);
-
-	/**
-	 * Find out of given order contains a given dishId.
-	 *
-	 * @param order  The order in which to operate.
-	 * @param dishId The dish id to look for.
-	 * @return true if order contains dish with dishId.
-	 */
-	boolean containsDish(Order order, int dishId);
-
-	/**
-	 * Get dish when a given order contains a given dishId.
-	 *
-	 * @param order  The order in which to operate.
-	 * @param dishId The dish id to look for.
-	 * @return true if order contains dish with dishId.
-	 */
-	Dish getDishById(Order order, int dishId);
 
 	/**
 	 * Sets the timestamp for openedAt and changes the status open.
@@ -190,18 +172,6 @@ public interface OrderService {
 	 * @return count of cancelled or closed orders.
 	 */
 	int getTotalCancelledOrClosedOrders();
-
-	/**
-	 * Finds all open orders.
-	 *
-	 * @return A collection of said orders in ascending order by open timestamp.
-	 */
-	Collection<Order> getActiveOrders(int maxResults, int offset);
-
-	/**
-	 * @return count of open orders.
-	 */
-	int getTotalActiveOrders();
 
 	/**
 	 * Finds all orders from the last given amount of minutes.

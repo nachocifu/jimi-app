@@ -55,13 +55,13 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public int addDish(Order order, Dish dish) {
+	public int addOneUndoneDish(Order order, Dish dish) {
 		LOGGER.info("Add dish: {} | {}", order, dish);
-		return addDishes(order, dish, 1);
+		return addUndoneDishes(order, dish, 1);
 	}
 
 	@Override
-	public int addDishes(Order order, Dish dish, int amount) {
+	public int addUndoneDishes(Order order, Dish dish, int amount) {
 		if (amount > dish.getStock())
 			throw new StockHandlingException();
 
@@ -74,17 +74,17 @@ public class OrderServiceImpl implements OrderService {
 		else
 			previousAmount = 0;
 
-		order.setDish(dish, previousAmount + amount);
+		order.setUndoneDish(dish, previousAmount + amount);
 		updateTotal(order);
 
-		LOGGER.info("Updated order (add dishes): {}", order);
+		LOGGER.info("Updated order (add undone dishes): {}", order);
 
 		// Update dish stock
 		dishService.setStock(dish, dish.getStock() - amount);
 
 		orderDao.update(order);
 
-		if (order.getDishes().containsKey(dish))
+		if (order.getUnDoneDishes().containsKey(dish))
 			return order.getDishes().get(dish).getAmount();
 		else
 			return 0;
@@ -100,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
 		if (order.getUnDoneDishes().containsKey(dish) && order.getUnDoneDishes().get(dish).getAmount() != 0) {
 			//Here logic to remove undone dishes.
 			int previousAmount = order.getUnDoneDishes().get(dish).getAmount();
-			order.setDish(dish, previousAmount - amount);
+			order.setUndoneDish(dish, previousAmount - amount);
 			updateTotal(order);
 
 			// Update dish stock
@@ -129,7 +129,7 @@ public class OrderServiceImpl implements OrderService {
 	public void setNewUndoneDishAmount(Order order, Dish dish, int newAmount) {
 		final int currentAmount = order.getUnDoneDishes().get(dish).getAmount();
 		if (currentAmount < newAmount) {
-			addDishes(order, dish, newAmount - currentAmount);
+			addUndoneDishes(order, dish, newAmount - currentAmount);
 		} else if (currentAmount > newAmount) {
 			removeUndoneDish(order, dish, currentAmount - newAmount);
 		}
@@ -143,19 +143,6 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Dish getUndoneDishById(Order order, int dishId) {
 		return orderDao.findById(order.getId()).getUnDoneDishes().keySet().stream()
-				.filter(d -> d.getId() == dishId)
-				.findFirst()
-				.orElse(null);
-	}
-
-	@Override
-	public boolean containsDish(Order order, int dishId) {
-		return getDishById(order, dishId) != null;
-	}
-
-	@Override
-	public Dish getDishById(Order order, int dishId) {
-		return orderDao.findById(order.getId()).getDishes().keySet().stream()
 				.filter(d -> d.getId() == dishId)
 				.findFirst()
 				.orElse(null);
@@ -243,7 +230,7 @@ public class OrderServiceImpl implements OrderService {
 	public void setDishAsDone(Order order, Dish dish) {
 		if (order.getUnDoneDishes().containsKey(dish)) {
 			int amount = order.getDishes().get(dish).getAmount();
-			order.setDish(dish, 0);
+			order.setUndoneDish(dish, 0);
 			order.setDoneDish(dish, amount);
 			orderDao.update(order);
 		}
@@ -252,16 +239,6 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int getTotalCancelledOrClosedOrders() {
 		return orderDao.getTotalCancelledOrClosedOrders();
-	}
-
-	@Override
-	public Collection<Order> getActiveOrders(int maxResults, int offset) {
-		return orderDao.getActiveOrders(maxResults, offset);
-	}
-
-	@Override
-	public int getTotalActiveOrders() {
-		return orderDao.getTotalActiveOrders();
 	}
 
 	@Override

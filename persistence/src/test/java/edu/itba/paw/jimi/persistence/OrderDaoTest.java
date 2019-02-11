@@ -87,14 +87,14 @@ public class OrderDaoTest {
 		Dish dish1 = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		Dish dish2 = dishDao.create(DISH_NAME2, DISH_PRICE2, DISH_STOCK2);
 		Order order1 = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 1, DISH_NIL_TOTAL);
-		order1.setDish(dish1, 1);
-		order1.setDish(dish2, 1);
+		order1.setUndoneDish(dish1, 1);
+		order1.setUndoneDish(dish2, 1);
 		Order order2 = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 1, DISH_NIL_TOTAL);
-		order2.setDish(dish1, 2);
-		order2.setDish(dish2, 2);
+		order2.setUndoneDish(dish1, 2);
+		order2.setUndoneDish(dish2, 2);
 		Order order3 = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 1, DISH_NIL_TOTAL);
-		order3.setDish(dish1, 3);
-		order3.setDish(dish2, 3);
+		order3.setUndoneDish(dish1, 3);
+		order3.setUndoneDish(dish2, 3);
 		expectedUndoneDishes = new HashMap<>();
 		expectedUndoneDishes.put(dish1, 6L);
 		expectedUndoneDishes.put(dish2, 6L);
@@ -158,7 +158,7 @@ public class OrderDaoTest {
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 
-		order.setDish(dish, 1);
+		order.setUndoneDish(dish, 1);
 
 		orderDao.update(order);
 
@@ -183,7 +183,7 @@ public class OrderDaoTest {
 	public void testFindByIdOneDishThrice() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-		order.setDish(dish, 3);
+		order.setUndoneDish(dish, 3);
 
 		orderDao.update(order);
 
@@ -209,13 +209,13 @@ public class OrderDaoTest {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-		order.setDish(dish, 3);
+		order.setUndoneDish(dish, 3);
 
 		final Dish dish2 = dishDao.create(DISH_NAME2, DISH_PRICE2, DISH_STOCK2);
-		order.setDish(dish2, 5);
+		order.setUndoneDish(dish2, 5);
 
 		final Dish dish3 = dishDao.create(DISH_NAME3, DISH_PRICE3, DISH_STOCK3);
-		order.setDish(dish3, 1);
+		order.setUndoneDish(dish3, 1);
 
 
 		orderDao.update(order);
@@ -267,7 +267,7 @@ public class OrderDaoTest {
 	public void testFindByIdAddAndRemove() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-		order.setDish(dish, 1);
+		order.setUndoneDish(dish, 1);
 
 
 		orderDao.update(order);
@@ -287,7 +287,7 @@ public class OrderDaoTest {
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
 
-		order.setDish(dish, 0);
+		order.setUndoneDish(dish, 0);
 
 		orderDao.update(order);
 
@@ -303,7 +303,7 @@ public class OrderDaoTest {
 	public void testFindByIdAddAndRemoveButNoDelete() {
 		final Order order = orderDao.create(OrderStatus.INACTIVE, null, null, 0, 0);
 		final Dish dish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-		order.setDish(dish, 2);
+		order.setUndoneDish(dish, 2);
 
 
 		orderDao.update(order);
@@ -323,7 +323,7 @@ public class OrderDaoTest {
 		assertEquals(dish.getStock(), dbDish.getStock());
 		assertEquals(dish.getId(), dbDish.getId());
 
-		order.setDish(dish, 1);
+		order.setUndoneDish(dish, 1);
 
 		orderDao.update(order);
 
@@ -362,11 +362,11 @@ public class OrderDaoTest {
 		Order notUrgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
 		Order urgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
 		Dish notUrgentDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-		urgentOrder.setDish(notUrgentDish, 1);
-		notUrgentOrder.setDish(notUrgentDish, 1);
+		urgentOrder.setUndoneDish(notUrgentDish, 1);
+		notUrgentOrder.setUndoneDish(notUrgentDish, 1);
 
 		Dish urgentDish = dishDao.create(DISH_NAME2, DISH_PRICE2, DISH_STOCK2);
-		urgentOrder.setDish(urgentDish, 1);
+		urgentOrder.setUndoneDish(urgentDish, 1);
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());

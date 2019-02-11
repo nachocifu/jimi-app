@@ -71,7 +71,7 @@ public class TableDaoTest {
 	private void addTestData() {
 		testDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
 		testOrder = orderDao.create(OrderStatus.INACTIVE, OPENEDAT, CLOSEDAT, 2, 2);
-		testOrder.setDish(testDish, 2);
+		testOrder.setUndoneDish(testDish, 2);
 		freeTables = new LinkedList<>();
 		busyTables = new LinkedList<>();
 		payingTables = new LinkedList<>();
@@ -89,9 +89,9 @@ public class TableDaoTest {
 		Order order1 = orderDao.create(OrderStatus.OPEN, new Timestamp(1525467178), null, 1, 0F);
 		Order order2 = orderDao.create(OrderStatus.OPEN, new Timestamp(1525467179), null, 1, 0F);
 		Order order3 = orderDao.create(OrderStatus.OPEN, new Timestamp(1525467180), null, 1, 0F);
-		order1.setDish(testDish, 1);
-		order2.setDish(testDish, 1);
-		order3.setDish(testDish, 1);
+		order1.setUndoneDish(testDish, 1);
+		order2.setUndoneDish(testDish, 1);
+		order3.setUndoneDish(testDish, 1);
 		busyTables.add(tableDao.create("Free Table 3", TableStatus.BUSY, order3));
 		busyTables.add(tableDao.create("Free Table 2", TableStatus.BUSY, order2));
 		busyTables.add(tableDao.create("Free Table 1", TableStatus.BUSY, order1));
@@ -160,7 +160,7 @@ public class TableDaoTest {
 		assertEquals(TableStatus.FREE.ordinal(), dbTable.getStatus().ordinal());
 		assertEquals(testOrder.getId(), dbTable.getOrder().getId());
 
-		dbTable.getOrder().setDish(testDish, 5);
+		dbTable.getOrder().setUndoneDish(testDish, 5);
 		dbTable.getOrder().setDiners(5);
 		dbTable.setName(TABLE_NAME2);
 		dbTable.setStatus(TableStatus.BUSY);
@@ -214,11 +214,11 @@ public class TableDaoTest {
 		Order notUrgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
 		Order urgentOrder = orderDao.create(OrderStatus.OPEN, OPENEDAT, null, 2, 0);
 		Dish notUrgentDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-		urgentOrder.setDish(notUrgentDish, 1);
-		notUrgentOrder.setDish(notUrgentDish, 1);
+		urgentOrder.setUndoneDish(notUrgentDish, 1);
+		notUrgentOrder.setUndoneDish(notUrgentDish, 1);
 
 		Dish urgentDish = dishDao.create(DISH_NAME, DISH_PRICE, DISH_STOCK);
-		urgentOrder.setDish(urgentDish, 1);
+		urgentOrder.setUndoneDish(urgentDish, 1);
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());

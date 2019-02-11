@@ -198,9 +198,9 @@ public class TableServiceImplTest {
 		Dish testDish = new Dish("dish name", 1.0F, 10);
 		Order firstOrder = new Order(1, null, null, OrderStatus.OPEN, 0, 0);
 		Order secondOrder = new Order(2, null, null, OrderStatus.OPEN, 0, 0);
-		firstOrder.setDish(testDish, 1);
+		firstOrder.setUndoneDish(testDish, 1);
 		firstOrder.getUnDoneDishes().get(testDish).setOrderedAt(new Timestamp(1525467178));
-		secondOrder.setDish(testDish, 1);
+		secondOrder.setUndoneDish(testDish, 1);
 		secondOrder.getUnDoneDishes().get(testDish).setOrderedAt(new Timestamp(1525467180));
 		Table busyTable1 = new Table(TABLE_NAME, 1, TableStatus.BUSY, firstOrder);
 		Table busyTable2 = new Table(TABLE_NAME, 2, TableStatus.BUSY, secondOrder);
