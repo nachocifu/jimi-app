@@ -94,10 +94,28 @@ export default class TableRestClient extends RestClient {
 
   /**
    *
+   * @param page
+   * @param pageSize
+   * @return Promise
+   */
+  getKitchen(page, pageSize) {
+    return this.instance.get(
+      'api/kitchen/busyTables'
+    );
+  }
+
+  /**
+   *
    * @param table
    * @param dish
    * @return Promise
    */
+  setDoneDish(table, dish) {
+    return this.instance.post(
+      'api/tables/'+table+'/undoneDishes/'+dish
+    );
+  }
+  
   deleteUnDoneDish(table, dish) {
     return this.instance.delete(
       '/api/tables/'+table+'/undoneDishes/'+dish
