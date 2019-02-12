@@ -74,7 +74,7 @@ export default class TableRestClient extends RestClient {
    */
   addDish(id, dishId, amount){
     return this.instance.post(
-      'api/tables/'+id+'/dishes',
+      'api/tables/'+id+'/undoneDishes',
       {dishId: dishId, amount: amount}
     );
   }
