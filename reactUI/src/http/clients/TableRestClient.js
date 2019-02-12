@@ -30,6 +30,18 @@ export default class TableRestClient extends RestClient {
 
   /**
    *
+   * @param name
+   * @return Promise
+   */
+  create(name){
+    return this.instance.post(
+      'api/tables',
+      {name: name}
+    );
+  }
+
+  /**
+   *
    * @param id
    * @param name
    * @returns Promise
