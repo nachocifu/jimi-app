@@ -137,7 +137,7 @@ class Tables extends Component {
                     Name
                   </InputGroupText>
                 </InputGroupAddon>
-                <Input type="text" value={this.state.form.name}
+                <Input required={"true"} type="text" value={this.state.form.name}
                        onChange={e => {
                          let form = {...this.state.form};
                          form.name = e.target.value;

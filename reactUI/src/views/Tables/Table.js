@@ -366,7 +366,7 @@ class Table extends Component {
                     Name
                   </InputGroupText>
                 </InputGroupAddon>
-                <Input type="text" placeholder={this.state.table.name} value={this.state.form.name}
+                <Input required={"true"} type="text" placeholder={this.state.table.name} value={this.state.form.name}
                        onChange={e => this.setState({form: {name: e.target.value}})}/>
               </InputGroup>
             </ModalBody>
