@@ -43,7 +43,11 @@ class App extends Component {
     // eslint-disable-next-line
     if (process.env.NODE_ENV != 'production') Reactotron.connect();
 
-    this.store = Reactotron.createStore(rootReducer);
+    localStorage.getItem('reduxState') ?
+      this.store = Reactotron.createStore(rootReducer, JSON.parse(localStorage.getItem('reduxState'))):
+      this.store = Reactotron.createStore(rootReducer);
+
+    this.store.subscribe(()=>{localStorage.setItem('reduxState', JSON.stringify(this.store.getState()))});
   }
 
   render() {
