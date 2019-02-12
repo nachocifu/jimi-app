@@ -49,4 +49,11 @@ export default class DishRestClient extends RestClient {
     );
   }
 
+  getCSV() {
+    return this.instance.post(
+      'api/dishes/downloadCSV',
+      {responseType: 'blob'}
+    );
+  }
+
 }
