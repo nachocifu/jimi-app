@@ -127,7 +127,7 @@ class Tables extends Component {
 
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>
-            Edit Table
+            Table
           </ModalHeader>
           <Form onSubmit={this.newTable}>
             <ModalBody>
