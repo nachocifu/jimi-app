@@ -86,7 +86,7 @@ export default class TableRestClient extends RestClient {
    */
   addDish(id, dishId, amount){
     return this.instance.post(
-      'api/tables/'+id+'/dishes',
+      'api/tables/'+id+'/undoneDishes',
       {dishId: dishId, amount: amount}
     );
   }
@@ -101,6 +101,18 @@ export default class TableRestClient extends RestClient {
     return this.instance.post(
       'api/tables/'+id+'/status',
       {status: nextStatus}
+    );
+  }
+
+  /**
+   *
+   * @param table
+   * @param dish
+   * @return Promise
+   */
+  deleteUnDoneDish(table, dish) {
+    return this.instance.delete(
+      '/api/tables/'+table+'/undoneDishes/'+dish
     );
   }
 

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+  Badge,
   Button,
   Card,
   CardBody,
@@ -22,10 +23,26 @@ import TableRestClient from "../../http/clients/TableRestClient";
 import Spinner from "reactstrap/es/Spinner";
 import Form from "reactstrap/es/Form";
 import CardFooter from "reactstrap/es/CardFooter";
-import {Redirect} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import ButtonGroup from "reactstrap/es/ButtonGroup";
 import DishRestClient from "../../http/clients/DishRestClient";
 
+function DishListItem(props) {
+  var dish = props.dish;
+  var amount = props.amount;
+
+  Reactotron.debug(dish);
+  Reactotron.debug(amount);
+  return (
+    <tr key={dish.id}>
+      <td>{dish.name}</td>
+      <td>{amount}</td>
+      <td>
+        {props.delete? <Button onClick={() => props.self.deleteUnDoneDish(dish.id)} color={'warning'} block><i className="fa fa-remove"/></Button> : ''}
+      </td>
+    </tr>
+  )
+}
 
 class Table extends Component {
 
@@ -41,7 +58,9 @@ class Table extends Component {
         id: null,
         name: null,
         status: null,
-        diners: null
+        diners: null,
+        doneDishes: null,
+        unDoneDishes: null
       },
       dishSelection: null,
       dishSelectionNum: 1,
@@ -65,6 +84,13 @@ class Table extends Component {
     this.setDiners = this.setDiners.bind(this);
     this.addDishes = this.addDishes.bind(this);
     this.getAvailableOperations = this.getAvailableOperations.bind(this);
+    this.deleteUnDoneDish = this.deleteUnDoneDish.bind(this);
+  }
+
+  deleteUnDoneDish(dish) {
+    this.setState({loading: true});
+    return this.tableClient.deleteUnDoneDish(this.state.table.id, dish)
+      .then(()=> this.loadTable());
   }
 
   componentDidMount() {
@@ -76,13 +102,19 @@ class Table extends Component {
   loadTable() {
     return this.tableClient.getTable(this.props.match.params.id)
       .then((val) => {
-        Reactotron.debug("Retrieved table:" + val.data.name, val.data);
+        Reactotron.display({
+          preview: "Retrieved Table "+val.data.id,
+          name: val.data.name,
+          value: val.data
+        });
         this.setState({
           table: {
             id: val.data.id,
             name: val.data.name,
             status: val.data.status,
-            diners: val.data.order.diners
+            diners: val.data.order.diners,
+            doneDishes: val.data.order.doneDishes.entry,
+            unDoneDishes: val.data.order.unDoneDishes.entry
           },
           loading: false,
           modal: false,
@@ -296,6 +328,25 @@ class Table extends Component {
               </CardHeader>
               <CardBody>
                 {this.getAvailableOperations()}
+              </CardBody>
+            </Card>
+          </Col>
+          <Col lg={12}>
+            <Card>
+              <CardHeader>
+                <strong><i className="icon-list pr-1"/>Dishes</strong>
+              </CardHeader>
+              <CardBody>
+                <TableHtml>
+                  <tbody>
+                    {this.state.table.unDoneDishes.map((entry, index) =>
+                      <DishListItem dish={entry.key} amount={entry.value.amount} self={this} delete={true}/>
+                    )}
+                    {this.state.table.doneDishes.map((entry, index) =>
+                      <DishListItem dish={entry.key} amount={entry.value} self={this} delete={false}/>
+                    )}
+                  </tbody>
+                </TableHtml>
               </CardBody>
             </Card>
           </Col>
