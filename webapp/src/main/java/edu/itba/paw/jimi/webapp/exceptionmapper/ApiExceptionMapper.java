@@ -21,7 +21,7 @@ public class ApiExceptionMapper extends Throwable implements ExceptionMapper<Thr
 			response = Response.status(webApplicationException.getResponse().getStatus())
 					.entity("{ \"error\": \"" + webApplicationException.getMessage() + "\" }").build();
 		} else {
-			LOGGER.error("ApiExceptionMapper caught exception:", (Object) exception.getStackTrace());
+			LOGGER.error("ApiExceptionMapper caught exception: {}", exception.getStackTrace());
 			response = Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity("{ \"error\": \"Internal error\" }").type("application/json").build();
 		}
