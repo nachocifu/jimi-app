@@ -36,7 +36,7 @@ export default class TableRestClient extends RestClient {
   create(name){
     return this.instance.post(
       'api/tables',
-      {name: name, status: 'FREE'} //TODO remove status from create table POST
+      {name: name}
     );
   }
 
