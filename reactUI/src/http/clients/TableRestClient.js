@@ -92,4 +92,16 @@ export default class TableRestClient extends RestClient {
     );
   }
 
+  /**
+   *
+   * @param table
+   * @param dish
+   * @return Promise
+   */
+  deleteUnDoneDish(table, dish) {
+    return this.instance.delete(
+      '/api/tables/'+table+'/undoneDishes/'+dish
+    );
+  }
+
 }
