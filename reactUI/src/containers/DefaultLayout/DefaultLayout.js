@@ -26,15 +26,25 @@ const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 class DefaultLayout extends Component {
 
   navOptions = [];
+  allowedRoutes = [];
 
   constructor(props) {
     super(props);
     console.log(props);
+
     // handle navigation by ROLES
     navigation.items.forEach( (value) => {
       if(value.roles.filter(value => -1 !== props.store.getState().authentication.roles.indexOf(value)).length > 0) {
         // add value to navOptions
         this.navOptions.push(value);
+      }
+    });
+
+    // handle routes by ROLES
+    routes.forEach( (value) => {
+      if(value.roles.filter(value => -1 !== props.store.getState().authentication.roles.indexOf(value)).length > 0) {
+        // add value to navOptions
+        this.allowedRoutes.push(value);
       }
     });
   }
@@ -69,7 +79,7 @@ class DefaultLayout extends Component {
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
-                  {routes.map((route, idx) => {
+                  {this.allowedRoutes.map((route, idx) => {
                     return route.component ? (
                       <Route
                         key={idx}
