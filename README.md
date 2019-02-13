@@ -20,7 +20,12 @@ _Waiter:_
 * Password: _user_
 
 
-## Authors
+## Authors since V2
+
+* Alonso, Juan Manuel
+* Cifuentes, Ignacio
+
+## Authors up to V2
 
 * Alonso, Juan Manuel
 * Capparelli, Martín

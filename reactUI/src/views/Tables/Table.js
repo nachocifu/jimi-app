@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {
-  Badge,
   Button,
   Card,
   CardBody,
@@ -23,7 +22,7 @@ import TableRestClient from "../../http/clients/TableRestClient";
 import Spinner from "reactstrap/es/Spinner";
 import Form from "reactstrap/es/Form";
 import CardFooter from "reactstrap/es/CardFooter";
-import {Link, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import ButtonGroup from "reactstrap/es/ButtonGroup";
 import DishRestClient from "../../http/clients/DishRestClient";
 
@@ -51,8 +50,8 @@ class Table extends Component {
 
   constructor(props) {
     super(props);
-    this.tableClient = new TableRestClient(this.props.token);
-    this.dishClient = new DishRestClient(this.props.token);
+    this.tableClient = new TableRestClient(props);
+    this.dishClient = new DishRestClient(props);
     this.state = {
       table: {
         id: null,
