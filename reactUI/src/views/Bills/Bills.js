@@ -20,7 +20,6 @@ function BillRow(props) {
 
   return (
     <tr key={bill.id.toString()}>
-      {/*<td><Link to={billLink}>{bill.id}</Link></td>*/}
       <td>{bill.id}</td>
       <td><Badge color={getBadge(bill.status)}>{bill.status}</Badge></td>
       <td>{openedAt}</td>

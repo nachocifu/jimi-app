@@ -26,4 +26,18 @@ export default class BillRestClient extends RestClient {
       'api/admin/bills/'+id
     );
   }
+
+  addDish(id, dish, amount) {
+    return this.instance.post(
+      'api/admin/bills/'+id+'/dishes',
+      {dishId: dish, amount: amount}
+    );
+  }
+
+  setDishes(id, dish, amount) {
+    return this.instance.post(
+      'api/admin/bills/'+id+'/dishes/'+dish+'/amount',
+      {amount: amount}
+    );
+  }
 }
