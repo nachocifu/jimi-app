@@ -147,7 +147,7 @@ public class AdminApiController extends BaseApiController {
 		final Dish currentOrderDish = orderService.getDishById(cancelledOrClosedOrder, tableAddDishForm.getDishId());
 		if (currentOrderDish != null) {
 			LOGGER.warn("From bill with id {}, dish id {} already exists", id, dish.getId());
-			final int newAmount = cancelledOrClosedOrder.getDoneDishes().get(dish) + 1;
+			final int newAmount = cancelledOrClosedOrder.getDoneDishes().get(dish) + tableAddDishForm.getAmount();
 			orderService.setDoneDishAmount(cancelledOrClosedOrder, dish, newAmount);
 			URI billsURI = URI.create(String.valueOf(uriInfo.getBaseUri()) +
 					UriBuilder.fromResource(AdminApiController.class).build() +
