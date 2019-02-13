@@ -34,7 +34,7 @@ public class DishHibernateDao implements DishDao {
 
 	@Override
 	public Collection<Dish> findAll(int pageSize, int offset, boolean filterAvailable) {
-		String where = filterAvailable ? " where stock > 0 " : " ";
+		String where = filterAvailable ? " where stock > 0 and discontinued = false " : " ";
 		return em.createQuery("from Dish " + where + " order by name", Dish.class)
 				.setFirstResult(offset)
 				.setMaxResults(pageSize)

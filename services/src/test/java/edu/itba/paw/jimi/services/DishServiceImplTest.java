@@ -244,7 +244,7 @@ public class DishServiceImplTest {
 		dishes.add(new Dish(NAME, PRICE, 1, 10));
 		dishes.add(new Dish(NAME, PRICE, 2, 10));
 		dishes.add(new Dish(NAME, PRICE, 3, 10));
-		Mockito.when(dishDao.findAllAvailable(any(Integer.class), any(Integer.class))).thenReturn(dishes);
+		Mockito.when(dishDao.findAll(any(Integer.class), any(Integer.class), any(Boolean.class))).thenReturn(dishes);
 
 		Collection<Dish> dbDishes = dishServiceImpl.findAllAvailable(dishes.size(), offset);
 
@@ -277,7 +277,7 @@ public class DishServiceImplTest {
 		dishes.add(new Dish(NAME, PRICE, 0, 10)); // Duplicated, should return 1 less.
 		dishes.add(new Dish(NAME, PRICE, 2, 10));
 		dishes.add(new Dish(NAME, PRICE, 3, 10));
-		Mockito.when(dishDao.findAllAvailable(any(Integer.class), any(Integer.class))).thenReturn(dishes);
+		Mockito.when(dishDao.findAll(any(Integer.class), any(Integer.class), any(Boolean.class))).thenReturn(dishes);
 
 		Collection<Dish> dbDishes = dishServiceImpl.findAllAvailable(dishes.size(), offset);
 
