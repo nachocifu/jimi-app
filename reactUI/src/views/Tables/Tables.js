@@ -6,7 +6,6 @@ import {
   CardBody,
   CardHeader,
   Col,
-  Input,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
@@ -22,7 +21,7 @@ import Reactotron from "reactotron-react-js";
 import TableRestClient from "../../http/clients/TableRestClient";
 import Button from "reactstrap/es/Button";
 import CardFooter from "reactstrap/es/CardFooter";
-import Form from "reactstrap/es/Form";
+import {AvField, AvForm} from 'availity-reactstrap-validation';
 
 function TableRow(props) {
   const table = props.table;
@@ -48,14 +47,15 @@ class Tables extends Component {
 
   tableClient;
 
-
   constructor(props) {
     super(props);
     this.tableClient = new TableRestClient(props);
-    this.state = {tables: [], loading: true, modal: false, form: {name: ''}};
+    this.state = {tables: [], loading: true, modal: false, form: {name: '', error: false, nameError: false}};
     this.toggle = this.toggle.bind(this);
     this.newTable = this.newTable.bind(this);
     this.updateList = this.updateList.bind(this);
+    this.handleValidSubmit = this.handleValidSubmit.bind(this);
+    this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
   }
 
   toggle() {
@@ -66,11 +66,19 @@ class Tables extends Component {
   }
 
   newTable() {
-    this.toggle();
     this.setState({loading: true});
     this.tableClient.create(this.state.form.name)
       .then(() => this.updateList())
-      .then(() => this.setState({loading: false}));
+      .then(() => this.toggle())
+      .then(() => this.setState({loading: false}))
+      .catch((error) => {
+        Reactotron.error("Failed to create tables");
+
+        let form = {...this.state.form};
+        form.nameError = true;
+        form.error = true;
+        this.setState({loading: false, form: form});
+      });
   }
 
   updateList() {
@@ -86,8 +94,25 @@ class Tables extends Component {
     this.updateList().finally(() => this.setState({loading: false}));
   }
 
-  render() {
+  handleValidSubmit(event, values) {
+    event.preventDefault();
+    let form = {...this.state.form};
+    form.error = false;
+    form.nameError = false;
+    form.name = values.name;
+    this.setState({form: form});
+    this.newTable()
+  }
 
+  handleInvalidSubmit(event, errors, values) {
+    let form = {...this.state.form};
+    form.error = true;
+    form.nameError = false;
+    form.name = values.name;
+    this.setState({form: form});
+  }
+
+  render() {
     return (
       <div className="animated fadeIn">
         <Row>
@@ -129,27 +154,31 @@ class Tables extends Component {
           <ModalHeader toggle={this.toggle}>
             Table
           </ModalHeader>
-          <Form onSubmit={this.newTable}>
+          <AvForm onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
             <ModalBody>
               <InputGroup className="mb-3">
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    Name
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input required={"true"} type="text" value={this.state.form.name}
-                       onChange={e => {
-                         let form = {...this.state.form};
-                         form.name = e.target.value;
-                         this.setState({form})
-                       }}/>
+                <AvField name="name" label="Name" type="text" validate={{
+                  required: {value: true, errorMessage: 'Please enter a name'},
+                  pattern: {
+                    value: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$',
+                    errorMessage: 'Your name must be composed only with letter and numbers'
+                  },
+                  minLength: {value: 4, errorMessage: 'Your name must be between 4 and 20 characters'},
+                  maxLength: {value: 20, errorMessage: 'Your name must be between 4 and 20 characters'}
+                }}/>
               </InputGroup>
+              {this.state.form.nameError ? (
+                <InputGroupAddon addonType="append">
+                  <InputGroupText>
+                    Table already exists with this name
+                  </InputGroupText>
+                </InputGroupAddon>) : ''}
             </ModalBody>
-            < ModalFooter>
+            <ModalFooter>
               <Button color="primary" className="px-4" block>Save</Button>
               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
-          </Form>
+          </AvForm>
         </Modal>
       </div>
     )
