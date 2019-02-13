@@ -12,7 +12,7 @@ export default class DishRestClient extends RestClient {
    */
   get(page, pagesize) {
     return this.instance.get(
-      'api/dishes'
+      'api/dishes?page='+page+'&pageSize='+pagesize
     );
   }
 
@@ -46,6 +46,21 @@ export default class DishRestClient extends RestClient {
   discontinue(id) {
     return this.instance.post(
       'api/dishes/'+id+"/discontinued"
+    );
+  }
+
+  /**
+   *
+   * @param name
+   * @param price
+   * @param stock
+   * @param minStock
+   * @return Promise
+   */
+  create(name, price, stock, minStock){
+    return this.instance.post(
+      'api/dishes',
+      {name: name, price: price, stock: stock, minStock: minStock}
     );
   }
 
