@@ -33,8 +33,9 @@ public class DishHibernateDao implements DishDao {
 	}
 
 	@Override
-	public Collection<Dish> findAll(int pageSize, int offset) {
-		return em.createQuery("from Dish order by name", Dish.class)
+	public Collection<Dish> findAll(int pageSize, int offset, boolean filterAvailable) {
+		String where = filterAvailable ? " where stock > 0 " : " ";
+		return em.createQuery("from Dish " + where + " order by name", Dish.class)
 				.setFirstResult(offset)
 				.setMaxResults(pageSize)
 				.getResultList();

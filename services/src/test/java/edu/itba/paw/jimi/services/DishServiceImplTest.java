@@ -192,9 +192,9 @@ public class DishServiceImplTest {
 		dishes.add(new Dish(NAME, PRICE, 1, 10));
 		dishes.add(new Dish(NAME, PRICE, 2, 10));
 		dishes.add(new Dish(NAME, PRICE, 3, 10));
-		Mockito.when(dishDao.findAll(any(Integer.class), any(Integer.class))).thenReturn(dishes);
+		Mockito.when(dishDao.findAll(any(Integer.class), any(Integer.class), any(Boolean.class))).thenReturn(dishes);
 
-		Collection<Dish> dbDishes = dishServiceImpl.findAll(dishes.size(), offset);
+		Collection<Dish> dbDishes = dishServiceImpl.findAll(dishes.size(), offset, false);
 
 		assertNotNull(dbDishes);
 
@@ -206,15 +206,15 @@ public class DishServiceImplTest {
 
 	@Test
 	public void findAllNotNullEmptyTest() {
-		Mockito.when(dishDao.findAll(any(Integer.class), any(Integer.class))).thenReturn(new HashSet<Dish>());
-		Collection<Dish> dbDishes = dishServiceImpl.findAll(100, offset);
+		Mockito.when(dishDao.findAll(any(Integer.class), any(Integer.class), any(Boolean.class))).thenReturn(new HashSet<Dish>());
+		Collection<Dish> dbDishes = dishServiceImpl.findAll(100, offset, false);
 		assertNotNull(dbDishes);
 	}
 
 	@Test
 	public void findAllNotNullTest() {
-		Mockito.when(dishDao.findAll(any(Integer.class), any(Integer.class))).thenReturn(null);
-		Collection<Dish> dbDishes = dishServiceImpl.findAll(100, offset);
+		Mockito.when(dishDao.findAll(any(Integer.class), any(Integer.class), any(Boolean.class))).thenReturn(null);
+		Collection<Dish> dbDishes = dishServiceImpl.findAll(100, offset, false);
 		assertNotNull(dbDishes);
 	}
 
@@ -225,9 +225,9 @@ public class DishServiceImplTest {
 		dishes.add(new Dish(NAME, PRICE, 0, 10)); // Duplicated, should return 1 less.
 		dishes.add(new Dish(NAME, PRICE, 2, 10));
 		dishes.add(new Dish(NAME, PRICE, 3, 10));
-		Mockito.when(dishDao.findAll(any(Integer.class), any(Integer.class))).thenReturn(dishes);
+		Mockito.when(dishDao.findAll(any(Integer.class), any(Integer.class), any(Boolean.class))).thenReturn(dishes);
 
-		Collection<Dish> dbDishes = dishServiceImpl.findAll(dishes.size(), offset);
+		Collection<Dish> dbDishes = dishServiceImpl.findAll(dishes.size(), offset, false);
 
 		assertNotNull(dbDishes);
 

@@ -101,8 +101,8 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public Collection<Dish> findAll(int pageSize, int offset) {
-		Collection<Dish> dishes = dishDao.findAll(pageSize, offset);
+	public Collection<Dish> findAll(int pageSize, int offset, boolean filterAvailable) {
+		Collection<Dish> dishes = dishDao.findAll(pageSize, offset, filterAvailable);
 		if (dishes != null)
 			return dishes;
 		else
