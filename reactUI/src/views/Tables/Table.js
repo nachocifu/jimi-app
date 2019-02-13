@@ -5,8 +5,6 @@ import {
   CardBody,
   CardHeader,
   Col,
-  Input,
-  InputGroup,
   InputGroupAddon,
   InputGroupText,
   Modal,
@@ -20,7 +18,6 @@ import {connect} from "react-redux";
 import Reactotron from "reactotron-react-js";
 import TableRestClient from "../../http/clients/TableRestClient";
 import Spinner from "reactstrap/es/Spinner";
-import Form from "reactstrap/es/Form";
 import CardFooter from "reactstrap/es/CardFooter";
 import {Redirect} from "react-router-dom";
 import ButtonGroup from "reactstrap/es/ButtonGroup";
@@ -89,6 +86,7 @@ class Table extends Component {
     this.getAvailableOperations = this.getAvailableOperations.bind(this);
     this.deleteUnDoneDish = this.deleteUnDoneDish.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
+    this.handleDishAmountValidSubmit = this.handleDishAmountValidSubmit.bind(this);
     this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
   }
 
@@ -132,6 +130,18 @@ class Table extends Component {
       });
   }
 
+  loadDishes() {
+    return this.dishClient.getAvailable(0, 100)
+      .then((val) => {
+        Reactotron.display({
+          name: 'Table Dishes to add SUCCESS',
+          preview: 'Table Dishes to add SUCCESS',
+          value: val.data
+        });
+        this.setState({loading: false, dishes: val.data.dishes});
+      })
+  }
+
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -148,15 +158,7 @@ class Table extends Component {
   preToggleAddDish() {
     // Reactotron.display({name: 'Table Dishes to add Requesting', preview: 'Table Dishes to add Requesting', value: this.state.dishes});
     this.setState({loading: true});
-    this.dishClient.get(0, 100)
-      .then((val) => {
-        Reactotron.display({
-          name: 'Table Dishes to add SUCCESS',
-          preview: 'Table Dishes to add SUCCESS',
-          value: val.data
-        });
-        this.setState({loading: false, dishes: val.data.dishes});
-      })
+    this.loadDishes()
       .then(() => this.toggleAddDish())
       .catch(() => {
         Reactotron.display({
@@ -235,7 +237,7 @@ class Table extends Component {
     this.setState({loading: true});
     this.tableClient.addDish(this.state.table.id, this.state.dishSelection, this.state.dishSelectionNum)
       .then(this.toggleAddDishAll())
-      .then(() => this.loadTable())
+      .then(() => Promise.all([this.loadTable(), this.loadDishes()]))
       .catch(() => Reactotron.display({
         name: 'Table add dish Fail',
         preview: 'Table add dish Fail',
@@ -291,8 +293,18 @@ class Table extends Component {
     form.error = false;
     form.nameError = false;
     form.name = values.name;
+    form.dishSelectionNum = values.dishSelectionNum;
     this.setState({form: form});
     this.handleForm()
+  }
+
+  handleDishAmountValidSubmit(event, values) {
+    let form = {...this.state.form};
+    form.error = false;
+    form.nameError = false;
+    form.dishSelectionNum = values.dishSelectionNum;
+    this.setState({form: form});
+    this.addDishes()
   }
 
   handleInvalidSubmit(event, errors, values) {
@@ -300,6 +312,7 @@ class Table extends Component {
     form.error = true;
     form.nameError = false;
     form.name = values.name;
+    form.dishSelectionNum = values.dishSelectionNum;
     this.setState({form: form});
   }
 
@@ -342,14 +355,14 @@ class Table extends Component {
                   </tbody>
                 </TableHtml>
               </CardBody>
-              {this.props.roles.filter(value => value==='ROLE_ADMIN').length > 0? (
+              {this.props.roles.filter(value => value === 'ROLE_ADMIN').length > 0 ? (
 
                 <CardFooter>
                   <Button color="secondary" onClick={this.toggle}>Edit</Button>
                   <Button color="danger" onClick={this.handleDelete}
                           disabled={this.state.table.status !== 'FREE'}>Delete</Button>
                 </CardFooter>
-                ):''
+              ) : ''
               }
             </Card>
           </Col>
@@ -394,18 +407,16 @@ class Table extends Component {
                 </ModalHeader>
                 <AvForm onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
                   <ModalBody>
-                    <InputGroup className="mb-3">
-                      <AvField name="name" label="Name" type="text" placeholder={this.state.table.name}
-                               validate={{
-                                 required: {value: true, errorMessage: 'Please enter a name'},
-                                 pattern: {
-                                   value: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$',
-                                   errorMessage: 'Your name must be composed only with letter and numbers'
-                                 },
-                                 minLength: {value: 4, errorMessage: 'Your name must be between 4 and 20 characters'},
-                                 maxLength: {value: 20, errorMessage: 'Your name must be between 4 and 20 characters'}
-                               }}/>
-                    </InputGroup>
+                    <AvField name="name" label="Name" type="text" placeholder={this.state.table.name}
+                             validate={{
+                               required: {value: true, errorMessage: 'Please enter a name'},
+                               pattern: {
+                                 value: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$',
+                                 errorMessage: 'Your name must be composed only with letter and numbers'
+                               },
+                               minLength: {value: 4, errorMessage: 'Your name must be between 4 and 20 characters'},
+                               maxLength: {value: 20, errorMessage: 'Your name must be between 4 and 20 characters'}
+                             }}/>
                     {this.state.form.nameError ? (
                       <InputGroupAddon addonType="append">
                         <InputGroupText>
@@ -431,9 +442,8 @@ class Table extends Component {
                           onClick={() => {
                             this.setState({dishSelection: dish.id});
                             this.toggleAddDishNested();
-                          }}
-                  >
-                    {dish.name} ({dish.price})
+                          }}>
+                    {dish.name}
                   </Button>
                 </Col>
               )}
@@ -442,22 +452,29 @@ class Table extends Component {
             <Modal isOpen={this.state.addDishModalNested} toggle={this.toggleAddDishNested}
                    onClosed={this.state.addDishCloseAll ? this.toggleAddDish : undefined}>
               <ModalHeader>How Many?</ModalHeader>
-              <Form>
+              <AvForm onValidSubmit={this.handleDishAmountValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
                 <ModalBody>
-                  <InputGroup className="mb-3">
-                    <InputGroup>
-                      <InputGroupAddon addonType="prepend">#</InputGroupAddon>
-                      <Input placeholder="Amount" type="number" step="1"
-                             onChange={e => this.setState({dishSelectionNum: e.target.value})}/>
-                    </InputGroup>
-                  </InputGroup>
+                  <AvField name="dishSelectionNum" label="Amount" type="number"
+                           onChange={e => this.setState({dishSelectionNum: e.target.value})}
+                           validate={{
+                             required: {value: true, errorMessage: 'Please enter an amount'},
+                             step: {value: 1},
+                             min: {value: 1, errorMessage: 'Minimum of 1'},
+                             max: {
+                               value:
+                                 this.state.dishes.find(dish => dish.id === this.state.dishSelection) ?
+                                   this.state.dishes.find(dish => dish.id === this.state.dishSelection).stock :
+                                   0,
+                               errorMessage: 'Not enough stock'
+                             }
+                           }}/>
                 </ModalBody>
                 <ModalFooter>
                   <Button color="primary" onClick={this.toggleAddDishNested}>Back</Button>
                   <Button color="secondary" onClick={this.toggleAddDishAll}>Cancel</Button>
-                  <Button color="success" onClick={this.addDishes}>Submit</Button>
+                  <Button color="success">Submit</Button>
                 </ModalFooter>
-              </Form>
+              </AvForm>
             </Modal>
 
           </ModalBody>
