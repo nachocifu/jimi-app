@@ -4,6 +4,8 @@ import Reactotron from "reactotron-react-js";
 import {connect} from "react-redux";
 import BillRestClient from "../../http/clients/BillRestClient";
 import moment from "moment";
+import Button from "reactstrap/es/Button";
+import {Link} from "react-router-dom";
 
 
 function BillRow(props) {
@@ -18,12 +20,15 @@ function BillRow(props) {
 
   return (
     <tr key={bill.id.toString()}>
-      {/*<td><Link to={billLink}>{bill.id}</Link></td>*/}
       <td>{bill.id}</td>
       <td><Badge color={getBadge(bill.status)}>{bill.status}</Badge></td>
       <td>{openedAt}</td>
       <td>{closedAt}</td>
-      <td>{bill.diners}</td>
+      <td>
+        <Link to={`/bills/${bill.id}`}>
+          <Button color={'warning'} block><i className="fa fa-edit"/></Button>
+        </Link>
+      </td>
     </tr>
   );
 }
@@ -72,7 +77,7 @@ class Bills extends Component {
                     <th scope="col">status</th>
                     <th scope="col">opened</th>
                     <th scope="col">closed</th>
-                    <th scope="col">diners</th>
+                    <th scope="col"></th>
                   </tr>
                   </thead>
                   <tbody>

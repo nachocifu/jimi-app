@@ -5,10 +5,10 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Col, Input,
-  InputGroup,
-  InputGroupAddon, InputGroupText, Modal,
-  ModalBody, ModalFooter,
+  Col,
+  Modal,
+  ModalBody,
+  ModalFooter,
   ModalHeader,
   Row,
   Table
@@ -17,10 +17,9 @@ import DishRestClient from '../../http/clients/DishRestClient'
 import Button from "reactstrap/es/Button";
 import Reactotron from "reactotron-react-js";
 import {connect} from "react-redux";
-import Form from "reactstrap/es/Form";
 import Spinner from "reactstrap/es/Spinner";
 import CardFooter from "reactstrap/es/CardFooter";
-
+import {AvField, AvForm} from 'availity-reactstrap-validation';
 
 function DishRow(props) {
   const dish = props.dish;
@@ -34,10 +33,12 @@ function DishRow(props) {
     <tr key={dish.id.toString()}>
       <td><Link to={dishLink}>{dish.name}</Link></td>
       <td>${dish.price}</td>
-      <td><Badge color={getBadge(dish.discontinued)}>{dish.discontinued?'Discontinued':'In Production'}</Badge></td>
+      <td><Badge color={getBadge(dish.discontinued)}>{dish.discontinued ? 'Discontinued' : 'In Production'}</Badge></td>
       <td>{dish.stock}</td>
-      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock + 1)} color={'success'}><i className="fa fa-plus-circle"/></Button></td>
-      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock - 1)} color={'danger'}><i className="fa fa-minus-circle"/></Button></td>
+      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock + 1)} color={'success'}><i
+        className="fa fa-plus-circle"/></Button></td>
+      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock - 1)} color={'danger'}><i
+        className="fa fa-minus-circle"/></Button></td>
     </tr>
   );
 }
@@ -60,17 +61,24 @@ class Dishes extends Component {
 
   constructor(props) {
     super(props);
-    this.dishClient = new DishRestClient(props.token);
+    this.dishClient = new DishRestClient(props);
     this.downloadCsv = this.downloadCsv.bind(this);
-    this.state = {dishes: [], loading: true, form: {name: '',price:0,stock:0,minStock:0}};
+    this.state = {
+      dishes: [],
+      loading: true,
+      modal: false,
+      form: {name: '', price: 0, stock: 0, minStock: 0, error: false}
+    };
     this.newDish = this.newDish.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.handleValidSubmit = this.handleValidSubmit.bind(this);
+    this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
   }
 
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
-      form: {name: '',price:0,stock:0,minStock:0},
+      form: {name: '', price: 0, stock: 0, minStock: 0},
     }));
   }
 
@@ -82,7 +90,15 @@ class Dishes extends Component {
       this.state.form.price,
       this.state.form.minStock)
       .then(() => this.toggle())
-      .then(() => this.updateList());
+      .then(() => this.updateList())
+      .then(() => this.setState({loading: false}))
+      .catch((error) => {
+        Reactotron.error("Failed to create dish");
+
+        let form = {...this.state.form};
+        form.error = true;
+        this.setState({loading: false, form: form});
+      });
   }
 
   updateList() {
@@ -98,6 +114,27 @@ class Dishes extends Component {
     this.updateList();
   }
 
+  handleValidSubmit(event, values) {
+    let form = {...this.state.form};
+    form.error = false;
+    form.name = values.name;
+    form.price = values.price;
+    form.stock = values.stock;
+    form.minStock = values.minStock;
+    this.setState({form: form});
+    this.newDish()
+  }
+
+  handleInvalidSubmit(event, errors, values) {
+    let form = {...this.state.form};
+    form.error = true;
+    form.name = values.name;
+    form.price = values.price;
+    form.stock = values.stock;
+    form.minStock = values.minStock;
+    this.setState({form: form});
+  }
+
   downloadCsv() {
     this.dishClient.getCSV()
       .then((response) => {
@@ -110,7 +147,6 @@ class Dishes extends Component {
       });
   }
 
-
   render() {
 
     if (this.state.loading === true) return (<Spinner style={{width: '3rem', height: '3rem'}}/>);
@@ -121,7 +157,9 @@ class Dishes extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"/> Dishes  <Button onClick={this.downloadCsv} style={{'float': 'right'}} color={'primary'}><i className="fa fa-print"/></Button>
+                <i className="fa fa-align-justify"/> Dishes <Button onClick={this.downloadCsv}
+                                                                    style={{'float': 'right'}} color={'primary'}><i
+                className="fa fa-print"/></Button>
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
@@ -153,66 +191,45 @@ class Dishes extends Component {
           <ModalHeader toggle={this.toggle}>
             New Dish
           </ModalHeader>
-          <Form onSubmit={this.newDish}>
+          <AvForm onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
             <ModalBody>
-              <InputGroup className="mb-3">
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    Name
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input type="text" value={this.state.form.name}
-                       onChange={e => {
-                         let form = {...this.state.form};
-                         form.name = e.target.value;
-                         this.setState({form})
+              <AvField name="name" label="Name" type="text"
+                       validate={{
+                         required: {value: true, errorMessage: 'Please enter a name'},
+                         pattern: {
+                           value: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$',
+                           errorMessage: 'Your name must be composed only with letter and numbers'
+                         },
+                         minLength: {value: 1, errorMessage: 'Your name must be between 1 and 25 characters'},
+                         maxLength: {value: 25, errorMessage: 'Your name must be between 1 and 25 characters'}
                        }}/>
-              </InputGroup>
-              <InputGroup className="mb-3">
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    Price
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input type="text" value={this.state.form.price}
-                       onChange={e => {
-                         let form = {...this.state.form};
-                         form.price = e.target.value;
-                         this.setState({form})
+              <AvField name="price" label="Price" type="number"
+                       validate={{
+                         required: {value: true, errorMessage: 'Please enter a price'},
+                         step: {value: 0.01},
+                         maxLength: {value: 10},
+                         min: {value: 1}
                        }}/>
-              </InputGroup>
-              <InputGroup className="mb-3">
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    Stock
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input type="text" value={this.state.form.stock}
-                       onChange={e => {
-                         let form = {...this.state.form};
-                         form.stock = e.target.value;
-                         this.setState({form})
+              <AvField name="stock" label="Stock" type="number"
+                       validate={{
+                         required: {value: true, errorMessage: 'Please enter a stock'},
+                         step: {value: 1},
+                         min: {value: 1},
+                         max: {value: 10000}
                        }}/>
-              </InputGroup>
-              <InputGroup className="mb-3">
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    Minimum Stock
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input type="text" value={this.state.form.minStock}
-                       onChange={e => {
-                         let form = {...this.state.form};
-                         form.minStock = e.target.value;
-                         this.setState({form})
+              <AvField name="minStock" label="Minimum Stock" type="number"
+                       validate={{
+                         required: {value: true, errorMessage: 'Please enter a minimum stock'},
+                         step: {value: 1},
+                         min: {value: 0},
+                         max: {value: 10000}
                        }}/>
-              </InputGroup>
             </ModalBody>
-            < ModalFooter>
+            <ModalFooter>
               <Button color="primary" className="px-4" block>Save</Button>
               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
-          </Form>
+          </AvForm>
         </Modal>
       </div>
     )

@@ -31,7 +31,7 @@ public interface DishDao {
 	 *
 	 * @return all the dishes.
 	 */
-	Collection<Dish> findAll(int pageSize, int offset);
+	Collection<Dish> findAll(int pageSize, int offset, boolean filterAvailable);
 
 	/**
 	 * Returns all paginated dishes with missing stock, that is, their stock lower than their

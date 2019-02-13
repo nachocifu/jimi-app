@@ -135,7 +135,7 @@ public class DishDaoTest {
 
 	@Test
 	public void testFindAll() {
-		List<Dish> dishes = (List<Dish>) dishDao.findAll(10, 0);
+		List<Dish> dishes = (List<Dish>) dishDao.findAll(10, 0, false);
 		assertEquals(5, dishes.size());
 	}
 
