@@ -5,10 +5,14 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Col, Input,
+  Col,
+  Input,
   InputGroup,
-  InputGroupAddon, InputGroupText, Modal,
-  ModalBody, ModalFooter,
+  InputGroupAddon,
+  InputGroupText,
+  Modal,
+  ModalBody,
+  ModalFooter,
   ModalHeader,
   Row,
   Table
@@ -34,10 +38,12 @@ function DishRow(props) {
     <tr key={dish.id.toString()}>
       <td><Link to={dishLink}>{dish.name}</Link></td>
       <td>${dish.price}</td>
-      <td><Badge color={getBadge(dish.discontinued)}>{dish.discontinued?'Discontinued':'In Production'}</Badge></td>
+      <td><Badge color={getBadge(dish.discontinued)}>{dish.discontinued ? 'Discontinued' : 'In Production'}</Badge></td>
       <td>{dish.stock}</td>
-      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock + 1)} color={'success'}><i className="fa fa-plus-circle"/></Button></td>
-      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock - 1)} color={'danger'}><i className="fa fa-minus-circle"/></Button></td>
+      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock + 1)} color={'success'}><i
+        className="fa fa-plus-circle"/></Button></td>
+      <td><Button onClick={() => addStock(props.self, dish.id, dish.stock - 1)} color={'danger'}><i
+        className="fa fa-minus-circle"/></Button></td>
     </tr>
   );
 }
@@ -60,9 +66,9 @@ class Dishes extends Component {
 
   constructor(props) {
     super(props);
-    this.dishClient = new DishRestClient(props.token);
+    this.dishClient = new DishRestClient(props);
     this.downloadCsv = this.downloadCsv.bind(this);
-    this.state = {dishes: [], loading: true, form: {name: '',price:0,stock:0,minStock:0}};
+    this.state = {dishes: [], loading: true, form: {name: '', price: 0, stock: 0, minStock: 0}};
     this.newDish = this.newDish.bind(this);
     this.toggle = this.toggle.bind(this);
   }
@@ -70,7 +76,7 @@ class Dishes extends Component {
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
-      form: {name: '',price:0,stock:0,minStock:0},
+      form: {name: '', price: 0, stock: 0, minStock: 0},
     }));
   }
 
@@ -121,7 +127,9 @@ class Dishes extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"/> Dishes  <Button onClick={this.downloadCsv} style={{'float': 'right'}} color={'primary'}><i className="fa fa-print"/></Button>
+                <i className="fa fa-align-justify"/> Dishes <Button onClick={this.downloadCsv}
+                                                                    style={{'float': 'right'}} color={'primary'}><i
+                className="fa fa-print"/></Button>
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
