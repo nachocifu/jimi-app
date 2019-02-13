@@ -60,7 +60,8 @@ class Dishes extends Component {
 
   constructor(props) {
     super(props);
-    this.dishClient = new DishRestClient(props);
+    this.dishClient = new DishRestClient(props.token);
+    this.downloadCsv = this.downloadCsv.bind(this);
     this.state = {dishes: [], loading: true, form: {name: '',price:0,stock:0,minStock:0}};
     this.newDish = this.newDish.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -89,12 +90,24 @@ class Dishes extends Component {
       .then((val) => {
         this.setState({dishes: val.data.dishes, loading: false});
       }).catch((error) => {
-      Reactotron.error("Failed to retrieve dishes", error);
+      Reactotron.error("Failed to retrieve dishes");
     });
   }
 
   componentDidMount() {
     this.updateList();
+  }
+
+  downloadCsv() {
+    this.dishClient.getCSV()
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'dishes.csv');
+        document.body.appendChild(link);
+        link.click();
+      });
   }
 
 
@@ -108,7 +121,7 @@ class Dishes extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"/> Dishes
+                <i className="fa fa-align-justify"/> Dishes  <Button onClick={this.downloadCsv} style={{'float': 'right'}} color={'primary'}><i className="fa fa-print"/></Button>
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
