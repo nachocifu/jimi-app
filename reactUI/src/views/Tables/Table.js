@@ -37,7 +37,22 @@ function DishListItem(props) {
       <td>{dish.name}</td>
       <td>{amount}</td>
       <td>
-        {props.delete? <Button onClick={() => props.self.deleteUnDoneDish(dish.id)} color={'warning'} block><i className="fa fa-remove"/></Button> : ''}
+        {props.options && amount > 0?
+          <Button onClick={() => props.self.setDishes(dish.id, amount - 1)} color={'danger'} block><i
+            className="fa fa-minus"/></Button>
+          : ''}
+      </td>
+      <td>
+        {props.options && dish.stock >0?
+          <Button onClick={() => props.self.setDishes(dish.id, amount + 1)} color={'success'} block><i
+            className="fa fa-plus"/></Button>
+          : ''}
+      </td>
+      <td>
+        {props.options ?
+          <Button onClick={() => props.self.deleteUnDoneDish(dish.id)} color={'warning'} block><i
+            className="fa fa-remove"/></Button>
+          : ''}
       </td>
     </tr>
   )
@@ -84,12 +99,13 @@ class Table extends Component {
     this.addDishes = this.addDishes.bind(this);
     this.getAvailableOperations = this.getAvailableOperations.bind(this);
     this.deleteUnDoneDish = this.deleteUnDoneDish.bind(this);
+    this.setDishes = this.setDishes.bind(this);
   }
 
   deleteUnDoneDish(dish) {
     this.setState({loading: true});
     return this.tableClient.deleteUnDoneDish(this.state.table.id, dish)
-      .then(()=> this.loadTable());
+      .then(() => this.loadTable());
   }
 
   componentDidMount() {
@@ -102,7 +118,7 @@ class Table extends Component {
     return this.tableClient.getTable(this.props.match.params.id)
       .then((val) => {
         Reactotron.display({
-          preview: "Retrieved Table "+val.data.id,
+          preview: "Retrieved Table " + val.data.id,
           name: val.data.name,
           value: val.data
         });
@@ -232,6 +248,16 @@ class Table extends Component {
       }));
   }
 
+  setDishes(dish, amount) {
+    this.tableClient.setUndoneDishes(this.state.table.id, dish, amount)
+      .then(() => this.loadTable())
+      .catch(() => Reactotron.display({
+        name: 'Table add dish Fail',
+        preview: 'Table add dish Fail',
+        value: this.state.table
+      }));
+  }
+
   handleStatusChange(nextStatus) {
     this.setState({loading: true});
     this.tableClient.setStatus(this.state.table.id, nextStatus)
@@ -246,7 +272,7 @@ class Table extends Component {
   getAvailableOperations() {
     switch (this.state.table.status) {
       case 'FREE':
-        return <Button color={'success'} onClick={()=> this.handleStatusChange("BUSY")} block>SET OCCUPIED</Button>;
+        return <Button color={'success'} onClick={() => this.handleStatusChange("BUSY")} block>SET OCCUPIED</Button>;
       case 'BUSY':
         return (
           <div>
@@ -257,15 +283,16 @@ class Table extends Component {
               <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"} block><i
                 className="fa fa-plus"/> Dinner</Button>
             </ButtonGroup>
-            <Button onClick={()=> this.handleStatusChange("PAYING")} color={"danger"} block style={{'margin-top': '5px'}}>CHARGE</Button>
+            <Button onClick={() => this.handleStatusChange("PAYING")} color={"danger"} block
+                    style={{'margin-top': '5px'}}>CHARGE</Button>
           </div>
         );
       case 'PAYING':
         return (
           <div>
-            <Button  color={"success"} block>PRINT</Button>
+            <Button color={"success"} block>PRINT</Button>
             <Button
-              onClick={()=> this.handleStatusChange("FREE")}
+              onClick={() => this.handleStatusChange("FREE")}
               color={"success"} block style={{'margin-top': '5px'}}>CHARGED</Button>
           </div>
         );
@@ -313,14 +340,14 @@ class Table extends Component {
                   </tbody>
                 </TableHtml>
               </CardBody>
-              {this.props.roles.filter(value => value==='ROLE_ADMIN').length > 0? (
+              {this.props.roles.filter(value => value === 'ROLE_ADMIN').length > 0 ? (
 
                 <CardFooter>
                   <Button color="secondary" onClick={this.toggle}>Edit</Button>
                   <Button color="danger" onClick={this.handleDelete}
                           disabled={this.state.table.status !== 'FREE'}>Delete</Button>
                 </CardFooter>
-                ):''
+              ) : ''
               }
             </Card>
           </Col>
@@ -342,12 +369,12 @@ class Table extends Component {
               <CardBody>
                 <TableHtml>
                   <tbody>
-                    {this.state.table.unDoneDishes.map((entry, index) =>
-                      <DishListItem dish={entry.key} amount={entry.value.amount} self={this} delete={true}/>
-                    )}
-                    {this.state.table.doneDishes.map((entry, index) =>
-                      <DishListItem dish={entry.key} amount={entry.value} self={this} delete={false}/>
-                    )}
+                  {this.state.table.unDoneDishes.map((entry, index) =>
+                    <DishListItem dish={entry.key} amount={entry.value.amount} self={this} options={true}/>
+                  )}
+                  {this.state.table.doneDishes.map((entry, index) =>
+                    <DishListItem dish={entry.key} amount={entry.value} self={this} options={false}/>
+                  )}
                   </tbody>
                 </TableHtml>
               </CardBody>
