@@ -1,12 +1,13 @@
 import {LOGIN_ERRORED, LOGIN_PENDING, LOGIN_REQUESTED, LOGIN_SUCCESSFULL} from "../actions/actionTypes";
-
+import Reactotron from "reactotron-react-js";
+import jwt_decode from 'jwt-decode'
 
 // TODO for when spliting reducers
 // export default combineReducers({ });
 
 
 const initialState = {
-  authentication: {status: LOGIN_PENDING, token: null, info: null}
+  authentication: {status: LOGIN_PENDING, token: null, info: null, roles: []}
 };
 
 export default function (state = initialState, action) {
@@ -22,11 +23,18 @@ export default function (state = initialState, action) {
     }
     case LOGIN_SUCCESSFULL: {
       const {token} = action.payload;
+      let content = jwt_decode(token);
+      Reactotron.display({
+        preview: 'Login',
+        name: 'Succesful Login',
+        value: content
+      });
       return {
         ...state,
         authentication: {
           status: LOGIN_SUCCESSFULL,
-          token: token
+          token: token,
+          roles: content.roles,
         }
       };
     }
