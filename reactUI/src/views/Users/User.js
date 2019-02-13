@@ -10,7 +10,7 @@ class User extends Component {
   usersClient;
   constructor(props) {
     super(props);
-    this.usersClient = new UserRestClient(this.props.token);
+    this.usersClient = new UserRestClient(props);
     this.state = {
       user: null,
       loading: true,

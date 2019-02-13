@@ -1,13 +1,22 @@
 import axios from 'axios';
 import conf from '../conf';
+import Reactotron from "reactotron-react-js";
+import {LOGOUT} from "../redux/actions/actionTypes";
 
-export default class RestClient {
+class RestClient {
   protocol;
   domain;
   port;
   instance;
 
-  constructor(token = null) {
+  constructor(props) {
+    Reactotron.debug(props);
+    let token;
+    let dispatch;
+    if (props) {
+      token = props.token;
+      dispatch = props.dispatch;
+    }
     // Get Values From environment
     this.protocol = conf.API_PROTOCOL;
     this.domain = conf.API_DOMAIN;
@@ -17,7 +26,7 @@ export default class RestClient {
     const headers = {
       // 'Content-Type': 'application/x-www-form-urlencoded',
       'X-AUTH-TOKEN': token
-      };
+    };
 
     // Create axios instance
     this.instance = axios.create({
@@ -25,5 +34,20 @@ export default class RestClient {
       timeout: 60000,
       headers: headers,
     });
+
+    // Add a response interceptor for 401
+    this.instance.interceptors.response.use(
+      (response) => {
+        return response;
+      }, (error) => {
+        let errorResponse = error.response;
+        if (errorResponse.status === 401) {
+          dispatch({type: LOGOUT});
+          props.history.push('login');
+        }
+        return Promise.reject(error);
+      });
   }
 }
+
+export default RestClient;

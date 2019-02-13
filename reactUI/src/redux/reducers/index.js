@@ -1,4 +1,4 @@
-import {LOGIN_ERRORED, LOGIN_PENDING, LOGIN_REQUESTED, LOGIN_SUCCESSFULL} from "../actions/actionTypes";
+import {LOGIN_ERRORED, LOGIN_PENDING, LOGIN_REQUESTED, LOGIN_SUCCESSFULL, LOGOUT} from "../actions/actionTypes";
 
 
 // TODO for when spliting reducers
@@ -38,6 +38,16 @@ export default function (state = initialState, action) {
           status: LOGIN_ERRORED,
           token: '',
           info: info
+        }
+      };
+    }
+    case LOGOUT: {
+      return {
+        ...state,
+        authentication: {
+          status: LOGIN_PENDING,
+          token: '',
+          info: '',
         }
       };
     }

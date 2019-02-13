@@ -45,7 +45,7 @@ class Dishes extends Component {
 
   constructor(props) {
     super(props);
-    this.dishClient = new DishRestClient(props.token);
+    this.dishClient = new DishRestClient(props);
     this.state = {dishes: [], loading: true};
   }
 
