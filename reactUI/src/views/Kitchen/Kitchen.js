@@ -11,7 +11,7 @@ function KitchenItem(props) {
 
 
   return (
-    <Col sm={4}>
+    <Col>
       <Card>
         <CardHeader>
           <i className="fa fa-align-justify"/> {table.name}
