@@ -54,7 +54,7 @@ class Dishes extends Component {
       .then((val) => {
         this.setState({dishes: val.data.dishes, loading: false});
       }).catch((error) => {
-      Reactotron.error("Failed to retrieve dishes", error);
+      Reactotron.error("Failed to retrieve dishes");
     });
   }
 
