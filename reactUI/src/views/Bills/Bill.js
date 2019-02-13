@@ -5,7 +5,7 @@ import {
   CardBody,
   CardHeader,
   Col, Input, InputGroup, InputGroupAddon, Modal, ModalBody, ModalFooter, ModalHeader,
-  Row,
+  Row, Table as TableHtml,
   Table
 } from 'reactstrap';
 
@@ -17,6 +17,25 @@ import ButtonGroup from "reactstrap/es/ButtonGroup";
 import CardFooter from "reactstrap/es/CardFooter";
 import DishRestClient from "../../http/clients/DishRestClient";
 import Form from "reactstrap/es/Form";
+
+function DishListItem(props) {
+  let dish = props.dish;
+  let amount = props.amount;
+
+  Reactotron.debug(dish);
+  Reactotron.debug(amount);
+  return (
+    <tr key={dish.id}>
+      <td>{dish.name}</td>
+      <td>{amount}</td>
+      <td>{dish.price}</td>
+      <td>{dish.price * amount}</td>
+      <td>
+        {props.delete? <Button onClick={() => props.self.deleteDish(dish.id)} color={'warning'} block><i className="fa fa-remove"/></Button> : ''}
+      </td>
+    </tr>
+  )
+}
 
 class Bill extends Component {
 
@@ -44,6 +63,12 @@ class Bill extends Component {
     this.toggleAddDishNested = this.toggleAddDishNested.bind(this);
     this.toggleAddDishAll = this.toggleAddDishAll.bind(this);
     this.addDishes = this.addDishes.bind(this);
+  }
+
+  deleteDish(dish) {
+    this.setState({loading: true});
+    return this.billClient.deleteDish(this.state.bill.id, dish)
+      .then(()=> this.loadBill());
   }
 
   loadBill() {
@@ -159,6 +184,29 @@ class Bill extends Component {
               <CardFooter>
                 <Button onClick={this.preToggleAddDish} color={"success"} block>ADD DISH</Button>
               </CardFooter>
+            </Card>
+          </Col>
+
+          <Col lg={12}>
+            <Card>
+              <CardHeader>
+                <strong><i className="icon-list pr-1"/>Dishes</strong>
+              </CardHeader>
+              <CardBody>
+                <TableHtml>
+                  <thead>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                  </thead>
+                  <tbody>
+                  {this.state.bill.doneDishes.entry.map((entry, index) =>
+                    <DishListItem dish={entry.key} amount={entry.value} self={this} delete={true}/>
+                  )}
+                  </tbody>
+                </TableHtml>
+              </CardBody>
             </Card>
           </Col>
         </Row>

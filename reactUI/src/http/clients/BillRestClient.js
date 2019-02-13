@@ -40,4 +40,9 @@ export default class BillRestClient extends RestClient {
       {amount: amount}
     );
   }
+
+  deleteDish(bill, dish) {
+    return this.setDishes(bill,dish, 0);
+  }
+
 }
