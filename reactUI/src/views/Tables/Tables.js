@@ -6,7 +6,6 @@ import {
   CardBody,
   CardHeader,
   Col,
-  InputGroup,
   InputGroupAddon,
   InputGroupText,
   Modal,
@@ -72,7 +71,7 @@ class Tables extends Component {
       .then(() => this.toggle())
       .then(() => this.setState({loading: false}))
       .catch((error) => {
-        Reactotron.error("Failed to create tables");
+        Reactotron.error("Failed to create table");
 
         let form = {...this.state.form};
         form.nameError = true;
@@ -155,17 +154,15 @@ class Tables extends Component {
           </ModalHeader>
           <AvForm onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
             <ModalBody>
-              <InputGroup className="mb-3">
-                <AvField name="name" label="Name" type="text" validate={{
-                  required: {value: true, errorMessage: 'Please enter a name'},
-                  pattern: {
-                    value: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$',
-                    errorMessage: 'Your name must be composed only with letter and numbers'
-                  },
-                  minLength: {value: 4, errorMessage: 'Your name must be between 4 and 20 characters'},
-                  maxLength: {value: 20, errorMessage: 'Your name must be between 4 and 20 characters'}
-                }}/>
-              </InputGroup>
+              <AvField name="name" label="Name" type="text" validate={{
+                required: {value: true, errorMessage: 'Please enter a name'},
+                pattern: {
+                  value: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$',
+                  errorMessage: 'Your name must be composed only with letter and numbers'
+                },
+                minLength: {value: 4, errorMessage: 'Your name must be between 4 and 20 characters'},
+                maxLength: {value: 20, errorMessage: 'Your name must be between 4 and 20 characters'}
+              }}/>
               {this.state.form.nameError ? (
                 <InputGroupAddon addonType="append">
                   <InputGroupText>
