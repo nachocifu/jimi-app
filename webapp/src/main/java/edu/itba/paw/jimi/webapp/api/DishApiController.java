@@ -46,7 +46,7 @@ public class DishApiController extends BaseApiController {
 	@Context
 	private UriInfo uriInfo;
 
-	private static final int DEFAULT_PAGE_SIZE = 5;
+	private static final int DEFAULT_PAGE_SIZE = 15;
 	private static final int MAX_PAGE_SIZE = 20;
 
 	@GET
@@ -80,6 +80,7 @@ public class DishApiController extends BaseApiController {
 
 	@POST
 	@Produces(value = {MediaType.APPLICATION_JSON})
+	@Consumes(value = {MediaType.APPLICATION_JSON})
 	public Response createDish(@Valid final DishForm dishForm) {
 		if (dishForm == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
