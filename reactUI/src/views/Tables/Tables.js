@@ -95,7 +95,6 @@ class Tables extends Component {
   }
 
   handleValidSubmit(event, values) {
-    event.preventDefault();
     let form = {...this.state.form};
     form.error = false;
     form.nameError = false;
