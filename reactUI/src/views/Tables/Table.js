@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {
-  Badge,
   Button,
   Card,
   CardBody,
@@ -23,7 +22,7 @@ import TableRestClient from "../../http/clients/TableRestClient";
 import Spinner from "reactstrap/es/Spinner";
 import Form from "reactstrap/es/Form";
 import CardFooter from "reactstrap/es/CardFooter";
-import {Link, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import ButtonGroup from "reactstrap/es/ButtonGroup";
 import DishRestClient from "../../http/clients/DishRestClient";
 
