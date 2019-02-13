@@ -54,7 +54,7 @@ class Kitchen extends Component {
 
   constructor(props) {
     super(props);
-    this.tableClient = new TableRestClient(props.token);
+    this.tableClient = new TableRestClient(props);
     this.state ={tables: [], loading: true, refresh: 5000};
     this.confirmDish = this.confirmDish.bind(this);
     this.timer = this.timer.bind(this);

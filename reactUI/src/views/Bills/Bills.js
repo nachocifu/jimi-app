@@ -35,7 +35,7 @@ class Bills extends Component {
 
   constructor(props) {
     super(props);
-    this.billClient = new BillRestClient(props.token);
+    this.billClient = new BillRestClient(props);
     this.state = {bills: [], loading: true};
   }
 

@@ -50,8 +50,8 @@ class Table extends Component {
 
   constructor(props) {
     super(props);
-    this.tableClient = new TableRestClient(this.props.token);
-    this.dishClient = new DishRestClient(this.props.token);
+    this.tableClient = new TableRestClient(props);
+    this.dishClient = new DishRestClient(props);
     this.state = {
       table: {
         id: null,

@@ -25,7 +25,7 @@ class Dish extends Component {
   dishClient;
   constructor(props) {
     super(props);
-    this.dishClient = new DishRestClient(this.props.token);
+    this.dishClient = new DishRestClient(props);
     this.state = {
       dish: null,
       loading: true,
