@@ -71,7 +71,7 @@ public interface DishService {
 	 *
 	 * @return all the dishes paginated.
 	 */
-	Collection<Dish> findAll(int pageSize, int offset);
+	Collection<Dish> findAll(int pageSize, int offset, boolean filterAvailable);
 
 	/**
 	 * Returns all available paginated dishes, that is, stock greater than 0.

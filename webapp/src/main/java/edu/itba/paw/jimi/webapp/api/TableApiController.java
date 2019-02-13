@@ -234,11 +234,10 @@ public class TableApiController extends BaseApiController {
 		}
 
 		if (orderService.containsUndoneDish(table.getOrder(), dish.getId())) {
-			LOGGER.warn("From table with id {}, dish id {} already exists", id, dish.getId());
-			return Response
-					.status(Response.Status.CONFLICT)
-					.entity(errorMessageToJSON(messageSource.getMessage("table.error.dish.exists.body", null, LocaleContextHolder.getLocale())))
-					.build();
+			LOGGER.warn("From table with id {}, dish id {} already exists. Adding more dish amount {}", id, dish.getId(), tableAddDishForm.getAmount());
+			final int currentAmount = table.getOrder().getUnDoneDishes().get(dish).getAmount();
+			orderService.setNewUndoneDishAmount(table.getOrder(), dish, currentAmount + tableAddDishForm.getAmount());
+			return Response.ok(new TableDTO(table, buildBaseURI(uriInfo))).build();
 		}
 
 		if (!table.getOrder().getStatus().equals(OrderStatus.OPEN) && !userAuthenticationService.currentUserHasRole(User.ROLE_ADMIN)) {

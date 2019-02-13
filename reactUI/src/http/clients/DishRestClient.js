@@ -9,11 +9,23 @@ export default class DishRestClient extends RestClient {
    *  @returns {Promise} - The http promise.
    * @param page
    * @param pagesize
+   * @param filterAvailable filter available dishes
    */
-  get(page, pagesize) {
+  get(page, pagesize, filterAvailable = false) {
     return this.instance.get(
-      'api/dishes?page='+page+'&pageSize='+pagesize
+      'api/dishes?page=' + page + '&pageSize=' + pagesize + '&filterAvailable=' + filterAvailable
     );
+  }
+
+  /**
+   *  Perform http request to get available dishes
+   *
+   *  @returns {Promise} - The http promise.
+   * @param page
+   * @param pagesize
+   */
+  getAvailable(page, pagesize) {
+    return this.get(page, pagesize, true);
   }
 
   /**
@@ -24,13 +36,13 @@ export default class DishRestClient extends RestClient {
    */
   getDish(id) {
     return this.instance.get(
-      'api/dishes/'+id
+      'api/dishes/' + id
     );
   }
 
   putStock(id, newStock) {
     return this.instance.post(
-      'api/dishes/'+id+'/stock',
+      'api/dishes/' + id + '/stock',
       {newStock: newStock}
       // querystring.stringify({oldStock: oldStock, newStock: newStock})
     );
@@ -38,14 +50,14 @@ export default class DishRestClient extends RestClient {
 
   update(id, name, price, stock, minStock) {
     return this.instance.put(
-      'api/dishes/'+id,
+      'api/dishes/' + id,
       {name: name, price: price, stock: stock, minStock: minStock}
     );
   }
 
   discontinue(id) {
     return this.instance.post(
-      'api/dishes/'+id+"/discontinued"
+      'api/dishes/' + id + "/discontinued"
     );
   }
 
@@ -54,9 +66,9 @@ export default class DishRestClient extends RestClient {
     return this.instance.post(
       'api/dishes/downloadCSV',
       {responseType: 'blob'}
-      );
+    );
   }
-  
+
   /**
    *
    * @param name
@@ -65,7 +77,7 @@ export default class DishRestClient extends RestClient {
    * @param minStock
    * @return Promise
    */
-  create(name, price, stock, minStock){
+  create(name, price, stock, minStock) {
     return this.instance.post(
       'api/dishes',
       {name: name, price: price, stock: stock, minStock: minStock}
