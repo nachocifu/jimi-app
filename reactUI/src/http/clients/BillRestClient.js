@@ -16,4 +16,14 @@ export default class BillRestClient extends RestClient {
     );
   }
 
+  /**
+   *
+   * @param id
+   * @return Promise
+   */
+  getBill(id) {
+    return this.instance.get(
+      'api/admin/bills/'+id
+    );
+  }
 }
