@@ -63,7 +63,7 @@ class App extends Component {
               this.store.getState().authentication.status !== LOGIN_SUCCESSFULL ? (
                 <Redirect to="/login"/>
               ) : (
-                <DefaultLayout/>
+                <DefaultLayout store={this.store}/>
               )
 
             )}/>

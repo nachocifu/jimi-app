@@ -5,10 +5,14 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Col, Input,
+  Col,
+  Input,
   InputGroup,
-  InputGroupAddon, InputGroupText, Modal,
-  ModalBody, ModalFooter,
+  InputGroupAddon,
+  InputGroupText,
+  Modal,
+  ModalBody,
+  ModalFooter,
   ModalHeader,
   Row,
   Table
@@ -34,7 +38,7 @@ function TableRow(props) {
       <td>
         <Link to={`/tables/${table.id}`}>
           <Button color={'warning'} block><i className="fa fa-edit"/></Button>
-          </Link>
+        </Link>
       </td>
     </tr>
   )
@@ -48,7 +52,7 @@ class Tables extends Component {
   constructor(props) {
     super(props);
     this.tableClient = new TableRestClient(props);
-    this.state ={tables: [], loading: true, modal: false, form: {name: ''}};
+    this.state = {tables: [], loading: true, modal: false, form: {name: ''}};
     this.toggle = this.toggle.bind(this);
     this.newTable = this.newTable.bind(this);
     this.updateList = this.updateList.bind(this);
@@ -61,25 +65,25 @@ class Tables extends Component {
     }));
   }
 
-  newTable(){
+  newTable() {
     this.toggle();
     this.setState({loading: true});
     this.tableClient.create(this.state.form.name)
       .then(() => this.updateList())
-      .then(() => this.setState({loading:false}));
+      .then(() => this.setState({loading: false}));
   }
 
   updateList() {
-    return this.tableClient.get(0,10)
+    return this.tableClient.get(0, 10)
       .then((val) => {
         this.setState({tables: val.data.tables});
-      }).catch((error)=>{
-      Reactotron.error("Failed to retrieve tables", error);
-    });
+      }).catch((error) => {
+        Reactotron.error("Failed to retrieve tables", error);
+      });
   }
 
   componentDidMount() {
-    this.updateList().finally(()=> this.setState({loading:false}));
+    this.updateList().finally(() => this.setState({loading: false}));
   }
 
   render() {
@@ -108,9 +112,15 @@ class Tables extends Component {
                   </tbody>
                 </Table>
               </CardBody>
-              <CardFooter>
-                <Button onClick={this.toggle} color="primary" className="px-4" block><i className="fa fa-plus-circle"/>Table</Button>
-              </CardFooter>
+
+              {this.props.roles.filter(value => value === 'ROLE_ADMIN').length > 0 ? (
+
+                <CardFooter>
+                  <Button onClick={this.toggle} color="primary" className="px-4" block><i
+                    className="fa fa-plus-circle"/>Table</Button>
+                </CardFooter>
+              ) : ''
+              }
             </Card>
           </Col>
         </Row>
@@ -147,7 +157,10 @@ class Tables extends Component {
 }
 
 const mapStateToProps = state => {
-  return {token: state.authentication.token};
+  return {
+    token: state.authentication.token,
+    roles: state.authentication.roles
+  };
 };
 
 export default connect(mapStateToProps)(Tables);

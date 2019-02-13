@@ -313,11 +313,15 @@ class Table extends Component {
                   </tbody>
                 </TableHtml>
               </CardBody>
-              <CardFooter>
-                <Button color="secondary" onClick={this.toggle}>Edit</Button>
-                <Button color="danger" onClick={this.handleDelete}
-                        disabled={this.state.table.status !== 'FREE'}>Delete</Button>
-              </CardFooter>
+              {this.props.roles.filter(value => value==='ROLE_ADMIN').length > 0? (
+
+                <CardFooter>
+                  <Button color="secondary" onClick={this.toggle}>Edit</Button>
+                  <Button color="danger" onClick={this.handleDelete}
+                          disabled={this.state.table.status !== 'FREE'}>Delete</Button>
+                </CardFooter>
+                ):''
+              }
             </Card>
           </Col>
           <Col lg={6}>
@@ -427,7 +431,10 @@ class Table extends Component {
 }
 
 const mapStateToProps = state => {
-  return {token: state.authentication.token};
+  return {
+    token: state.authentication.token,
+    roles: state.authentication.roles,
+  };
 };
 
 export default connect(mapStateToProps)(Table);
