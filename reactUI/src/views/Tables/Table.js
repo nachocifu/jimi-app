@@ -262,14 +262,14 @@ class Table extends Component {
         return (
           <div>
             <Button onClick={this.preToggleAddDish} color={"success"} block>ADD DISH</Button>
-            <ButtonGroup style={{'width': '100%', 'margin-top': '5px'}}>
+            <ButtonGroup style={{'width': '100%', 'marginTop': '5px'}}>
               <Button onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"} block><i
                 className="fa fa-minus"/> Dinner</Button>
               <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"} block><i
                 className="fa fa-plus"/> Dinner</Button>
             </ButtonGroup>
             <Button onClick={() => this.handleStatusChange("PAYING")} color={"danger"} block
-                    style={{'margin-top': '5px'}}>CHARGE</Button>
+                    style={{'marginTop': '5px'}}>CHARGE</Button>
           </div>
         );
       case 'PAYING':
@@ -278,7 +278,7 @@ class Table extends Component {
             <Button color={"success"} block>PRINT</Button>
             <Button
               onClick={() => this.handleStatusChange("FREE")}
-              color={"success"} block style={{'margin-top': '5px'}}>CHARGED</Button>
+              color={"success"} block style={{'marginTop': '5px'}}>CHARGED</Button>
           </div>
         );
       default:
