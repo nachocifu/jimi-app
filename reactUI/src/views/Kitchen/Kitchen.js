@@ -25,7 +25,7 @@ function KitchenItem(props) {
         </CardBody>
       </Card>
     </Col>
-  )
+  );
 }
 
 function KitchenDishRow(props) {

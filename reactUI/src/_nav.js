@@ -8,6 +8,7 @@ export default {
         variant: 'info',
         text: 'NEW',
       },
+      roles: ['ROLE_ADMIN']
     },
     {
       name: 'Bills',
@@ -18,6 +19,7 @@ export default {
         variant: 'info',
         text: 'NEW',
       },
+      roles: ['ROLE_ADMIN']
     },
     {
       name: 'Dishes',
@@ -28,6 +30,7 @@ export default {
         variant: 'info',
         text: 'NEW',
       },
+      roles: ['ROLE_ADMIN']
     },
     {
       name: 'Users',
@@ -38,6 +41,7 @@ export default {
         variant: 'info',
         text: 'NEW',
       },
+      roles: ['ROLE_ADMIN']
     },
     {
       name: 'Kitchen',
@@ -48,6 +52,7 @@ export default {
         variant: 'info',
         text: 'NEW',
       },
+      roles: ['ROLE_ADMIN', 'ROLE_USER']
     },
     {
       name: 'Tables',
@@ -58,6 +63,7 @@ export default {
         variant: 'info',
         text: 'NEW',
       },
+      roles: ['ROLE_ADMIN', 'ROLE_USER']
     },
   ],
 };
