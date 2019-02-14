@@ -67,7 +67,7 @@ class Bills extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"/> Dishes
+                <i className="fa fa-align-justify"/> Bills
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
