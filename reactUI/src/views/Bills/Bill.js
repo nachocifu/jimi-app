@@ -23,7 +23,7 @@ import Spinner from "reactstrap/es/Spinner";
 import BillRestClient from "../../http/clients/BillRestClient";
 import CardFooter from "reactstrap/es/CardFooter";
 import DishRestClient from "../../http/clients/DishRestClient";
-import Form from "reactstrap/es/Form";
+import {AvField, AvForm} from 'availity-reactstrap-validation';
 
 function DishListItem(props) {
   let dish = props.dish;
@@ -38,7 +38,8 @@ function DishListItem(props) {
       <td>{dish.price}</td>
       <td>{dish.price * amount}</td>
       <td>
-        {props.delete? <Button onClick={() => props.self.deleteDish(dish.id)} color={'warning'} block><i className="fa fa-remove"/></Button> : ''}
+        {props.delete ? <Button onClick={() => props.self.deleteDish(dish.id)} color={'warning'} block><i
+          className="fa fa-remove"/></Button> : ''}
       </td>
     </tr>
   )
@@ -70,12 +71,14 @@ class Bill extends Component {
     this.toggleAddDishNested = this.toggleAddDishNested.bind(this);
     this.toggleAddDishAll = this.toggleAddDishAll.bind(this);
     this.addDishes = this.addDishes.bind(this);
+    this.handleDishAmountValidSubmit = this.handleDishAmountValidSubmit.bind(this);
+    this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
   }
 
   deleteDish(dish) {
     this.setState({loading: true});
     return this.billClient.deleteDish(this.state.bill.id, dish)
-      .then(()=> this.loadBill());
+      .then(() => this.loadBill());
   }
 
   loadBill() {
@@ -91,7 +94,7 @@ class Bill extends Component {
           loading: false,
           form: {name: val.data.name, price: val.data.price, stock: val.data.stock, minStock: val.data.minStock}
         });
-      }).catch((error)=>{
+      }).catch((error) => {
         this.setState({loading: false});
         Reactotron.error({
           preview: 'Failded to retrieve bill',
@@ -101,7 +104,19 @@ class Bill extends Component {
       });
   }
 
-  componentDidMount(){
+  loadDishes() {
+    return this.dishClient.getAvailable(0, 100)
+      .then((val) => {
+        Reactotron.display({
+          name: 'Bill Dishes to add SUCCESS',
+          preview: 'Bill Dishes to add SUCCESS',
+          value: val.data
+        });
+        this.setState({loading: false, dishes: val.data.dishes});
+      })
+  }
+
+  componentDidMount() {
     this.loadBill();
   }
 
@@ -109,7 +124,7 @@ class Bill extends Component {
     this.setState({loading: true});
     this.billClient.addDish(this.state.bill.id, this.state.dishSelection, this.state.dishSelectionNum)
       .then(this.toggleAddDishAll())
-      .then(() => this.loadBill())
+      .then(() => Promise.all([this.loadBill(), this.loadDishes()]))
       .catch(() => Reactotron.display({
         name: 'Bill add dish Fail',
         preview: 'Bill add dish Fail',
@@ -160,11 +175,29 @@ class Bill extends Component {
     });
   }
 
+  handleDishAmountValidSubmit(event, values) {
+    let form = {...this.state.form};
+    form.error = false;
+    form.nameError = false;
+    form.dishSelectionNum = values.dishSelectionNum;
+    this.setState({form: form});
+    this.addDishes()
+  }
+
+  handleInvalidSubmit(event, errors, values) {
+    let form = {...this.state.form};
+    form.error = true;
+    form.nameError = false;
+    form.name = values.name;
+    form.dishSelectionNum = values.dishSelectionNum;
+    this.setState({form: form});
+  }
+
   render() {
 
-    if(this.state.loading === true) return (<Spinner style={{width: '3rem', height: '3rem'}}/>);
+    if (this.state.loading === true) return (<Spinner style={{width: '3rem', height: '3rem'}}/>);
 
-    if(this.state.bill === null) return [['id', (<span><i className="text-muted icon-ban"/> Not found</span>)]];
+    if (this.state.bill === null) return [['id', (<span><i className="text-muted icon-ban"/> Not found</span>)]];
 
     return (
       <div className="animated fadeIn">
@@ -177,14 +210,14 @@ class Bill extends Component {
               <CardBody>
                 <Table responsive striped hover>
                   <tbody>
-                    <tr key={'id'}>
-                      <td>ID</td>
-                      <td><strong>{this.state.bill.id}</strong></td>
-                    </tr>
-                    <tr key={'diners'}>
-                      <td>Diners</td>
-                      <td>{this.state.bill.diners}</td>
-                    </tr>
+                  <tr key={'id'}>
+                    <td>ID</td>
+                    <td><strong>{this.state.bill.id}</strong></td>
+                  </tr>
+                  <tr key={'diners'}>
+                    <td>Diners</td>
+                    <td>{this.state.bill.diners}</td>
+                  </tr>
                   </tbody>
                 </Table>
               </CardBody>
@@ -202,14 +235,16 @@ class Bill extends Component {
               <CardBody>
                 <TableHtml>
                   <thead>
+                  <tr>
                     <th>Name</th>
                     <th>Amount</th>
                     <th>Price</th>
                     <th>Total</th>
+                  </tr>
                   </thead>
                   <tbody>
                   {this.state.bill.doneDishes.entry.map((entry, index) =>
-                    <DishListItem dish={entry.key} amount={entry.value} self={this} delete={true}/>
+                    <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value} self={this} delete={true}/>
                   )}
                   </tbody>
                 </TableHtml>
@@ -223,14 +258,13 @@ class Bill extends Component {
           <ModalBody>
             <Row>
               {this.state.dishes.map((dish) =>
-                <Col lg={3}>
+                <Col lg={3} key={dish.id}>
                   <Button size={'lg'} color={'info'} lg={3} block style={{margin: '2.5px'}}
                           onClick={() => {
                             this.setState({dishSelection: dish.id});
                             this.toggleAddDishNested();
-                          }}
-                  >
-                    {dish.name} ({dish.price})
+                          }}>
+                    {dish.name}
                   </Button>
                 </Col>
               )}
@@ -239,24 +273,30 @@ class Bill extends Component {
             <Modal isOpen={this.state.addDishModalNested} toggle={this.toggleAddDishNested}
                    onClosed={this.state.addDishCloseAll ? this.toggleAddDish : undefined}>
               <ModalHeader>How Many?</ModalHeader>
-              <Form>
+              <AvForm onValidSubmit={this.handleDishAmountValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
                 <ModalBody>
-                  <InputGroup className="mb-3">
-                    <InputGroup>
-                      <InputGroupAddon addonType="prepend">#</InputGroupAddon>
-                      <Input placeholder="Amount" type="number" step="1"
-                             onChange={e => this.setState({dishSelectionNum: e.target.value})}/>
-                    </InputGroup>
-                  </InputGroup>
+                  <AvField name="dishSelectionNum" label="Amount" type="number"
+                           onChange={e => this.setState({dishSelectionNum: e.target.value})}
+                           validate={{
+                             required: {value: true, errorMessage: 'Please enter an amount'},
+                             step: {value: 1},
+                             min: {value: 1, errorMessage: 'Minimum of 1'},
+                             max: {
+                               value:
+                                 this.state.dishes.find(dish => dish.id === this.state.dishSelection) ?
+                                   this.state.dishes.find(dish => dish.id === this.state.dishSelection).stock :
+                                   0,
+                               errorMessage: 'Not enough stock'
+                             }
+                           }}/>
                 </ModalBody>
                 <ModalFooter>
                   <Button color="primary" onClick={this.toggleAddDishNested}>Back</Button>
                   <Button color="secondary" onClick={this.toggleAddDishAll}>Cancel</Button>
-                  <Button color="success" onClick={this.addDishes}>Submit</Button>
+                  <Button color="success">Submit</Button>
                 </ModalFooter>
-              </Form>
+              </AvForm>
             </Modal>
-
 
           </ModalBody>
           <ModalFooter>
