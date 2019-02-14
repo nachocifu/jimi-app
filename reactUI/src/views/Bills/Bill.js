@@ -95,7 +95,7 @@ class Bill extends Component {
           form: {name: val.data.name, price: val.data.price, stock: val.data.stock, minStock: val.data.minStock}
         });
       }).catch((error) => {
-        this.setState({loading: false});
+        this.setState({loading: false, bill: null});
         Reactotron.error({
           preview: 'Failded to retrieve bill',
           name: 'Failed to retrieve bill',
@@ -197,7 +197,11 @@ class Bill extends Component {
 
     if (this.state.loading === true) return (<Spinner style={{width: '3rem', height: '3rem'}}/>);
 
-    if (this.state.bill === null) return [['id', (<span><i className="text-muted icon-ban"/> Not found</span>)]];
+    Reactotron.error(this.state.bill);
+    if (this.state.bill === null) {
+      this.props.history.push('/404');
+      return "";
+    }
 
     return (
       <div className="animated fadeIn">
@@ -205,7 +209,7 @@ class Bill extends Component {
           <Col lg={6}>
             <Card>
               <CardHeader>
-                <strong><i className="icon-info pr-1"/>{this.state.bill.name}</strong>
+                <strong><i className="icon-info pr-1"/></strong>
               </CardHeader>
               <CardBody>
                 <Table responsive striped hover>

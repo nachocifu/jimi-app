@@ -33,6 +33,8 @@ class User extends Component {
   render() {
     if(this.state.loading === true) return <Spinner style={{ width: '3rem', height: '3rem' }} />;
 
+    if (!this.state.user) this.props.history.push('/404');
+
     const userDetails = this.state.user ? Object.entries(this.state.user) : [['id', (
       <span><i className="text-muted icon-ban"></i> Not found</span>)]]
 

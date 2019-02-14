@@ -83,11 +83,13 @@ class Table extends Component {
       modalLoading: false,
       redirectToList: false,
       modal: false,
+      confirmationModal: false,
       addDishModal: false,
       addDishModalNested: false,
       addDishCloseAll: false
     };
     this.toggle = this.toggle.bind(this);
+    this.toggleConfirmationModal = this.toggleConfirmationModal.bind(this);
     this.preToggleAddDish = this.preToggleAddDish.bind(this);
     this.toggleAddDish = this.toggleAddDish.bind(this);
     this.toggleAddDishNested = this.toggleAddDishNested.bind(this);
@@ -103,6 +105,7 @@ class Table extends Component {
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.handleDishAmountValidSubmit = this.handleDishAmountValidSubmit.bind(this);
     this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
+    this.getConfirmationModalContent = this.getConfirmationModalContent.bind(this);
   }
 
   deleteUnDoneDish(dish) {
@@ -140,7 +143,7 @@ class Table extends Component {
         });
       })
       .catch((error) => {
-        this.setState({loading: false});
+        this.setState({loading: false, table: null});
         Reactotron.error("Failed to retrieve table");
       });
   }
@@ -161,6 +164,12 @@ class Table extends Component {
     this.setState(prevState => ({
       modal: !prevState.modal,
       form: {name: ''},
+    }));
+  }
+
+  toggleConfirmationModal() {
+    this.setState(prevState => ({
+      confirmationModal: !prevState.confirmationModal,
     }));
   }
 
@@ -270,8 +279,12 @@ class Table extends Component {
       }));
   }
 
-  handleStatusChange(nextStatus) {
-    this.setState({loading: true});
+  handleStatusChange() {
+    this.toggleConfirmationModal();
+  }
+
+  changeTableStatus(nextStatus) {
+    this.setState({loading: true, confirmationModal: false});
     this.tableClient.setStatus(this.state.table.id, nextStatus)
       .then(() => this.loadTable())
       .catch(() => Reactotron.display({
@@ -281,10 +294,48 @@ class Table extends Component {
       }));
   }
 
+  getConfirmationModalContent() {
+    switch (this.state.table.status) {
+      case 'FREE':
+        return (
+          <div>
+            <ModalHeader>Confirmation</ModalHeader>
+            <ModalBody>Table is being occupied?</ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={this.toggleConfirmationModal }>Cancel</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("BUSY")}>Confirm</Button>
+            </ModalFooter>
+          </div>
+        );
+      case 'BUSY':
+        return (
+          <div>
+            <ModalHeader>Confirmation</ModalHeader>
+            <ModalBody>Table is going to pay?</ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("PAYING")}>Confirm</Button>
+            </ModalFooter>
+          </div>);
+      case 'PAYING':
+        return (
+          <div>
+            <ModalHeader>Confirmation</ModalHeader>
+            <ModalBody>Table payed?</ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={ () => this.changeTableStatus("FREE")}>Confirm</Button>
+            </ModalFooter>
+          </div>);
+      default:
+        return this.state.table.status;
+    }
+  }
+
   getAvailableOperations() {
     switch (this.state.table.status) {
       case 'FREE':
-        return <Button color={'success'} onClick={() => this.handleStatusChange("BUSY")} block>SET OCCUPIED</Button>;
+        return <Button color={'success'} onClick={() => this.handleStatusChange()} block>SET OCCUPIED</Button>;
       case 'BUSY':
         return (
           <div>
@@ -295,7 +346,7 @@ class Table extends Component {
               <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"} block><i
                 className="fa fa-plus"/> Dinner</Button>
             </ButtonGroup>
-            <Button onClick={() => this.handleStatusChange("PAYING")} color={"danger"} block
+            <Button onClick={() => this.handleStatusChange()} color={"danger"} block
                     style={{'marginTop': '5px'}}>CHARGE</Button>
           </div>
         );
@@ -304,7 +355,7 @@ class Table extends Component {
           <div>
             <Button color={"success"} block>PRINT</Button>
             <Button
-              onClick={() => this.handleStatusChange("FREE")}
+              onClick={() => this.handleStatusChange()}
               color={"success"} block style={{'marginTop': '5px'}}>CHARGED</Button>
           </div>
         );
@@ -347,7 +398,10 @@ class Table extends Component {
 
     if (this.state.loading === true) return (<Spinner style={{width: '3rem', height: '3rem'}}/>);
 
-    if (!this.state.table.id) return [['id', (<span><i className="text-muted icon-ban"/> Not found</span>)]];
+    if (this.state.table === null) {
+      this.props.history.push('/404');
+      return '';
+    }
 
     Reactotron.debug(this.state.table);
     return (
@@ -508,10 +562,15 @@ class Table extends Component {
           </ModalFooter>
         </Modal>
 
+        <Modal isOpen={this.state.confirmationModal} toggle={this.toggleConfirmationModal}>
+          {this.getConfirmationModalContent()}
+        </Modal>
+
       </div>
     )
   }
 }
+
 
 const mapStateToProps = state => {
   return {
