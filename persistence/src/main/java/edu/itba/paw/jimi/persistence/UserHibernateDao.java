@@ -32,6 +32,12 @@ public class UserHibernateDao implements UserDao {
 	}
 
 	@Override
+	public void delete(long id) {
+		User userToDelete = em.find(User.class, id);
+		em.remove(userToDelete);
+	}
+
+	@Override
 	public User create(String username, String password, Set<String> roles) {
 		final User usr = new User(username, password);
 		if (roles != null) {

@@ -34,7 +34,6 @@ public interface UserService {
 	 */
 	User create(String username, String password);
 
-
 	/**
 	 * Creates a user with admin privileges.
 	 *
@@ -43,6 +42,13 @@ public interface UserService {
 	 * @return the created user.
 	 */
 	User createAdmin(String username, String password);
+
+	/**
+	 * Deletes a user.
+	 *
+	 * @param id Id of the user.
+	 */
+	void delete(final long id);
 
 	int getTotalUsers();
 
