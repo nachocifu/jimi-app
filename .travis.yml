@@ -5,11 +5,12 @@ script: "mvn test"
 
 branches:
   only:
-    - master
+
+cache:
+  directories:
+    - $HOME/.m2
 
 notifications:
   email:
     - icifuent@itba.edu.ar
-    - mcapparelli@itba.edu.ar
-    - jnielavitzky@itba.edu.ar
     - jalonso@itba.edu.ar
