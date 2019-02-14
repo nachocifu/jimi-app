@@ -5,7 +5,7 @@ import javax.validation.constraints.DecimalMin;
 
 public class SetDishStockForm {
 
-	@DecimalMin(value = "1")
+	@DecimalMin(value = "0")
 	@DecimalMax(value = "10000")
 	private int newStock;
 
