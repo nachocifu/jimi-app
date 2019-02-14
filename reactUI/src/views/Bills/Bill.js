@@ -101,6 +101,18 @@ class Bill extends Component {
       });
   }
 
+  loadDishes() {
+    return this.dishClient.getAvailable(0, 100)
+      .then((val) => {
+        Reactotron.display({
+          name: 'Bill Dishes to add SUCCESS',
+          preview: 'Bill Dishes to add SUCCESS',
+          value: val.data
+        });
+        this.setState({loading: false, dishes: val.data.dishes});
+      })
+  }
+
   componentDidMount() {
     this.loadBill();
   }
