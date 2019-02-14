@@ -24,7 +24,22 @@ export default class UserRestClient extends RestClient {
    */
   getUser(id) {
     return this.instance.get(
-      'api/users/'+id
+      'api/users/' + id
+    );
+  }
+
+  /**
+   *  Perform http request to get user details
+   *
+   *  @returns {Promise} - The http promise.
+   * @param username
+   * @param password
+   * @param confirmPassword
+   */
+  create(username, password, confirmPassword) {
+    return this.instance.post(
+      'api/users/',
+      {username: username, password: password, repeatPassword: confirmPassword}
     );
   }
 
