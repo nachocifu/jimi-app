@@ -21,6 +21,7 @@ import TableRestClient from "../../http/clients/TableRestClient";
 import Button from "reactstrap/es/Button";
 import CardFooter from "reactstrap/es/CardFooter";
 import {AvField, AvForm} from 'availity-reactstrap-validation';
+import Spinner from "reactstrap/es/Spinner";
 
 function TableRow(props) {
   const table = props.table;
@@ -111,6 +112,8 @@ class Tables extends Component {
   }
 
   render() {
+    if(this.state.loading === true) return <Spinner style={{ width: '3rem', height: '3rem' }} />;
+
     return (
       <div className="animated fadeIn">
         <Row>
