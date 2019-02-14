@@ -5,11 +5,8 @@ script: "mvn test"
 
 branches:
   only:
-    - master
 
 notifications:
   email:
     - icifuent@itba.edu.ar
-    - mcapparelli@itba.edu.ar
-    - jnielavitzky@itba.edu.ar
     - jalonso@itba.edu.ar
