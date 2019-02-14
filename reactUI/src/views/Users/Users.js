@@ -64,8 +64,8 @@ class Users extends Component {
         Reactotron.error("Failed to create user");
 
         let form = {...this.state.form};
-        form.nameError = true;
         form.error = true;
+        if (error.response.status === 409) form.nameError = true;
         this.setState({loading: false, form: form});
       });
   }

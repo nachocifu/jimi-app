@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.*;
 
 
@@ -57,7 +58,6 @@ public class UserDaoTest {
 
 		cleanUp();
 	}
-
 
 	@Test
 	public void testCreateWithRoles() {
@@ -287,7 +287,6 @@ public class UserDaoTest {
 		cleanUp();
 	}
 
-
 	@Test
 	public void testFindByUsername() {
 		User user = userDao.create(USERNAME, PASSWORD, null);
@@ -308,7 +307,6 @@ public class UserDaoTest {
 		assertNotNull(col);
 	}
 
-
 	@Test
 	public void testFindAllWithSome() {
 		userDao.create(USERNAME + "1", PASSWORD, null);
@@ -323,5 +321,14 @@ public class UserDaoTest {
 
 		cleanUp();
 	}
+
+	@Test
+	public void testDeleteUser() {
+		User testUser = userDao.create(USERNAME, PASSWORD, null);
+		assertNotNull(userDao.findById(testUser.getId()));
+		userDao.delete(testUser.getId());
+		assertNull(userDao.findById(testUser.getId()));
+	}
+
 }
 

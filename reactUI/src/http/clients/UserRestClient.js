@@ -43,4 +43,15 @@ export default class UserRestClient extends RestClient {
     );
   }
 
+  /**
+   *
+   * @param id
+   * @returns Promise
+   */
+  delete(id) {
+    return this.instance.delete(
+      'api/users/' + id
+    );
+  }
+
 }
