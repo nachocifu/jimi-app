@@ -91,6 +91,13 @@ export default class TableRestClient extends RestClient {
     );
   }
 
+  setUndoneDishes(id, dishId, amount){
+    return this.instance.post(
+      'api/tables/'+id+'/undoneDishes/'+dishId+'/amount',
+      {amount: amount}
+    );
+  }
+
   /**
    *
    * @param id
@@ -127,7 +134,7 @@ export default class TableRestClient extends RestClient {
       'api/tables/'+table+'/undoneDishes/'+dish
     );
   }
-  
+
   deleteUnDoneDish(table, dish) {
     return this.instance.delete(
       '/api/tables/'+table+'/undoneDishes/'+dish
