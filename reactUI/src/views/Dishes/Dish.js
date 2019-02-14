@@ -143,10 +143,10 @@ class Dish extends Component {
 
     if (this.state.loading === true) return (<Spinner style={{width: '3rem', height: '3rem'}}/>);
 
-    if (this.state.dish === null) return [['id', (<span><i className="text-muted icon-ban"/> Not found</span>)]];
-
-    // const dishDetails = this.state.dish ? Object.entries(this.state.dish) : [['id', (
-    //   {/*<span><i className="text-muted icon-ban"></i> Not found</span>)]];*/}
+    if (!this.state.dish) {
+      this.props.history.push('/404');
+      return '';
+    }
 
     return (
       <div className="animated fadeIn">

@@ -42,7 +42,6 @@ class Users extends Component {
 
   render() {
     if(this.state.loading === true) return <Spinner style={{ width: '3rem', height: '3rem' }} />;
-
     return (
       <div className="animated fadeIn">
         <Row>

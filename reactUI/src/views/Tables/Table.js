@@ -140,7 +140,7 @@ class Table extends Component {
         });
       })
       .catch((error) => {
-        this.setState({loading: false});
+        this.setState({loading: false, table: null});
         Reactotron.error("Failed to retrieve table");
       });
   }
@@ -347,7 +347,10 @@ class Table extends Component {
 
     if (this.state.loading === true) return (<Spinner style={{width: '3rem', height: '3rem'}}/>);
 
-    if (!this.state.table.id) return [['id', (<span><i className="text-muted icon-ban"/> Not found</span>)]];
+    if (this.state.table === null) {
+      this.props.history.push('/404');
+      return '';
+    }
 
     Reactotron.debug(this.state.table);
     return (
