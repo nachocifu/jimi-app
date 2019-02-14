@@ -5,6 +5,9 @@ import {
   CardBody,
   CardHeader,
   Col,
+  Input,
+  InputGroup,
+  InputGroupAddon,
   Modal,
   ModalBody,
   ModalFooter,
@@ -138,7 +141,7 @@ class Bill extends Component {
   preToggleAddDish() {
     // Reactotron.display({name: 'Table Dishes to add Requesting', preview: 'Table Dishes to add Requesting', value: this.state.dishes});
     this.setState({loading: true});
-    this.dishClient.get(0, 100) //TODO change to getAvailable
+    this.dishClient.getAvailable(0, 100)
       .then((val) => {
         Reactotron.display({
           name: 'Bill Dishes to add SUCCESS',
