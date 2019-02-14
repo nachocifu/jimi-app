@@ -4,10 +4,6 @@ export default {
       name: 'Stadistics',
       url: '/stats',
       icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
       roles: ['ROLE_ADMIN']
     },
     {
@@ -15,10 +11,6 @@ export default {
       class: '',
       url: '/bills',
       icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
       roles: ['ROLE_ADMIN']
     },
     {
@@ -26,10 +18,6 @@ export default {
       class: '',
       url: '/dishes',
       icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
       roles: ['ROLE_ADMIN']
     },
     {
@@ -37,10 +25,6 @@ export default {
       class: '',
       url: '/users',
       icon: 'icon-people',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
       roles: ['ROLE_ADMIN']
     },
     {
@@ -48,10 +32,6 @@ export default {
       class: '',
       url: '/kitchen',
       icon: 'icon-people',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
       roles: ['ROLE_ADMIN', 'ROLE_USER']
     },
     {
@@ -59,10 +39,6 @@ export default {
       class: '',
       url: '/tables',
       icon: 'icon-people',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
       roles: ['ROLE_ADMIN', 'ROLE_USER']
     },
   ],

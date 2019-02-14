@@ -10,15 +10,11 @@ function UserRow(props) {
   const user = props.user
   const userLink = `/users/${user.id}`
 
-  const getBadge = (role) => {
-    return role === 'Active' ? 'success' : 'primary'
-  }
 
   return (
     <tr key={user.id.toString()}>
       <th scope="row"><Link to={userLink}>{user.id}</Link></th>
       <td><Link to={userLink}>{user.username}</Link></td>
-      <td><Badge color={getBadge(user.role)}>{user.role}</Badge></td>
     </tr>
   )
 }
@@ -60,7 +56,6 @@ class Users extends Component {
                   <tr>
                     <th scope="col">id</th>
                     <th scope="col">name</th>
-                    <th scope="col">role</th>
                   </tr>
                   </thead>
                   <tbody>
