@@ -37,7 +37,7 @@ class Login extends Component {
       .then(value => {
         this.props.dispatch({type: LOGIN_SUCCESSFULL, payload: {token: value.headers['x-auth-token']}});
         // window.location.replace("/stats");
-        this.props.history.push("/stats");
+        this.props.history.push("/tables");
         // return <Redirect to="/#/stats"/>;
       }).catch(error => {
       if (!error.response) error.response = "ERROR";
