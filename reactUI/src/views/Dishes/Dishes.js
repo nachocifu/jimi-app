@@ -37,7 +37,7 @@ function DishRow(props) {
       <td>{dish.stock}</td>
       <td><Button disabled={dish.discontinued} onClick={() => addStock(props.self, dish.id, dish.stock + 1)} color={'success'}><i
         className="fa fa-plus-circle"/></Button></td>
-      <td><Button disabled={dish.discontinued} onClick={() => addStock(props.self, dish.id, dish.stock - 1)} color={'danger'}><i
+      <td><Button disabled={dish.discontinued || dish.stock<=0} onClick={() => addStock(props.self, dish.id, dish.stock - 1)} color={'danger'}><i
         className="fa fa-minus-circle"/></Button></td>
     </tr>
   );
