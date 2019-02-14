@@ -36,8 +36,22 @@ function DishListItem(props) {
       <td>{dish.name}</td>
       <td>{amount}</td>
       <td>
-        {props.delete ? <Button onClick={() => props.self.deleteUnDoneDish(dish.id)} color={'warning'} block><i
-          className="fa fa-remove"/></Button> : ''}
+        {props.options && amount > 0?
+          <Button onClick={() => props.self.setDishes(dish.id, amount - 1)} color={'danger'} block><i
+            className="fa fa-minus"/></Button>
+          : ''}
+      </td>
+      <td>
+        {props.options && dish.stock >0?
+          <Button onClick={() => props.self.setDishes(dish.id, amount + 1)} color={'success'} block><i
+            className="fa fa-plus"/></Button>
+          : ''}
+      </td>
+      <td>
+        {props.options ?
+          <Button onClick={() => props.self.deleteUnDoneDish(dish.id)} color={'warning'} block><i
+            className="fa fa-remove"/></Button>
+          : ''}
       </td>
     </tr>
   )
@@ -85,6 +99,7 @@ class Table extends Component {
     this.addDishes = this.addDishes.bind(this);
     this.getAvailableOperations = this.getAvailableOperations.bind(this);
     this.deleteUnDoneDish = this.deleteUnDoneDish.bind(this);
+    this.setDishes = this.setDishes.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.handleDishAmountValidSubmit = this.handleDishAmountValidSubmit.bind(this);
     this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
@@ -245,6 +260,16 @@ class Table extends Component {
       }));
   }
 
+  setDishes(dish, amount) {
+    this.tableClient.setUndoneDishes(this.state.table.id, dish, amount)
+      .then(() => this.loadTable())
+      .catch(() => Reactotron.display({
+        name: 'Table add dish Fail',
+        preview: 'Table add dish Fail',
+        value: this.state.table
+      }));
+  }
+
   handleStatusChange(nextStatus) {
     this.setState({loading: true});
     this.tableClient.setStatus(this.state.table.id, nextStatus)
@@ -385,10 +410,10 @@ class Table extends Component {
                 <TableHtml>
                   <tbody>
                   {this.state.table.unDoneDishes.map((entry, index) =>
-                    <DishListItem dish={entry.key} amount={entry.value.amount} self={this} delete={true}/>
+                    <DishListItem dish={entry.key} amount={entry.value.amount} self={this} options={true}/>
                   )}
                   {this.state.table.doneDishes.map((entry, index) =>
-                    <DishListItem dish={entry.key} amount={entry.value} self={this} delete={false}/>
+                    <DishListItem dish={entry.key} amount={entry.value} self={this} options={false}/>
                   )}
                   </tbody>
                 </TableHtml>
