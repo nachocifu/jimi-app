@@ -24,6 +24,7 @@ function BillRow(props) {
       <td><Badge color={getBadge(bill.status)}>{bill.status}</Badge></td>
       <td>{openedAt}</td>
       <td>{closedAt}</td>
+      <td>${bill.total}</td>
       <td>
         <Link to={`/bills/${bill.id}`}>
           <Button color={'warning'} block><i className="fa fa-edit"/></Button>
@@ -77,7 +78,8 @@ class Bills extends Component {
                     <th scope="col">status</th>
                     <th scope="col">opened</th>
                     <th scope="col">closed</th>
-                    <th scope="col"></th>
+                    <th scope="col">Total</th>
+                    <th scope="col"/>
                   </tr>
                   </thead>
                   <tbody>
