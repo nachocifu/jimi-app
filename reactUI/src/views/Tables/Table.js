@@ -26,23 +26,23 @@ import {AvField, AvForm} from 'availity-reactstrap-validation';
 
 
 function DishListItem(props) {
-  var dish = props.dish;
-  var amount = props.amount;
+  let dish = props.dish;
+  let amount = props.amount;
 
   Reactotron.debug(dish);
   Reactotron.debug(amount);
   return (
-    <tr key={dish.id}>
+    <tr>
       <td>{dish.name}</td>
       <td>{amount}</td>
       <td>
-        {props.options && amount > 0?
+        {props.options && amount > 0 ?
           <Button onClick={() => props.self.setDishes(dish.id, amount - 1)} color={'danger'} block><i
             className="fa fa-minus"/></Button>
           : ''}
       </td>
       <td>
-        {props.options && dish.stock >0?
+        {props.options && dish.stock > 0 ?
           <Button onClick={() => props.self.setDishes(dish.id, amount + 1)} color={'success'} block><i
             className="fa fa-plus"/></Button>
           : ''}
@@ -302,7 +302,7 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table is being occupied?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={this.toggleConfirmationModal }>Cancel</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
               <Button color="success" onClick={() => this.changeTableStatus("BUSY")}>Confirm</Button>
             </ModalFooter>
           </div>
@@ -313,7 +313,7 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table is going to pay?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
               <Button color="success" onClick={() => this.changeTableStatus("PAYING")}>Confirm</Button>
             </ModalFooter>
           </div>);
@@ -323,8 +323,8 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table payed?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={ () => this.changeTableStatus("FREE")}>Confirm</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("FREE")}>Confirm</Button>
             </ModalFooter>
           </div>);
       default:
@@ -342,9 +342,9 @@ class Table extends Component {
             <Button onClick={this.preToggleAddDish} color={"success"} block>ADD DISH</Button>
             <ButtonGroup style={{'width': '100%', 'marginTop': '5px'}}>
               <Button onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"} block><i
-                className="fa fa-minus"/> Dinner</Button>
+                className="fa fa-minus"/> Diner</Button>
               <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"} block><i
-                className="fa fa-plus"/> Dinner</Button>
+                className="fa fa-plus"/> Diner</Button>
             </ButtonGroup>
             <Button onClick={() => this.handleStatusChange()} color={"danger"} block
                     style={{'marginTop': '5px'}}>CHARGE</Button>
@@ -464,10 +464,11 @@ class Table extends Component {
                 <TableHtml>
                   <tbody>
                   {this.state.table.unDoneDishes.map((entry, index) =>
-                    <DishListItem dish={entry.key} amount={entry.value.amount} self={this} options={true}/>
+                    <DishListItem key={index} dish={entry.key} amount={entry.value.amount} self={this}
+                                  options={true}/>
                   )}
                   {this.state.table.doneDishes.map((entry, index) =>
-                    <DishListItem dish={entry.key} amount={entry.value} self={this} options={false}/>
+                    <DishListItem key={index} dish={entry.key} amount={entry.value} self={this} options={false}/>
                   )}
                   </tbody>
                 </TableHtml>
@@ -516,7 +517,7 @@ class Table extends Component {
           <ModalBody>
             <Row>
               {this.state.dishes.map((dish) =>
-                <Col lg={3}>
+                <Col lg={3} key={dish.id}>
                   <Button size={'lg'} color={'info'} lg={3} block style={{margin: '2.5px'}}
                           onClick={() => {
                             this.setState({dishSelection: dish.id});

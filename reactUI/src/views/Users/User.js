@@ -96,8 +96,6 @@ class User extends Component {
       return '';
     }
 
-    const userDetails = this.state.user ? Object.entries(this.state.user) : [['id', (
-      <span><i className="text-muted icon-ban"/> Not found</span>)]];
 
     return (
       <div className="animated fadeIn">
@@ -110,16 +108,14 @@ class User extends Component {
               <CardBody>
                 <Table responsive striped hover>
                   <tbody>
-                  {
-                    userDetails.map(([key, value]) => {
-                      return (
-                        <tr key={key}>
-                          <td>{`${key}:`}</td>
-                          <td><strong>{value}</strong></td>
-                        </tr>
-                      )
-                    })
-                  }
+                  <tr>
+                    <td>ID:</td>
+                    <td><strong>{this.state.user.id}</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Name:</td>
+                    <td><strong>{this.state.user.username}</strong></td>
+                  </tr>
                   </tbody>
                 </Table>
               </CardBody>
