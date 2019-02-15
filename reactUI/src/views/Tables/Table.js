@@ -596,7 +596,6 @@ class Table extends Component {
                        }}/>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.toggleAddDishNested}>Back</Button>
               <Button color="secondary" onClick={this.toggleAddDishAll}>Cancel</Button>
               <Button color="success">Submit</Button>
             </ModalFooter>
