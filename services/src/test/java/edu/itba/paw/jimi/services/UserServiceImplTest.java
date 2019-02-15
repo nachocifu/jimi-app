@@ -136,7 +136,6 @@ public class UserServiceImplTest {
 		assertNull(dbUser);
 	}
 
-
 	@Test
 	public void findAllTest() {
 
@@ -208,6 +207,13 @@ public class UserServiceImplTest {
 		assertNotNull(dbUsers);
 
 		assertEquals(0, dbUsers.size());
+	}
+
+	@Test
+	public void deleteUser() {
+		User user = new User(USERNAME, 1, PASSWORD);
+		Mockito.when(userDao.findById(any(Integer.class))).thenReturn(user);
+		userServiceImpl.delete(user.getId());
 	}
 
 }

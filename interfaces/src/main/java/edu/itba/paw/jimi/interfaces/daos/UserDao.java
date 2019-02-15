@@ -38,10 +38,17 @@ public interface UserDao {
 
 	int getTotalUsers();
 
-    /**
-     * Returns all the users paginated.
+	/**
+	 * Returns all the users paginated.
 	 *
 	 * @return all the users.
-     */
-    Collection<User> findAll(int maxResults, int offset);
+	 */
+	Collection<User> findAll(int maxResults, int offset);
+
+	/**
+	 * Deletes a user.
+	 *
+	 * @param id Id of the user.
+	 */
+	void delete(final long id);
 }

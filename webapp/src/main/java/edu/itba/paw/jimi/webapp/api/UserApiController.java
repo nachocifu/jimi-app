@@ -102,4 +102,20 @@ public class UserApiController extends BaseApiController {
 		return Response.ok(new UserDTO(user, buildBaseURI(uriInfo))).build();
 	}
 
+	@DELETE
+	@Path("/{id}")
+	public Response deleteUser(@PathParam("id") final long id) {
+		final User user = userService.findById(id);
+		if (user == null) {
+			LOGGER.warn("User with id {} not found", id);
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(errorMessageToJSON(messageSource.getMessage("user.error.not.found.body", null, LocaleContextHolder.getLocale())))
+					.build();
+		}
+
+		userService.delete(id);
+		LOGGER.info("User with id {} deleted", id);
+		return Response.noContent().build();
+	}
+
 }
