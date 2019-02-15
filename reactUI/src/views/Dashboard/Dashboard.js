@@ -1,23 +1,13 @@
-import React, {Component, lazy, Suspense} from 'react';
-import {Bar, Line} from 'react-chartjs-2';
+import React, {Component} from 'react';
+import {Line} from 'react-chartjs-2';
 import {
-  Badge,
-  Button,
-  ButtonDropdown,
-  ButtonGroup,
-  ButtonToolbar,
   Card,
   CardBody,
   CardFooter,
-  CardHeader,
   CardTitle,
   Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
   Progress,
   Row,
-  Table,
 } from 'reactstrap';
 import {connect} from "react-redux";
 import {CustomTooltips} from '@coreui/coreui-plugin-chartjs-custom-tooltips';
@@ -25,93 +15,7 @@ import {getStyle, hexToRgba} from '@coreui/coreui/dist/js/coreui-utilities'
 import Spinner from "reactstrap/es/Spinner";
 import StatRestClient from "../../http/clients/StatRestClient";
 import Reactotron from "reactotron-react-js";
-const Widget03 = lazy(() => import('../../views/Widgets/Widget03'));
-
-const brandPrimary = getStyle('--primary');
-const brandSuccess = getStyle('--success');
 const brandInfo = getStyle('--info');
-const brandWarning = getStyle('--warning');
-const brandDanger = getStyle('--danger');
-
-const data1 = [];
-const data2 = [];
-const data3 = [];
-
-
-const mainChart = {
-  labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-  datasets: [
-    {
-      label: 'My First dataset',
-      backgroundColor: hexToRgba(brandInfo, 10),
-      borderColor: brandInfo,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 2,
-      data: data1,
-    },
-    {
-      label: 'My Second dataset',
-      backgroundColor: 'transparent',
-      borderColor: brandSuccess,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 2,
-      data: data2,
-    },
-    {
-      label: 'My Third dataset',
-      backgroundColor: 'transparent',
-      borderColor: brandDanger,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5],
-      data: data3,
-    },
-  ],
-};
-
-const mainChartOpts = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips,
-    intersect: true,
-    mode: 'index',
-    position: 'nearest',
-    callbacks: {
-      labelColor: function (tooltipItem, chart) {
-        return {backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor}
-      }
-    }
-  },
-  maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
-  scales: {
-    xAxes: [
-      {
-        gridLines: {
-          drawOnChartArea: false,
-        },
-      }],
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 250,
-        },
-      }],
-  },
-  elements: {
-    point: {
-      radius: 0,
-      hitRadius: 10,
-      hoverRadius: 4,
-      hoverBorderWidth: 3,
-    },
-  },
-};
 
 class Dashboard extends Component {
 
@@ -134,6 +38,88 @@ class Dashboard extends Component {
     };
   }
 
+  buildChart = () => {
+    Reactotron.debug(this.state);
+    // generate data
+    let labels = [];
+    let dt1 = [];
+    this.state.monthOrderTotals.forEach( (val) => {
+      labels.push(val.key);
+      dt1.push(val.value);
+    });
+
+    // Reactotron.debug();
+    // gen options
+    let opts = {
+      tooltips: {
+        enabled: false,
+          custom: CustomTooltips,
+          intersect: true,
+          mode: 'index',
+          position: 'nearest',
+          callbacks: {
+          labelColor: function (tooltipItem, chart) {
+            return {backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor}
+          }
+        }
+      },
+      maintainAspectRatio: false,
+      legend: {
+      display: false,
+    },
+      scales: {
+        xAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: "Year-Month"
+            },
+            gridLines: {
+              drawOnChartArea: true,
+            },
+          }],
+          yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: "Value $$$"
+            },
+            ticks: {
+              beginAtZero: true,
+              maxTicksLimit: 5,
+              stepSize: Math.ceil(Math.max(...dt1)/10),
+              max: Math.ceil(Math.max(...dt1) + (Math.max(...dt1)*.1)),
+            },
+          }],
+      },
+      elements: {
+        point: {
+          radius: 0,
+            hitRadius: 10,
+            hoverRadius: 4,
+            hoverBorderWidth: 3,
+        },
+      },
+    };
+
+    return {
+      chart: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Revenue',
+            backgroundColor: hexToRgba(brandInfo, 10),
+            borderColor: brandInfo,
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: dt1,
+          },
+        ],
+      },
+      options: opts,
+    }
+  };
+
   updateStats = () => {
     return this.statClient.getAll()
       .then( (val) => {
@@ -149,8 +135,8 @@ class Dashboard extends Component {
           totalAmountOfTables: val.data.totalAmountOfTables,
           freeTablesPercentage: val.data.freeTablesPercentage,
           stockStatePercentage: val.data.stockStatePercentage,
-          monthOrderTotals: [],
-          monthlyOrdersCancelled: [],
+          monthOrderTotals: val.data.monthOrderTotals.entry,
+          monthlyOrdersCancelled: val.data.monthlyOrdersCancelled.entry,
         });
       });
   };
@@ -210,25 +196,11 @@ class Dashboard extends Component {
               <CardBody>
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">Traffic</CardTitle>
-                    <div className="small text-muted">November 2015</div>
-                  </Col>
-                  <Col sm="7" className="d-none d-sm-inline-block">
-                    <Button color="primary" className="float-right"><i className="icon-cloud-download"/></Button>
-                    <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
-                      <ButtonGroup className="mr-3" aria-label="First group">
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)}
-                                active={this.state.radioSelected === 1}>Day</Button>
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)}
-                                active={this.state.radioSelected === 2}>Month</Button>
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(3)}
-                                active={this.state.radioSelected === 3}>Year</Button>
-                      </ButtonGroup>
-                    </ButtonToolbar>
+                    <CardTitle className="mb-0">Monthly Billing Report</CardTitle>
                   </Col>
                 </Row>
                 <div className="chart-wrapper" style={{height: 300 + 'px', marginTop: 40 + 'px'}}>
-                  <Line data={mainChart} options={mainChartOpts} height={300}/>
+                  <Line data={this.buildChart().chart} options={this.buildChart().options} height={300}/>
                 </div>
               </CardBody>
               <CardFooter>
