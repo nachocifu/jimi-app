@@ -114,7 +114,7 @@ class User extends Component {
                   </tr>
                   <tr>
                     <td>Name:</td>
-                    <td><strong>{this.state.user.username}</strong></td>
+                    <td><strong>{this.state.user.name}</strong></td>
                   </tr>
                   </tbody>
                 </Table>
