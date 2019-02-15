@@ -113,8 +113,8 @@ class User extends Component {
                     <td><strong>{this.state.user.id}</strong></td>
                   </tr>
                   <tr>
-                    <td>{i18n.t('users.name')}:</td>
-                    <td><strong>{this.state.user.name}</strong></td>
+                    <td>Name:</td>
+                    <td><strong>{this.state.user.username}</strong></td>
                   </tr>
                   </tbody>
                 </Table>

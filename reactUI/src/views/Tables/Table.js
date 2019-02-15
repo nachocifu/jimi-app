@@ -59,14 +59,6 @@ function DishListItem(props) {
             : ''}
         </td>
       :''}
-      {props.status !== 'PAYING'?
-        <td>
-          {props.options ?
-            <Button onClick={() => props.self.deleteUnDoneDish(dish.id)} color={'warning'} block><i
-              className="fa fa-remove"/></Button>
-            : ''}
-        </td>
-        :''}
     </tr>
   )
 }
@@ -604,9 +596,9 @@ class Table extends Component {
                        }}/>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.toggleAddDishNested}>{i18n.t('global.cancel')}</Button>
-              <Button color="secondary" onClick={this.toggleAddDishAll}>{i18n.t('global.cancel')}</Button>
-              <Button color="success">{i18n.t('global.save')}</Button>
+              <Button color="primary" onClick={this.toggleAddDishNested}>Back</Button>
+              <Button color="secondary" onClick={this.toggleAddDishAll}>Cancel</Button>
+              <Button color="success">Submit</Button>
             </ModalFooter>
           </AvForm>
         </Modal>
