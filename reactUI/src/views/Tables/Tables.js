@@ -23,6 +23,7 @@ import CardFooter from "reactstrap/es/CardFooter";
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import Spinner from "reactstrap/es/Spinner";
 import ButtonGroup from "reactstrap/es/ButtonGroup";
+import i18n from '../../i18n';
 
 function TableRow(props) {
   const table = props.table;
@@ -149,11 +150,11 @@ class Tables extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"/> Tables
+                <i className="fa fa-align-justify"/> {i18n.t('tables.plural')}
 
                 {this.props.roles.filter(value => value === 'ROLE_ADMIN').length > 0 ? (
                   <Button onClick={this.toggle} style={{'float': 'right'}} color="primary" className="px-4">
-                    <i className="fa fa-plus-circle"/> Table
+                    <i className="fa fa-plus-circle"/> {i18n.t('tables.single')}
                   </Button>
                 ) : ''
                 }
@@ -162,8 +163,8 @@ class Tables extends Component {
                 <Table responsive hover>
                   <thead>
                   <tr>
-                    <th scope="col">name</th>
-                    <th scope="col">status</th>
+                    <th scope="col">{i18n.t('tables.name')}</th>
+                    <th scope="col">{i18n.t('tables.status')}</th>
                     <th scope="col"/>
                   </tr>
                   </thead>
@@ -183,18 +184,18 @@ class Tables extends Component {
 
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>
-            New Table
+            {i18n.t('tables.newTitle')}
           </ModalHeader>
           <AvForm onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
             <ModalBody>
-              <AvField name="name" label="Name" type="text" validate={{
-                required: {value: true, errorMessage: 'Please enter a name'},
+              <AvField name="name" label={i18n.t('tables.name')} type="text" validate={{
+                required: {value: true, errorMessage: i18n.t('tables.validation.required')},
                 pattern: {
                   value: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$',
-                  errorMessage: 'Your name must be composed only with letter and numbers'
+                  errorMessage: i18n.t('tables.validation.pattern')
                 },
-                minLength: {value: 4, errorMessage: 'Your name must be between 4 and 20 characters'},
-                maxLength: {value: 20, errorMessage: 'Your name must be between 4 and 20 characters'}
+                minLength: {value: 4, errorMessage: i18n.t('tables.validation.minLength')},
+                maxLength: {value: 20, errorMessage: i18n.t('tables.validation.maxLength')}
               }}/>
               {this.state.form.nameError ? (
                 <InputGroupAddon addonType="append">
@@ -204,8 +205,8 @@ class Tables extends Component {
                 </InputGroupAddon>) : ''}
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" className="px-4" block>Save</Button>
-              <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+              <Button color="primary" className="px-4" block>{i18n.t('global.save')}</Button>
+              <Button color="secondary" onClick={this.toggle}>{i18n.t('global.cancel')}</Button>
             </ModalFooter>
           </AvForm>
         </Modal>

@@ -8,7 +8,7 @@ import Button from "reactstrap/es/Button";
 import {Link} from "react-router-dom";
 import ButtonGroup from "reactstrap/es/ButtonGroup";
 import CardFooter from "reactstrap/es/CardFooter";
-
+import i18n from '../../i18n';
 
 function BillRow(props) {
   const bill = props.bill;
@@ -23,7 +23,9 @@ function BillRow(props) {
   return (
     <tr>
       <td>{bill.id}</td>
-      <td><Badge color={getBadge(bill.status)}>{bill.status}</Badge></td>
+      <td><Badge
+        color={getBadge(bill.status)}>{bill.status.toUpperCase() === "CLOSED" ? i18n.t('bills.closed').toUpperCase() : i18n.t('bills.cancelled').toUpperCase()}</Badge>
+      </td>
       <td>{openedAt}</td>
       <td>{closedAt}</td>
       <td>${bill.total}</td>
@@ -93,17 +95,17 @@ class Bills extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"/> Bills
+                <i className="fa fa-align-justify"/> {i18n.t('navMenu.bills')}
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
                   <thead>
                   <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">status</th>
-                    <th scope="col">opened</th>
-                    <th scope="col">closed</th>
-                    <th scope="col">Total</th>
+                    <th scope="col">{i18n.t('bills.status')}</th>
+                    <th scope="col">{i18n.t('bills.opened')}</th>
+                    <th scope="col">{i18n.t('bills.closed')}</th>
+                    <th scope="col">{i18n.t('bills.total')}</th>
                     <th scope="col"/>
                   </tr>
                   </thead>

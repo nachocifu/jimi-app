@@ -21,6 +21,7 @@ import Spinner from "reactstrap/es/Spinner";
 import CardFooter from "reactstrap/es/CardFooter";
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import ButtonGroup from "reactstrap/es/ButtonGroup";
+import i18n from '../../i18n';
 
 function DishRow(props) {
   const dish = props.dish;
@@ -34,7 +35,7 @@ function DishRow(props) {
     <tr key={dish.id.toString()}>
       {dish.discontinued ? <td>{dish.name}</td> : <td><Link to={dishLink}>{dish.name}</Link></td>}
       <td>${dish.price}</td>
-      <td><Badge color={getBadge(dish.discontinued)}>{dish.discontinued ? 'Discontinued' : 'In Production'}</Badge></td>
+      <td><Badge color={getBadge(dish.discontinued)}>{dish.discontinued ? i18n.t('dishes.discontinued') : i18n.t('dishes.inProduction')}</Badge></td>
       <td>{dish.stock}</td>
       <td><Button disabled={dish.discontinued} onClick={() => addStock(props.self, dish.id, dish.stock + 1)}
                   color={'success'}><i
@@ -155,7 +156,7 @@ class Dishes extends Component {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'dishes.csv');
+        link.setAttribute('download', i18n.t('dishes.plural').toLocaleLowerCase() + '.csv');
         document.body.appendChild(link);
         link.click();
       });
@@ -183,9 +184,9 @@ class Dishes extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"/> Dishes
+                <i className="fa fa-align-justify"/> {i18n.t('dishes.plural')}
                 <Button onClick={this.toggle} style={{'float': 'right'}} color="primary" className="px-4">
-                  <i className="fa fa-plus-circle"/> Dish
+                  <i className="fa fa-plus-circle"/> {i18n.t('dishes.single')}
                 </Button>
                 <Button onClick={this.downloadCsv} style={{'float': 'right', 'marginRight': 5}} color={'primary'}>
                   <i className="fa fa-print"/>
@@ -195,10 +196,10 @@ class Dishes extends Component {
                 <Table responsive hover>
                   <thead>
                   <tr>
-                    <th scope="col">name</th>
-                    <th scope="col">price</th>
-                    <th scope="col">status</th>
-                    <th scope="col">stock</th>
+                    <th scope="col">{i18n.t('dishes.name')}</th>
+                    <th scope="col">{i18n.t('dishes.price')}</th>
+                    <th scope="col">{i18n.t('dishes.status')}</th>
+                    <th scope="col">{i18n.t('dishes.stock')}</th>
                     <th scope="col">+</th>
                     <th scope="col">-</th>
                   </tr>
@@ -219,45 +220,49 @@ class Dishes extends Component {
 
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>
-            New Dish
+            {i18n.t('dishes.newTitle')}
           </ModalHeader>
           <AvForm onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
             <ModalBody>
-              <AvField name="name" label="Name" type="text"
+              <AvField name="name" label={i18n.t('dishes.single')} type="text"
                        validate={{
-                         required: {value: true, errorMessage: 'Please enter a name'},
+                         required: {value: true, errorMessage: i18n.t('dishes.validation.requiredName')},
                          pattern: {
                            value: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$',
-                           errorMessage: 'Your name must be composed only with letter and numbers'
+                           errorMessage: i18n.t('dishes.validation.namePattern')
                          },
-                         minLength: {value: 1, errorMessage: 'Your name must be between 1 and 25 characters'},
-                         maxLength: {value: 25, errorMessage: 'Your name must be between 1 and 25 characters'}
+                         minLength: {value: 1, errorMessage: i18n.t('dishes.validation.minLength')},
+                         maxLength: {value: 25, errorMessage: i18n.t('dishes.validation.maxLength')}
                        }}/>
-              <AvField name="price" label="Price" type="number"
+              <AvField name="price" label={i18n.t('dishes.price')} type="number"
                        validate={{
-                         required: {value: true, errorMessage: 'Please enter a price'},
-                         step: {value: 0.01},
-                         maxLength: {value: 10},
-                         min: {value: 1}
+                         required: {value: true, errorMessage: i18n.t('dishes.validation.requiredPrice')},
+                         step: {value: 0.01, errorMessage: i18n.t('dishes.validation.step001')},
+                         pattern: {
+                           value: '^\\d{1,5}[.]?\\d{0,2}$',
+                           errorMessage: i18n.t('dishes.validation.pricePattern')
+                         },
+                         min: {value: 1, errorMessage: i18n.t('dishes.validation.min1')},
+                         max: {value: 10000, errorMessage: 'Max of 10000'}
                        }}/>
-              <AvField name="stock" label="Stock" type="number"
+              <AvField name="stock" label={i18n.t('dishes.stock')} type="number"
                        validate={{
-                         required: {value: true, errorMessage: 'Please enter a stock'},
-                         step: {value: 1},
-                         min: {value: 1},
-                         max: {value: 10000}
+                         required: {value: true, errorMessage: i18n.t('dishes.validation.requiredStock')},
+                         step: {value: 1, errorMessage: i18n.t('dishes.validation.step1')},
+                         min: {value: 1, errorMessage: i18n.t('dishes.validation.min1')},
+                         max: {value: 10000, errorMessage: i18n.t('dishes.validation.maxValue')}
                        }}/>
-              <AvField name="minStock" label="Minimum Stock" type="number"
+              <AvField name="minStock" label={i18n.t('dishes.minStock')} type="number"
                        validate={{
-                         required: {value: true, errorMessage: 'Please enter a minimum stock'},
-                         step: {value: 1},
-                         min: {value: 0},
-                         max: {value: 10000}
+                         required: {value: true, errorMessage: i18n.t('dishes.validation.requiredMinStock')},
+                         step: {value: 1, errorMessage: i18n.t('dishes.validation.step1')},
+                         min: {value: 0, errorMessage: i18n.t('dishes.validation.minStock')},
+                         max: {value: 10000, errorMessage: i18n.t('dishes.validation.maxValue')}
                        }}/>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" className="px-4" block>Save</Button>
-              <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+              <Button color="primary" className="px-4" block>{i18n.t('global.save')}</Button>
+              <Button color="secondary" onClick={this.toggle}>{i18n.t('global.cancel')}</Button>
             </ModalFooter>
           </AvForm>
         </Modal>
