@@ -41,13 +41,19 @@
     "react-router-config": "^4.4.0-beta.6",
     "react-router-dom": "^4.3.1",
     "react-select": "^2.4.0",
-    "react-test-renderer": "^16.7.0",
     "reactstrap": "^7.0.2",
     "redux": "^4.0.1",
     "simple-line-icons": "^2.4.1"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.3.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.1.0",
+    "jest": "^24.1.0",
     "react-scripts": "2.1.3",
+    "react-test-renderer": "^16.8.2",
     "reactotron-apisauce": "^2.1.3",
     "reactotron-react-js": "^2.1.4",
     "reactotron-redux": "^2.1.3"
