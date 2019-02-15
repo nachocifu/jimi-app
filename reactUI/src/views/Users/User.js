@@ -11,6 +11,7 @@ import Modal from "reactstrap/es/Modal";
 import ModalHeader from "reactstrap/es/ModalHeader";
 import ModalBody from "reactstrap/es/ModalBody";
 import ModalFooter from "reactstrap/es/ModalFooter";
+import i18n from '../../i18n';
 
 class User extends Component {
 
@@ -76,11 +77,11 @@ class User extends Component {
 
   getConfirmationModalContent() {
     return (<div>
-        <ModalHeader>Confirmation</ModalHeader>
-        <ModalBody>Are you sure you want to delete the user?</ModalBody>
+        <ModalHeader>{i18n.t('global.confirm')}</ModalHeader>
+        <ModalBody>{i18n.t('users.confirmDelete')}</ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
-          <Button color="success" onClick={() => this.handleDelete()}>Confirm</Button>
+          <Button color="secondary" onClick={this.toggleConfirmationModal}>{i18n.t('global.cancel')}</Button>
+          <Button color="success" onClick={() => this.handleDelete()}>{i18n.t('global.confirm')}</Button>
         </ModalFooter>
       </div>
     );
@@ -95,7 +96,6 @@ class User extends Component {
       this.props.history.push('/404');
       return '';
     }
-
 
     return (
       <div className="animated fadeIn">
@@ -120,7 +120,7 @@ class User extends Component {
                 </Table>
               </CardBody>
               <CardFooter>
-                <Button color="danger" onClick={this.toggleConfirmationModal}>Delete</Button>
+                <Button color="danger" onClick={this.toggleConfirmationModal}>{i18n.t('global.delete')}</Button>
               </CardFooter>
             </Card>
           </Col>

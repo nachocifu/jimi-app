@@ -17,6 +17,7 @@ import Reactotron from 'reactotron-react-js';
 import {connect} from "react-redux";
 import {LOGIN_ERRORED, LOGIN_PENDING, LOGIN_REQUESTED, LOGIN_SUCCESSFULL} from "../../../redux/actions/actionTypes";
 import AuthRestClient from "../../../http/clients/AuthRestClient";
+import i18n from '../../../i18n';
 
 class Login extends Component {
 
@@ -49,10 +50,10 @@ class Login extends Component {
   getTitle() {
     switch (this.props.status) {
       case LOGIN_PENDING:
-        return <p className="text-muted">Sign In to your account</p>;
+        return <p className="text-muted">{i18n.t('login.message')}</p>;
       case LOGIN_ERRORED:
       default:
-        return <p className="text-muted">Something not right, try again?</p>;
+        return <p className="text-muted">{i18n.t('login.error')}</p>;
     }
   }
 
@@ -66,7 +67,7 @@ class Login extends Component {
                 <Card className="p-4">
                   <CardBody>
                     <Form onSubmit={this.handleLogin}>
-                      <h1>Login</h1>
+                      <h1>{i18n.t('login.title')}</h1>
                       {this.getTitle()}
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
@@ -74,7 +75,7 @@ class Login extends Component {
                             <i className="icon-user"/>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="Username" autoComplete="username" value={this.state.username}
+                        <Input type="text" placeholder={i18n.t('login.username')} autoComplete={i18n.t('login.username')} value={this.state.username}
                                onChange={e => this.setState({username: e.target.value})}/>
                       </InputGroup>
                       <InputGroup className="mb-4">
@@ -83,13 +84,13 @@ class Login extends Component {
                             <i className="icon-lock"/>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Password" autoComplete="current-password"
+                        <Input type="password" placeholder={i18n.t('login.password')} autoComplete={i18n.t('login.password')}
                                value={this.state.password}
                                onChange={e => this.setState({password: e.target.value})}/>
                       </InputGroup>
                       <Row>
                         <Col xs="12">
-                          <Button color="primary" className="px-4" block>Login</Button>
+                          <Button color="primary" className="px-4" block>{i18n.t('login.title')}</Button>
                         </Col>
                       </Row>
                     </Form>

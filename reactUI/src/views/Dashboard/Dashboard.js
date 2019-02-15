@@ -7,6 +7,7 @@ import {getStyle, hexToRgba} from '@coreui/coreui/dist/js/coreui-utilities'
 import Spinner from "reactstrap/es/Spinner";
 import StatRestClient from "../../http/clients/StatRestClient";
 import Reactotron from "reactotron-react-js";
+import i18n from '../../i18n';
 
 const brandInfo = getStyle('--info');
 
@@ -68,7 +69,7 @@ class Dashboard extends Component {
           {
             scaleLabel: {
               display: true,
-              labelString: "Year-Month"
+              labelString: i18n.t('dashboard.yearMonth')
             },
             gridLines: {
               drawOnChartArea: true,
@@ -78,7 +79,7 @@ class Dashboard extends Component {
           {
             scaleLabel: {
               display: true,
-              labelString: "Value $$$"
+              labelString: i18n.t('dashboard.value')
             },
             ticks: {
               beginAtZero: true,
@@ -103,7 +104,7 @@ class Dashboard extends Component {
         labels: labels,
         datasets: [
           {
-            label: 'Revenue',
+            label: i18n.t('dashboard.revenue'),
             backgroundColor: hexToRgba(brandInfo, 10),
             borderColor: brandInfo,
             pointHoverBackgroundColor: '#fff',
@@ -154,34 +155,34 @@ class Dashboard extends Component {
             <Card className="text-white bg-success">
               <CardBody className="pb-0">
                 <div className="text-value">{this.state.totalAmountOfFreeTables}</div>
-                <div>Tables FREE</div>
+                <div>{i18n.t('dashboard.freeTables')}</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{height: '30px'}}></div>
+              <div className="chart-wrapper mx-3" style={{height: '30px'}}/>
             </Card>
           </Col>
           <Col xs="12" sm="6" lg="3">
             <Card className="text-white bg-warning">
               <CardBody className="pb-0">
                 <div className="text-value">{this.state.totalAmountOfBusyTables}</div>
-                <div>Tables BUSY</div>
+                <div>{i18n.t('dashboard.occupiedTables')}</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{height: '30px'}}></div>
+              <div className="chart-wrapper mx-3" style={{height: '30px'}}/>
             </Card>
           </Col>
           <Col xs="12" sm="6" lg="3">
             <Card className="text-white bg-danger">
               <CardBody className="pb-0">
                 <div className="text-value">{this.state.totalAmountOfPayingTables}</div>
-                <div>Tables PAYING</div>
+                <div>{i18n.t('dashboard.payingTables')}</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{height: '30px'}}></div>
+              <div className="chart-wrapper mx-3" style={{height: '30px'}}/>
             </Card>
           </Col>
           <Col xs="12" sm="6" lg="3">
             <Card className="text-white bg-info">
               <CardBody className="pb-0">
                 <div className="text-value">{this.state.totalAmountOfTables}</div>
-                <div>Total Tables</div>
+                <div>{i18n.t('dashboard.totalTables')}</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{height: '30px'}}/>
             </Card>
@@ -193,7 +194,7 @@ class Dashboard extends Component {
               <CardBody>
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">Monthly Billing Report</CardTitle>
+                    <CardTitle className="mb-0">{i18n.t('dashboard.report')}</CardTitle>
                   </Col>
                 </Row>
                 <div className="chart-wrapper" style={{height: 300 + 'px', marginTop: 40 + 'px'}}>
@@ -203,13 +204,13 @@ class Dashboard extends Component {
               <CardFooter>
                 <Row className="text-center">
                   <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Tables</div>
-                    <strong>{this.state.freeTablesPercentage}% Currently Free</strong>
+                    <div className="text-muted">{i18n.t('dashboard.tables')}</div>
+                    <strong>{this.state.freeTablesPercentage}% {i18n.t('dashboard.currentlyFree')}</strong>
                     <Progress className="progress-xs mt-2" color="success" value={this.state.freeTablesPercentage}/>
                   </Col>
                   <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-                    <div className="text-muted">Dishes</div>
-                    <strong>{this.state.stockStatePercentage}% Current Global Stock Under {this.stockLimit}</strong>
+                    <div className="text-muted">{i18n.t('dashboard.dishes')}</div>
+                    <strong>{this.state.stockStatePercentage}% {i18n.t('dashboard.currentlyUnderStock')} {this.stockLimit}</strong>
                     <Progress className="progress-xs mt-2" color="info" value={this.state.stockStatePercentage}/>
                   </Col>
                 </Row>
