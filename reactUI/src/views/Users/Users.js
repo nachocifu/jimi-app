@@ -139,7 +139,7 @@ class Users extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"/> Users <small className="text-muted"/>
+                <i className="fa fa-align-justify"/> {i18n.t('navMenu.users')} <small className="text-muted"/>
                 <Button onClick={this.toggle} style={{'float': 'right'}} color="primary" className="px-4">
                   <i className="fa fa-plus-circle"/> {i18n.t('users.single')}
                 </Button>
