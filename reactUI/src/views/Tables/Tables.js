@@ -31,7 +31,7 @@ function TableRow(props) {
   };
 
   return (
-    <tr key={table.id.toString()}>
+    <tr>
       <td>{table.name}</td>
       <td><Badge color={getBadge(table.status)}>{table.status}</Badge></td>
       <td>
@@ -112,7 +112,7 @@ class Tables extends Component {
   }
 
   render() {
-    if(this.state.loading === true) return <Spinner style={{ width: '3rem', height: '3rem' }} />;
+    if (this.state.loading === true) return <Spinner style={{width: '3rem', height: '3rem'}}/>;
 
 
     return (
