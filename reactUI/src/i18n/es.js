@@ -39,15 +39,9 @@ export default {
     charged: 'Cobrada',
     hasPayed: '¿Cobrar mesa?',
     print: 'Imprimir',
-
     isOccupied: '¿Ocupar mesa?',
     willPay: '¿La mesa está pagando?',
-    hasPayed: '¿Cobrar mesa?',
-    hasPayed: '¿Cobrar mesa?',
-
-
-
-
+    cancel: '¿Cancelar mesa?',
     validation: {
       minLength: 'Mínimo 4 caracteres',
       maxLength: 'Máximo 20 caracteres',
@@ -59,8 +53,6 @@ export default {
       repeatedName: 'Nombre ya existe',
       inputName: 'Ingrese el nombre',
     },
-    charged: 'Cobrado',
-    print: 'Print',
     charge: 'Cobrar',
     diner: 'Comensal',
     addDish: 'Agregar Plato...',
@@ -102,7 +94,20 @@ export default {
       pricePattern: '5 dígitos enteros, 2 decimales como máximo',
     }
   },
-  dashboard: {},
+  dashboard: {
+    revenue: 'Ingreso',
+    value: 'Valor $$$',
+    yearMonth: 'Año-Mes',
+    report: 'Reporte de facturas mensual',
+    freeTables: 'Mesas Libres',
+    occupiedTables: 'Mesas Ocupadas',
+    payingTables: 'Mesas Pagando',
+    totalTables: 'Mesas Totales',
+    tables: 'Mesas',
+    dishes: 'Platos',
+    currentlyFree: 'libres en este momento',
+    currentlyUnderStock: 'con stock debajo de',
+  },
   users: {
     details: 'Detalle de usuario',
     name: 'Nombre',

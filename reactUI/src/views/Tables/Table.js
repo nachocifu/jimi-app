@@ -354,7 +354,7 @@ class Table extends Component {
         return (
           <div>
             <ModalHeader>{i18n.t('global.confirm')}</ModalHeader>
-            <ModalBody>Table cancelled?</ModalBody>
+            <ModalBody>{i18n.t('tables.cancel')}</ModalBody>
             <ModalFooter>
               <Button color="secondary" onClick={this.toggleConfirmationModal}>{i18n.t('global.cancel')}</Button>
               <Button color="success" onClick={() => this.changeTableStatus("FREE")}>{i18n.t('global.confirm')}</Button>
