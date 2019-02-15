@@ -44,6 +44,10 @@ _Waiter:_
 * Changed Persistence to Hibernate
 * Change DB structure (@see migrations note)
 
+### V3 ()
+
+* Remake front end as SPA with MIT licenced [CoreUi boilerplate](https://coreui.ui/)
+
 ## Screen Resolutions Supported
 *  1024x768
 *  1366x768
