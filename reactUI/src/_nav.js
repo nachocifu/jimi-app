@@ -1,41 +1,43 @@
+import i18n from './i18n';
+
 export default {
   items: [
     {
-      name: 'Stadistics',
+      name: i18n.t('navMenu.stats'),
       url: '/stats',
       icon: 'icon-speedometer',
       roles: ['ROLE_ADMIN']
     },
     {
-      name: 'Bills',
+      name: i18n.t('navMenu.bills'),
       class: '',
       url: '/bills',
       icon: 'icon-speedometer',
       roles: ['ROLE_ADMIN']
     },
     {
-      name: 'Dishes',
+      name: i18n.t('navMenu.dishes'),
       class: '',
       url: '/dishes',
       icon: 'icon-speedometer',
       roles: ['ROLE_ADMIN']
     },
     {
-      name: 'Users',
+      name: i18n.t('navMenu.users'),
       class: '',
       url: '/users',
       icon: 'icon-people',
       roles: ['ROLE_ADMIN']
     },
     {
-      name: 'Kitchen',
+      name: i18n.t('navMenu.kitchen'),
       class: '',
       url: '/kitchen',
       icon: 'icon-people',
       roles: ['ROLE_ADMIN', 'ROLE_USER']
     },
     {
-      name: 'Tables',
+      name: i18n.t('navMenu.tables'),
       class: '',
       url: '/tables',
       icon: 'icon-people',
