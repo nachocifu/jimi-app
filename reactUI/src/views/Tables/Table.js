@@ -32,7 +32,7 @@ function DishListItem(props) {
   Reactotron.debug(dish);
   Reactotron.debug(amount);
   return (
-    <tr key={dish.id}>
+    <tr>
       <td>{dish.name}</td>
       <td>{amount}</td>
       <td>
@@ -280,7 +280,7 @@ class Table extends Component {
   }
 
   handleStatusChange = (status) => {
-    this.setState({nextStatus: status});
+    this.setState({nextStatus: status})
     this.toggleConfirmationModal();
   }
 
@@ -339,7 +339,7 @@ class Table extends Component {
             </ModalFooter>
           </div>);
       default:
-        return this.state.table.status;
+        return this.state.nextStatus;
     }
   }
 
@@ -353,9 +353,9 @@ class Table extends Component {
             <Button onClick={this.preToggleAddDish} color={"success"} block>ADD DISH</Button>
             <ButtonGroup style={{'width': '100%', 'marginTop': '5px'}}>
               <Button onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"} block><i
-                className="fa fa-minus"/> Dinner</Button>
+                className="fa fa-minus"/> Diner</Button>
               <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"} block><i
-                className="fa fa-plus"/> Dinner</Button>
+                className="fa fa-plus"/> Diner</Button>
             </ButtonGroup>
             <Button onClick={() => this.handleStatusChange('CHARGE')} color={"danger"} block
                     style={{'marginTop': '5px'}}>CHARGE</Button>
@@ -477,10 +477,11 @@ class Table extends Component {
                 <TableHtml>
                   <tbody>
                   {this.state.table.unDoneDishes.map((entry, index) =>
-                    <DishListItem dish={entry.key} amount={entry.value.amount} self={this} options={true}/>
+                    <DishListItem key={index} dish={entry.key} amount={entry.value.amount} self={this}
+                                  options={true}/>
                   )}
                   {this.state.table.doneDishes.map((entry, index) =>
-                    <DishListItem dish={entry.key} amount={entry.value} self={this} options={false}/>
+                    <DishListItem key={index} dish={entry.key} amount={entry.value} self={this} options={false}/>
                   )}
                   </tbody>
                 </TableHtml>
@@ -529,7 +530,7 @@ class Table extends Component {
           <ModalBody>
             <Row>
               {this.state.dishes.map((dish) =>
-                <Col lg={3}>
+                <Col lg={3} key={dish.id}>
                   <Button size={'lg'} color={'info'} lg={3} block style={{margin: '2.5px'}}
                           onClick={() => {
                             this.setState({dishSelection: dish.id});
