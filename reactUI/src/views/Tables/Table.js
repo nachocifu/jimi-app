@@ -23,11 +23,11 @@ import {Redirect} from "react-router-dom";
 import ButtonGroup from "reactstrap/es/ButtonGroup";
 import DishRestClient from "../../http/clients/DishRestClient";
 import {AvField, AvForm} from 'availity-reactstrap-validation';
-
+import Select from "react-select";
 
 function DishListItem(props) {
-  var dish = props.dish;
-  var amount = props.amount;
+  let dish = props.dish;
+  let amount = props.amount;
 
   Reactotron.debug(dish);
   Reactotron.debug(amount);
@@ -36,13 +36,13 @@ function DishListItem(props) {
       <td>{dish.name}</td>
       <td>{amount}</td>
       <td>
-        {props.options && amount > 0?
+        {props.options && amount > 0 ?
           <Button onClick={() => props.self.setDishes(dish.id, amount - 1)} color={'danger'} block><i
             className="fa fa-minus"/></Button>
           : ''}
       </td>
       <td>
-        {props.options && dish.stock >0?
+        {props.options && dish.stock > 0 ?
           <Button onClick={() => props.self.setDishes(dish.id, amount + 1)} color={'success'} block><i
             className="fa fa-plus"/></Button>
           : ''}
@@ -96,6 +96,7 @@ class Table extends Component {
     this.toggleAddDishAll = this.toggleAddDishAll.bind(this);
     this.handleForm = this.handleForm.bind(this);
     this.loadTable = this.loadTable.bind(this);
+    this.loadDishes = this.loadDishes.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.setDiners = this.setDiners.bind(this);
     this.addDishes = this.addDishes.bind(this);
@@ -106,6 +107,7 @@ class Table extends Component {
     this.handleDishAmountValidSubmit = this.handleDishAmountValidSubmit.bind(this);
     this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
     this.getConfirmationModalContent = this.getConfirmationModalContent.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   deleteUnDoneDish(dish) {
@@ -139,7 +141,8 @@ class Table extends Component {
           modal: false,
           addDishModal: false,
           addDishModalNested: false,
-          addDishCloseAll: false
+          addDishCloseAll: false,
+          modalAddDish: false
         });
       })
       .catch((error) => {
@@ -149,7 +152,7 @@ class Table extends Component {
   }
 
   loadDishes() {
-    return this.dishClient.getAvailable(0, 100)
+    return this.dishClient.getAvailable(1, 100)
       .then((val) => {
         Reactotron.display({
           name: 'Table Dishes to add SUCCESS',
@@ -204,7 +207,8 @@ class Table extends Component {
   toggleAddDishAll() {
     this.setState({
       addDishModalNested: !this.state.addDishModalNested,
-      addDishCloseAll: true
+      addDishCloseAll: true,
+      dishSelection: null
     });
   }
 
@@ -259,7 +263,8 @@ class Table extends Component {
 
   addDishes() {
     this.setState({loading: true});
-    this.tableClient.addDish(this.state.table.id, this.state.dishSelection, this.state.dishSelectionNum)
+    Reactotron.display({preview: "addDishes num", name: "addDishes num", value: this.state.dishSelectionNum})
+    this.tableClient.addDish(this.state.table.id, this.state.dishSelection.value, this.state.dishSelectionNum)
       .then(this.toggleAddDishAll())
       .then(() => Promise.all([this.loadTable(), this.loadDishes()]))
       .catch(() => Reactotron.display({
@@ -280,7 +285,7 @@ class Table extends Component {
   }
 
   handleStatusChange = (status) => {
-    this.setState({nextStatus: status})
+    this.setState({nextStatus: status});
     this.toggleConfirmationModal();
   }
 
@@ -303,7 +308,7 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table has payed?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={this.toggleConfirmationModal }>Cancel</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
               <Button color="success" onClick={() => this.changeTableStatus("FREE")}>Confirm</Button>
             </ModalFooter>
           </div>
@@ -314,7 +319,7 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table is occupied?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
               <Button color="success" onClick={() => this.changeTableStatus("BUSY")}>Confirm</Button>
             </ModalFooter>
           </div>);
@@ -324,8 +329,8 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table will pay?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={ () => this.changeTableStatus("PAYING")}>Confirm</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("PAYING")}>Confirm</Button>
             </ModalFooter>
           </div>);
       case 'CANCELLED':
@@ -334,8 +339,8 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table cancelled?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={ () => this.changeTableStatus("FREE")}>Confirm</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("FREE")}>Confirm</Button>
             </ModalFooter>
           </div>);
       default:
@@ -348,18 +353,25 @@ class Table extends Component {
       case 'FREE':
         return <Button color={'success'} onClick={() => this.handleStatusChange('BUSY')} block>SET OCCUPIED</Button>;
       case 'BUSY':
+        if (this.state.dishes.length <= 0) {
+          this.loadDishes();
+        }
         return (
           <div>
-            <Button onClick={this.preToggleAddDish} color={"success"} block>ADD DISH</Button>
+            <Select placeholder="Add dish..." value={this.state.dishSelection} options={this.state.dishes.map((dish) =>
+              ({value: dish.id, label: dish.name})
+            )} onChange={this.handleSelect}/>
             <ButtonGroup style={{'width': '100%', 'marginTop': '5px'}}>
-              <Button disabled={this.state.table.diners === 0} onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"} block><i
+              <Button disabled={this.state.table.diners === 0}
+                      onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"}
+                      style={{'marginRight': '5px'}}><i
                 className="fa fa-minus"/> Diner</Button>
-              <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"} block><i
+              <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"}><i
                 className="fa fa-plus"/> Diner</Button>
             </ButtonGroup>
-            {this.state.table.doneDishes.length || this.state.table.unDoneDishes.length?
-              <Button onClick={() => this.handleStatusChange('CHARGE')} color={"danger"} block
-                      style={{'marginTop': '5px'}}>CHARGE</Button>:''
+            {this.state.table.doneDishes.length || this.state.table.unDoneDishes.length ?
+              <Button onClick={() => this.handleStatusChange('PAYING')} color={"danger"} block
+                      style={{'marginTop': '5px'}}>CHARGE</Button> : ''
             }
             <Button onClick={() => this.handleStatusChange('CANCELLED')} color={"danger"} block
                     style={{'marginTop': '5px'}}>CANCEL</Button>
@@ -370,7 +382,7 @@ class Table extends Component {
           <div>
             <Button color={"success"} block>PRINT</Button>
             <Button
-              onClick={() => this.handleStatusChange('CHARGED')}
+              onClick={() => this.handleStatusChange('FREE')}
               color={"success"} block style={{'marginTop': '5px'}}>CHARGED</Button>
           </div>
         );
@@ -393,9 +405,9 @@ class Table extends Component {
     let form = {...this.state.form};
     form.error = false;
     form.nameError = false;
-    form.dishSelectionNum = values.dishSelectionNum;
-    this.setState({form: form});
-    this.addDishes()
+    this.setState({form: form, dishSelectionNum: values.dishSelectionNum});
+    Reactotron.display({preview: "Selected num", name: "Selected num", value: values.dishSelectionNum});
+    this.addDishes();
   }
 
   handleInvalidSubmit(event, errors, values) {
@@ -405,6 +417,11 @@ class Table extends Component {
     form.name = values.name;
     form.dishSelectionNum = values.dishSelectionNum;
     this.setState({form: form});
+  }
+
+  handleSelect = (dishSelection) => {
+    this.setState({dishSelection: dishSelection});
+    this.toggleAddDishNested();
   }
 
   render() {
@@ -450,7 +467,6 @@ class Table extends Component {
                 </TableHtml>
               </CardBody>
               {this.props.roles.filter(value => value === 'ROLE_ADMIN').length > 0 ? (
-
                 <CardFooter>
                   <Button color="secondary" onClick={this.toggle}>Edit</Button>
                   <Button color="danger" onClick={this.handleDelete}
@@ -478,12 +494,12 @@ class Table extends Component {
               <CardBody>
                 <TableHtml>
                   <tbody>
-                  {this.state.table.unDoneDishes.map((entry, index) =>
-                    <DishListItem key={index} dish={entry.key} amount={entry.value.amount} self={this}
+                  {this.state.table.unDoneDishes.sort((a, b) => (a.key.name.localeCompare(b.key.name))).map((entry, index) =>
+                    <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value.amount} self={this}
                                   options={true}/>
                   )}
                   {this.state.table.doneDishes.map((entry, index) =>
-                    <DishListItem key={index} dish={entry.key} amount={entry.value} self={this} options={false}/>
+                    <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value} self={this} options={false}/>
                   )}
                   </tbody>
                 </TableHtml>
@@ -527,55 +543,32 @@ class Table extends Component {
               </Card>)}
         </Modal>
 
-        <Modal isOpen={this.state.modalAddDish} toggle={this.toggleAddDish} size={'xl'}>
-          <ModalHeader toggle={this.toggleAddDish}>Select Dish</ModalHeader>
-          <ModalBody>
-            <Row>
-              {this.state.dishes.map((dish) =>
-                <Col lg={3} key={dish.id}>
-                  <Button size={'lg'} color={'info'} lg={3} block style={{margin: '2.5px'}}
-                          onClick={() => {
-                            this.setState({dishSelection: dish.id});
-                            this.toggleAddDishNested();
-                          }}>
-                    {dish.name}
-                  </Button>
-                </Col>
-              )}
-            </Row>
-
-            <Modal isOpen={this.state.addDishModalNested} toggle={this.toggleAddDishNested}
-                   onClosed={this.state.addDishCloseAll ? this.toggleAddDish : undefined}>
-              <ModalHeader>How Many?</ModalHeader>
-              <AvForm onValidSubmit={this.handleDishAmountValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
-                <ModalBody>
-                  <AvField name="dishSelectionNum" label="Amount" type="number"
-                           onChange={e => this.setState({dishSelectionNum: e.target.value})}
-                           validate={{
-                             required: {value: true, errorMessage: 'Please enter an amount'},
-                             step: {value: 1},
-                             min: {value: 1, errorMessage: 'Minimum of 1'},
-                             max: {
-                               value:
-                                 this.state.dishes.find(dish => dish.id === this.state.dishSelection) ?
-                                   this.state.dishes.find(dish => dish.id === this.state.dishSelection).stock :
-                                   0,
-                               errorMessage: 'Not enough stock'
-                             }
-                           }}/>
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="primary" onClick={this.toggleAddDishNested}>Back</Button>
-                  <Button color="secondary" onClick={this.toggleAddDishAll}>Cancel</Button>
-                  <Button color="success">Submit</Button>
-                </ModalFooter>
-              </AvForm>
-            </Modal>
-
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggleAddDish} block>Cancel</Button>
-          </ModalFooter>
+        <Modal isOpen={this.state.addDishModalNested} toggle={this.toggleAddDishNested}
+               onClosed={this.state.addDishCloseAll ? this.toggleAddDish : undefined}>
+          <ModalHeader>How Many?</ModalHeader>
+          <AvForm onValidSubmit={this.handleDishAmountValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
+            <ModalBody>
+              <AvField name="dishSelectionNum" label="Amount" type="number"
+                       validate={{
+                         required: {value: true, errorMessage: 'Please enter an amount'},
+                         step: {value: 1},
+                         min: {value: 1, errorMessage: 'Minimum of 1'},
+                         max: {
+                           value:
+                             this.state.dishSelection ?
+                               (this.state.dishes.find(dish => dish.id === this.state.dishSelection.value) ?
+                                 this.state.dishes.find(dish => dish.id === this.state.dishSelection.value).stock :
+                                 0) : 0,
+                           errorMessage: 'Not enough stock'
+                         }
+                       }}/>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onClick={this.toggleAddDishNested}>Back</Button>
+              <Button color="secondary" onClick={this.toggleAddDishAll}>Cancel</Button>
+              <Button color="success">Submit</Button>
+            </ModalFooter>
+          </AvForm>
         </Modal>
 
         <Modal isOpen={this.state.confirmationModal} toggle={this.toggleConfirmationModal}>
@@ -586,7 +579,6 @@ class Table extends Component {
     )
   }
 }
-
 
 const mapStateToProps = state => {
   return {

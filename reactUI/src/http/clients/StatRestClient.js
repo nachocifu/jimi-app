@@ -8,9 +8,9 @@ export default class StatRestClient extends RestClient {
    *
    *  @returns {Promise} - The http promise.
    */
-  getAll() {
+  getAll(stockLimit) {
     return this.instance.get(
-      'api/admin/stats'
+      'api/admin/stats?stockLimit=' + stockLimit
     );
   }
 

@@ -239,7 +239,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setClosedAt(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 
 		if (!order.getUnDoneDishes().isEmpty()) {
-			Set<Dish> dishesToRemove = order.getUnDoneDishes().keySet();
+			Set<Dish> dishesToRemove = new HashSet<>(order.getUnDoneDishes().keySet());
 			dishesToRemove.forEach(d -> removeAllUndoneDish(order, d));
 		}
 
