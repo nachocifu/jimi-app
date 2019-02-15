@@ -71,9 +71,8 @@ public class AdminApiController extends BaseApiController {
 				UriBuilder.fromResource(AdminApiController.class).build() +
 				"/bills" +
 				"/");
-		final OrderListDTO billsDTO = new OrderListDTO(new LinkedList<>(cancelledOrClosedOrders), billsURI);
-		return Response.ok(billsDTO)
-				.links(paginationHelper.getPaginationLinks(uriInfo, page, maxPage))
+		return Response
+				.ok(new OrderListDTO(new LinkedList<>(cancelledOrClosedOrders), billsURI, paginationHelper.getPaginationDTO(page, maxPage)))
 				.build();
 	}
 

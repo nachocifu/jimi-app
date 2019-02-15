@@ -1,48 +1,40 @@
 package edu.itba.paw.jimi.webapp.utils;
 
 
-import edu.itba.paw.jimi.interfaces.utils.PaginationService;
+import edu.itba.paw.jimi.webapp.dto.PaginationDTO;
 import org.springframework.stereotype.Component;
-
-import javax.ws.rs.core.Link;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class PaginationHelper implements PaginationService {
 
-	private static final String PREV = "prev";
-	private static final String NEXT = "next";
-	private static final String FIRST = "first";
-	private static final String LAST = "last";
-	private static final String PAGE = "page";
+	@Override
+	public PaginationDTO getPaginationDTO(int page, int maxPage) {
 
-	public Link[] getPaginationLinks(UriInfo requestUriInfo, int page, int maxPage) {
-		UriBuilder uriBuilder = requestUriInfo.getRequestUriBuilder();
+		PaginationDTO links = new PaginationDTO();
 
-		List<Link> links = new ArrayList<>();
-		links.add(Link.fromUriBuilder(uriBuilder.replaceQueryParam(PAGE, 1)).rel(FIRST).build());
-		links.add(Link.fromUriBuilder(uriBuilder.replaceQueryParam(PAGE, maxPage)).rel(LAST).build());
+		links.setFirst(1);
+		links.setLast(maxPage);
 
 		if (page > 1)
-			links.add(Link.fromUriBuilder(uriBuilder.replaceQueryParam(PAGE, page - 1)).rel(PREV).build());
+			links.setPrev(page - 1);
 
 		if (page < maxPage)
-			links.add(Link.fromUriBuilder(uriBuilder.replaceQueryParam(PAGE, page + 1)).rel(NEXT).build());
+			links.setNext(page + 1);
 
-		return links.toArray(new Link[0]);
+		return links;
 	}
 
+	@Override
 	public int getPageAsOneIfZeroOrLess(int page) {
 		return (page < 1) ? 1 : page;
 	}
 
+	@Override
 	public int getPageSizeAsDefaultSizeIfOutOfRange(int pageSize, int defaultSize, int maxSize) {
 		return (pageSize < 1 || pageSize > maxSize) ? defaultSize : pageSize;
 	}
 
+	@Override
 	public int maxPage(final int total, final int pageSize) {
 		return (int) Math.ceil((float) total / pageSize);
 	}

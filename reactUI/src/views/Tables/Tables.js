@@ -22,10 +22,10 @@ import Button from "reactstrap/es/Button";
 import CardFooter from "reactstrap/es/CardFooter";
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import Spinner from "reactstrap/es/Spinner";
+import ButtonGroup from "reactstrap/es/ButtonGroup";
 
 function TableRow(props) {
   const table = props.table;
-
   const getBadge = (status) => {
     return status === 'Active' ? 'primary' : 'secondary'
   };
@@ -47,15 +47,24 @@ class Tables extends Component {
 
   tableClient;
 
+  pageSize = 5;
+
   constructor(props) {
     super(props);
     this.tableClient = new TableRestClient(props);
-    this.state = {tables: [], loading: true, modal: false, form: {name: '', error: false, nameError: false}};
+    this.state = {
+      tables: [],
+      loading: true,
+      modal: false,
+      form: {name: '', error: false, nameError: false},
+      links: {next: null, last: null, prev: null, first: null, page: null}
+    };
     this.toggle = this.toggle.bind(this);
     this.newTable = this.newTable.bind(this);
     this.updateList = this.updateList.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
+    this.getPaginationLinks = this.getPaginationLinks.bind(this);
   }
 
   toggle() {
@@ -81,10 +90,17 @@ class Tables extends Component {
       });
   }
 
-  updateList() {
-    return this.tableClient.get(0, 10)
+  updateList(page) {
+    page = page ? page : 1;
+    return this.tableClient.get(page, this.pageSize)
       .then((val) => {
-        this.setState({tables: val.data.tables});
+        let links = {...this.state.links};
+        links.next = val.data.links.next;
+        links.last = val.data.links.last;
+        links.prev = val.data.links.prev;
+        links.first = val.data.links.first;
+        links.page = val.data.links.page;
+        this.setState({tables: val.data.tables, links: links});
       }).catch((error) => {
         Reactotron.error("Failed to retrieve tables", error);
       });
@@ -111,9 +127,21 @@ class Tables extends Component {
     this.setState({form: form});
   }
 
-  render() {
-    if (this.state.loading === true) return <Spinner style={{width: '3rem', height: '3rem'}}/>;
+  getPaginationLinks() {
+    return this.state.links.first !== this.state.links.last ? (
+      <ButtonGroup style={{'width': '100%', marginBottom: '10px'}}>
+        {this.state.links.prev ?
+          <Button onClick={() => this.updateList(this.state.links.prev)}>
+            <i className="fa fa-chevron-left"/></Button> : ''}
+        {this.state.links.next ?
+          <Button onClick={() => this.updateList(this.state.links.next)}>
+            <i className="fa fa-chevron-right"/></Button> : ''}
+      </ButtonGroup>) : '';
+  }
 
+  render() {
+
+    if (this.state.loading === true) return <Spinner style={{width: '3rem', height: '3rem'}}/>;
 
     return (
       <div className="animated fadeIn">
@@ -122,6 +150,13 @@ class Tables extends Component {
             <Card>
               <CardHeader>
                 <i className="fa fa-align-justify"/> Tables
+
+                {this.props.roles.filter(value => value === 'ROLE_ADMIN').length > 0 ? (
+                  <Button onClick={this.toggle} style={{'float': 'right'}} color="primary" className="px-4">
+                    <i className="fa fa-plus-circle"/> Table
+                  </Button>
+                ) : ''
+                }
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
@@ -139,15 +174,9 @@ class Tables extends Component {
                   </tbody>
                 </Table>
               </CardBody>
-
-              {this.props.roles.filter(value => value === 'ROLE_ADMIN').length > 0 ? (
-
-                <CardFooter>
-                  <Button onClick={this.toggle} color="primary" className="px-4" block><i
-                    className="fa fa-plus-circle"/>Table</Button>
-                </CardFooter>
-              ) : ''
-              }
+              <CardFooter>
+                {this.getPaginationLinks()}
+              </CardFooter>
             </Card>
           </Col>
         </Row>
@@ -180,6 +209,7 @@ class Tables extends Component {
             </ModalFooter>
           </AvForm>
         </Modal>
+
       </div>
     )
   }
