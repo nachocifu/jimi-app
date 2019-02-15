@@ -24,6 +24,7 @@ import ButtonGroup from "reactstrap/es/ButtonGroup";
 import DishRestClient from "../../http/clients/DishRestClient";
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import Select from "react-select";
+import i18n from '../../i18n';
 import moment from "moment";
 
 function DishListItem(props) {
@@ -302,7 +303,7 @@ class Table extends Component {
   handleStatusChange = (status) => {
     this.setState({nextStatus: status});
     this.toggleConfirmationModal();
-  }
+  };
 
   changeTableStatus(nextStatus) {
     this.setState({loading: true, confirmationModal: false});
@@ -320,42 +321,43 @@ class Table extends Component {
       case 'FREE':
         return (
           <div>
-            <ModalHeader>Confirmation</ModalHeader>
-            <ModalBody>Table has payed?</ModalBody>
+            <ModalHeader>{i18n.t('global.confirm')}</ModalHeader>
+            <ModalBody>{i18n.t('tables.hasPayed')}</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={() => this.changeTableStatus("FREE")}>Confirm</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>{i18n.t('global.cancel')}</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("FREE")}>{i18n.t('global.confirm')}</Button>
             </ModalFooter>
           </div>
         );
       case 'BUSY':
         return (
           <div>
-            <ModalHeader>Confirmation</ModalHeader>
-            <ModalBody>Table is occupied?</ModalBody>
+            <ModalHeader>{i18n.t('global.confirm')}</ModalHeader>
+            <ModalBody>{i18n.t('tables.isOccupied')}</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={() => this.changeTableStatus("BUSY")}>Confirm</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>{i18n.t('global.cancel')}</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("BUSY")}>{i18n.t('global.confirm')}</Button>
             </ModalFooter>
           </div>);
       case 'PAYING':
         return (
           <div>
-            <ModalHeader>Confirmation</ModalHeader>
-            <ModalBody>Table will pay?</ModalBody>
+            <ModalHeader>{i18n.t('global.confirm')}</ModalHeader>
+            <ModalBody>{i18n.t('tables.willPay')}</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={() => this.changeTableStatus("PAYING")}>Confirm</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>{i18n.t('global.cancel')}</Button>
+              <Button color="success"
+                      onClick={() => this.changeTableStatus("PAYING")}>{i18n.t('global.confirm')}</Button>
             </ModalFooter>
           </div>);
       case 'CANCELLED':
         return (
           <div>
-            <ModalHeader>Confirmation</ModalHeader>
-            <ModalBody>Table cancelled?</ModalBody>
+            <ModalHeader>{i18n.t('global.confirm')}</ModalHeader>
+            <ModalBody>{i18n.t('tables.cancel')}</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={() => this.changeTableStatus("FREE")}>Confirm</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>{i18n.t('global.cancel')}</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("FREE")}>{i18n.t('global.confirm')}</Button>
             </ModalFooter>
           </div>);
       default:
@@ -366,39 +368,41 @@ class Table extends Component {
   getAvailableOperations() {
     switch (this.state.table.status) {
       case 'FREE':
-        return <Button color={'success'} onClick={() => this.handleStatusChange('BUSY')} block>SET OCCUPIED</Button>;
+        return <Button color={'success'} onClick={() => this.handleStatusChange('BUSY')}
+                       block>{i18n.t('tables.occupy').toUpperCase()}</Button>;
       case 'BUSY':
         if (this.state.dishes.length <= 0) {
           this.loadDishes();
         }
         return (
           <div>
-            <Select placeholder="Add dish..." value={this.state.dishSelection} options={this.state.dishes.map((dish) =>
-              ({value: dish.id, label: dish.name})
-            )} onChange={this.handleSelect}/>
+            <Select placeholder={i18n.t('tables.addDish')} value={this.state.dishSelection}
+                    options={this.state.dishes.map((dish) =>
+                      ({value: dish.id, label: dish.name})
+                    )} onChange={this.handleSelect}/>
             <ButtonGroup style={{'width': '100%', 'marginTop': '5px'}}>
               <Button disabled={this.state.table.diners === 0}
                       onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"}
                       style={{'marginRight': '5px'}}><i
-                className="fa fa-minus"/> Diner</Button>
+                className="fa fa-minus"/> {i18n.t('tables.diner')}</Button>
               <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"}><i
-                className="fa fa-plus"/> Diner</Button>
+                className="fa fa-plus"/> {i18n.t('tables.diner')}</Button>
             </ButtonGroup>
             {this.state.table.doneDishes.length || this.state.table.unDoneDishes.length ?
               <Button onClick={() => this.handleStatusChange('PAYING')} color={"danger"} block
-                      style={{'marginTop': '5px'}}>CHARGE</Button> : ''
+                      style={{'marginTop': '5px'}}>{i18n.t('tables.charge').toUpperCase()}</Button> : ''
             }
             <Button onClick={() => this.handleStatusChange('CANCELLED')} color={"danger"} block
-                    style={{'marginTop': '5px'}}>CANCEL</Button>
+                    style={{'marginTop': '5px'}}>{i18n.t('global.cancel').toUpperCase()}</Button>
           </div>
         );
       case 'PAYING':
         return (
           <div>
-            <Button color={"success"} onClick={() => window.print()} block>PRINT</Button>
+            <Button color={"success"} block>{i18n.t('tables.print').toUpperCase()}</Button>
             <Button
               onClick={() => this.handleStatusChange('FREE')}
-              color={"success"} block style={{'marginTop': '5px'}}>CHARGED</Button>
+              color={"success"} block style={{'marginTop': '5px'}}>{i18n.t('tables.charged').toUpperCase()}</Button>
           </div>
         );
       default:
@@ -466,15 +470,15 @@ class Table extends Component {
                     <td><strong>{this.state.table.id}</strong></td>
                   </tr>
                   <tr key={'name'}>
-                    <td>NAME</td>
+                    <td>{i18n.t('tables.name').toUpperCase()}</td>
                     <td><strong>{this.state.table.name}</strong></td>
                   </tr>
                   <tr key={'status'}>
-                    <td>STATUS</td>
+                    <td>{i18n.t('tables.status').toUpperCase()}</td>
                     <td><strong>{this.state.table.status}</strong></td>
                   </tr>
                   <tr key={'diners'}>
-                    <td>DINERS</td>
+                    <td>{i18n.t('tables.diners').toUpperCase()}</td>
                     <td><strong>{this.state.table.diners}</strong></td>
                   </tr>
                   <tr key={'total'}>
@@ -493,9 +497,10 @@ class Table extends Component {
               </CardBody>
               {this.props.roles.filter(value => value === 'ROLE_ADMIN').length > 0 ? (
                 <CardFooter>
-                  <Button color="secondary" onClick={this.toggle}>Edit</Button>
+                  <Button color="secondary" style={{'marginRight': '5px'}}
+                          onClick={this.toggle}>{i18n.t('global.edit')}</Button>
                   <Button color="danger" onClick={this.handleDelete}
-                          disabled={this.state.table.status !== 'FREE'}>Delete</Button>
+                          disabled={this.state.table.status !== 'FREE'}>{i18n.t('global.delete')}</Button>
                 </CardFooter>
               ) : ''
               }
@@ -504,17 +509,19 @@ class Table extends Component {
           <Col lg={6}>
             <Card>
               <CardHeader>
-                <strong><i className="icon-info pr-1"/>Operations</strong>
+                <strong><i className="icon-info pr-1"/>{i18n.t('tables.operations')}</strong>
               </CardHeader>
               <CardBody>
                 {this.getAvailableOperations()}
               </CardBody>
             </Card>
           </Col>
-          <Col lg={12}>
+          {(this.state.table.unDoneDishes.length > 0 ||
+            this.state.table.doneDishes.length > 0) ?
+            (<Col lg={12}>
             <Card>
               <CardHeader>
-                <strong><i className="icon-list pr-1"/>Dishes</strong>
+                <strong><i className="icon-list pr-1"/>{i18n.t('dishes.plural')}</strong>
               </CardHeader>
               <CardBody>
                 <TableHtml>
@@ -525,19 +532,20 @@ class Table extends Component {
                     {this.state.table.status==='PAYING'?<th>Total</th>:''}
                   </thead>
                   <tbody>
-                  {this.state.table.unDoneDishes.sort((a, b) => (a.key.name.localeCompare(b.key.name))).map((entry, index) =>
+                  {this.state.table.unDoneDishes.length > 0 ?
+                      (this.state.table.unDoneDishes.sort((a, b) => (a.key.name.localeCompare(b.key.name))).map((entry, index) =>
                     <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value.amount} self={this}
-                                  options={this.state.table.status!=='PAYING'} status={this.state.table.status}/>
-                  )}
-                  {this.state.table.doneDishes.map((entry, index) =>
-                    <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value} self={this}
-                                  options={false} status={this.state.table.status}/>
-                  )}
+                                  options={this.state.table.status!=='PAYING'} status={this.state.table.status}/>))
+                  : ''}
+                  {this.state.table.doneDishes.length > 0 ?
+                      (this.state.table.doneDishes.map((entry, index) =>
+                    <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value} self={this} options={false}status={this.state.table.status}/>))
+                  : ''}
                   </tbody>
                 </TableHtml>
               </CardBody>
             </Card>
-          </Col>
+          </Col>) : ''}
         </Row>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
@@ -546,30 +554,30 @@ class Table extends Component {
             (
               <Card>
                 <ModalHeader toggle={this.toggle}>
-                  Edit Table
+                  {i18n.t('tables.editTitle')}
                 </ModalHeader>
                 <AvForm onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
                   <ModalBody>
-                    <AvField name="name" label="Name" type="text" placeholder={this.state.table.name}
+                    <AvField name="name" label={i18n.t('tables.name')} type="text" placeholder={this.state.table.name}
                              validate={{
-                               required: {value: true, errorMessage: 'Please enter a name'},
+                               required: {value: true, errorMessage: i18n.t('tables.validation.inputName')},
                                pattern: {
                                  value: '^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$',
-                                 errorMessage: 'Your name must be composed only with letter and numbers'
+                                 errorMessage: i18n.t('tables.validation.pattern')
                                },
-                               minLength: {value: 4, errorMessage: 'Your name must be between 4 and 20 characters'},
-                               maxLength: {value: 20, errorMessage: 'Your name must be between 4 and 20 characters'}
+                               minLength: {value: 4, errorMessage: i18n.t('tables.validation.minLength')},
+                               maxLength: {value: 20, errorMessage: i18n.t('tables.validation.maxLength')}
                              }}/>
                     {this.state.form.nameError ? (
                       <InputGroupAddon addonType="append">
                         <InputGroupText>
-                          Table already exists with this name
+                          {i18n.t('tables.validation.repeatedName')}
                         </InputGroupText>
                       </InputGroupAddon>) : ''}
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="primary" className="px-4" block>Save</Button>
-                    <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                    <Button color="primary" className="px-4" block>{i18n.t('global.save')}</Button>
+                    <Button color="secondary" onClick={this.toggle}>{i18n.t('global.cancel')}</Button>
                   </ModalFooter>
                 </AvForm>
               </Card>)}
@@ -580,25 +588,25 @@ class Table extends Component {
           <ModalHeader>How Many?</ModalHeader>
           <AvForm onValidSubmit={this.handleDishAmountValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
             <ModalBody>
-              <AvField name="dishSelectionNum" label="Amount" type="number"
+              <AvField name="dishSelectionNum" label={i18n.t('tables.validation.amount')} type="number"
                        validate={{
-                         required: {value: true, errorMessage: 'Please enter an amount'},
+                         required: {value: true, errorMessage: i18n.t('tables.validation.minStock')},
                          step: {value: 1},
-                         min: {value: 1, errorMessage: 'Minimum of 1'},
+                         min: {value: 1, errorMessage: i18n.t('tables.validation.minStock')},
                          max: {
                            value:
                              this.state.dishSelection ?
                                (this.state.dishes.find(dish => dish.id === this.state.dishSelection.value) ?
                                  this.state.dishes.find(dish => dish.id === this.state.dishSelection.value).stock :
                                  0) : 0,
-                           errorMessage: 'Not enough stock'
+                           errorMessage: i18n.t('tables.validation.maxStock')
                          }
                        }}/>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.toggleAddDishNested}>Back</Button>
-              <Button color="secondary" onClick={this.toggleAddDishAll}>Cancel</Button>
-              <Button color="success">Submit</Button>
+              <Button color="primary" onClick={this.toggleAddDishNested}>{i18n.t('global.cancel')}</Button>
+              <Button color="secondary" onClick={this.toggleAddDishAll}>{i18n.t('global.cancel')}</Button>
+              <Button color="success">{i18n.t('global.save')}</Button>
             </ModalFooter>
           </AvForm>
         </Modal>
