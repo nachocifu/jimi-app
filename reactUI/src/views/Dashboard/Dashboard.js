@@ -1,29 +1,24 @@
 import React, {Component} from 'react';
 import {Line} from 'react-chartjs-2';
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  Col,
-  Progress,
-  Row,
-} from 'reactstrap';
+import {Card, CardBody, CardFooter, CardTitle, Col, Progress, Row,} from 'reactstrap';
 import {connect} from "react-redux";
 import {CustomTooltips} from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import {getStyle, hexToRgba} from '@coreui/coreui/dist/js/coreui-utilities'
 import Spinner from "reactstrap/es/Spinner";
 import StatRestClient from "../../http/clients/StatRestClient";
 import Reactotron from "reactotron-react-js";
+
 const brandInfo = getStyle('--info');
 
 class Dashboard extends Component {
 
   statClient;
 
+  stockLimit = 10;
+
   constructor(props) {
     super(props);
-  this.statClient = new StatRestClient(props);
+    this.statClient = new StatRestClient(props);
 
     this.state = {
       loading: true,
@@ -43,21 +38,22 @@ class Dashboard extends Component {
     // generate data
     let labels = [];
     let dt1 = [];
-    this.state.monthOrderTotals.forEach( (val) => {
+    this.state.monthOrderTotals.forEach((val) => {
       labels.push(val.key);
       dt1.push(val.value);
     });
+    Reactotron.display({preview: "Data", display: "Data", value: {labels: labels, dt1: dt1}});
 
     // Reactotron.debug();
     // gen options
     let opts = {
       tooltips: {
         enabled: false,
-          custom: CustomTooltips,
-          intersect: true,
-          mode: 'index',
-          position: 'nearest',
-          callbacks: {
+        custom: CustomTooltips,
+        intersect: true,
+        mode: 'index',
+        position: 'nearest',
+        callbacks: {
           labelColor: function (tooltipItem, chart) {
             return {backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor}
           }
@@ -65,8 +61,8 @@ class Dashboard extends Component {
       },
       maintainAspectRatio: false,
       legend: {
-      display: false,
-    },
+        display: false,
+      },
       scales: {
         xAxes: [
           {
@@ -78,7 +74,7 @@ class Dashboard extends Component {
               drawOnChartArea: true,
             },
           }],
-          yAxes: [
+        yAxes: [
           {
             scaleLabel: {
               display: true,
@@ -87,17 +83,17 @@ class Dashboard extends Component {
             ticks: {
               beginAtZero: true,
               maxTicksLimit: 5,
-              stepSize: Math.ceil(Math.max(...dt1)/10),
-              max: Math.ceil(Math.max(...dt1) + (Math.max(...dt1)*.1)),
+              stepSize: Math.ceil(Math.max(...dt1) / 10),
+              max: Math.ceil(Math.max(...dt1) + (Math.max(...dt1) * .1)),
             },
           }],
       },
       elements: {
         point: {
           radius: 0,
-            hitRadius: 10,
-            hoverRadius: 4,
-            hoverBorderWidth: 3,
+          hitRadius: 10,
+          hoverRadius: 4,
+          hoverBorderWidth: 3,
         },
       },
     };
@@ -121,8 +117,8 @@ class Dashboard extends Component {
   };
 
   updateStats = () => {
-    return this.statClient.getAll()
-      .then( (val) => {
+    return this.statClient.getAll(this.stockLimit)
+      .then((val) => {
         Reactotron.display({
           name: 'Get Stats',
           preview: 'Get Stats',
@@ -149,7 +145,7 @@ class Dashboard extends Component {
 
   render() {
 
-    if(this.state.loading === true) return <Spinner style={{ width: '3rem', height: '3rem' }} />;
+    if (this.state.loading === true) return <Spinner style={{width: '3rem', height: '3rem'}}/>;
 
     return (
       <div className="animated fadeIn">
@@ -187,7 +183,7 @@ class Dashboard extends Component {
                 <div className="text-value">{this.state.totalAmountOfTables}</div>
                 <div>Total Tables</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{height: '30px'}}></div>
+              <div className="chart-wrapper mx-3" style={{height: '30px'}}/>
             </Card>
           </Col>
         </Row>
@@ -213,7 +209,7 @@ class Dashboard extends Component {
                   </Col>
                   <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
                     <div className="text-muted">Dishes</div>
-                    <strong>{this.state.stockStatePercentage}% Current Global Stock </strong>
+                    <strong>{this.state.stockStatePercentage}% Current Global Stock Under {this.stockLimit}</strong>
                     <Progress className="progress-xs mt-2" color="info" value={this.state.stockStatePercentage}/>
                   </Col>
                 </Row>
