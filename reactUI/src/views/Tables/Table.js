@@ -430,14 +430,13 @@ class Table extends Component {
     form.error = true;
     form.nameError = false;
     form.name = values.name;
-    form.dishSelectionNum = values.dishSelectionNum;
-    this.setState({form: form});
+    this.setState({form: form, dishSelectionNum: values.dishSelectionNum});
   }
 
   handleSelect = (dishSelection) => {
     this.setState({dishSelection: dishSelection});
     this.toggleAddDishNested();
-  }
+  };
 
   render() {
 
