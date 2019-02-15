@@ -11,7 +11,7 @@ function KitchenItem(props) {
 
 
   return (
-    <Col>
+    <Col xs="12" md="6" lg="4">
       <Card>
         <CardHeader>
           <i className="fa fa-align-justify"/> {table.name}
