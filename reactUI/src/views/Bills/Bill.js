@@ -21,6 +21,7 @@ import BillRestClient from "../../http/clients/BillRestClient";
 import CardFooter from "reactstrap/es/CardFooter";
 import DishRestClient from "../../http/clients/DishRestClient";
 import {AvField, AvForm} from 'availity-reactstrap-validation';
+import Select from "react-select";
 
 function DishListItem(props) {
   let dish = props.dish;
@@ -60,6 +61,8 @@ class Bill extends Component {
       addDishCloseAll: false,
       dishSelection: null,
       dishSelectionNum: 1,
+      modal: false,
+      modalLoading: false,
     };
 
     this.loadBill = this.loadBill.bind(this);
@@ -70,6 +73,8 @@ class Bill extends Component {
     this.addDishes = this.addDishes.bind(this);
     this.handleDishAmountValidSubmit = this.handleDishAmountValidSubmit.bind(this);
     this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+    this.loadDishes = this.loadDishes.bind(this);
   }
 
   deleteDish(dish) {
@@ -102,7 +107,7 @@ class Bill extends Component {
   }
 
   loadDishes() {
-    return this.dishClient.getAvailable(0, 100)
+    return this.dishClient.getAvailable(1, 100)
       .then((val) => {
         Reactotron.display({
           name: 'Bill Dishes to add SUCCESS',
@@ -119,7 +124,7 @@ class Bill extends Component {
 
   addDishes() {
     this.setState({loading: true});
-    this.billClient.addDish(this.state.bill.id, this.state.dishSelection, this.state.dishSelectionNum)
+    this.billClient.addDish(this.state.bill.id, this.state.dishSelection.value, this.state.dishSelectionNum)
       .then(this.toggleAddDishAll())
       .then(() => Promise.all([this.loadBill(), this.loadDishes()]))
       .catch(() => Reactotron.display({
@@ -138,15 +143,7 @@ class Bill extends Component {
   preToggleAddDish() {
     // Reactotron.display({name: 'Table Dishes to add Requesting', preview: 'Table Dishes to add Requesting', value: this.state.dishes});
     this.setState({loading: true});
-    this.dishClient.getAvailable(0, 100)
-      .then((val) => {
-        Reactotron.display({
-          name: 'Bill Dishes to add SUCCESS',
-          preview: 'Bill Dishes to add SUCCESS',
-          value: val.data
-        });
-        this.setState({loading: false, dishes: val.data.dishes});
-      })
+    this.loadDishes()
       .then(() => this.toggleAddDish())
       .catch(() => {
         Reactotron.display({
@@ -168,7 +165,8 @@ class Bill extends Component {
   toggleAddDishAll() {
     this.setState({
       addDishModalNested: !this.state.addDishModalNested,
-      addDishCloseAll: true
+      addDishCloseAll: true,
+      dishSelection: null
     });
   }
 
@@ -176,9 +174,9 @@ class Bill extends Component {
     let form = {...this.state.form};
     form.error = false;
     form.nameError = false;
-    form.dishSelectionNum = values.dishSelectionNum;
-    this.setState({form: form});
-    this.addDishes()
+    this.setState({form: form, dishSelectionNum: values.dishSelectionNum});
+    Reactotron.display({preview: "Selected num", name: "Selected num", value: values.dishSelectionNum});
+    this.addDishes();
   }
 
   handleInvalidSubmit(event, errors, values) {
@@ -186,9 +184,13 @@ class Bill extends Component {
     form.error = true;
     form.nameError = false;
     form.name = values.name;
-    form.dishSelectionNum = values.dishSelectionNum;
-    this.setState({form: form});
+    this.setState({form: form, dishSelectionNum: values.dishSelectionNum});
   }
+
+  handleSelect = (dishSelection) => {
+    this.setState({dishSelection: dishSelection});
+    this.toggleAddDishNested();
+  };
 
   render() {
 
@@ -198,6 +200,10 @@ class Bill extends Component {
     if (this.state.bill === null) {
       this.props.history.push('/404');
       return "";
+    }
+
+    if (this.state.dishes.length <= 0) {
+      this.loadDishes();
     }
 
     return (
@@ -223,7 +229,11 @@ class Bill extends Component {
                 </Table>
               </CardBody>
               <CardFooter>
-                <Button onClick={this.preToggleAddDish} color={"success"} block>ADD DISH</Button>
+                <Select placeholder="Add dish..." value={this.state.dishSelection}
+                        options={this.state.dishes.map((dish) =>
+                          ({value: dish.id, label: dish.name})
+                        )} onChange={this.handleSelect}/>
+                {/*<Button onClick={this.preToggleAddDish} color={"success"} block>ADD DISH</Button>*/}
               </CardFooter>
             </Card>
           </Col>
@@ -254,22 +264,22 @@ class Bill extends Component {
           </Col>
         </Row>
 
-        <Modal isOpen={this.state.modalAddDish} toggle={this.toggleAddDish} size={'xl'}>
-          <ModalHeader toggle={this.toggleAddDish}>Select Dish</ModalHeader>
-          <ModalBody>
-            <Row>
-              {this.state.dishes.map((dish) =>
-                <Col lg={3} key={dish.id}>
-                  <Button size={'lg'} color={'info'} lg={3} block style={{margin: '2.5px'}}
-                          onClick={() => {
-                            this.setState({dishSelection: dish.id});
-                            this.toggleAddDishNested();
-                          }}>
-                    {dish.name}
-                  </Button>
-                </Col>
-              )}
-            </Row>
+        {/*<Modal isOpen={this.state.modalAddDish} toggle={this.toggleAddDish} size={'xl'}>*/}
+          {/*<ModalHeader toggle={this.toggleAddDish}>Select Dish</ModalHeader>*/}
+          {/*<ModalBody>*/}
+            {/*<Row>*/}
+              {/*{this.state.dishes.map((dish) =>*/}
+                {/*<Col lg={3} key={dish.id}>*/}
+                  {/*<Button size={'lg'} color={'info'} lg={3} block style={{margin: '2.5px'}}*/}
+                          {/*onClick={() => {*/}
+                            {/*this.setState({dishSelection: dish.id});*/}
+                            {/*this.toggleAddDishNested();*/}
+                          {/*}}>*/}
+                    {/*{dish.name}*/}
+                  {/*</Button>*/}
+                {/*</Col>*/}
+              {/*)}*/}
+            {/*</Row>*/}
 
             <Modal isOpen={this.state.addDishModalNested} toggle={this.toggleAddDishNested}
                    onClosed={this.state.addDishCloseAll ? this.toggleAddDish : undefined}>
@@ -277,16 +287,17 @@ class Bill extends Component {
               <AvForm onValidSubmit={this.handleDishAmountValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
                 <ModalBody>
                   <AvField name="dishSelectionNum" label="Amount" type="number"
-                           onChange={e => this.setState({dishSelectionNum: e.target.value})}
+                    // onChange={e => this.setState({dishSelectionNum: e.target.value})}
                            validate={{
                              required: {value: true, errorMessage: 'Please enter an amount'},
                              step: {value: 1},
                              min: {value: 1, errorMessage: 'Minimum of 1'},
                              max: {
                                value:
-                                 this.state.dishes.find(dish => dish.id === this.state.dishSelection) ?
-                                   this.state.dishes.find(dish => dish.id === this.state.dishSelection).stock :
-                                   0,
+                                 this.state.dishSelection ?
+                                   (this.state.dishes.find(dish => dish.id === this.state.dishSelection.value) ?
+                                     this.state.dishes.find(dish => dish.id === this.state.dishSelection.value).stock :
+                                     0) : 0,
                                errorMessage: 'Not enough stock'
                              }
                            }}/>
@@ -299,11 +310,11 @@ class Bill extends Component {
               </AvForm>
             </Modal>
 
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggleAddDish} block>Cancel</Button>
-          </ModalFooter>
-        </Modal>
+          {/*</ModalBody>*/}
+          {/*<ModalFooter>*/}
+            {/*<Button color="secondary" onClick={this.toggleAddDish} block>Cancel</Button>*/}
+          {/*</ModalFooter>*/}
+        {/*</Modal>*/}
       </div>
     )
   }
