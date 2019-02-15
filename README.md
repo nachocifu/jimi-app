@@ -121,3 +121,10 @@ Navigate to /reactUI and run `npm run build`. Then copy recursively all content 
 Finally on the root folder of the project package the application with `mvn package`.
 The final war will be in `/webapp/target/webapp.war`
 
+# Nice-to-haves
+- [ ] month picker at stats graphs
+- [ ] handle api responses on a more detailed way screen by screen instead of globaly.
+- [ ] change password on user (currently delete and create new user because no history of user is stored)
+
+- [ ] add dish by category
+
