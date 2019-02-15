@@ -120,7 +120,6 @@ class User extends Component {
                 </Table>
               </CardBody>
               <CardFooter>
-                <Button color="secondary" onClick={this.toggle}>Edit</Button>
                 <Button color="danger" onClick={this.toggleConfirmationModal}>Delete</Button>
               </CardFooter>
             </Card>

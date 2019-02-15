@@ -42,9 +42,8 @@ public class KitchenApiController extends BaseApiController {
 		URI tableURI = URI.create(String.valueOf(uriInfo.getBaseUri()) +
 				UriBuilder.fromResource(TableApiController.class).build() +
 				"/");
-		TableListDTO kitchenBusyTables = new TableListDTO(new LinkedList<>(busyTables), tableURI);
-		return Response.ok(kitchenBusyTables)
-				.links(paginationHelper.getPaginationLinks(uriInfo, page, maxPage))
+		return Response
+				.ok(new TableListDTO(new LinkedList<>(busyTables), tableURI, paginationHelper.getPaginationDTO(page, maxPage)))
 				.build();
 	}
 }

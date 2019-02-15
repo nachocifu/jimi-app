@@ -57,8 +57,7 @@ public class UserApiController extends BaseApiController {
 		pageSize = paginationHelper.getPageSizeAsDefaultSizeIfOutOfRange(pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
 		int maxPage = paginationHelper.maxPage(userService.getTotalUsers(), pageSize);
 		final Collection<User> allUsers = userService.findAll(pageSize, (page - 1) * pageSize);
-		return Response.ok(new UserListDTO(new LinkedList<>(allUsers), buildBaseURI(uriInfo)))
-				.links(paginationHelper.getPaginationLinks(uriInfo, page, maxPage))
+		return Response.ok(new UserListDTO(new LinkedList<>(allUsers), buildBaseURI(uriInfo), paginationHelper.getPaginationDTO(page, maxPage)))
 				.build();
 	}
 

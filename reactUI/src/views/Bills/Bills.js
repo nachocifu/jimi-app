@@ -6,6 +6,8 @@ import BillRestClient from "../../http/clients/BillRestClient";
 import moment from "moment";
 import Button from "reactstrap/es/Button";
 import {Link} from "react-router-dom";
+import ButtonGroup from "reactstrap/es/ButtonGroup";
+import CardFooter from "reactstrap/es/CardFooter";
 
 
 function BillRow(props) {
@@ -39,26 +41,49 @@ class Bills extends Component {
 
   billClient;
 
+  pageSize = 6;
+
   constructor(props) {
     super(props);
     this.billClient = new BillRestClient(props);
-    this.state = {bills: [], loading: true};
+    this.state = {
+      bills: [], loading: true, links: {next: null, last: null, prev: null, first: null, page: null}
+    };
+    this.updateList = this.updateList.bind(this);
+    this.getPaginationLinks = this.getPaginationLinks.bind(this);
   }
 
-  updateList() {
-    this.billClient.get(0, 100)
+  updateList(page) {
+    page = page ? page : 1;
+    return this.billClient.get(page, this.pageSize)
       .then((val) => {
-        Reactotron.debug(val);
-        this.setState({bills: val.data.orders, loading: false});
+        let links = {...this.state.links};
+        links.next = val.data.links.next;
+        links.last = val.data.links.last;
+        links.prev = val.data.links.prev;
+        links.first = val.data.links.first;
+        links.page = val.data.links.page;
+        this.setState({bills: val.data.orders, loading: false, links: links});
       }).catch((error) => {
-      Reactotron.error("Failed to retrieve bills", error);
-    });
+        Reactotron.error("Failed to retrieve bills", error);
+      });
   }
 
   componentDidMount() {
-    this.updateList();
+    this.updateList().finally(() => this.setState({loading: false}));
   }
 
+  getPaginationLinks() {
+    return this.state.links.first !== this.state.links.last ? (
+      <ButtonGroup style={{'width': '100%', marginBottom: '10px'}}>
+        {this.state.links.prev ?
+          <Button onClick={() => this.updateList(this.state.links.prev)}>
+            <i className="fa fa-chevron-left"/></Button> : ''}
+        {this.state.links.next ?
+          <Button onClick={() => this.updateList(this.state.links.next)}>
+            <i className="fa fa-chevron-right"/></Button> : ''}
+      </ButtonGroup>) : '';
+  }
 
   render() {
 
@@ -89,6 +114,9 @@ class Bills extends Component {
                   </tbody>
                 </Table>
               </CardBody>
+              <CardFooter>
+                {this.getPaginationLinks()}
+              </CardFooter>
             </Card>
           </Col>
         </Row>

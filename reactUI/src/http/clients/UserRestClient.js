@@ -12,7 +12,7 @@ export default class UserRestClient extends RestClient {
    */
   get(page, pagesize) {
     return this.instance.get(
-      'api/users'
+      'api/users?page=' + page + '&pageSize=' + pagesize
     );
   }
 
