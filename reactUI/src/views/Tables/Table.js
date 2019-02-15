@@ -59,14 +59,6 @@ function DishListItem(props) {
             : ''}
         </td>
       :''}
-      {props.status !== 'PAYING'?
-        <td>
-          {props.options ?
-            <Button onClick={() => props.self.deleteUnDoneDish(dish.id)} color={'warning'} block><i
-              className="fa fa-remove"/></Button>
-            : ''}
-        </td>
-        :''}
     </tr>
   )
 }
