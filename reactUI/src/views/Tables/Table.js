@@ -26,8 +26,8 @@ import {AvField, AvForm} from 'availity-reactstrap-validation';
 
 
 function DishListItem(props) {
-  let dish = props.dish;
-  let amount = props.amount;
+  var dish = props.dish;
+  var amount = props.amount;
 
   Reactotron.debug(dish);
   Reactotron.debug(amount);
@@ -36,13 +36,13 @@ function DishListItem(props) {
       <td>{dish.name}</td>
       <td>{amount}</td>
       <td>
-        {props.options && amount > 0 ?
+        {props.options && amount > 0?
           <Button onClick={() => props.self.setDishes(dish.id, amount - 1)} color={'danger'} block><i
             className="fa fa-minus"/></Button>
           : ''}
       </td>
       <td>
-        {props.options && dish.stock > 0 ?
+        {props.options && dish.stock >0?
           <Button onClick={() => props.self.setDishes(dish.id, amount + 1)} color={'success'} block><i
             className="fa fa-plus"/></Button>
           : ''}
@@ -279,7 +279,8 @@ class Table extends Component {
       }));
   }
 
-  handleStatusChange() {
+  handleStatusChange = (status) => {
+    this.setState({nextStatus: status})
     this.toggleConfirmationModal();
   }
 
@@ -295,15 +296,15 @@ class Table extends Component {
   }
 
   getConfirmationModalContent() {
-    switch (this.state.table.status) {
+    switch (this.state.nextStatus) {
       case 'FREE':
         return (
           <div>
             <ModalHeader>Confirmation</ModalHeader>
-            <ModalBody>Table is being occupied?</ModalBody>
+            <ModalBody>Table has payed?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={() => this.changeTableStatus("BUSY")}>Confirm</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal }>Cancel</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("FREE")}>Confirm</Button>
             </ModalFooter>
           </div>
         );
@@ -311,31 +312,41 @@ class Table extends Component {
         return (
           <div>
             <ModalHeader>Confirmation</ModalHeader>
-            <ModalBody>Table is going to pay?</ModalBody>
+            <ModalBody>Table is occupied?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={() => this.changeTableStatus("PAYING")}>Confirm</Button>
+              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("BUSY")}>Confirm</Button>
             </ModalFooter>
           </div>);
       case 'PAYING':
         return (
           <div>
             <ModalHeader>Confirmation</ModalHeader>
-            <ModalBody>Table payed?</ModalBody>
+            <ModalBody>Table will pay?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={() => this.changeTableStatus("FREE")}>Confirm</Button>
+              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={ () => this.changeTableStatus("PAYING")}>Confirm</Button>
+            </ModalFooter>
+          </div>);
+      case 'CANCELLED':
+        return (
+          <div>
+            <ModalHeader>Confirmation</ModalHeader>
+            <ModalBody>Table cancelled?</ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={ () => this.changeTableStatus("FREE")}>Confirm</Button>
             </ModalFooter>
           </div>);
       default:
-        return this.state.table.status;
+        return this.state.nextStatus;
     }
   }
 
   getAvailableOperations() {
     switch (this.state.table.status) {
       case 'FREE':
-        return <Button color={'success'} onClick={() => this.handleStatusChange()} block>SET OCCUPIED</Button>;
+        return <Button color={'success'} onClick={() => this.handleStatusChange('BUSY')} block>SET OCCUPIED</Button>;
       case 'BUSY':
         return (
           <div>
@@ -346,8 +357,10 @@ class Table extends Component {
               <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"} block><i
                 className="fa fa-plus"/> Diner</Button>
             </ButtonGroup>
-            <Button onClick={() => this.handleStatusChange()} color={"danger"} block
+            <Button onClick={() => this.handleStatusChange('CHARGE')} color={"danger"} block
                     style={{'marginTop': '5px'}}>CHARGE</Button>
+            <Button onClick={() => this.handleStatusChange('CANCELLED')} color={"danger"} block
+                    style={{'marginTop': '5px'}}>CANCEL</Button>
           </div>
         );
       case 'PAYING':
@@ -355,7 +368,7 @@ class Table extends Component {
           <div>
             <Button color={"success"} block>PRINT</Button>
             <Button
-              onClick={() => this.handleStatusChange()}
+              onClick={() => this.handleStatusChange('CHARGED')}
               color={"success"} block style={{'marginTop': '5px'}}>CHARGED</Button>
           </div>
         );
