@@ -303,7 +303,7 @@ class Table extends Component {
   handleStatusChange = (status) => {
     this.setState({nextStatus: status});
     this.toggleConfirmationModal();
-  }
+  };
 
   changeTableStatus(nextStatus) {
     this.setState({loading: true, confirmationModal: false});
@@ -321,8 +321,8 @@ class Table extends Component {
       case 'FREE':
         return (
           <div>
-            <ModalHeader>Confirmation</ModalHeader>
-            <ModalBody>Table has payed?</ModalBody>
+            <ModalHeader>{i18n.t('global.confirm')}</ModalHeader>
+            <ModalBody>{i18n.t('tables.hasPayed')}</ModalBody>
             <ModalFooter>
               <Button color="secondary" onClick={this.toggleConfirmationModal}>{i18n.t('global.cancel')}</Button>
               <Button color="success" onClick={() => this.changeTableStatus("FREE")}>{i18n.t('global.confirm')}</Button>
@@ -332,8 +332,8 @@ class Table extends Component {
       case 'BUSY':
         return (
           <div>
-            <ModalHeader>Confirmation</ModalHeader>
-            <ModalBody>Table is occupied?</ModalBody>
+            <ModalHeader>{i18n.t('global.confirm')}</ModalHeader>
+            <ModalBody>{i18n.t('tables.isOccupied')}</ModalBody>
             <ModalFooter>
               <Button color="secondary" onClick={this.toggleConfirmationModal}>{i18n.t('global.cancel')}</Button>
               <Button color="success" onClick={() => this.changeTableStatus("BUSY")}>{i18n.t('global.confirm')}</Button>
@@ -342,17 +342,18 @@ class Table extends Component {
       case 'PAYING':
         return (
           <div>
-            <ModalHeader>Confirmation</ModalHeader>
-            <ModalBody>Table will pay?</ModalBody>
+            <ModalHeader>{i18n.t('global.confirm')}</ModalHeader>
+            <ModalBody>{i18n.t('tables.willPay')}</ModalBody>
             <ModalFooter>
               <Button color="secondary" onClick={this.toggleConfirmationModal}>{i18n.t('global.cancel')}</Button>
-              <Button color="success" onClick={() => this.changeTableStatus("PAYING")}>{i18n.t('global.confirm')}</Button>
+              <Button color="success"
+                      onClick={() => this.changeTableStatus("PAYING")}>{i18n.t('global.confirm')}</Button>
             </ModalFooter>
           </div>);
       case 'CANCELLED':
         return (
           <div>
-            <ModalHeader>Confirmation</ModalHeader>
+            <ModalHeader>{i18n.t('global.confirm')}</ModalHeader>
             <ModalBody>Table cancelled?</ModalBody>
             <ModalFooter>
               <Button color="secondary" onClick={this.toggleConfirmationModal}>{i18n.t('global.cancel')}</Button>
@@ -367,16 +368,18 @@ class Table extends Component {
   getAvailableOperations() {
     switch (this.state.table.status) {
       case 'FREE':
-        return <Button color={'success'} onClick={() => this.handleStatusChange('BUSY')} block>SET OCCUPIED</Button>;
+        return <Button color={'success'} onClick={() => this.handleStatusChange('BUSY')}
+                       block>{i18n.t('tables.occupy').toUpperCase()}</Button>;
       case 'BUSY':
         if (this.state.dishes.length <= 0) {
           this.loadDishes();
         }
         return (
           <div>
-            <Select placeholder={i18n.t('tables.addDish')} value={this.state.dishSelection} options={this.state.dishes.map((dish) =>
-              ({value: dish.id, label: dish.name})
-            )} onChange={this.handleSelect}/>
+            <Select placeholder={i18n.t('tables.addDish')} value={this.state.dishSelection}
+                    options={this.state.dishes.map((dish) =>
+                      ({value: dish.id, label: dish.name})
+                    )} onChange={this.handleSelect}/>
             <ButtonGroup style={{'width': '100%', 'marginTop': '5px'}}>
               <Button disabled={this.state.table.diners === 0}
                       onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"}
@@ -396,10 +399,10 @@ class Table extends Component {
       case 'PAYING':
         return (
           <div>
-            <Button color={"success"} onClick={() => window.print()} block>PRINT</Button>
+            <Button color={"success"} block>{i18n.t('tables.print').toUpperCase()}</Button>
             <Button
               onClick={() => this.handleStatusChange('FREE')}
-              color={"success"} block style={{'marginTop': '5px'}}>CHARGED</Button>
+              color={"success"} block style={{'marginTop': '5px'}}>{i18n.t('tables.charged').toUpperCase()}</Button>
           </div>
         );
       default:
@@ -494,7 +497,8 @@ class Table extends Component {
               </CardBody>
               {this.props.roles.filter(value => value === 'ROLE_ADMIN').length > 0 ? (
                 <CardFooter>
-                  <Button color="secondary" onClick={this.toggle}>{i18n.t('global.edit')}</Button>
+                  <Button color="secondary" style={{'marginRight': '5px'}}
+                          onClick={this.toggle}>{i18n.t('global.edit')}</Button>
                   <Button color="danger" onClick={this.handleDelete}
                           disabled={this.state.table.status !== 'FREE'}>{i18n.t('global.delete')}</Button>
                 </CardFooter>
@@ -512,7 +516,9 @@ class Table extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col lg={12}>
+          {(this.state.table.unDoneDishes.length > 0 ||
+            this.state.table.doneDishes.length > 0) ?
+            (<Col lg={12}>
             <Card>
               <CardHeader>
                 <strong><i className="icon-list pr-1"/>{i18n.t('dishes.plural')}</strong>
@@ -526,19 +532,20 @@ class Table extends Component {
                     {this.state.table.status==='PAYING'?<th>Total</th>:''}
                   </thead>
                   <tbody>
-                  {this.state.table.unDoneDishes.sort((a, b) => (a.key.name.localeCompare(b.key.name))).map((entry, index) =>
+                  {this.state.table.unDoneDishes.length > 0 ?
+                      (this.state.table.unDoneDishes.sort((a, b) => (a.key.name.localeCompare(b.key.name))).map((entry, index) =>
                     <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value.amount} self={this}
-                                  options={this.state.table.status!=='PAYING'} status={this.state.table.status}/>
-                  )}
-                  {this.state.table.doneDishes.map((entry, index) =>
-                    <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value} self={this}
-                                  options={false} status={this.state.table.status}/>
-                  )}
+                                  options={this.state.table.status!=='PAYING'} status={this.state.table.status}/>))
+                  : ''}
+                  {this.state.table.doneDishes.length > 0 ?
+                      (this.state.table.doneDishes.map((entry, index) =>
+                    <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value} self={this} options={false}status={this.state.table.status}/>))
+                  : ''}
                   </tbody>
                 </TableHtml>
               </CardBody>
             </Card>
-          </Col>
+          </Col>) : ''}
         </Row>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>

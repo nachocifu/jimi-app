@@ -35,6 +35,19 @@ export default {
     newTitle: 'Nueva Mesa',
     editTitle: 'Modificar Mesa',
     diners: 'Comensales',
+    occupy: 'Ocupar',
+    charged: 'Cobrada',
+    hasPayed: '¿Cobrar mesa?',
+    print: 'Imprimir',
+
+    isOccupied: '¿Ocupar mesa?',
+    willPay: '¿La mesa está pagando?',
+    hasPayed: '¿Cobrar mesa?',
+    hasPayed: '¿Cobrar mesa?',
+
+
+
+
     validation: {
       minLength: 'Mínimo 4 caracteres',
       maxLength: 'Máximo 20 caracteres',
