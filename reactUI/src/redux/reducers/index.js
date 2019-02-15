@@ -17,7 +17,8 @@ export default function (state = initialState, action) {
         ...state,
         authentication: {
           status: LOGIN_REQUESTED,
-          token: null
+          token: null,
+          role: [],
         }
       };
     }
@@ -45,7 +46,8 @@ export default function (state = initialState, action) {
         authentication: {
           status: LOGIN_ERRORED,
           token: '',
-          info: info
+          info: info,
+          role: [],
         }
       };
     }
@@ -56,6 +58,7 @@ export default function (state = initialState, action) {
           status: LOGIN_PENDING,
           token: '',
           info: '',
+          role: [],
         }
       };
     }
