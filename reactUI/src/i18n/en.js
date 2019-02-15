@@ -1,7 +1,7 @@
 export default {
   login: {
     title: 'Login',
-    message: 'Sign In to your account',
+    message: 'Sign in to your account',
     error: 'Something not right, try again?',
     username: 'Username',
     password: 'Password',
