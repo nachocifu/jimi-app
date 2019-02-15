@@ -66,6 +66,21 @@
         <dispatcher>ERROR</dispatcher>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
-
+    <error-page>
+        <error-code>404</error-code>
+        <location>/to404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/to500.html</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/toLogin.html</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/toLogin.html</location>
+    </error-page>
 
 </web-app>
