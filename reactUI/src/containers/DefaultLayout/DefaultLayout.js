@@ -91,7 +91,8 @@ class DefaultLayout extends Component {
                         )}/>
                     ) : (null);
                   })}
-                  <Redirect from="/" to="/404"/>
+                  <Redirect exact={true} from={'/'} to="/tables"/>
+                  <Redirect to="/404"/>
                 </Switch>
               </Suspense>
             </Container>
