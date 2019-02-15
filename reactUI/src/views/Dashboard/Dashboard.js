@@ -26,7 +26,7 @@ class Dashboard extends Component {
   this.statClient = new StatRestClient(props);
 
     this.state = {
-      loading: false,
+      loading: true,
       totalAmountOfFreeTables: 0,
       totalAmountOfBusyTables: 0,
       totalAmountOfPayingTables: 0,
@@ -142,7 +142,8 @@ class Dashboard extends Component {
   };
 
   componentDidMount() {
-    this.updateStats();
+    this.updateStats()
+      .then(this.setState({loading: false}));
   }
 
 
