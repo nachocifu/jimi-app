@@ -12,7 +12,7 @@ export default class AuthRestClient extends RestClient {
    *  @param {string} application - The client.
    *  @returns {Promise} - The http promise.
    */
-  login(username: string, password: string) {
+  login(username, password) {
     return this.instance.post(
       'api/login',
       querystring.stringify({username: username, password: password})
