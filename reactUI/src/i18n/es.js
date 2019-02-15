@@ -128,6 +128,11 @@ export default {
   },
   kitchen: {},
   bills: {
-    details: 'Detalle de Factura'
+    details: 'Detalle de Factura',
+    status: 'Estado',
+    opened: 'Abierta',
+    closed: 'Cerrada',
+    total: 'Total',
+    cancelled: 'Cancelada',
   }
 }
