@@ -17,11 +17,6 @@ class DefaultFooter extends Component {
     return (
       <React.Fragment>
         <span>JIMI &copy; 2019</span>
-        <span className="ml-auto">
-          <Button className="btn-github btn-brand ml-1 mr-1"><i
-            className="fa fa-github"></i><span>nachocifu</span></Button>
-          <Button className="btn-github btn-brand ml-1 mr-1"><i className="fa fa-github"></i><span>j1nma</span></Button>
-        </span>
       </React.Fragment>
     );
   }

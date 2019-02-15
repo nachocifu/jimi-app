@@ -352,13 +352,15 @@ class Table extends Component {
           <div>
             <Button onClick={this.preToggleAddDish} color={"success"} block>ADD DISH</Button>
             <ButtonGroup style={{'width': '100%', 'marginTop': '5px'}}>
-              <Button onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"} block><i
+              <Button disabled={this.state.table.diners === 0} onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"} block><i
                 className="fa fa-minus"/> Diner</Button>
               <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"} block><i
                 className="fa fa-plus"/> Diner</Button>
             </ButtonGroup>
-            <Button onClick={() => this.handleStatusChange('CHARGE')} color={"danger"} block
-                    style={{'marginTop': '5px'}}>CHARGE</Button>
+            {this.state.table.doneDishes.length || this.state.table.unDoneDishes.length?
+              <Button onClick={() => this.handleStatusChange('CHARGE')} color={"danger"} block
+                      style={{'marginTop': '5px'}}>CHARGE</Button>:''
+            }
             <Button onClick={() => this.handleStatusChange('CANCELLED')} color={"danger"} block
                     style={{'marginTop': '5px'}}>CANCEL</Button>
           </div>
