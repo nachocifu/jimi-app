@@ -16,22 +16,15 @@ CREATE TABLE IF NOT EXISTS "tables"
   name     VARCHAR(100)       NOT NULL,
   tableid  SERIAL PRIMARY KEY NOT NULL,
   statusid INTEGER            NOT NULL,
-  orderid  INTEGER  UNIQUE
+  orderid  INTEGER UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS "orders"
 (
-  orderid SERIAL PRIMARY KEY NOT NULL,
+  orderid  SERIAL PRIMARY KEY NOT NULL,
   openedAt TIMESTAMP,
   closedAt TIMESTAMP,
   statusid INTEGER,
   diners   INTEGER,
   total    FLOAT
-);
-
-CREATE TABLE IF NOT EXISTS orders_items
-(
-  orderid  INTEGER NOT NULL,
-  dishid   INTEGER NOT NULL,
-  quantity INTEGER NOT NULL
 );
