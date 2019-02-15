@@ -13,17 +13,7 @@ class Page500 extends Component {
                 <h4 className="pt-3">Houston, we have a problem!</h4>
                 <p className="text-muted float-left">The page you are looking for is temporarily unavailable.</p>
               </span>
-              <InputGroup className="input-prepend">
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    <i className="fa fa-search"></i>
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input size="16" type="text" placeholder="What are you looking for?"/>
-                <InputGroupAddon addonType="append">
-                  <Button color="info">Search</Button>
-                </InputGroupAddon>
-              </InputGroup>
+              <Button onClick={() => this.props.history.push('/tables')} color="info" block>Go to home?</Button>
             </Col>
           </Row>
         </Container>
