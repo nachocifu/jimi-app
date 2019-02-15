@@ -41,7 +41,6 @@ class Dish extends Component {
     this.handleDiscontinue = this.handleDiscontinue.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
-    // this.resetForm = this.resetForm.bind(this);
   }
 
   loadDish() {
@@ -135,10 +134,6 @@ class Dish extends Component {
     this.setState({form: form});
   }
 
-  // resetForm() {
-  //   this.setState({form: {name: this.state.dish.name, price: this.state.dish.price, stock: this.state.dish.stock, minStock: this.state.dish.minStock}});
-  // }
-
   render() {
 
     if (this.state.loading === true) return (<Spinner style={{width: '3rem', height: '3rem'}}/>);
@@ -159,27 +154,27 @@ class Dish extends Component {
               <CardBody>
                 <Table responsive striped hover>
                   <tbody>
-                  <tr key={this.state.dish.id}>
+                  <tr>
                     <td>ID</td>
                     <td><strong>{this.state.dish.id}</strong></td>
                   </tr>
-                  <tr key={this.state.dish.name}>
+                  <tr>
                     <td>Name</td>
                     <td><strong>{this.state.dish.name}</strong></td>
                   </tr>
-                  <tr key={this.state.dish.price}>
+                  <tr>
                     <td>Price</td>
                     <td><strong>{this.state.dish.price}</strong></td>
                   </tr>
-                  <tr key={this.state.dish.stock}>
+                  <tr>
                     <td>Stock</td>
                     <td><strong>{this.state.dish.stock}</strong></td>
                   </tr>
-                  <tr key={this.state.dish.minStock}>
+                  <tr>
                     <td>Minimum Stock</td>
                     <td><strong>{this.state.dish.minStock}</strong></td>
                   </tr>
-                  <tr key={this.state.dish.discontinued}>
+                  <tr>
                     <td>Discontinued</td>
                     <td><strong>{this.state.dish.discontinued ? 'YES' : 'NO'}</strong></td>
                   </tr>
@@ -204,7 +199,8 @@ class Dish extends Component {
               <ModalHeader toggle={this.toggle}>
                 Edit Dish
               </ModalHeader>
-              <AvForm onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
+              <AvForm onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}
+                      model={this.state.form}>
                 <ModalBody>
                   <AvField name="name" label="Name" type="text" placeholder={this.state.form.name}
                            validate={{
@@ -216,26 +212,31 @@ class Dish extends Component {
                              minLength: {value: 1, errorMessage: 'Your name must be between 1 and 25 characters'},
                              maxLength: {value: 25, errorMessage: 'Your name must be between 1 and 25 characters'}
                            }}/>
-                  <AvField name="price" label="Price" type="number" placeholder={this.state.form.price}
+                  <AvField name="price" label="Price" type="text" placeholder={this.state.form.price}
+                           value={this.state.form.price}
                            validate={{
                              required: {value: true, errorMessage: 'Please enter a price'},
-                             step: {value: 0.01},
-                             maxLength: {value: 10},
-                             min: {value: 1}
+                             step: {value: 0.01, errorMessage: 'Step of 0.01'},
+                             pattern: {
+                               value: '^\\d{1,10}[.]?\\d{0,2}$',
+                               errorMessage: ''
+                             },
+                             min: {value: 1, errorMessage: 'Minimum of 1'},
+                             max: {value: 10000, errorMessage: 'Max of 10000'}
                            }}/>
                   <AvField name="stock" label="Stock" type="number" placeholder={this.state.form.stock}
                            validate={{
                              required: {value: true, errorMessage: 'Please enter a stock'},
-                             step: {value: 1},
-                             min: {value: 1},
-                             max: {value: 10000}
+                             step: {value: 1, errorMessage: 'Step of 1'},
+                             min: {value: 1, errorMessage: 'Minimum of 1'},
+                             max: {value: 10000, errorMessage: 'Max of 10000'}
                            }}/>
                   <AvField name="minStock" label="Minimum Stock" type="number" placeholder={this.state.form.minStock}
                            validate={{
                              required: {value: true, errorMessage: 'Please enter a minimum stock'},
-                             step: {value: 1},
-                             min: {value: 0},
-                             max: {value: 10000}
+                             step: {value: 1, errorMessage: 'Step of 1'},
+                             min: {value: 0, errorMessage: 'Minimum of 0'},
+                             max: {value: 10000, errorMessage: 'Max of 10000'}
                            }}/>
                 </ModalBody>
                 <ModalFooter>

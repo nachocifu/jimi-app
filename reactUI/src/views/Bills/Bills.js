@@ -15,11 +15,11 @@ function BillRow(props) {
     return status === 'Active' ? 'primary' : 'secondary'
   };
 
-  var openedAt = moment(bill.openedAt).format("h:m D/M/YY");
-  var closedAt = moment(bill.closedAt).format("h:m D/M/YY");
+  let openedAt = moment(bill.openedAt).format("h:m D/M/YY");
+  let closedAt = moment(bill.closedAt).format("h:m D/M/YY");
 
   return (
-    <tr key={bill.id.toString()}>
+    <tr>
       <td>{bill.id}</td>
       <td><Badge color={getBadge(bill.status)}>{bill.status}</Badge></td>
       <td>{openedAt}</td>

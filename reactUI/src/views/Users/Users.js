@@ -20,8 +20,8 @@ function UserRow(props) {
   const userLink = `/users/${user.id}`;
 
   return (
-    <tr key={user.id.toString()}>
-      <th scope="row"><Link to={userLink}>{user.id}</Link></th>
+    <tr>
+      <th scope="row">{user.id}</th>
       <td><Link to={userLink}>{user.username}</Link></td>
     </tr>
   )
