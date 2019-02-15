@@ -238,8 +238,12 @@ class Dishes extends Component {
                        validate={{
                          required: {value: true, errorMessage: i18n.t('dishes.validation.requiredPrice')},
                          step: {value: 0.01, errorMessage: i18n.t('dishes.validation.step001')},
-                         maxLength: {value: 10, errorMessage: i18n.t('dishes.validation.maxLength')},
-                         min: {value: 1, errorMessage: i18n.t('dishes.validation.min1')}
+                         pattern: {
+                           value: '^\\d{1,5}[.]?\\d{0,2}$',
+                           errorMessage: i18n.t('dishes.validation.pricePattern')
+                         },
+                         min: {value: 1, errorMessage: i18n.t('dishes.validation.min1')},
+                         max: {value: 10000, errorMessage: 'Max of 10000'}
                        }}/>
               <AvField name="stock" label={i18n.t('dishes.stock')} type="number"
                        validate={{

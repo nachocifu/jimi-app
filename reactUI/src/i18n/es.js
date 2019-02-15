@@ -7,6 +7,8 @@ export default {
     edit: 'Editar',
     confirm: 'Confirmar',
     home: 'Inicio',
+    yes: 'Sí',
+    no: 'No',
   },
   login: {
     title: 'Inicio',
@@ -49,7 +51,6 @@ export default {
     charge: 'Cobrar',
     diner: 'Comensal',
     addDish: 'Agregar Plato...',
-
   },
   dishes: {
     plural: 'Platos',
@@ -64,6 +65,8 @@ export default {
     newTitle: 'Nuevo Plato',
     discontinued: 'Discontinuado',
     inProduction: 'En producción',
+    setDiscontinued: 'Discontinuar',
+    edit: 'Editar Plato',
     validation: {
       minLength: 'Mínimo 1 caracter',
       maxLength: 'Máximo 25 caracteres',
@@ -83,6 +86,7 @@ export default {
       amount: 'Cantidad',
       repeatedName: 'Nombre ya existe',
       inputName: 'Ingrese el nombre',
+      pricePattern: '5 dígitos enteros, 2 decimales como máximo',
     }
   },
   dashboard: {},
