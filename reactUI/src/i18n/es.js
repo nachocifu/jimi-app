@@ -97,6 +97,7 @@ export default {
     new: 'Usuario Nuevo',
     password: 'Contraseña',
     confirmPassword: 'Confirmar Contraseña',
+    confirmDelete: '¿Seguro desea eliminar el usuario?',
     validation: {
       requiredName: 'Ingrese nombre',
       requiredPassword: 'Ingrese contraseña',
