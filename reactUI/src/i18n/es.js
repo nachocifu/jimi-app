@@ -90,8 +90,22 @@ export default {
     }
   },
   dashboard: {},
-  users:{
-    details:'Detalle de usuario'
+  users: {
+    details: 'Detalle de usuario',
+    name: 'Nombre',
+    single: 'Usuario',
+    new: 'Usuario Nuevo',
+    password: 'Contraseña',
+    confirmPassword: 'Confirmar Contraseña',
+    validation: {
+      requiredName: 'Ingrese nombre',
+      requiredPassword: 'Ingrese contraseña',
+      pattern: 'Solamente letras y números',
+      minLength: 'Mínimo 6 caracteres',
+      maxLength: 'Máximo 40 caracteres',
+      passwordMatch: 'Deben coincidir las contraseñas',
+      existentUsername: 'Ya existe un usuario con ese nombre',
+    }
   },
   kitchen: {},
   bills: {

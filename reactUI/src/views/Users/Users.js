@@ -15,6 +15,7 @@ import InputGroupText from "reactstrap/es/InputGroupText";
 import ModalFooter from "reactstrap/es/ModalFooter";
 import CardFooter from "reactstrap/es/CardFooter";
 import ButtonGroup from "reactstrap/es/ButtonGroup";
+import i18n from '../../i18n';
 
 function UserRow(props) {
   const user = props.user;
@@ -140,15 +141,15 @@ class Users extends Component {
               <CardHeader>
                 <i className="fa fa-align-justify"/> Users <small className="text-muted"/>
                 <Button onClick={this.toggle} style={{'float': 'right'}} color="primary" className="px-4">
-                  <i className="fa fa-plus-circle"/> User
+                  <i className="fa fa-plus-circle"/> {i18n.t('users.single')}
                 </Button>
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
                   <thead>
                   <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">name</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">{i18n.t('users.name')}</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -167,40 +168,40 @@ class Users extends Component {
 
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>
-            New User
+            {i18n.t('users.new')}
           </ModalHeader>
           <AvForm onValidSubmit={this.handleValidSubmit} onInvalidSubmit={this.handleInvalidSubmit}>
             <ModalBody>
-              <AvField name="username" label="Name" type="text" validate={{
-                required: {value: true, errorMessage: 'Please enter a name'},
+              <AvField name="username" label={i18n.t('users.name')} type="text" validate={{
+                required: {value: true, errorMessage: i18n.t('users.validation.requiredName')},
                 pattern: {
                   value: '[a-zA-Z0-9]+',
-                  errorMessage: 'Your name must be composed only with letter and numbers'
+                  errorMessage: i18n.t('users.validation.pattern')
                 },
-                minLength: {value: 6, errorMessage: 'Your name must be between 6 and 40 characters'},
-                maxLength: {value: 40, errorMessage: 'Your name must be between 6 and 40 characters'}
+                minLength: {value: 6, errorMessage: i18n.t('users.validation.minLength')},
+                maxLength: {value: 40, errorMessage: i18n.t('users.validation.maxLength')}
               }}/>
               {this.state.form.nameError ? (
                 <InputGroupAddon addonType="append">
                   <InputGroupText>
-                    User already exists with this name
+                    {i18n.t('users.validation.existentUsername')}
                   </InputGroupText>
                 </InputGroupAddon>) : ''}
-              <AvField name="password" label="Password" type="password" validate={{
-                required: {value: true, errorMessage: 'Please enter a password'},
-                minLength: {value: 6, errorMessage: 'Your name must be between 6 and 40 characters'},
-                maxLength: {value: 40, errorMessage: 'Your name must be between 6 and 40 characters'}
+              <AvField name="password" label={i18n.t('users.password')} type="password" validate={{
+                required: {value: true, errorMessage: i18n.t('users.validation.requiredPassword')},
+                minLength: {value: 6, errorMessage: i18n.t('users.validation.minLength')},
+                maxLength: {value: 40, errorMessage: i18n.t('users.validation.maxLength')}
               }}/>
-              <AvField name="confirmPassword" label="Confirm password" type="password" validate={{
-                required: {value: true, errorMessage: 'Please confirm password'},
-                minLength: {value: 6, errorMessage: 'Your name must be between 6 and 40 characters'},
-                maxLength: {value: 40, errorMessage: 'Your name must be between 6 and 40 characters'},
-                match: {value: 'password', errorMessage: 'Passwords must match'}
+              <AvField name="confirmPassword" label={i18n.t('users.confirmPassword')} type="password" validate={{
+                required: {value: true, errorMessage: i18n.t('users.validation.requiredPassword')},
+                minLength: {value: 6, errorMessage: i18n.t('users.validation.minLength')},
+                maxLength: {value: 40, errorMessage: i18n.t('users.validation.maxLength')},
+                match: {value: 'password', errorMessage: i18n.t('users.validation.passwordMatch')}
               }}/>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" className="px-4" block>Save</Button>
-              <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+              <Button color="primary" className="px-4" block>{i18n.t('global.save')}</Button>
+              <Button color="secondary" onClick={this.toggle}>{i18n.t('global.cancel')}</Button>
             </ModalFooter>
           </AvForm>
         </Modal>
