@@ -24,6 +24,7 @@ import ButtonGroup from "reactstrap/es/ButtonGroup";
 import DishRestClient from "../../http/clients/DishRestClient";
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import Select from "react-select";
+import moment from "moment";
 
 function DishListItem(props) {
   let dish = props.dish;
@@ -34,25 +35,37 @@ function DishListItem(props) {
   return (
     <tr>
       <td>{dish.name}</td>
+      {props.status === 'PAYING'?
+        <td>${dish.price}</td>:''
+      }
       <td>{amount}</td>
-      <td>
-        {props.options && amount > 0 ?
-          <Button onClick={() => props.self.setDishes(dish.id, amount - 1)} color={'danger'} block><i
-            className="fa fa-minus"/></Button>
-          : ''}
-      </td>
-      <td>
-        {props.options && dish.stock > 0 ?
-          <Button onClick={() => props.self.setDishes(dish.id, amount + 1)} color={'success'} block><i
-            className="fa fa-plus"/></Button>
-          : ''}
-      </td>
-      <td>
-        {props.options ?
-          <Button onClick={() => props.self.deleteUnDoneDish(dish.id)} color={'warning'} block><i
-            className="fa fa-remove"/></Button>
-          : ''}
-      </td>
+      {props.status === 'PAYING'?
+        <td>${dish.price * amount}</td>:''
+      }
+      {props.status !== 'PAYING'?
+        <td>
+          {props.options && amount > 0 ?
+            <Button onClick={() => props.self.setDishes(dish.id, amount - 1)} color={'danger'} block><i
+              className="fa fa-minus"/></Button>
+            : ''}
+        </td>
+        :''}
+      {props.status !== 'PAYING' ?
+        <td>
+          {props.options && dish.stock > 0 ?
+            <Button onClick={() => props.self.setDishes(dish.id, amount + 1)} color={'success'} block><i
+              className="fa fa-plus"/></Button>
+            : ''}
+        </td>
+      :''}
+      {props.status !== 'PAYING'?
+        <td>
+          {props.options ?
+            <Button onClick={() => props.self.deleteUnDoneDish(dish.id)} color={'warning'} block><i
+              className="fa fa-remove"/></Button>
+            : ''}
+        </td>
+        :''}
     </tr>
   )
 }
@@ -73,7 +86,8 @@ class Table extends Component {
         status: null,
         diners: null,
         doneDishes: null,
-        unDoneDishes: null
+        unDoneDishes: null,
+        total: 0,
       },
       dishSelection: null,
       dishSelectionNum: 1,
@@ -135,7 +149,8 @@ class Table extends Component {
             status: val.data.status,
             diners: val.data.order.diners,
             doneDishes: val.data.order.doneDishes.entry,
-            unDoneDishes: val.data.order.unDoneDishes.entry
+            unDoneDishes: val.data.order.unDoneDishes.entry,
+            total: val.data.order.total,
           },
           loading: false,
           modal: false,
@@ -380,7 +395,7 @@ class Table extends Component {
       case 'PAYING':
         return (
           <div>
-            <Button color={"success"} block>PRINT</Button>
+            <Button color={"success"} onClick={() => window.print()} block>PRINT</Button>
             <Button
               onClick={() => this.handleStatusChange('FREE')}
               color={"success"} block style={{'marginTop': '5px'}}>CHARGED</Button>
@@ -415,14 +430,13 @@ class Table extends Component {
     form.error = true;
     form.nameError = false;
     form.name = values.name;
-    form.dishSelectionNum = values.dishSelectionNum;
-    this.setState({form: form});
+    this.setState({form: form, dishSelectionNum: values.dishSelectionNum});
   }
 
   handleSelect = (dishSelection) => {
     this.setState({dishSelection: dishSelection});
     this.toggleAddDishNested();
-  }
+  };
 
   render() {
 
@@ -447,22 +461,33 @@ class Table extends Component {
               <CardBody>
                 <TableHtml responsive striped hover>
                   <tbody>
-                  <tr key={this.state.table.id}>
+                  <tr key={'id'}>
                     <td>ID</td>
                     <td><strong>{this.state.table.id}</strong></td>
                   </tr>
-                  <tr key={this.state.table.name}>
+                  <tr key={'name'}>
                     <td>NAME</td>
                     <td><strong>{this.state.table.name}</strong></td>
                   </tr>
-                  <tr key={this.state.table.status}>
+                  <tr key={'status'}>
                     <td>STATUS</td>
                     <td><strong>{this.state.table.status}</strong></td>
                   </tr>
-                  <tr key={this.state.table.diners}>
+                  <tr key={'diners'}>
                     <td>DINERS</td>
                     <td><strong>{this.state.table.diners}</strong></td>
                   </tr>
+                  <tr key={'total'}>
+                    <td>TOTAL</td>
+                    <td><strong>${this.state.table.total}</strong></td>
+                  </tr>
+                  {this.state.table.status === 'PAYING'?
+                    <tr key={'date'}>
+                      <td>DATE</td>
+                      <td><strong>{moment(this.state.table.closedAt).format("h:m D/M/YY")}</strong></td>
+                    </tr>
+                    :''
+                  }
                   </tbody>
                 </TableHtml>
               </CardBody>
@@ -493,13 +518,20 @@ class Table extends Component {
               </CardHeader>
               <CardBody>
                 <TableHtml>
+                  <thead>
+                    <th>Name</th>
+                    {this.state.table.status==='PAYING'?<th>Price</th>:''}
+                    <th>Amount</th>
+                    {this.state.table.status==='PAYING'?<th>Total</th>:''}
+                  </thead>
                   <tbody>
                   {this.state.table.unDoneDishes.sort((a, b) => (a.key.name.localeCompare(b.key.name))).map((entry, index) =>
                     <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value.amount} self={this}
-                                  options={true}/>
+                                  options={this.state.table.status!=='PAYING'} status={this.state.table.status}/>
                   )}
                   {this.state.table.doneDishes.map((entry, index) =>
-                    <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value} self={this} options={false}/>
+                    <DishListItem key={entry.key.id} dish={entry.key} amount={entry.value} self={this}
+                                  options={false} status={this.state.table.status}/>
                   )}
                   </tbody>
                 </TableHtml>

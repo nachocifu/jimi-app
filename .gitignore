@@ -42,3 +42,7 @@ webapp/target/generated-sources/
 webapp/src/main/webapp
 !webapp/src/main/webapp/WEB-INF/web.xml
 /webapp/src/main/resources/application.properties
+!/webapp/src/main/webapp/to404.html
+!/webapp/src/main/webapp/to500.html
+!/webapp/src/main/webapp/toLogin.html
+
