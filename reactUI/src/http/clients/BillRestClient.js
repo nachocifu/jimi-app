@@ -12,7 +12,7 @@ export default class BillRestClient extends RestClient {
    */
   get(page, pagesize) {
     return this.instance.get(
-      'api/admin/bills'
+      'api/admin/bills?page=' + page + '&pageSize=' + pagesize
     );
   }
 
@@ -23,26 +23,26 @@ export default class BillRestClient extends RestClient {
    */
   getBill(id) {
     return this.instance.get(
-      'api/admin/bills/'+id
+      'api/admin/bills/' + id
     );
   }
 
   addDish(id, dish, amount) {
     return this.instance.post(
-      'api/admin/bills/'+id+'/dishes',
+      'api/admin/bills/' + id + '/dishes',
       {dishId: dish, amount: amount}
     );
   }
 
   setDishes(id, dish, amount) {
     return this.instance.post(
-      'api/admin/bills/'+id+'/dishes/'+dish+'/amount',
+      'api/admin/bills/' + id + '/dishes/' + dish + '/amount',
       {amount: amount}
     );
   }
 
   deleteDish(bill, dish) {
-    return this.setDishes(bill,dish, 0);
+    return this.setDishes(bill, dish, 0);
   }
 
 }
