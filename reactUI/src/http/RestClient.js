@@ -45,6 +45,14 @@ class RestClient {
           dispatch({type: LOGOUT});
           props.history.push('login');
         }
+        if (errorResponse.status === 403) {
+          dispatch({type: LOGOUT});
+          props.history.push('login');
+        }
+        if (errorResponse.status === 500) {
+          dispatch({type: LOGOUT});
+          props.history.push('500');
+        }
         return Promise.reject(error);
       });
   }
