@@ -285,7 +285,7 @@ class Table extends Component {
   }
 
   handleStatusChange = (status) => {
-    this.setState({nextStatus: status})
+    this.setState({nextStatus: status});
     this.toggleConfirmationModal();
   }
 
@@ -308,7 +308,7 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table has payed?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={this.toggleConfirmationModal }>Cancel</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
               <Button color="success" onClick={() => this.changeTableStatus("FREE")}>Confirm</Button>
             </ModalFooter>
           </div>
@@ -319,7 +319,7 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table is occupied?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
               <Button color="success" onClick={() => this.changeTableStatus("BUSY")}>Confirm</Button>
             </ModalFooter>
           </div>);
@@ -329,8 +329,8 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table will pay?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={ () => this.changeTableStatus("PAYING")}>Confirm</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("PAYING")}>Confirm</Button>
             </ModalFooter>
           </div>);
       case 'CANCELLED':
@@ -339,8 +339,8 @@ class Table extends Component {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalBody>Table cancelled?</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={ this.toggleConfirmationModal}>Cancel</Button>
-              <Button color="success" onClick={ () => this.changeTableStatus("FREE")}>Confirm</Button>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={() => this.changeTableStatus("FREE")}>Confirm</Button>
             </ModalFooter>
           </div>);
       default:
@@ -362,14 +362,16 @@ class Table extends Component {
               ({value: dish.id, label: dish.name})
             )} onChange={this.handleSelect}/>
             <ButtonGroup style={{'width': '100%', 'marginTop': '5px'}}>
-              <Button disabled={this.state.table.diners === 0} onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"} style={{'marginRight': '5px'}}><i
+              <Button disabled={this.state.table.diners === 0}
+                      onClick={() => this.setDiners(this.state.table.diners - 1)} color={"warning"}
+                      style={{'marginRight': '5px'}}><i
                 className="fa fa-minus"/> Diner</Button>
               <Button onClick={() => this.setDiners(this.state.table.diners + 1)} color={"warning"}><i
                 className="fa fa-plus"/> Diner</Button>
             </ButtonGroup>
-            {this.state.table.doneDishes.length || this.state.table.unDoneDishes.length?
-              <Button onClick={() => this.handleStatusChange('CHARGE')} color={"danger"} block
-                      style={{'marginTop': '5px'}}>CHARGE</Button>:''
+            {this.state.table.doneDishes.length || this.state.table.unDoneDishes.length ?
+              <Button onClick={() => this.handleStatusChange('PAYING')} color={"danger"} block
+                      style={{'marginTop': '5px'}}>CHARGE</Button> : ''
             }
             <Button onClick={() => this.handleStatusChange('CANCELLED')} color={"danger"} block
                     style={{'marginTop': '5px'}}>CANCEL</Button>
@@ -380,7 +382,7 @@ class Table extends Component {
           <div>
             <Button color={"success"} block>PRINT</Button>
             <Button
-              onClick={() => this.handleStatusChange('CHARGED')}
+              onClick={() => this.handleStatusChange('FREE')}
               color={"success"} block style={{'marginTop': '5px'}}>CHARGED</Button>
           </div>
         );
@@ -404,7 +406,7 @@ class Table extends Component {
     form.error = false;
     form.nameError = false;
     this.setState({form: form, dishSelectionNum: values.dishSelectionNum});
-    Reactotron.display({preview: "Selected num", name: "Selected num", value: values.dishSelectionNum})
+    Reactotron.display({preview: "Selected num", name: "Selected num", value: values.dishSelectionNum});
     this.addDishes();
   }
 

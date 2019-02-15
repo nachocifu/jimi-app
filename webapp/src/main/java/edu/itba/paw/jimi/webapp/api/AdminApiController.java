@@ -98,13 +98,13 @@ public class AdminApiController extends BaseApiController {
 	@GET
 	@Path("/stats")
 	@Produces(value = {MediaType.APPLICATION_JSON})
-	public Response getStats() {
+	public Response getStats(@QueryParam("stockLimit") @DefaultValue("50") Integer stockLimit) {
 		final int totalAmountOfFreeTables = statsService.getFreeTablesUnits();
 		final int totalAmountOfBusyTables = statsService.getBusyTablesUnits();
 		final int totalAmountOfPayingTables = statsService.getPayingTablesUnits();
 		final int totalAmountOfTables = tableService.getTotalTables();
 		final int freeTablesPercentage = statsService.getFreeTables();
-		final int stockStatePercentage = statsService.getStockState(50);
+		final int stockStatePercentage = statsService.getStockState(stockLimit);
 		final Map<YearMonth, Double> monthOrderTotals = statsService.getMonthlyOrderTotal();
 		final Map<YearMonth, Integer> monthlyOrdersCancelled = statsService.getMonthlyOrderCancelled();
 		return Response.ok(new StatsDTO(
