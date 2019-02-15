@@ -108,7 +108,8 @@ public class AdminApiController extends BaseApiController {
 		final int stockStatePercentage = statsService.getStockState(50);
 		final Map<YearMonth, Double> monthOrderTotals = statsService.getMonthlyOrderTotal();
 		final Map<YearMonth, Integer> monthlyOrdersCancelled = statsService.getMonthlyOrderCancelled();
-		return Response.ok(new StatsDTO(totalAmountOfFreeTables,
+		return Response.ok(new StatsDTO(
+				totalAmountOfFreeTables,
 				totalAmountOfBusyTables,
 				totalAmountOfPayingTables,
 				totalAmountOfTables,

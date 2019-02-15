@@ -5,9 +5,6 @@ import {
   CardBody,
   CardHeader,
   Col,
-  Input,
-  InputGroup,
-  InputGroupAddon,
   Modal,
   ModalBody,
   ModalFooter,
@@ -32,7 +29,7 @@ function DishListItem(props) {
   Reactotron.debug(dish);
   Reactotron.debug(amount);
   return (
-    <tr key={dish.id}>
+    <tr>
       <td>{dish.name}</td>
       <td>{amount}</td>
       <td>{dish.price}</td>
@@ -214,11 +211,11 @@ class Bill extends Component {
               <CardBody>
                 <Table responsive striped hover>
                   <tbody>
-                  <tr key={'id'}>
+                  <tr>
                     <td>ID</td>
                     <td><strong>{this.state.bill.id}</strong></td>
                   </tr>
-                  <tr key={'diners'}>
+                  <tr>
                     <td>Diners</td>
                     <td>{this.state.bill.diners}</td>
                   </tr>
