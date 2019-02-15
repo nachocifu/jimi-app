@@ -32,7 +32,8 @@ class Dish extends Component {
       dish: null,
       loading: true,
       form: {name: '', price: 0, stock: 0, minStock: 0, error: false},
-      modalLoading: false
+      modalLoading: false,
+      confirmationModal: false,
     };
 
     this.loadDish = this.loadDish.bind(this);
@@ -42,6 +43,12 @@ class Dish extends Component {
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
   }
+
+  toggleConfirmationModal = () => {
+    this.setState(prevState => ({
+      confirmationModal: !prevState.confirmationModal,
+    }));
+  };
 
   loadDish() {
     return this.dishClient.getDish(this.props.match.params.id)
@@ -74,6 +81,7 @@ class Dish extends Component {
     this.setState({loading: true});
     this.dishClient.discontinue(this.state.dish.id)
       .then(() => this.loadDish())
+      .then(this.toggleConfirmationModal)
       .catch(() => this.setState({loading: false}));
   }
 
@@ -184,7 +192,7 @@ class Dish extends Component {
               <CardFooter>
                 <Button color="secondary" onClick={this.toggle}>Edit</Button>
                 {!this.state.dish.discontinued ? (
-                  <Button color="danger" style={{'marginLeft': '5px'}} onClick={this.handleDiscontinue}>SET
+                  <Button color="danger" style={{'marginLeft': '5px'}} onClick={this.toggleConfirmationModal}>SET
                     DISCONTINUED</Button>
                 ) : ''
                 }
@@ -245,6 +253,16 @@ class Dish extends Component {
                 </ModalFooter>
               </AvForm>
             </Card>)}
+        </Modal>
+        <Modal isOpen={this.state.confirmationModal} toggle={this.toggleConfirmationModal}>
+          <div>
+            <ModalHeader>Confirm dish is discontinued</ModalHeader>
+            <ModalBody>Ones discontinued dish becomes permanently unavailable.</ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={this.toggleConfirmationModal}>Cancel</Button>
+              <Button color="success" onClick={this.handleDiscontinue}>Confirm</Button>
+            </ModalFooter>
+          </div>
         </Modal>
       </div>
     )
